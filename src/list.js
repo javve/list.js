@@ -1,56 +1,38 @@
-var templates = {
-	item: 'item'
-	, list: 'list'
-	, engine: 'jquery'
-};
-
-var values = [
-	{ value1:"hej", value2:"hej2" }
-	, { value1:"då", value2:"då2" }
-	, { value1:"a", value2:12 }
-	, { value1:"v", value2:3, value3:1 }
-	, { value1:"b", value2:1, value3:1 }
-	, { value1:"d", value2:43 }
-	, { value1:"h", value2:234, value3:1337 }
-	, { value1:"j", value2:11 }
-	, { value1:"s", value2:1455 }
-	, { value1:"3", value2:0 }
-];
-
-
 function List(id, templates, values) {
+	var self = this;
 	this.listContainer = $('#'+id);
 	this.templates = templates;
 	this.items = [];
 	this.list = null;
-	this._init(values);
-}
 
-List.prototype = {
-	_init: function(values) {
-		$('#'+this.templates.list).tmpl({}).appendTo(this.listContainer);
-		this.list = $('.list', this.listContainer);
-		$('.search', this.listContainer).keyup($.proxy(this.search, this));
-		$('.sort', this.listContainer).click($.proxy(this.sort, this));
-		this.addExisting();
-		this.add(values);
-	},
-	addExisting: function() {
-		$('.item',this.list)
-	},
-	add: function(values, effect, position) {
-		var self = this;
+	var init = function(values) {
+		$('#'+self.templates.list).tmpl({}).appendTo(self.listContainer);
+		self.list = $('.list', self.listContainer);
+		$('.search', self.listContainer).keyup($.proxy(self.search, self));
+		$('.sort', self.listContainer).click($.proxy(self.sort, self));
+		//self.addExisting();
+		self.add(values);
+	};
+	
+	this.addExisting = function() {
+		//$('.item',this.list)
+	};
+	
+	/* Add object to list
+	 * 
+	 */
+	this.add = function(values, effect, position) {
 		var added = [];
 		if (!$.isArray(values)){
 			values = [values];
 		}
 		$(values).each(function(i) {
 			var item = null;
-			if (this instanceof self.Item) {
+			if (this instanceof Item) {
 				item = this;
 				item.reload();
 			} else {
-				item = new self.Item(this, self.templates.item);
+				item = new Item(this, self.templates.item);
 			}
 			if (effect) {
 				item.elm.hide();
@@ -63,9 +45,13 @@ List.prototype = {
 			added.push(item);
 		});
 		return added;
-	},
-	remove: function(valueName, value, effect) {
-		var self = this;
+	};
+	
+	/* Removes object from list. 
+	 * Loops through the list and removes objects where
+	 * property "valuename" === value
+	 */
+	this.remove = function(valueName, value, effect) {
 		$(this.items).each(function(i) {
 			if (this.values[valueName] === value) {
 				if (effect) {
@@ -78,8 +64,12 @@ List.prototype = {
 			}
 		});
 		return false;
-	},
-	get: function(valueName, value) {
+	};
+	
+	/* Gets the objects in the list which 
+	 * property "valueName" === value
+	 */
+	this.get = function(valueName, value) {
 		var item = [];
 		$(this.items).each(function(i) {
 			if (this.values[valueName] === value) {
@@ -87,10 +77,13 @@ List.prototype = {
 			}
 		});
 		return item;
-	},
-	sort: function(event, sortFunction) {
-		var self = this,
-			length = this.items.length,
+	};
+	
+	/* Sorts the list 
+	 * 
+	 */
+	this.sort = function(event, sortFunction) {
+		var length = this.items.length,
 			value = null; 
 		if (event.target === 'undefined') {
 			value = event;
@@ -101,7 +94,7 @@ List.prototype = {
 			sortFunction = sortFunction;
 		} else {
 			sortFunction = function(a, b) {
-				return self._sorter._alphanum(a.values[value], b.values[value]);
+				return sorter.alphanum(a.values[value], b.values[value]);
 			};
 		}
 		this.items.sort(sortFunction);
@@ -109,9 +102,10 @@ List.prototype = {
 		$(this.items).each(function(i) {
 			self.list.append(this.elm);
 		});
-	},
-	 var sorter = {
-		_alphanum: function(a,b) {
+	};
+	
+	var sorter = {
+		alphanum: function(a,b) {
 			if (typeof a === 'undefined') {
 				a = "";
 			}
@@ -127,8 +121,8 @@ List.prototype = {
 	 		 	return (p1 == "lt")? "<" : ">";
 	 		});
 	 		b = b.replace(/<\/?[^>]+(>|$)/g, "");
-			var aa = this._chunkify(a);
-			var bb = this._chunkify(b);
+			var aa = this.chunkify(a);
+			var bb = this.chunkify(b);
 
 			for (x = 0; aa[x] && bb[x]; x++) {
 				if (aa[x] !== bb[x]) {
@@ -142,7 +136,7 @@ List.prototype = {
 			}
 			return aa.length - bb.length;
 		},
-		_chunkify: function(t) {
+		chunkify: function(t) {
 			var tz = [], x = 0, y = -1, n = 0, i, j;
 
 			while (i = (j = t.charAt(x++)).charCodeAt(0)) {
@@ -155,8 +149,10 @@ List.prototype = {
 			}
 			return tz;
 		}
-	},
-	search: function(event, columns) {
+	}; 
+	
+	
+	this.search = function(event, columns) {
 		var searchString = '';
 		if (typeof event.target !== 'undefined') {
 			searchString = event.target.value.toLowerCase();
@@ -184,8 +180,9 @@ List.prototype = {
 				this.elm.hide();
 			}
 		});
-	},
-	filter: function(filterFunction) {
+	};
+	
+	this.filter = function(filterFunction) {
 		$(this.items).each(function(i) {
 			if (filterFunction(this.values)) {
 				this.elm.show();
@@ -193,28 +190,32 @@ List.prototype = {
 				this.elm.hide();
 			}
 		});
-	},
-	reload: function() {
+	};
+	
+	this.reload = function() {
 		$(this.items).each(function(i) {
 			this.reload();
 		});
-	},
-	Item: function(values, template) {
-		this._init(values,template);
-	}
-};
-
-List.prototype.Item.prototype = {
-	_init: function(values, template) {
-		this.template = template;
-		this.setValues(values);
-	},
-	setValues: function(values) {
-		this.values = values;
-		this.reload();
-	},
-	reload: function() {
-		this.elm = $('#'+this.template).tmpl(this.values);
-	}
+	};
+	
+	var Item = function(values, template) {
+		var item = this;
+		
+		var init = function(values, template) {
+			item.template = template;
+			item.setValues(values);
+		};
+		this.setValues = function(values) {
+			item.values = values;
+			item.reload();
+		};
+		this.reload = function() {
+			item.elm = $('#'+this.template).tmpl(this.values);
+		};
+		init(values, template);
+	};
+	
+	
+	init(values);
 };
 
