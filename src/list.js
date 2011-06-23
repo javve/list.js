@@ -1,15 +1,32 @@
 function List(id, templates, values) {
 	var self = this;
-	this.listContainer = $('#'+id);
-	this.templates = templates;
+	this.listContainer = document.getElementById(id);
 	this.items = [];
 	this.list = null;
+	var templater = null;
 
-	var init = function(values) {
-		$('#'+self.templates.list).tmpl({}).appendTo(self.listContainer);
-		self.list = $('.list', self.listContainer);
-		$('.search', self.listContainer).keyup($.proxy(self.search, self));
-		$('.sort', self.listContainer).click($.proxy(self.sort, self));
+	var helpers = {
+		// http://www.dustindiaz.com/getelementsbyclass
+		// d = node, e = class
+		getByClass: function(d,e){if(d.getElementsByClassName){return d.getElementsByClassName(e)}else{return(function getElementsByClass(a,b){if(b==null)b=document;var c=[],els=b.getElementsByTagName("*"),elsLen=els.length,pattern=new RegExp("(^|\\s)"+a+"(\\s|$)"),i,j;for(i=0,j=0;i<elsLen;i++){if(pattern.test(els[i].className)){c[j]=els[i];j++}}return c})(e,d)}}
+		/* http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/
+		* // Example Usage
+		* var lis = document.getElementsByTagName('li');
+		* addEvent( lis, 'click', function() {
+		*	this.style.border = '1px solid red';
+		* });
+		*/
+		, addEvent: (function(e,f){if(f.addEventListener){return function(a,b,c){if((a&&!a.length)||a===e){a.addEventListener(b,c,false)}else if(a&&a.length){var d=a.length;for(var i=0;i<d;i++){helpers.addEvent(a[i],b,c)}}}}else if(f.attachEvent){return function(a,b,c){if((a&&!a.length)||a===e){a.attachEvent('on'+b,function(){return c.call(a,e.event)})}else if(a.length){var d=a.length;for(var i=0;i<d;i++){addEvent(a[i],b,c)}}}}})(this,document)
+	};
+	
+	var init = function(values, templates) {
+		//$('#'+self.templates.list).tmpl({}).appendTo(self.listContainer);
+		templater = new Templater(templates);
+		self.list = helpers.getByClass(self.listContainer, 'list')[0];
+		helpers.addEvent(helpers.getByClass(self.listContainer, 'search'), 'keyup', self.search);
+		helpers.addEvent(helpers.getByClass(self.listContainer, 'sort'), 'click', self.sort);
+		//$('.search', self.listContainer).keyup($.proxy(self.search, self));
+		//$('.sort', self.listContainer).click($.proxy(self.sort, self));
 		//self.addExisting();
 		self.add(values);
 	};
@@ -23,27 +40,28 @@ function List(id, templates, values) {
 	 */
 	this.add = function(values, effect, position) {
 		var added = [];
+		/*
 		if (!$.isArray(values)){
 			values = [values];
-		}
-		$(values).each(function(i) {
+		}*/
+		for (var i = 0, il = values.length; i < il; i++) {
 			var item = null;
-			if (this instanceof Item) {
-				item = this;
+			if (values[i] instanceof Item) {
+				item = values[i];
 				item.reload();
 			} else {
-				item = new Item(this, self.templates.item);
+				item = new Item(values[i]);
 			}
 			if (effect) {
 				item.elm.hide();
 				self.list.append(item.elm);
 				item.elm[effect]();
 			} else {	
-				self.list.append(item.elm);				
+				self.list.appendChild(item.elm);				
 			}
 			self.items.push(item);
 			added.push(item);
-		});
+		}
 		return added;
 	};
 	
@@ -52,18 +70,15 @@ function List(id, templates, values) {
 	 * property "valuename" === value
 	 */
 	this.remove = function(valueName, value, effect) {
-		$(this.items).each(function(i) {
-			if (this.values[valueName] === value) {
-				if (effect) {
-					$(this.elm)[effect]($(this.elm).remove);
-				} else {
-					$(this.elm).remove();
-				}
+		var found = false;
+		for (var i = 0, il = self.items.length; i < il; i++) {
+			if (self.items[i].values[valueName] === value) {
+				templater.remove(self.items[i]);
 				self.items.splice(i,1);
-				return true;
+				found = true;
 			}
-		});
-		return false;
+		}
+		return found;
 	};
 	
 	/* Gets the objects in the list which 
@@ -198,24 +213,69 @@ function List(id, templates, values) {
 		});
 	};
 	
-	var Item = function(values, template) {
+	
+	function Item(values) {
 		var item = this;
 		
-		var init = function(values, template) {
-			item.template = template;
+		var init = function(values) {
 			item.setValues(values);
 		};
 		this.setValues = function(values) {
 			item.values = values;
-			item.reload();
+			templater.reload(item);
 		};
 		this.reload = function() {
-			item.elm = $('#'+this.template).tmpl(this.values);
+			//
 		};
-		init(values, template);
+		init(values);
 	};
 	
+	/* Templater with different kinds of template engines.
+	 * All engines have these methods
+	 * - reload(item)
+	 * - remove(item)
+	 */
+	function Templater(templates) {
+		
+		this.standard = function(templates) {
+			var listSource = document.getElementById(templates.list)
+			, itemSource = document.getElementById(templates.item)
+			, engine = templates.engine || "def";
+			
+			this.reload = function(item) {
+				var newItem = itemSource.cloneNode(true);
+				for(var v in item.values) {
+		            helpers.getByClass(newItem, v)[0].innerHTML = item.values[v];
+				}
+				if (typeof item.elm === "undefined") {
+					listSource.appendChild(newItem);
+				} else {
+					listSource.replaceChild(newItem, item.elm);
+				}
+				item.elm = newItem;
+			}; 
+			this.remove = function(item) {
+				listSource.removeChild(item.elm);
+			};
+		} 
+		
+		this.jquerytemplates = function(templates) {
+			this.reload = function(item) {
+				item.elm = $('#'+this.template).tmpl(item.values);
+			};
+			this.remove = function() {
+				$(this.elm)[effect]($(this.elm).remove);	
+			};
+		}
+		
+		if (typeof templates.engine === 'undefined') {
+			templates.engine = "standard";
+		} else {
+			templates.engine = templates.engine.toLowerCase();
+		}
+		return new this[templates.engine](templates);
+	}
 	
-	init(values);
+	init(values, templates);
 };
 

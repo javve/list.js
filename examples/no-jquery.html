@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>List.js examples</title>
+		<meta charset="UTF-8">
+		<script src="../src/list.js"></script>
+	</head>
+	<body>
+		
+		<div id="list-container"></div>
+		
+		
+		<div id="list">
+			<input class="search" />
+			<span class="sort" rel="value1">Sortera</span>
+			<span class="sort" rel="value2">Sortera</span>
+			<span class="sort" rel="value3">Sortera</span>
+			<ul class="list"></ul>
+		</div>
+		
+		<li id="item">
+			<span class="value1"></span> - 
+			<span class="value2"></span> -
+			<span class="value3"></span>'
+		</li>		
+		
+		<script>
+			var templates = {
+				list: "list"
+				, item: "item"
+			};
+			var values = [
+				{ value1:"hej", value2:"hej2" }
+				, { value1:"då", value2:"då2" }
+				, { value1:"a", value2:12 }
+				, { value1:"v", value2:3, value3:1 }
+				, { value1:"b", value2:1, value3:1 }
+				, { value1:"d", value2:43 }
+				, { value1:"h", value2:234, value3:1337 }
+				, { value1:"j", value2:11 }
+				, { value1:"s", value2:1455 }
+				, { value1:"3", value2:0 }
+			];
+			var list = new List('list', templates, values);
+			/*
+			list.add({value1:"bajs"}, 'slideDown');
+			list.remove("value1", "a", 'slideUp');
+			var o = list.get("value1", "då");
+			o[0].values.value1 = "din mamma";
+			console.log(o);
+			list.add(o);
+			*/
+		</script>
+		
+		
+	</body>
+</html>
