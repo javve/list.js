@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>List.js examples</title>
+		<meta charset="UTF-8">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+		<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+		<script src="../src/list.js"></script>
+	</head>
+	<body>
+		
+		<div id="list-container"></div>
+		
+		
+		<script id="list" type="text/x-jquery-tmpl">
+			<input class="search" />
+			<span class="sort" rel="value1">Sortera</span>
+			<span class="sort" rel="value2">Sortera</span>
+			<span class="sort" rel="value3">Sortera</span>
+			<table class="list"></table>
+		</script>
+		
+		<script id="item" type="text/x-jquery-tmpl">
+			<li class="item">${value1} - ${value2} - ${value3}</li>
+		</script>
+		
+		
+		<script>
+			var list = new List('list-container', templates, values);
+			list.add({value1:"bajs"}, 'slideDown');
+			list.remove("value1", "a", 'slideUp');
+			var o = list.get("value1", "då");
+			o[0].values.value1 = "din mamma";
+			console.log(o);
+			list.add(o);
+		</script>
+		
+		<div id="list2-container">
+			<input class="search" />
+			<span class="sort" rel="value1">Sortera</span>
+			<span class="sort" rel="value2">Sortera</span>
+			<span class="sort" rel="value3">Sortera</span>
+			<ul class="list">
+				<li class="item">
+					<span rel="value1">Hej</span>
+					<span rel="value2">Hehja2</span>
+				</li>
+			</ul>
+		</div>
+		
+	</body>
+</html>
