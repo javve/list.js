@@ -45,8 +45,17 @@
     list.add({value1:"svenne banan"});
     list.add({value1:"svenne banan", value3:"greger"});
     list.remove('value1', 'hej');
+    setTimeout(function() {
+         list.filter(function(values) {
+            if (values.value1.length === 1) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        setTimeout(function() {list.filter(false)}, 1000);
+    }, 200);
     var item = list.get('value1', 'a');
-    console.log(item);
     /*
     list.add({value1:"bajs"}, 'slideDown');
     list.remove("value1", "a", 'slideUp');

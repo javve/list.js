@@ -6,21 +6,11 @@ function List(id, templates, values) {
     var templater = null;
 
     var helpers = {
-        // http://www.dustindiaz.com/getelementsbyclass
-        // d = node, e = class
+        /* (node, class) Source: http://www.dustindiaz.com/getelementsbyclass */ 
         getByClass: function(d,e){if(d.getElementsByClassName){return d.getElementsByClassName(e)}else{return(function getElementsByClass(a,b){if(b==null)b=document;var c=[],els=b.getElementsByTagName("*"),elsLen=els.length,pattern=new RegExp("(^|\\s)"+a+"(\\s|$)"),i,j;for(i=0,j=0;i<elsLen;i++){if(pattern.test(els[i].className)){c[j]=els[i];j++}}return c})(e,d)}}
-        /* http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/
-        * Example Usage
-        * var lis = document.getElementsByTagName('li');
-        * addEvent( lis, 'click', function() {
-        *	this.style.border = '1px solid red';
-        * });
-        */
+        /* (elm, 'event' callback) Source: http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/ */
         , addEvent: (function(e,f){if(f.addEventListener){return function(a,b,c){if((a&&!a.length)||a===e){a.addEventListener(b,c,false)}else if(a&&a.length){var d=a.length;for(var i=0;i<d;i++){helpers.addEvent(a[i],b,c)}}}}else if(f.attachEvent){return function(a,b,c){if((a&&!a.length)||a===e){a.attachEvent('on'+b,function(){return c.call(a,e.event)})}else if(a.length){var d=a.length;for(var i=0;i<d;i++){addEvent(a[i],b,c)}}}}})(this,document)
-        /* Parameter 
-        * element
-        * attribute
-        */
+        /* (elm, attribute) Source: http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method */
         , getAttribute: function(a,b){var c=(a.getAttribute&&a.getAttribute(b))||null;if(!c){var d=a.attributes;var e=d.length;for(var i=0;i<e;i++)if(b[i].nodeName===b)c=b[i].nodeValue}return c}
     };
 
@@ -32,14 +22,10 @@ function List(id, templates, values) {
         self.add(values);
     };
 
-    this.addExisting = function() {
-        //$('.item',this.list)
-    };
-
     /* Add object to list
     * 
     */
-    this.add = function(values, effect, position) {
+    this.add = function(values, options) {
         var added = [];
 
         if (typeof values[0] === 'undefined'){
@@ -53,7 +39,7 @@ function List(id, templates, values) {
             } else {
                 item = new Item(values[i]);
             }
-            templater.add(item);
+            templater.add(item, options);
             self.items.push(item);
             added.push(item);
         }
@@ -64,11 +50,11 @@ function List(id, templates, values) {
     * Loops through the list and removes objects where
     * property "valuename" === value
     */
-    this.remove = function(valueName, value, effect) {
+    this.remove = function(valueName, value, options) {
         var found = false;
         for (var i = 0, il = self.items.length; i < il; i++) {
             if (self.items[i].getValues()[valueName] === value) {
-                templater.remove(self.items[i]);
+                templater.remove(self.items[i], options);
                 self.items.splice(i,1);
                 il--;
                 found = true;
@@ -92,15 +78,15 @@ function List(id, templates, values) {
     };
 
     /* Sorts the list 
-    * 
+    *  TODO: Desc || Asc
     */
-    this.sort = function(event, sortFunction) {
+    this.sort = function(valueOrEvent, sortFunction) {
         var length = self.items.length,
             value = null; 
-        if (event.target === 'undefined') {
-            value = event;
+        if (valueOrEvent.target === 'undefined') {
+            value = valueOrEvent;
         } else {	
-            value = helpers.getAttribute(event.target, 'rel');
+            value = helpers.getAttribute(valueOrEvent.target, 'rel');
         }
         if (sortFunction) {
             sortFunction = sortFunction;
@@ -163,13 +149,17 @@ function List(id, templates, values) {
         }
     }; 
 
-
-    this.search = function(event, columns) {
+    /*
+    * Searches the list after values with content "searchStringOrEvent".
+    * The columns parameter defines if all values should be included in the search,
+    * defaults to undefined which means "all". 
+    */
+    this.search = function(searchStringOrEvent, columns) {
         var searchString = '';
         if (typeof event.target !== 'undefined') {
-            searchString = event.target.value.toLowerCase();
+            searchString = searchStringOrEvent.target.value.toLowerCase();
         } else {
-            searchString = event;
+            searchString = searchStringOrEvent;
         }
         var useAllColumns = false;
         if (typeof columns === 'undefined') {
@@ -195,22 +185,31 @@ function List(id, templates, values) {
         }
     };
 
+    /*
+    * Filters the list. If filterFunction() returns False hides the Item.
+    * if filterFunction == false are the filter removed
+    */
     this.filter = function(filterFunction) {
-        $(this.items).each(function(i) {
-            if (filterFunction(this.getValues())) {
-                this.elm.show();
+        for (var i = 0, il = self.items.length; i < il; i++) {
+            var item = self.items[i];
+            if (filterFunction === false) {
+                item.show();
             } else {
-                this.elm.hide();
+                if (filterFunction(item.getValues())) {
+                    item.show();
+                } else {
+                    item.hide();
+                }
             }
-        });
+        }
     };
-
+    /*
     this.reload = function() {
         $(this.items).each(function(i) {
             this.reload();
         });
     };
-
+    */
 
     function Item(initValues) {
         var item = this,
@@ -225,7 +224,13 @@ function List(id, templates, values) {
         };
         this.getValues = function() {
             return values;
-        }
+        };
+        this.show = function() {
+            templater.show(item);
+        };
+        this.hide = function() {
+            templater.hide(item);
+        };
         init(initValues);
     };
 
@@ -234,15 +239,13 @@ function List(id, templates, values) {
     * - reload(item)
     * - remove(item)
     */
-    function Templater(templates) {
+    function Templater(settings) {
 
-        this.standard = function(templates) {
-            var listSource = helpers.getByClass(document.getElementById(templates.list), 'list')[0]
-            , itemSource = document.getElementById(templates.item)
-            , engine = templates.engine || "def";
+        this.standard = function(settings) {
+            var listSource = helpers.getByClass(document.getElementById(settings.list), 'list')[0]
+            , itemSource = document.getElementById(settings.item);
 
             this.reload = function(item) {
-                console.log(item, item.getValues());
                 var newItem = itemSource.cloneNode(true);
                 newItem.id = "";
                 for(var v in item.getValues()) {
@@ -261,13 +264,20 @@ function List(id, templates, values) {
             this.remove = function(item) {
                 listSource.removeChild(item.elm);
             };
-        } 
-
-        this.jquerytemplates = function(templates) {
+            this.show = function(item) {
+                item.elm.style.display = "block";
+            };
+            this.hide = function(item) {
+                item.elm.style.display = "none";
+            };
+        };
+        
+        /* WIP */
+        this.jquerytemplates = function(settings) {
             this.reload = function(item) {
                 item.elm = $('#'+this.template).tmpl(item.getValues());
             };
-            this.add = function(item) {
+            this.add = function(item, options) {
                if (effect) {
                     item.elm.hide();
                     self.list.append(item.elm);
@@ -275,18 +285,24 @@ function List(id, templates, values) {
                 } else {	
                     self.list.appendChild(item.elm);				
                 }
-            }
-            this.remove = function(item) {
+            };
+            this.remove = function(item, options) {
                 $(this.elm)[effect]($(this.elm).remove);	
+            };
+            this.show = function(item, options) {
+                item.elm.style.display = "block";
+            };
+            this.hide = function(item, options) {
+                item.elm.style.display = "none";
             };
         }
 
-        if (typeof templates.engine === 'undefined') {
-            templates.engine = "standard";
+        if (typeof settings.engine === 'undefined') {
+            settings.engine = "standard";
         } else {
-            templates.engine = templates.engine.toLowerCase();
+            settings.engine = settings.engine.toLowerCase();
         }
-        return new this[templates.engine](templates);
+        return new this[templates.engine](settings);
     }
 
     init(values, templates);
