@@ -1,9 +1,10 @@
 function List(id, templates, values) {
-    var self = this;
+    var self = this
+        ,templater = null;
     this.listContainer = document.getElementById(id);
     this.items = [];
     this.list = null;
-    var templater = null;
+    this.templateEngines = {};
 
     var helpers = {
         /* (node, class) Source: http://www.dustindiaz.com/getelementsbyclass */ 
@@ -239,8 +240,9 @@ function List(id, templates, values) {
     * - reload(item)
     * - remove(item)
     */
-    function Templater(settings) {
+    var Templater = function(settings) {
 
+        /*
         this.standard = function(settings) {
             var listSource = helpers.getByClass(document.getElementById(settings.list), 'list')[0]
             , itemSource = document.getElementById(settings.item);
@@ -271,6 +273,7 @@ function List(id, templates, values) {
                 item.elm.style.display = "none";
             };
         };
+        */
         
         /* WIP */
         this.jquerytemplates = function(settings) {
@@ -302,9 +305,41 @@ function List(id, templates, values) {
         } else {
             settings.engine = settings.engine.toLowerCase();
         }
-        return new this[templates.engine](settings);
+        return new self.constructor.prototype.templateEngines[settings.engine](settings);
     }
 
     init(values, templates);
 };
 
+List.prototype.templateEngines = {};
+List.prototype.templateEngines.standard = function(settings) {
+    var listSource = document.getElementById(settings.list).getElementsByClassName('list')[0] //helpers.getByClass(document.getElementById(settings.list), 'list')[0]
+        , itemSource = document.getElementById(settings.item);
+
+    this.reload = function(item) {
+        var newItem = itemSource.cloneNode(true);
+        newItem.id = "";
+        for(var v in item.getValues()) {
+            newItem.getElementsByClassName(v)[0].innerHTML = item.getValues()[v];
+            //helpers.getByClass(newItem, v)[0].innerHTML = item.getValues()[v];
+        }
+        if (typeof item.elm === "undefined") {
+            listSource.appendChild(newItem);
+        } else {
+            listSource.replaceChild(newItem, item.elm);
+        }
+        item.elm = newItem;
+    };
+    this.add = function(item) {
+        listSource.appendChild(item.elm);				
+    } 
+    this.remove = function(item) {
+        listSource.removeChild(item.elm);
+    };
+    this.show = function(item) {
+        item.elm.style.display = "block";
+    };
+    this.hide = function(item) {
+        item.elm.style.display = "none";
+    };
+};
