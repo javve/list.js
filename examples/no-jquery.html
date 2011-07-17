@@ -22,9 +22,39 @@
         <span class="value1"></span> - 
         <span class="value2"></span> -
         <span class="value3"></span>'
-    </li>		
+    </li>
+    
+    <div id="list2">
+        <input class="search" />
+        <span class="sort" rel="value1">Sortera</span>
+        <span class="sort" rel="value2">Sortera</span>
+        <span class="sort" rel="value3">Sortera</span>
+        <ul class="list">
+            <li class="item">
+                <span class="value1">Hej</span> - 
+                <span class="value2">På</span> -
+                <span class="value3">Dig</span>'
+            </li>
+            <li class="item">
+                <span class="value1">1Hej</span> - 
+                <span class="value2">1På</span> -
+                <span class="value3">1Dig</span>'
+            </li>
+            <li class="item">
+                <span class="value1">2Hej</span> - 
+                <span class="value2">3På</span> -
+                <span class="value3">4Dig</span>'
+            </li>
+        </ul>
+    </div>	
 
     <script>
+    var templates2 = { 
+        list: "list2"
+        , item: "item2"
+        , values: ['value1', 'value2', 'value3']
+    };
+    new List('list', templates2);
     var templates = {
         list: "list"
         , item: "item"
