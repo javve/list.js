@@ -1,3 +1,20 @@
+/*
+ListJS Alpha 1.0
+
+
+
+
+*/
+
+var ListJsHelpers = {
+    /* (node, class) Source: http://www.dustindiaz.com/getelementsbyclass */ 
+    getByClass: function(d,e){if(d.getElementsByClassName){return d.getElementsByClassName(e)}else{return(function getElementsByClass(a,b){if(b==null)b=document;var c=[],els=b.getElementsByTagName("*"),elsLen=els.length,pattern=new RegExp("(^|\\s)"+a+"(\\s|$)"),i,j;for(i=0,j=0;i<elsLen;i++){if(pattern.test(els[i].className)){c[j]=els[i];j++}}return c})(e,d)}}
+    /* (elm, 'event' callback) Source: http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/ */
+    , addEvent: (function(e,f){if(f.addEventListener){return function(a,b,c){if((a&&!a.length)||a===e){a.addEventListener(b,c,false)}else if(a&&a.length){var d=a.length;for(var i=0;i<d;i++){helpers.addEvent(a[i],b,c)}}}}else if(f.attachEvent){return function(a,b,c){if((a&&!a.length)||a===e){a.attachEvent('on'+b,function(){return c.call(a,e.event)})}else if(a.length){var d=a.length;for(var i=0;i<d;i++){addEvent(a[i],b,c)}}}}})(this,document)
+    /* (elm, attribute) Source: http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method */
+    , getAttribute: function(a,b){var c=(a.getAttribute&&a.getAttribute(b))||null;if(!c){var d=a.attributes;var e=d.length;for(var i=0;i<e;i++)if(b[i].nodeName===b)c=b[i].nodeValue}return c}
+};
+
 function List(id, templates, values) {
     var self = this
         ,templater = null;
@@ -6,20 +23,14 @@ function List(id, templates, values) {
     this.list = null;
     this.templateEngines = {};
 
-    var helpers = {
-        /* (node, class) Source: http://www.dustindiaz.com/getelementsbyclass */ 
-        getByClass: function(d,e){if(d.getElementsByClassName){return d.getElementsByClassName(e)}else{return(function getElementsByClass(a,b){if(b==null)b=document;var c=[],els=b.getElementsByTagName("*"),elsLen=els.length,pattern=new RegExp("(^|\\s)"+a+"(\\s|$)"),i,j;for(i=0,j=0;i<elsLen;i++){if(pattern.test(els[i].className)){c[j]=els[i];j++}}return c})(e,d)}}
-        /* (elm, 'event' callback) Source: http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/ */
-        , addEvent: (function(e,f){if(f.addEventListener){return function(a,b,c){if((a&&!a.length)||a===e){a.addEventListener(b,c,false)}else if(a&&a.length){var d=a.length;for(var i=0;i<d;i++){helpers.addEvent(a[i],b,c)}}}}else if(f.attachEvent){return function(a,b,c){if((a&&!a.length)||a===e){a.attachEvent('on'+b,function(){return c.call(a,e.event)})}else if(a.length){var d=a.length;for(var i=0;i<d;i++){addEvent(a[i],b,c)}}}}})(this,document)
-        /* (elm, attribute) Source: http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method */
-        , getAttribute: function(a,b){var c=(a.getAttribute&&a.getAttribute(b))||null;if(!c){var d=a.attributes;var e=d.length;for(var i=0;i<e;i++)if(b[i].nodeName===b)c=b[i].nodeValue}return c}
-    };
-
     var init = function(values, templates) {
         templater = new Templater(templates);
-        self.list = helpers.getByClass(self.listContainer, 'list')[0];
-        helpers.addEvent(helpers.getByClass(self.listContainer, 'search'), 'keyup', self.search);
-        helpers.addEvent(helpers.getByClass(self.listContainer, 'sort'), 'click', self.sort);
+        self.list = ListJsHelpers.getByClass(self.listContainer, 'list')[0];
+        ListJsHelpers.addEvent(ListJsHelpers.getByClass(self.listContainer, 'search')[0], 'keyup', self.search);
+        ListJsHelpers.addEvent(ListJsHelpers.getByClass(self.listContainer, 'sort')[0], 'click', self.sort);
+        if (templates.values) {
+            
+        }
         self.add(values);
     };
 
@@ -87,7 +98,7 @@ function List(id, templates, values) {
         if (valueOrEvent.target === 'undefined') {
             value = valueOrEvent;
         } else {	
-            value = helpers.getAttribute(valueOrEvent.target, 'rel');
+            value = ListJsHelpers.getAttribute(valueOrEvent.target, 'rel');
         }
         if (sortFunction) {
             sortFunction = sortFunction;
@@ -212,11 +223,16 @@ function List(id, templates, values) {
     };
     */
 
-    function Item(initValues) {
+    function Item(initValues, element) {
         var item = this,
             values = {};
 
-        var init = function(initValues) {
+        var init = function(initValues, element) {
+            if (typeof element === 'undefined') {
+                item.elm = element;
+            } else {
+                templater.add(item);
+            }
             item.setValues(initValues);
         };
         this.setValues = function(newValues) {
@@ -232,7 +248,7 @@ function List(id, templates, values) {
         this.hide = function() {
             templater.hide(item);
         };
-        init(initValues);
+        init(initValues, element);
     };
 
     /* Templater with different kinds of template engines.
@@ -290,24 +306,18 @@ function List(id, templates, values) {
 List.prototype.templateEngines = {};
 
 List.prototype.templateEngines.standard = function(settings) {
-    var listSource = document.getElementById(settings.list).getElementsByClassName('list')[0] //helpers.getByClass(document.getElementById(settings.list), 'list')[0]
+    var listSource = helpers.getByClass(document.getElementById(settings.list), 'list')[0]
         , itemSource = document.getElementById(settings.item);
 
     this.reload = function(item) {
+        for(var v in item.getValues()) {
+            ListJsHelpers.getByClass(item.elm, v)[0].innerHTML = item.getValues()[v];
+        }
+    };
+    this.add = function(item) { 
         var newItem = itemSource.cloneNode(true);
         newItem.id = "";
-        for(var v in item.getValues()) {
-            newItem.getElementsByClassName(v)[0].innerHTML = item.getValues()[v];
-            //helpers.getByClass(newItem, v)[0].innerHTML = item.getValues()[v];
-        }
-        if (typeof item.elm === "undefined") {
-            listSource.appendChild(newItem);
-        } else {
-            listSource.replaceChild(newItem, item.elm);
-        }
         item.elm = newItem;
-    };
-    this.add = function(item) {
         listSource.appendChild(item.elm);				
     } 
     this.remove = function(item) {
