@@ -2,12 +2,12 @@ module("List.js standard");
 var theList
     , ryah = {
         id: 4
-        , name: "Ryah Dahl"
+        , name: "Ryan Dahl"
         , feature: "Node"
     }
-    , jonathan = {
+    , tj = {
         id: 5
-        , name: "Jonathan Ive"
+        , name: "TJ Holowaychuk"
         , feature: "Node"
     }
     , jonny = {
@@ -32,7 +32,7 @@ test('Add one item', function(){
     equals(theList.size(), 4);
 });
 test('Add two items', function(){
-    theList.add([jonathan, jonny]);
+    theList.add([tj, jonny]);
     equals(theList.size(), 6);
 });
 
@@ -61,7 +61,7 @@ test('Get two items', function() {
         items[0].getValues(),
         items[1].getValues()
     ];
-    deepEqual(items, [ryah, jonathan], "Say woot");   
+    deepEqual(items, [ryah, tj], "Say woot");   
 });
 
 test('Get item that doen not exist', function() {
@@ -76,7 +76,7 @@ test('Search', function() {
         items[0].getValues(),
         items[1].getValues()
     ];
-    deepEqual(items, [ryah, jonathan]);
+    deepEqual(items, [ryah, tj]);
    theList.search(''); 
 });
 
