@@ -1,8 +1,11 @@
 /*
-ListJS Alpha 1.0
+ListJS Alpha 0.1
+By Jonny Strömberg (www.poseinteractive.se)
 
+Licence: Dunno yet. Everything should be allowed except for redistributing 
+the script under an other name.
 
-
+OBS. The API is not frozen. It WILL change! Wait for beta.
 
 */
 
@@ -10,7 +13,7 @@ var ListJsHelpers = {
     /* (node, class) Source: http://www.dustindiaz.com/getelementsbyclass */ 
     getByClass: function(d,e){if(d.getElementsByClassName){return d.getElementsByClassName(e)}else{return(function getElementsByClass(a,b){if(b==null)b=document;var c=[],els=b.getElementsByTagName("*"),elsLen=els.length,pattern=new RegExp("(^|\\s)"+a+"(\\s|$)"),i,j;for(i=0,j=0;i<elsLen;i++){if(pattern.test(els[i].className)){c[j]=els[i];j++}}return c})(e,d)}}
     /* (elm, 'event' callback) Source: http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/ */
-    , addEvent: (function(e,f){if(f.addEventListener){return function(a,b,c){if((a&&!a.length)||a===e){a.addEventListener(b,c,false)}else if(a&&a.length){var d=a.length;for(var i=0;i<d;i++){helpers.addEvent(a[i],b,c)}}}}else if(f.attachEvent){return function(a,b,c){if((a&&!a.length)||a===e){a.attachEvent('on'+b,function(){return c.call(a,e.event)})}else if(a.length){var d=a.length;for(var i=0;i<d;i++){addEvent(a[i],b,c)}}}}})(this,document)
+    , addEvent: (function(e,f){if(f.addEventListener){return function(a,b,c){if((a&&!a.length)||a===e){a.addEventListener(b,c,false)}else if(a&&a.length){var d=a.length;for(var i=0;i<d;i++){ListJsHelpers.addEvent(a[i],b,c)}}}}else if(f.attachEvent){return function(a,b,c){if((a&&!a.length)||a===e){a.attachEvent('on'+b,function(){return c.call(a,e.event)})}else if(a.length){var d=a.length;for(var i=0;i<d;i++){addEvent(a[i],b,c)}}}}})(this,document)
     /* (elm, attribute) Source: http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method */
     , getAttribute: function(a,b){var c=(a.getAttribute&&a.getAttribute(b))||null;if(!c){var d=a.attributes;var e=d.length;for(var i=0;i<e;i++)if(b[i].nodeName===b)c=b[i].nodeValue}return c}
 };
@@ -24,22 +27,33 @@ function List(id, templates, values) {
     this.templateEngines = {};
 
     var init = function(values, templates) {
+        if (typeof templates.list === 'undefined') {
+            templates.list = id;
+        }
         templater = new Templater(templates);
         self.list = ListJsHelpers.getByClass(self.listContainer, 'list')[0];
         ListJsHelpers.addEvent(ListJsHelpers.getByClass(self.listContainer, 'search')[0], 'keyup', self.search);
-        ListJsHelpers.addEvent(ListJsHelpers.getByClass(self.listContainer, 'sort')[0], 'click', self.sort);
-        if (templates.values) {
-            
+        ListJsHelpers.addEvent(ListJsHelpers.getByClass(self.listContainer, 'sort'), 'click', self.sort);
+        if (templates.valueNames) {
+            getIntialItems(templates.valueNames)
         }
-        self.add(values);
+        if (typeof values !== 'undefined') {
+            self.add(values);
+        }
     };
+
+    var getIntialItems = function(valueNames) {
+        var itemElements = ListJsHelpers.getByClass(self.list, 'item');
+        for (var i = 0, il = itemElements.length; i < il; i++) {
+            self.items.push(new Item(valueNames, itemElements[i]));
+        }
+    }
 
     /* Add object to list
     * 
     */
     this.add = function(values, options) {
         var added = [];
-
         if (typeof values[0] === 'undefined'){
             values = [values];
         }
@@ -79,14 +93,20 @@ function List(id, templates, values) {
     * property "valueName" === value
     */
     this.get = function(valueName, value) {
-        var items = [];
+        var matchedItems = [];
         for (var i = 0, il = self.items.length; i < il; i++) {
             var item = self.items[i];
             if (item.getValues()[valueName] === value) {
-                items.push(item);
+                matchedItems.push(item);
             }
         }
-        return item;
+        if (matchedItems.length == 0) {
+            return null; 
+        } else if (matchedItems.length == 1) {
+            return matchedItems[0];
+        } else {
+            return matchedItems;
+        }
     };
 
     /* Sorts the list 
@@ -167,11 +187,12 @@ function List(id, templates, values) {
     * defaults to undefined which means "all". 
     */
     this.search = function(searchStringOrEvent, columns) {
-        var searchString = '';
-        if (typeof event.target !== 'undefined') {
+        var searchString = ''
+            , foundItems = [];
+        if (typeof searchStringOrEvent.target !== 'undefined') {
             searchString = searchStringOrEvent.target.value.toLowerCase();
         } else {
-            searchString = searchStringOrEvent;
+            searchString = searchStringOrEvent.toLowerCase();
         }
         var useAllColumns = false;
         if (typeof columns === 'undefined') {
@@ -189,12 +210,16 @@ function List(id, templates, values) {
                     found = true;
                 }
             }
+            if (found) {
+                foundItems.push(item);
+            }
             if (found || (searchString === "")) {
                 item.elm.style.display = "block";
             } else {
                 item.elm.style.display = "none";
             }
         }
+        return foundItems;
     };
 
     /*
@@ -202,26 +227,27 @@ function List(id, templates, values) {
     * if filterFunction == false are the filter removed
     */
     this.filter = function(filterFunction) {
+        var visibleItems = [];
         for (var i = 0, il = self.items.length; i < il; i++) {
             var item = self.items[i];
-            if (filterFunction === false) {
+            if (filterFunction === false || typeof filterFunction === 'undefined') {
                 item.show();
+                visibleItems.push(item);
             } else {
                 if (filterFunction(item.getValues())) {
+                    visibleItems.push(item);
                     item.show();
                 } else {
                     item.hide();
                 }
             }
         }
+        return visibleItems;
     };
-    /*
-    this.reload = function() {
-        $(this.items).each(function(i) {
-            this.reload();
-        });
+    
+    this.size = function() {
+        return self.items.length;
     };
-    */
 
     function Item(initValues, element) {
         var item = this,
@@ -229,15 +255,18 @@ function List(id, templates, values) {
 
         var init = function(initValues, element) {
             if (typeof element === 'undefined') {
-                item.elm = element;
-            } else {
+                templater.create(item);
+                item.setValues(initValues);
                 templater.add(item);
+            } else {
+                item.elm = element;
+                var values = templater.get(item, initValues);
+                item.setValues(values);
             }
-            item.setValues(initValues);
         };
         this.setValues = function(newValues) {
             values = newValues;
-            templater.reload(item);
+            templater.set(item, item.getValues());
         };
         this.getValues = function() {
             return values;
@@ -257,41 +286,6 @@ function List(id, templates, values) {
     * - remove(item)
     */
     var Templater = function(settings) {
-
-        /*
-        this.standard = function(settings) {
-            var listSource = helpers.getByClass(document.getElementById(settings.list), 'list')[0]
-            , itemSource = document.getElementById(settings.item);
-
-            this.reload = function(item) {
-                var newItem = itemSource.cloneNode(true);
-                newItem.id = "";
-                for(var v in item.getValues()) {
-                    helpers.getByClass(newItem, v)[0].innerHTML = item.getValues()[v];
-                }
-                if (typeof item.elm === "undefined") {
-                    listSource.appendChild(newItem);
-                } else {
-                    listSource.replaceChild(newItem, item.elm);
-                }
-                item.elm = newItem;
-            };
-            this.add = function(item) {
-                self.list.appendChild(item.elm);				
-            } 
-            this.remove = function(item) {
-                listSource.removeChild(item.elm);
-            };
-            this.show = function(item) {
-                item.elm.style.display = "block";
-            };
-            this.hide = function(item) {
-                item.elm.style.display = "none";
-            };
-        };
-        */
-        
-
         if (typeof settings.engine === 'undefined') {
             settings.engine = "standard";
         } else {
@@ -306,18 +300,36 @@ function List(id, templates, values) {
 List.prototype.templateEngines = {};
 
 List.prototype.templateEngines.standard = function(settings) {
-    var listSource = helpers.getByClass(document.getElementById(settings.list), 'list')[0]
+    var listSource = ListJsHelpers.getByClass(document.getElementById(settings.list), 'list')[0]
         , itemSource = document.getElementById(settings.item);
-
-    this.reload = function(item) {
-        for(var v in item.getValues()) {
-            ListJsHelpers.getByClass(item.elm, v)[0].innerHTML = item.getValues()[v];
+    
+    /* Get values from element */
+    this.get = function(item, valueNames) {
+        var values = {};
+        for(var i = 0, il = valueNames.length; i < il; i++) {
+            values[valueNames[i]] = ListJsHelpers.getByClass(item.elm, valueNames[i])[0].innerHTML;
+        }
+        return values;
+    };
+    
+    /* Sets values at element */
+    this.set = function(item, values) {
+        for(var v in values) {
+            ListJsHelpers.getByClass(item.elm, v)[0].innerHTML = values[v];
         }
     };
-    this.add = function(item) { 
+    
+    this.create = function(item) {
+        /* If item source does not exists, use the first item in list as 
+        source for new items */
+        if (itemSource === null) {
+            itemSource = ListJsHelpers.getByClass(listSource, 'item')[0];
+        }
         var newItem = itemSource.cloneNode(true);
         newItem.id = "";
-        item.elm = newItem;
+        item.elm = newItem;        
+    };
+    this.add = function(item) { 
         listSource.appendChild(item.elm);				
     } 
     this.remove = function(item) {
