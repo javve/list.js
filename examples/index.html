@@ -7,9 +7,10 @@
 </head>
 <body>
 
-    <div id="list-container"></div>
 
+<h1>List.js Alpha 0.1 examples</h1>
 
+<h2>List created entirely with JavaScript</h2>
     <div id="list">
         <input class="search" />
         <span class="sort" rel="value1">Sortera</span>
@@ -18,12 +19,13 @@
         <ul class="list"></ul>
     </div>
 
-    <li id="item">
+    <li id="item" style="display:none;">
         <span class="value1"></span> - 
         <span class="value2"></span> -
         <span class="value3"></span>'
     </li>
-    
+
+<h2>List with some items defined from the beginning</h2>    
     <div id="list2">
         <input class="search" />
         <span class="sort" rel="value1">Sortera</span>
@@ -33,7 +35,7 @@
             <li class="item">
                 <span class="value1">Hej</span> - 
                 <span class="value2">På</span> -
-                <span class="value3">Dig</span>'
+                <span class="value3">Dig</span>
             </li>
             <li class="item">
                 <span class="value1">1Hej</span> - 
@@ -49,16 +51,23 @@
     </div>	
 
     <script>
-    var templates2 = { 
+    var templates2 = { /*
         list: "list2"
         , item: "item2"
-        , values: ['value1', 'value2', 'value3']
+        ,*/ valueNames: ['value1', 'value2', 'value3']
     };
-    new List('list', templates2);
+	var moreItems = [
+		{ value1:"sven", value2:"egon" },
+		{ value1:"funka", value2:"nu", value3:"du" }
+	]
+    new List('list2', templates2);
+
+/*
     var templates = {
         list: "list"
         , item: "item"
     };
+
     var values = [
     { value1:"hej", value2:"hej2" }
     , { value1:"då", value2:"då2" }
