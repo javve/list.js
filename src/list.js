@@ -3,7 +3,7 @@ ListJS Alpha 0.1
 By Jonny Strömberg (www.poseinteractive.se)
 
 Licence: Dunno yet. Everything should be allowed except for redistributing 
-the script under an other name.
+the script under an other name. MIT or something.
 
 OBS. The API is not frozen. It WILL change! Wait for beta.
 
@@ -109,8 +109,11 @@ function List(id, templates, values) {
         }
     };
 
-    /* Sorts the list 
-    *  TODO: Desc || Asc
+    /* Sorts the list.
+    * @valueOrEvent Either a JavaScript event object or a valueName
+    * @sortFunction (optional) Define if natural sorting does not fullfill your needs
+    * 
+    * TODO: Add Desc || Asc
     */
     this.sort = function(valueOrEvent, sortFunction) {
         var length = self.items.length,
@@ -134,6 +137,9 @@ function List(id, templates, values) {
         }
     };
 
+    /*
+    * The sort function. From http://my.opera.com/GreyWyvern/blog/show.dml/1671288
+    */
     var sorter = {
         alphanum: function(a,b) {
             if (typeof a === 'undefined') {
@@ -245,6 +251,9 @@ function List(id, templates, values) {
         return visibleItems;
     };
     
+    /*
+    * Get size of the list
+    */
     this.size = function() {
         return self.items.length;
     };
