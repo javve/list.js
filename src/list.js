@@ -354,7 +354,10 @@ List.prototype.templateEngines.standard = function(settings) {
     /* Sets values at element */
     this.set = function(item, values) {
         for(var v in values) {
-            ListJsHelpers.getByClass(item.elm, v)[0].innerHTML = values[v];
+            var hej = ListJsHelpers.getByClass(v, item.elm)[0];
+            if (hej) {
+                hej.innerHTML = values[v];
+            }
         }
     };
     
@@ -366,6 +369,7 @@ List.prototype.templateEngines.standard = function(settings) {
         }
         var newItem = itemSource.cloneNode(true);
         newItem.id = "";
+        newItem.style.display = "block";
         item.elm = newItem;        
     };
     this.add = function(item) { 
