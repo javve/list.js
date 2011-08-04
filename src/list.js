@@ -11,9 +11,39 @@ OBS. The API is not frozen. It WILL change! Wait for beta.
 
 var ListJsHelpers = {
     /* (node, class) Source: http://www.dustindiaz.com/getelementsbyclass */ 
-    getByClass: function(d,e){if(d.getElementsByClassName){return d.getElementsByClassName(e)}else{return(function getElementsByClass(a,b){if(b==null)b=document;var c=[],els=b.getElementsByTagName("*"),elsLen=els.length,pattern=new RegExp("(^|\\s)"+a+"(\\s|$)"),i,j;for(i=0,j=0;i<elsLen;i++){if(pattern.test(els[i].className)){c[j]=els[i];j++}}return c})(e,d)}}
+    //getByClass: function(d,e){if(d.getElementsByClassName){return d.getElementsByClassName(e)}else{return(function getElementsByClass(a,b){if(b==null)b=document;var c=[],els=b.getElementsByTagName("*"),elsLen=els.length,pattern=new RegExp("(^|\\s)"+a+"(\\s|$)"),i,j;for(i=0,j=0;i<elsLen;i++){if(pattern.test(els[i].className)){c[j]=els[i];j++}}return c})(e,d)}}
+    /* searchClass,node,tag */
+    getByClass: function(a,b,c){var d=new Array();if(b==null)b=document;if(c==null)c='*';var e=b.getElementsByTagName(c);var f=e.length;var g=new RegExp("(^|\\s)"+a+"(\\s|$)");for(i=0,j=0;i<f;i++){if(g.test(e[i].className)){d[j]=e[i];j++}}return d}
     /* (elm, 'event' callback) Source: http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/ */
-    , addEvent: (function(e,f){if(f.addEventListener){return function(a,b,c){if((a&&!a.length)||a===e){a.addEventListener(b,c,false)}else if(a&&a.length){var d=a.length;for(var i=0;i<d;i++){ListJsHelpers.addEvent(a[i],b,c)}}}}else if(f.attachEvent){return function(a,b,c){if((a&&!a.length)||a===e){a.attachEvent('on'+b,function(){return c.call(a,e.event)})}else if(a.length){var d=a.length;for(var i=0;i<d;i++){addEvent(a[i],b,c)}}}}})(this,document)
+    /*, addEvent: (function(e,f){if(f.addEventListener){return function(a,b,c){if((a&&!a.length)||a===e){a.addEventListener(b,c,false)}else if(a&&a.length){var d=a.length;for(var i=0;i<d;i++){ListJsHelpers.addEvent(a[i],b,c)}}}}else if(f.attachEvent){return function(a,b,c){if((a&&!a.length)||a===e){a.attachEvent('on'+b,function(){return c.call(a,e.event)})}else if(a.length){var d=a.length;for(var i=0;i<d;i++){addEvent(a[i],b,c)}}}}})(this,document)*/
+    , addEvent: (function( window, document ) {  
+    if ( document.addEventListener ) {  
+        return function( elem, type, cb ) { 
+            if ( (elem && !(elem instanceof Array)) || elem === window ) {  
+                elem.addEventListener(type, cb, false );  
+            }  
+            else if ( elem && elem[0] !== undefined ) {  
+                var len = elem.length;  
+                for ( var i = 0; i < len; i++ ) {  
+                    addEvent( elem[i], type, cb );  
+                }  
+            }  
+        };  
+    }  
+    else if ( document.attachEvent ) {  
+        return function ( elem, type, cb ) {  
+            if ( (elem && !elem.length) || elem === window ) {  
+                elem.attachEvent( 'on' + type, function() { return cb.call(elem, window.event) } );  
+            }  
+            else if ( elem.length ) {  
+                var len = elem.length;  
+                for ( var i = 0; i < len; i++ ) {  
+                    addEvent( elem[i], type, cb );  
+                }  
+            }  
+        };  
+    }  
+})( this, document )
     /* (elm, attribute) Source: http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method */
     , getAttribute: function(a,b){var c=(a.getAttribute&&a.getAttribute(b))||null;if(!c){var d=a.attributes;var e=d.length;for(var i=0;i<e;i++)if(b[i].nodeName===b)c=b[i].nodeValue}return c}
 };
@@ -31,9 +61,9 @@ function List(id, templates, values) {
             templates.list = id;
         }
         templater = new Templater(templates);
-        self.list = ListJsHelpers.getByClass(self.listContainer, 'list')[0];
-        ListJsHelpers.addEvent(ListJsHelpers.getByClass(self.listContainer, 'search')[0], 'keyup', self.search);
-        ListJsHelpers.addEvent(ListJsHelpers.getByClass(self.listContainer, 'sort'), 'click', self.sort);
+        self.list = ListJsHelpers.getByClass('list', self.listContainer)[0];
+        ListJsHelpers.addEvent(ListJsHelpers.getByClass('search', self.listContainer)[0], 'keyup', self.search);
+        ListJsHelpers.addEvent(ListJsHelpers.getByClass('sort', self.listContainer), 'click', self.sort);
         if (templates.valueNames) {
             getIntialItems(templates.valueNames)
         }
@@ -43,7 +73,7 @@ function List(id, templates, values) {
     };
 
     var getIntialItems = function(valueNames) {
-        var itemElements = ListJsHelpers.getByClass(self.list, 'item');
+        var itemElements = ListJsHelpers.getByClass('item', self.list);
         for (var i = 0, il = itemElements.length; i < il; i++) {
             self.items.push(new Item(valueNames, itemElements[i]));
         }
@@ -309,14 +339,14 @@ function List(id, templates, values) {
 List.prototype.templateEngines = {};
 
 List.prototype.templateEngines.standard = function(settings) {
-    var listSource = ListJsHelpers.getByClass(document.getElementById(settings.list), 'list')[0]
+    var listSource = ListJsHelpers.getByClass('list', document.getElementById(settings.list))[0]
         , itemSource = document.getElementById(settings.item);
     
     /* Get values from element */
     this.get = function(item, valueNames) {
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
-            values[valueNames[i]] = ListJsHelpers.getByClass(item.elm, valueNames[i])[0].innerHTML;
+            values[valueNames[i]] = ListJsHelpers.getByClass(valueNames[i], item.elm)[0].innerHTML;
         }
         return values;
     };
@@ -332,7 +362,7 @@ List.prototype.templateEngines.standard = function(settings) {
         /* If item source does not exists, use the first item in list as 
         source for new items */
         if (itemSource === null) {
-            itemSource = ListJsHelpers.getByClass(listSource, 'item')[0];
+            itemSource = ListJsHelpers.getByClass('item', listSource)[0];
         }
         var newItem = itemSource.cloneNode(true);
         newItem.id = "";
