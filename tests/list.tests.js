@@ -39,7 +39,7 @@ test('Add two items', function(){
 test('Remove one item', function() {
     var found = theList.remove('id', 6);
     
-    equals(found, true, "Item was note found");
+    equals(found, 1, "Item was note found");
     equals(theList.size(), 5, 'List is not one item shorter');
 });
 
@@ -52,14 +52,14 @@ test('Try remove one item that not exists', function() {
 
 test('Get one item', function() {
     var item = theList.get('id', 4);
-    deepEqual(item.getValues(), ryah); 
+    deepEqual(item.values(), ryah); 
 });
 
 test('Get two items', function() {
     var items = theList.get('feature', 'Node');
     items = [
-        items[0].getValues(),
-        items[1].getValues()
+        items[0].values(),
+        items[1].values()
     ];
     deepEqual(items, [ryah, tj], "Say woot");   
 });
@@ -73,8 +73,8 @@ test('Search', function() {
     var items = theList.search('Node'); 
     equals(items.length, 2);
     items = [
-        items[0].getValues(),
-        items[1].getValues()
+        items[0].values(),
+        items[1].values()
     ];
     deepEqual(items, [ryah, tj]);
    theList.search(''); 
@@ -89,8 +89,8 @@ test('Filter', function() {
         }
     });
     equals(visibleItems.length, 2);
-    equals(visibleItems[0].getValues().id, 1);
-    equals(visibleItems[1].getValues().id, 2);
+    equals(visibleItems[0].values().id, 1);
+    equals(visibleItems[1].values().id, 2);
 });
 
 test('Restore from filter', function() {
