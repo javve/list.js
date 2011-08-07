@@ -23,9 +23,9 @@ var ListJsHelpers = {
                 elem.addEventListener(type, cb, false );  
             }  
             else if ( elem && elem[0] !== undefined ) {  
-                var len = elem.length;  
-                for ( var i = 0; i < len; i++ ) {  
-                    addEvent( elem[i], type, cb );  
+                var len = elem.length;
+                for ( var i = 0; i < len; i++ ) {
+                    ListJsHelpers.addEvent( elem[i], type, cb );
                 }  
             }  
         };  
@@ -36,9 +36,9 @@ var ListJsHelpers = {
                 elem.attachEvent( 'on' + type, function() { return cb.call(elem, window.event) } );  
             }  
             else if ( elem.length ) {  
-                var len = elem.length;  
-                for ( var i = 0; i < len; i++ ) {  
-                    addEvent( elem[i], type, cb );  
+                var len = elem.length;
+                for ( var i = 0; i < len; i++ ) {
+                    ListJsHelpers.addEvent( elem[i], type, cb );
                 }  
             }  
         };  
@@ -341,7 +341,6 @@ List.prototype.templateEngines = {};
 List.prototype.templateEngines.standard = function(settings) {
     var listSource = ListJsHelpers.getByClass('list', document.getElementById(settings.list))[0]
         , itemSource = document.getElementById(settings.item);
-    
     /* Get values from element */
     this.get = function(item, valueNames) {
         var values = {};
