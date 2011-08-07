@@ -148,13 +148,13 @@ function List(id, templates, values) {
     * property "valuename" === value
     */
     this.remove = function(valueName, value, options) {
-        var found = false;
+        var found = 0;
         for (var i = 0, il = self.items.length; i < il; i++) {
             if (self.items[i].values()[valueName] === value) {
                 templater.remove(self.items[i], options);
                 self.items.splice(i,1);
                 il--;
-                found = true;
+                found++;
             }
         }
         return found;
