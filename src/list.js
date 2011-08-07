@@ -150,7 +150,7 @@ function List(id, templates, values) {
     this.remove = function(valueName, value, options) {
         var found = false;
         for (var i = 0, il = self.items.length; i < il; i++) {
-            if (self.items[i].getValues()[valueName] === value) {
+            if (self.items[i].values()[valueName] === value) {
                 templater.remove(self.items[i], options);
                 self.items.splice(i,1);
                 il--;
@@ -167,7 +167,7 @@ function List(id, templates, values) {
         var matchedItems = [];
         for (var i = 0, il = self.items.length; i < il; i++) {
             var item = self.items[i];
-            if (item.getValues()[valueName] === value) {
+            if (item.values()[valueName] === value) {
                 matchedItems.push(item);
             }
         }
@@ -198,7 +198,7 @@ function List(id, templates, values) {
             sortFunction = sortFunction;
         } else {
             sortFunction = function(a, b) {
-                return sorter.alphanum(a.getValues()[value], b.getValues()[value]);
+                return sorter.alphanum(a.values()[value], b.values()[value]);
             };
         }
         self.items.sort(sortFunction);
@@ -279,7 +279,7 @@ function List(id, templates, values) {
             var found = false,
                 item = self.items[i];
             if (useAllColumns) {
-                columns = item.getValues();
+                columns = item.values();
             }
             for(var j in columns) {
                 var text = columns[j].toString().toLowerCase();
@@ -311,7 +311,7 @@ function List(id, templates, values) {
                 item.show();
                 visibleItems.push(item);
             } else {
-                if (filterFunction(item.getValues())) {
+                if (filterFunction(item.values())) {
                     visibleItems.push(item);
                     item.show();
                 } else {
@@ -336,20 +336,21 @@ function List(id, templates, values) {
         var init = function(initValues, element) {
             if (typeof element === 'undefined') {
                 templater.create(item);
-                item.setValues(initValues);
+                item.values(initValues);
                 templater.add(item);
             } else {
                 item.elm = element;
                 var values = templater.get(item, initValues);
-                item.setValues(values);
+                item.values(values);
             }
         };
-        this.setValues = function(newValues) {
-            values = newValues;
-            templater.set(item, item.getValues());
-        };
-        this.getValues = function() {
-            return values;
+        this.values = function(newValues) {
+            if (newValues !== undefined) {
+                values = newValues;
+                templater.set(item, item.values());
+            } else {
+                return values;
+            }
         };
         this.show = function() {
             templater.show(item);
