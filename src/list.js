@@ -69,22 +69,43 @@ function List(id, templates, values) {
         ListJsHelpers.addEvent(ListJsHelpers.getByClass('search', self.listContainer)[0], 'keyup', self.search);
         ListJsHelpers.addEvent(ListJsHelpers.getByClass('sort', self.listContainer), 'click', self.sort);
         if (templates.valueNames) {
-            getIntialItems(templates.valueNames)
+            var itemsToIndex = initialItems.get(),
+                valueNames = templates.valueNames;
+            if (templates.indexAsync) {
+                initialItems.indexAsync(itemsToIndex, valueNames);
+            } else {
+                initialItems.index(itemsToIndex, valueNames);
+            }
         }
         if (typeof values !== 'undefined') {
             self.add(values);
         }
     };
 
-    var getIntialItems = function(valueNames) {
-        var itemElements = ListJsHelpers.getByClass('item', self.list);
-        for (var i = 0, il = itemElements.length; i < il; i++) {
-            self.items.push(new Item(valueNames, itemElements[i]));
+    var initialItems = {
+        get: function() {
+            return ListJsHelpers.getByClass('item', self.list);
+        },
+        index: function(itemElements, valueNames) {
+            for (var i = 0, il = itemElements.length; i < il; i++) {
+                self.items.push(new Item(valueNames, itemElements[i]));
+            }
+        },
+        indexAsync: function(itemElements, valueNames) {
+            var itemsToIndex = itemElements.splice(0, 100); // TODO: If < 100 items, what happens in IE etc?
+            this.index(itemsToIndex, valueNames);
+            if (itemElements.length > 0) {
+                setTimeout(function() {
+                    initialItems.indexAsync(itemElements, valueNames);
+                }, 10);
+            } else {
+                // TODO: Add indexed callback
+            }
         }
     }
 
-    /* Add object to list
-    * 
+    /* 
+    * Add object to list
     */
     this.add = function(values, options) {
         var added = [];
