@@ -103,8 +103,24 @@ function List(id, templates, values) {
             self.items.push(item);
             added.push(item);
         }
-        return added;
     };
+    
+    /*
+    * Adds items asyncrounous to the list, good for adding hugh about of 
+    * data. Defaults to add 100 items a time
+    */
+    this.addAsync = function(values, options) {
+        var count = options ? options.count || 100 : 100
+            , valuesToAdd = values.splice(0, count);
+        self.add(valuesToAdd, options);
+        if (values.length > 0) {
+            setTimeout(function() {
+                self.addAsync(values, options);
+            }, 10);
+        } else {
+            // TODO: Add added callback
+        }
+    }
 
     /* Removes object from list. 
     * Loops through the list and removes objects where
