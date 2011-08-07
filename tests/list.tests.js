@@ -94,6 +94,6 @@ test('Filter', function() {
 });
 
 test('Restore from filter', function() {
-   var visibleItems = theList.filter(false);
-   equals(visibleItems.length, 5); 
+    var visibleItems = theList.filter(false);
+    equals(visibleItems.length, 5); 
 });
