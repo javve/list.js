@@ -9,6 +9,10 @@ OBS. The API is not frozen. It WILL change! Wait for beta.
 
 */
 
+/*
+* These helper functions are not written by List.js author Jonny (they may have been 
+* adjusted, thought).
+*/
 var ListJsHelpers = {
     /* (node, class) Source: http://www.dustindiaz.com/getelementsbyclass */ 
     //getByClass: function(d,e){if(d.getElementsByClassName){return d.getElementsByClassName(e)}else{return(function getElementsByClass(a,b){if(b==null)b=document;var c=[],els=b.getElementsByTagName("*"),elsLen=els.length,pattern=new RegExp("(^|\\s)"+a+"(\\s|$)"),i,j;for(i=0,j=0;i<elsLen;i++){if(pattern.test(els[i].className)){c[j]=els[i];j++}}return c})(e,d)}}
@@ -17,33 +21,33 @@ var ListJsHelpers = {
     /* (elm, 'event' callback) Source: http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/ */
     /*, addEvent: (function(e,f){if(f.addEventListener){return function(a,b,c){if((a&&!a.length)||a===e){a.addEventListener(b,c,false)}else if(a&&a.length){var d=a.length;for(var i=0;i<d;i++){ListJsHelpers.addEvent(a[i],b,c)}}}}else if(f.attachEvent){return function(a,b,c){if((a&&!a.length)||a===e){a.attachEvent('on'+b,function(){return c.call(a,e.event)})}else if(a.length){var d=a.length;for(var i=0;i<d;i++){addEvent(a[i],b,c)}}}}})(this,document)*/
     , addEvent: (function( window, document ) {  
-    if ( document.addEventListener ) {  
-        return function( elem, type, cb ) { 
-            if ( (elem && !(elem instanceof Array)) || elem === window ) {  
-                elem.addEventListener(type, cb, false );  
-            }  
-            else if ( elem && elem[0] !== undefined ) {  
-                var len = elem.length;
-                for ( var i = 0; i < len; i++ ) {
-                    ListJsHelpers.addEvent( elem[i], type, cb );
+        if ( document.addEventListener ) {  
+            return function( elem, type, cb ) { 
+                if ( (elem && !(elem instanceof Array)) || elem === window ) {  
+                    elem.addEventListener(type, cb, false );  
                 }  
-            }  
-        };  
-    }  
-    else if ( document.attachEvent ) {  
-        return function ( elem, type, cb ) {  
-            if ( (elem && !elem.length) || elem === window ) {  
-                elem.attachEvent( 'on' + type, function() { return cb.call(elem, window.event) } );  
-            }  
-            else if ( elem.length ) {  
-                var len = elem.length;
-                for ( var i = 0; i < len; i++ ) {
-                    ListJsHelpers.addEvent( elem[i], type, cb );
+                else if ( elem && elem[0] !== undefined ) {  
+                    var len = elem.length;
+                    for ( var i = 0; i < len; i++ ) {
+                        ListJsHelpers.addEvent( elem[i], type, cb );
+                    }  
                 }  
-            }  
-        };  
-    }  
-})( this, document )
+            };  
+        }  
+        else if ( document.attachEvent ) {  
+            return function ( elem, type, cb ) {  
+                if ( (elem && !elem.length) || elem === window ) {  
+                    elem.attachEvent( 'on' + type, function() { return cb.call(elem, window.event) } );  
+                }  
+                else if ( elem.length ) {  
+                    var len = elem.length;
+                    for ( var i = 0; i < len; i++ ) {
+                        ListJsHelpers.addEvent( elem[i], type, cb );
+                    }  
+                }  
+            };  
+        }  
+    })( this, document )
     /* (elm, attribute) Source: http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method */
     , getAttribute: function(a,b){var c=(a.getAttribute&&a.getAttribute(b))||null;if(!c){var d=a.attributes;var e=d.length;for(var i=0;i<e;i++)if(b[i].nodeName===b)c=b[i].nodeValue}return c}
 };
