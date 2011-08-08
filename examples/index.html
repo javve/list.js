@@ -81,8 +81,8 @@
     , { value1:"3", value2:0 }
     ];
     var list = new List('list', templates, values);
-    list.add({value1:"svenne banan"});
-    list.add({value1:"svenne banan", value3:"greger"});
+    list.add({value1:"fda banan"});
+    list.add({value1:"sad banan", value3:"greger"});
     list.remove('value1', 'hej');
     setTimeout(function() {
          list.filter(function(values) {
@@ -96,7 +96,7 @@
     }, 200);
     var item = list.get('value1', 'a');
     /*
-    list.add({value1:"bajs"}, 'slideDown');
+    list.add({value1:"aas"}, 'slideDown');
     list.remove("value1", "a", 'slideUp');
     var o = list.get("value1", "då");
     o[0].values.value1 = "din mamma";
