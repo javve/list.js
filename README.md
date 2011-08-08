@@ -34,48 +34,57 @@ Values to add to the list on initialization.
 These methods are available for the List-object.
 
 ### Attributes
-#### listContainer (Element)
+* **listContainer** _(Element)_  
 The element node that contains the entire list area.
-#### items (Array)
+* **items** _(Array)_  
 A Array of all Item-objects in the list.
-#### list (Element)
+* **list** _(Element)_  
 The element containing all items.
-#### templateEngines (Object)
+* **templateEngines** _(Object)_  
 Contains all template engines available.
 
 ### Functions
-#### add(values, options)
+* **add(values, options)**  
 Adds one or more items to the list. 
-#### addAsync(values, options)
+	* values
+	* options
+* **addAsync(values, options)**  
 Adds one or more items the the list in a asynchronous way.
-
-#### remove(valueName, value, options)
+	* values
+	* options
+* **remove(valueName, value, options)**  
 Removes items from the list where the value named "valueName" has value "value". 
 Returns the count of items that where removed.
 
-	itemsInList = [
-		{ id: 1, name: "Jonny" }
-		, { id: 2, name "Gustaf" }
-	]
-	listObj.remove("id", 1); -> return 1
+		itemsInList = [
+			{ id: 1, name: "Jonny" }
+			, { id: 2, name "Gustaf" }
+		]
+		listObj.remove("id", 1); -> return 1
 
-#### get(valueName, value)
+* **get(valueName, value)**  
 Returns values from the list where the value named "valueName" has value "value".
-	itemsInList = [
-		{ id: 1, name: "Jonny" }
-		, { id: 2, name "Gustaf" }
-	]
-	listObj.get("id", 2); -> return { id: 2, name "Gustaf" }
+	* valueName
+	* value
 
-#### sort(valueOrEvent, sortFunction)
+			itemsInList = [
+				{ id: 1, name: "Jonny" }
+				, { id: 2, name "Gustaf" }
+			]
+			listObj.get("id", 2); -> return { id: 2, name "Gustaf" }
+
+* **sort(valueOrEvent, sortFunction)**  
 Sorts the list based in values in column named "valueOrEvent". The sortFunction 
 parameter is used if you want to make you one sort function.
+	* valueOrEvent
+	* sortFunction
 
-#### search(searchStringOrEvent, columns)
+* **search(searchStringOrEvent, columns)**  
 Searches the list 	
 
-#### filter(filterFunction)
-#### size()
+* **filter(filterFunction)**  
+	* filterFunction
+* **size()**  
 Returns the size of the list
 
 
@@ -85,37 +94,53 @@ the list.
 ### Attributes
 None.
 ### Functions
-#### values(newValues)
-#### show()
-#### hide()
+* **values(newValues)**
+	* newValues
+* **show()**
+Shows the item (add style.display = "block", not perfect, I know, please help)
+* **hide()**
+Hides the item (add style.display = "none")
 
 
-## TemplateEngine API (only needed if you want to build you own template engine)
+## TemplateEngine API 
+Only needed if you want to build you own template engine
+
 ### Attributes
 None in the standard engine. 
 But there may be included in other engines.
 
 ### Functions
-#### get(item, valueNames)
-#### set(item, values)
-#### create(item)
-#### add(item)
-#### remove(item)
-#### show(item)
-#### hide(item)
+* **get(item, valueNames)** 
+
+* **set(item, values)** 
+
+* **create(item)** 
+
+* **add(item)** 
+
+* **remove(item)** 
+
+* **show(item)** 
+
+* **hide(item)** 
+
 
 ## Helper functions
 Called by ListJsHelpers.functionName()
 
-### getByClass()
-### addEvent()
-### getAttribute()
+* **getByClass()** 
+
+* **addEvent()** 
+
+* **getAttribute()** 
+
 
 # Changelog
-## 2011-08-08 Alpha 0.2 release
+### 2011-08-08 Alpha 0.2 release
 * Added asynchronous item adding
 * Added asynchronous list indexing
 * Improved (but incomplete) documentation
 * Bugfixes and improved helper functions
 * Show helper functions non-minified
-## 2011-07-25 Alpha 0.1 release
+
+### 2011-07-25 Alpha 0.1 release
