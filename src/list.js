@@ -9,70 +9,6 @@ OBS. The API is not frozen. It WILL change! Wait for beta.
 
 */
 
-/*
-* These helper functions are not written by List.js author Jonny (they may have been 
-* adjusted, thought).
-*/
-var ListJsHelpers = {
-    /* (node, class) Source: http://www.dustindiaz.com/getelementsbyclass */ 
-    //getByClass: function(d,e){if(d.getElementsByClassName){return d.getElementsByClassName(e)}else{return(function getElementsByClass(a,b){if(b==null)b=document;var c=[],els=b.getElementsByTagName("*"),elsLen=els.length,pattern=new RegExp("(^|\\s)"+a+"(\\s|$)"),i,j;for(i=0,j=0;i<elsLen;i++){if(pattern.test(els[i].className)){c[j]=els[i];j++}}return c})(e,d)}}
-    /* searchClass,node,tag */
-    getByClass: function(searchClass,node,single) {
-        var classElements = new Array();
-        if ( node == null )
-        node = document;
-        tag = '*';
-        var els = node.getElementsByTagName(tag);
-        var elsLen = els.length;
-        var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
-        for (i = 0, j = 0; i < elsLen; i++) {
-            if ( pattern.test(els[i].className) ) {
-                if (single) {
-                    return els[i];
-                } else {
-                    classElements[j] = els[i];
-                    j++;
-                }
-            }
-        }
-        return classElements;
-    }
-    
-    //getByClass: function(a,b,c){var d=new Array();if(b==null)b=document;if(c==null)c='*';var e=b.getElementsByTagName(c);var f=e.length;var g=new RegExp("(^|\\s)"+a+"(\\s|$)");for(i=0,j=0;i<f;i++){if(g.test(e[i].className)){d[j]=e[i];j++}}return d}
-    /* (elm, 'event' callback) Source: http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/ */
-    /*, addEvent: (function(e,f){if(f.addEventListener){return function(a,b,c){if((a&&!a.length)||a===e){a.addEventListener(b,c,false)}else if(a&&a.length){var d=a.length;for(var i=0;i<d;i++){ListJsHelpers.addEvent(a[i],b,c)}}}}else if(f.attachEvent){return function(a,b,c){if((a&&!a.length)||a===e){a.attachEvent('on'+b,function(){return c.call(a,e.event)})}else if(a.length){var d=a.length;for(var i=0;i<d;i++){addEvent(a[i],b,c)}}}}})(this,document)*/
-    , addEvent: (function( window, document ) {  
-        if ( document.addEventListener ) {  
-            return function( elem, type, cb ) { 
-                if ( (elem && !(elem instanceof Array)) || elem === window ) {  
-                    elem.addEventListener(type, cb, false );  
-                }  
-                else if ( elem && elem[0] !== undefined ) {  
-                    var len = elem.length;
-                    for ( var i = 0; i < len; i++ ) {
-                        ListJsHelpers.addEvent( elem[i], type, cb );
-                    }  
-                }  
-            };  
-        }  
-        else if ( document.attachEvent ) {  
-            return function ( elem, type, cb ) {  
-                if ( (elem && !elem.length) || elem === window ) {  
-                    elem.attachEvent( 'on' + type, function() { return cb.call(elem, window.event) } );  
-                }  
-                else if ( elem.length ) {  
-                    var len = elem.length;
-                    for ( var i = 0; i < len; i++ ) {
-                        ListJsHelpers.addEvent( elem[i], type, cb );
-                    }  
-                }  
-            };  
-        }  
-    })( this, document )
-    /* (elm, attribute) Source: http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method */
-    , getAttribute: function(a,b){var c=(a.getAttribute&&a.getAttribute(b))||null;if(!c){var d=a.attributes;var e=d.length;for(var i=0;i<e;i++)if(b[i].nodeName===b)c=b[i].nodeValue}return c}
-};
-
 function List(id, templates, values) {
     var self = this
         ,templater = null;
@@ -86,8 +22,8 @@ function List(id, templates, values) {
             templates.list = id;
         }
         templater = new Templater(templates);
-        self.list = ListJsHelpers.getByClass('list', self.listContainer)[0];
-        ListJsHelpers.addEvent(ListJsHelpers.getByClass('search', self.listContainer)[0], 'keyup', self.search);
+        self.list = ListJsHelpers.getByClass('list', self.listContainer, true);
+        ListJsHelpers.addEvent(ListJsHelpers.getByClass('search', self.listContainer), 'keyup', self.search);
         ListJsHelpers.addEvent(ListJsHelpers.getByClass('sort', self.listContainer), 'click', self.sort);
         if (templates.valueNames) {
             var itemsToIndex = initialItems.get(),
@@ -102,7 +38,7 @@ function List(id, templates, values) {
             self.add(values);
         }
     };
-
+    var dateObj = null;
     var initialItems = {
         get: function() {
             return ListJsHelpers.getByClass('item', self.list);
@@ -113,6 +49,9 @@ function List(id, templates, values) {
             }
         },
         indexAsync: function(itemElements, valueNames) {
+            if (dateObj == null) {
+                dateObj = new Date();
+            }
             var itemsToIndex = itemElements.splice(0, 100); // TODO: If < 100 items, what happens in IE etc?
             this.index(itemsToIndex, valueNames);
             if (itemElements.length > 0) {
@@ -120,7 +59,10 @@ function List(id, templates, values) {
                     initialItems.indexAsync(itemElements, valueNames);
                 }, 10);
             } else {
+                var time = dateObj.getTime();
+                dateObj = new Date();
                 // TODO: Add indexed callback
+                console.log("Async index took " + (dateObj.getTime() - time));
             }
         }
     }
@@ -145,13 +87,18 @@ function List(id, templates, values) {
             self.items.push(item);
             added.push(item);
         }
+        return added;
     };
     
+    var dateObj2 = null;
     /*
     * Adds items asyncrounous to the list, good for adding hugh about of 
     * data. Defaults to add 100 items a time
     */
     this.addAsync = function(values, options) {
+        if (dateObj2 == null) {
+            dateObj2 = new Date();
+        }
         var count = options ? options.count || 100 : 100
             , valuesToAdd = values.splice(0, count);
         self.add(valuesToAdd, options);
@@ -161,6 +108,10 @@ function List(id, templates, values) {
             }, 10);
         } else {
             // TODO: Add added callback
+                var time = dateObj2.getTime();
+                dateObj2 = new Date();
+                // TODO: Add indexed callback
+                console.log("Async add took " + (dateObj2.getTime() - time));
         }
     }
 
@@ -419,7 +370,7 @@ List.prototype.templateEngines.standard = function(settings) {
             // TODO speed up if possible
             var hej = ListJsHelpers.getByClass(v, item.elm, true);
             if (hej) {
-                //hej.innerHTML = values[v];
+                hej.innerHTML = values[v];
             }
         }
     };
@@ -449,3 +400,93 @@ List.prototype.templateEngines.standard = function(settings) {
     };
 };
 
+
+/*
+* These helper functions are not written by List.js author Jonny (they may have been 
+* adjusted, thought).
+*/
+var ListJsHelpers = {
+    /*
+    * Cross browser getElementsByClassName, which uses native
+    * if it exists. Modified version of Dustin Diaz function:
+    * http://www.dustindiaz.com/getelementsbyclass 
+    */
+    getByClass: (function() {
+        if (document.getElementsByClassName) {
+            return function(searchClass,node,single) {
+                if (single) {
+                    return node.getElementsByClassName(searchClass)[0];
+                } else {
+                    return node.getElementsByClassName(searchClass);
+                }
+            }
+        } else {
+            return function(searchClass,node,single) {
+                var classElements = new Array();
+                if ( node == null )
+                node = document;
+                tag = '*';
+                var els = node.getElementsByTagName(tag);
+                var elsLen = els.length;
+                var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
+                for (i = 0, j = 0; i < elsLen; i++) {
+                    if ( pattern.test(els[i].className) ) {
+                        if (single) {
+                            return els[i];
+                        } else {
+                            classElements[j] = els[i];
+                            j++;
+                        }
+                    }
+                }
+                return classElements;
+            }
+        }
+    })()
+    /* (elm, 'event' callback) Source: http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/ */
+    , addEvent: (function( window, document ) {  
+        if ( document.addEventListener ) {  
+            return function( elem, type, cb ) { 
+                console.log(elem, (elem instanceof Array));
+                if ( (elem && !(elem instanceof Array)) || elem === window ) {  
+                    //elem.addEventListener(type, cb, false );  
+                }  
+                else if ( elem && elem[0] !== undefined ) {  
+                    var len = elem.length;
+                    for ( var i = 0; i < len; i++ ) {
+                        ListJsHelpers.addEvent( elem[i], type, cb );
+                    }  
+                }  
+            };  
+        }  
+        else if ( document.attachEvent ) {  
+            return function ( elem, type, cb ) {  
+                if ( (elem && !elem.length) || elem === window ) {  
+                    elem.attachEvent( 'on' + type, function() { return cb.call(elem, window.event) } );  
+                }  
+                else if ( elem.length ) {  
+                    var len = elem.length;
+                    for ( var i = 0; i < len; i++ ) {
+                        ListJsHelpers.addEvent( elem[i], type, cb );
+                    }  
+                }  
+            };  
+        }  
+    })( this, document )
+    /* (elm, attribute) Source: http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method */
+    , getAttribute: function(a,b){var c=(a.getAttribute&&a.getAttribute(b))||null;if(!c){var d=a.attributes;var e=d.length;for(var i=0;i<e;i++)if(b[i].nodeName===b)c=b[i].nodeValue}return c}
+    // http://blog.stevenlevithan.com/archives/faster-than-innerhtml
+    , replaceHtml: function(el, html) {
+        var oldEl = typeof el === "string" ? document.getElementById(el) : el;
+        /*@cc_on // Pure innerHTML is slightly faster in IE
+        oldEl.innerHTML = html;
+        return oldEl;
+        @*/
+        var newEl = oldEl.cloneNode(false);
+        newEl.innerHTML = html;
+        oldEl.parentNode.replaceChild(newEl, oldEl);
+        /* Since we just removed the old element from the DOM, return a reference
+        to the new element, which can be used to restore variable references. */
+        return newEl;
+    }
+};
