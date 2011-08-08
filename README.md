@@ -1,3 +1,6 @@
+# List.js
+A 5kb small script written in native JavaScript that blabla, lists
+
 # Super simple examples
 
 
@@ -65,8 +68,8 @@ Returns the count of items that where removed.
 * **get(valueName, value)**  
 Returns values from the list where the value named "valueName" has value "value".
 	* valueName
-	* value
-
+	* value  
+	
 			itemsInList = [
 				{ id: 1, name: "Jonny" }
 				, { id: 2, name "Gustaf" }
