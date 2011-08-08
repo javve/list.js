@@ -17,7 +17,28 @@ var ListJsHelpers = {
     /* (node, class) Source: http://www.dustindiaz.com/getelementsbyclass */ 
     //getByClass: function(d,e){if(d.getElementsByClassName){return d.getElementsByClassName(e)}else{return(function getElementsByClass(a,b){if(b==null)b=document;var c=[],els=b.getElementsByTagName("*"),elsLen=els.length,pattern=new RegExp("(^|\\s)"+a+"(\\s|$)"),i,j;for(i=0,j=0;i<elsLen;i++){if(pattern.test(els[i].className)){c[j]=els[i];j++}}return c})(e,d)}}
     /* searchClass,node,tag */
-    getByClass: function(a,b,c){var d=new Array();if(b==null)b=document;if(c==null)c='*';var e=b.getElementsByTagName(c);var f=e.length;var g=new RegExp("(^|\\s)"+a+"(\\s|$)");for(i=0,j=0;i<f;i++){if(g.test(e[i].className)){d[j]=e[i];j++}}return d}
+    getByClass: function(searchClass,node,single) {
+        var classElements = new Array();
+        if ( node == null )
+        node = document;
+        tag = '*';
+        var els = node.getElementsByTagName(tag);
+        var elsLen = els.length;
+        var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
+        for (i = 0, j = 0; i < elsLen; i++) {
+            if ( pattern.test(els[i].className) ) {
+                if (single) {
+                    return els[i];
+                } else {
+                    classElements[j] = els[i];
+                    j++;
+                }
+            }
+        }
+        return classElements;
+    }
+    
+    //getByClass: function(a,b,c){var d=new Array();if(b==null)b=document;if(c==null)c='*';var e=b.getElementsByTagName(c);var f=e.length;var g=new RegExp("(^|\\s)"+a+"(\\s|$)");for(i=0,j=0;i<f;i++){if(g.test(e[i].className)){d[j]=e[i];j++}}return d}
     /* (elm, 'event' callback) Source: http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/ */
     /*, addEvent: (function(e,f){if(f.addEventListener){return function(a,b,c){if((a&&!a.length)||a===e){a.addEventListener(b,c,false)}else if(a&&a.length){var d=a.length;for(var i=0;i<d;i++){ListJsHelpers.addEvent(a[i],b,c)}}}}else if(f.attachEvent){return function(a,b,c){if((a&&!a.length)||a===e){a.attachEvent('on'+b,function(){return c.call(a,e.event)})}else if(a.length){var d=a.length;for(var i=0;i<d;i++){addEvent(a[i],b,c)}}}}})(this,document)*/
     , addEvent: (function( window, document ) {  
@@ -395,9 +416,10 @@ List.prototype.templateEngines.standard = function(settings) {
     /* Sets values at element */
     this.set = function(item, values) {
         for(var v in values) {
-            var hej = ListJsHelpers.getByClass(v, item.elm)[0];
+            // TODO speed up if possible
+            var hej = ListJsHelpers.getByClass(v, item.elm, true);
             if (hej) {
-                hej.innerHTML = values[v];
+                //hej.innerHTML = values[v];
             }
         }
     };
@@ -406,7 +428,7 @@ List.prototype.templateEngines.standard = function(settings) {
         /* If item source does not exists, use the first item in list as 
         source for new items */
         if (itemSource === null) {
-            itemSource = ListJsHelpers.getByClass('item', listSource)[0];
+            itemSource = ListJsHelpers.getByClass('item', listSource, true);
         }
         var newItem = itemSource.cloneNode(true);
         newItem.id = "";
