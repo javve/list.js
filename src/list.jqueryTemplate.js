@@ -1,24 +1,37 @@
 /* not finished */
-List.prototype.templateEngines.jquerytemplates = function(settings) {
-    this.reload = function(item) {
-        item.elm = $('#'+this.template).tmpl(item.getValues());
+List.prototype.templateEngines.jquerytemplate = function(settings) {
+    var listSource = $('.list', document.getElementById(settings.list))
+        , itemTemplate = $('#'+settings.item);
+    
+    /* Get values from element */
+    this.get = function(item, valueNames) {
+        throw "Not implemented";
     };
-    this.add = function(item, options) {
-       if (effect) {
+    
+    /* Sets values at element */
+    this.set = function(item, values) {
+        item.elm = itemTemplate.tmpl(item.values());
+    };
+    
+    this.create = function(item) {
+        item.elm = itemTemplate.tmpl(item.values());
+    };
+    this.add = function(item, effect) { 
+		if (effect) {
             item.elm.hide();
-            self.list.append(item.elm);
+            listSource.append(item.elm);
             item.elm[effect]();
         } else {	
-            self.list.appendChild(item.elm);				
+            listSource.append(item.elm);				
         }
     };
     this.remove = function(item, options) {
-        $(this.elm)[effect]($(this.elm).remove);	
+        $(item.elm)[effect]($(item.elm).remove);
     };
-    this.show = function(item, options) {
+    this.show = function(item) {
         item.elm.style.display = "block";
     };
-    this.hide = function(item, options) {
+    this.hide = function(item) {
         item.elm.style.display = "none";
     };
 };
