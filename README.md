@@ -50,6 +50,7 @@ Contains all template engines available.
 Adds one or more items to the list. 
 #### addAsync(values, options)
 Adds one or more items the the list in a asynchronous way.
+
 #### remove(valueName, value, options)
 Removes items from the list where the value named "valueName" has value "value". 
 Returns the count of items that where removed.
@@ -74,7 +75,7 @@ Sorts the list based in values in column named "valueOrEvent". The sortFunction
 parameter is used if you want to make you one sort function.
 
 #### search(searchStringOrEvent, columns)
-Searches the list 
+Searches the list 	
 
 #### filter(filterFunction)
 #### size()
@@ -114,5 +115,10 @@ Called by ListJsHelpers.functionName()
 ### getAttribute()
 
 # Changelog
-
-2011-07-25 Alpha 0.1 release
+## 2011-08-08 Alpha 0.2 release
+* Added asynchronous item adding
+* Added asynchronous list indexing
+* Improved (but incomplete) documentation
+* Bugfixes and improved helper functions
+* Show helper functions non-minified
+## 2011-07-25 Alpha 0.1 release
