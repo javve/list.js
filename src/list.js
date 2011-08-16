@@ -446,15 +446,14 @@ var ListJsHelpers = {
     /* (elm, 'event' callback) Source: http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/ */
     , addEvent: (function( window, document ) {  
         if ( document.addEventListener ) {  
-            return function( elem, type, cb ) { 
-                console.log(elem, (elem instanceof Array));
-                if ( (elem && !(elem instanceof Array)) || elem === window ) {  
-                    //elem.addEventListener(type, cb, false );  
-                }  
-                else if ( elem && elem[0] !== undefined ) {  
+            return function( elem, type, cb ) {
+                /* !elem.length tests if it is a nodelist */
+                if ((elem && !(elem instanceof Array) && !elem.length) || elem === window ) {  
+                    elem.addEventListener(type, cb, false );  
+                } else if ( elem && elem[0] !== undefined ) {  
                     var len = elem.length;
                     for ( var i = 0; i < len; i++ ) {
-                        ListJsHelpers.addEvent( elem[i], type, cb );
+                        ListJsHelpers.addEvent(elem[i], type, cb);
                     }  
                 }  
             };  
