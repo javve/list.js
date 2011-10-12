@@ -1,3 +1,5 @@
 old/
 .DS_Store
 last-build.txt
+build.xml
+build-tools
