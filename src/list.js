@@ -11,20 +11,20 @@ OBS. The API is not frozen. It WILL change! Wait for beta.
 
 function List(id, templates, values) {
     var self = this
-        ,templater = null;
+        , templater = null;
     this.listContainer = document.getElementById(id);
     this.items = [];
     this.list = null;
-    this.templateEngines = {};
+    this.templateEngines = {};    
+    this.maxVisibleItemsCount = 200;
 
     var init = function(values, templates) {
-		templates = templates || {};
-        templates.list = templates.list || id;
+        if (typeof templates.list === 'undefined') {
+            templates.list = id;
+        }
         templater = new Templater(templates);
-
         self.list = ListJsHelpers.getByClass('list', self.listContainer, true);
         ListJsHelpers.addEvent(ListJsHelpers.getByClass('search', self.listContainer), 'keyup', self.search);
-		ListJsHelpers.addEvent(ListJsHelpers.getByClass('search', self.listContainer), 'keypress', disableSubmitOnReturn);
         ListJsHelpers.addEvent(ListJsHelpers.getByClass('sort', self.listContainer), 'click', self.sort);
         if (templates.valueNames) {
             var itemsToIndex = initialItems.get(),
@@ -39,14 +39,6 @@ function List(id, templates, values) {
             self.add(values);
         }
     };
-	
-	var disableSubmitOnReturn = function(e) {
-		if (e.which == 13) {
-			e.preventDefault();
-			return false;
-		}
-	};
-	
     var dateObj = null;
     var initialItems = {
         get: function() {
@@ -80,7 +72,8 @@ function List(id, templates, values) {
     * Add object to list
     */
     this.add = function(values, options) {
-        var added = [];
+        var added = [], 
+            notCreate = false;
         if (typeof values[0] === 'undefined'){
             values = [values];
         }
@@ -90,9 +83,12 @@ function List(id, templates, values) {
                 item = values[i];
                 item.reload();
             } else {
-                item = new Item(values[i]);
+                notCreate = (self.items.length > self.maxVisibleItemsCount) ? true : false;
+                item = new Item(values[i], undefined, notCreate);
             }
-            templater.add(item, options);
+            if (!notCreate) {
+                templater.add(item, options);
+            }
             self.items.push(item);
             added.push(item);
         }
@@ -167,7 +163,7 @@ function List(id, templates, values) {
     * 
     * TODO: Add Desc || Asc
     */
-    this.sort = function(valueOrEvent, sortFunction) {
+    this.sort = function(valueOrEvent, sortFunction) {            
         var length = self.items.length,
             value = null; 
         if (valueOrEvent.target === 'undefined') {
@@ -183,9 +179,11 @@ function List(id, templates, values) {
             };
         }
         self.items.sort(sortFunction);
-        self.list.innerHTML = "";
+        templater.clear();
         for (var i = 0, il = self.items.length; i < il; i++) {
-            self.list.appendChild(self.items[i].elm);
+            if (self.maxVisibleItemsCount > i) {
+                templater.add(self.items[i]);
+            }
         }
     };
 
@@ -256,25 +254,30 @@ function List(id, templates, values) {
         if (typeof columns === 'undefined') {
             useAllColumns = true;
         }
-        for (var i = 0, il = self.items.length; i < il; i++) {
-            var found = false,
-                item = self.items[i];
-            if (useAllColumns) {
-                columns = item.values();
+        templater.clear();
+        if (searchString === "") {
+            for (var i = 0, il = self.items.length; ((i < il) && (i < self.maxVisibleItemsCount)); i++) {
+                self.items[i].show();
             }
-            for(var j in columns) {
-                var text = columns[j].toString().toLowerCase();
-                if ((searchString !== "") && (text.search(searchString) > -1)) {
-                    found = true;
+        } else {
+            for (var i = 0, il = self.items.length; i < il; i++) {
+                var found = false,
+                    item = self.items[i];
+                if (useAllColumns) {
+                    columns = item.values();
                 }
-            }
-            if (found) {
-                foundItems.push(item);
-            }
-            if (found || (searchString === "")) {
-                item.elm.style.display = "block";
-            } else {
-                item.elm.style.display = "none";
+                for(var j in columns) {
+                    var text = columns[j].toString().toLowerCase();
+                    if ((searchString !== "") && (text.search(searchString) > -1)) {
+                        found = true;
+                    }
+                }
+                if (found) {
+                    foundItems.push(item);
+                }
+                if (found && (self.maxVisibleItemsCount > foundItems.length)) {
+                    item.show();
+                }
             }
         }
         return foundItems;
@@ -310,25 +313,31 @@ function List(id, templates, values) {
         return self.items.length;
     };
 
-    function Item(initValues, element) {
+    function Item(initValues, element, notCreate) {
         var item = this,
             values = {};
 
-        var init = function(initValues, element) {
+        var init = function(initValues, element, notCreate) {
             if (typeof element === 'undefined') {
-                templater.create(item);
-                item.values(initValues);
-                templater.add(item);
+                if (notCreate) {
+                    item.values(initValues, notCreate);
+                } else {
+                    //templater.create(item);
+                    item.values(initValues);
+                    //templater.add(item);
+                }
             } else {
                 item.elm = element;
                 var values = templater.get(item, initValues);
                 item.values(values);
             }
         };
-        this.values = function(newValues) {
+        this.values = function(newValues, notCreate) {
             if (newValues !== undefined) {
                 values = newValues;
-                templater.set(item, item.values());
+                if (notCreate !== true) {
+                    templater.set(item, item.values());
+                }
             } else {
                 return values;
             }
@@ -339,7 +348,7 @@ function List(id, templates, values) {
         this.hide = function() {
             templater.hide(item);
         };
-        init(initValues, element);
+        init(initValues, element, notCreate);
     };
 
     /* Templater with different kinds of template engines.
@@ -363,11 +372,11 @@ List.prototype.templateEngines = {};
 
 List.prototype.templateEngines.standard = function(settings) {
     var listSource = ListJsHelpers.getByClass('list', document.getElementById(settings.list))[0]
-        , itemSource = getItemSource(settings.item)
+        , itemSource = document.getElementById(settings.item)
         , templater = this;
-
     /* Get values from element */
     this.get = function(item, valueNames) {
+        ensureCreated(item);
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
             values[valueNames[i]] = ListJsHelpers.getByClass(valueNames[i], item.elm)[0].innerHTML;
@@ -377,8 +386,9 @@ List.prototype.templateEngines.standard = function(settings) {
     
     /* Sets values at element */
     this.set = function(item, values) {
+        ensureCreated(item);
         for(var v in values) {
-            // TODO: speed up if possible
+            // TODO speed up if possible
             var hej = ListJsHelpers.getByClass(v, item.elm, true);
             if (hej) {
                 hej.innerHTML = values[v];
@@ -387,6 +397,9 @@ List.prototype.templateEngines.standard = function(settings) {
     };
     
     this.create = function(item) {
+        if (typeof item.elm !== 'undefined') {
+            return;
+        }
         /* If item source does not exists, use the first item in list as 
         source for new items */
         if (itemSource === null) {
@@ -395,18 +408,23 @@ List.prototype.templateEngines.standard = function(settings) {
         var newItem = itemSource.cloneNode(true);
         newItem.id = "";
         newItem.style.display = "block";
-        item.elm = newItem;        
+        item.elm = newItem; 
+        templater.set(item, item.values());
     };
-    this.add = function(item) { 
-        listSource.appendChild(item.elm);				
-    } 
+    this.add = function(item) {
+        ensureCreated(item);
+        listSource.appendChild(item.elm);
+    };
     this.remove = function(item) {
         listSource.removeChild(item.elm);
     };
     this.show = function(item) {
+        ensureCreated(item);
+        ensureAdded(item);
         item.elm.style.display = "block";
     };
     this.hide = function(item) {
+        ensureCreated(item);
         item.elm.style.display = "none";
     };
     this.clear = function() {
@@ -423,13 +441,6 @@ List.prototype.templateEngines.standard = function(settings) {
             templater.add(item);
         }
     }
-	function getItemSource(item) {
-		if (typeof(item) == 'string') {
-			return document.getElementById(item); 
-		} else {
-			return item;
-		}
-	}
 };
 
 
