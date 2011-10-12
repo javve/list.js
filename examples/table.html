@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List.js examples</title>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+    <script src="../src/list.js"></script>
+    <script src="../src/list.jqueryTemplate.js"></script>
+</head>
+<body>
+
+
+<h1>Table created in List.js</h1>
+
+    <div id="table-list">
+        <input class="search" />
+        <span class="sort" rel="value1">Sortera</span>
+        <span class="sort" rel="value2">Sortera</span>
+        <span class="sort" rel="value3">Sortera</span>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Country</th>
+                </tr>
+            </thead> 
+            <tbody class="list">
+                <tr>
+                    <td class='name'></td>
+                    <td class='age'></td>
+                    <td class='age'></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <script>
+        var templates = {
+            valuesNames: ['name', 'age', 'country']
+            , item: 'table-item'
+        };
+        console.log(templates.item);
+        var items = [
+            { name: 'Jonny', age: 25, country: 'Sweden' }
+            , { name: 'Jonas', age: 27, country: 'Sweden' }
+            , { name: 'Mat', age: 32, country: 'Germany' }
+        ];
+        
+        new List('table-list', templates, items);
+    </script>
+
+
+</body>
+</html>

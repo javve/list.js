@@ -18,12 +18,13 @@ function List(id, templates, values) {
     this.templateEngines = {};
 
     var init = function(values, templates) {
-        if (typeof templates.list === 'undefined') {
-            templates.list = id;
-        }
+		templates = templates || {};
+        templates.list = templates.list || id;
         templater = new Templater(templates);
+
         self.list = ListJsHelpers.getByClass('list', self.listContainer, true);
         ListJsHelpers.addEvent(ListJsHelpers.getByClass('search', self.listContainer), 'keyup', self.search);
+		ListJsHelpers.addEvent(ListJsHelpers.getByClass('search', self.listContainer), 'keypress', disableSubmitOnReturn);
         ListJsHelpers.addEvent(ListJsHelpers.getByClass('sort', self.listContainer), 'click', self.sort);
         if (templates.valueNames) {
             var itemsToIndex = initialItems.get(),
@@ -38,6 +39,14 @@ function List(id, templates, values) {
             self.add(values);
         }
     };
+	
+	var disableSubmitOnReturn = function(e) {
+		if (e.which == 13) {
+			e.preventDefault();
+			return false;
+		}
+	};
+	
     var dateObj = null;
     var initialItems = {
         get: function() {
@@ -354,7 +363,9 @@ List.prototype.templateEngines = {};
 
 List.prototype.templateEngines.standard = function(settings) {
     var listSource = ListJsHelpers.getByClass('list', document.getElementById(settings.list))[0]
-        , itemSource = document.getElementById(settings.item);
+        , itemSource = getItemSource(settings.item)
+        , templater = this;
+
     /* Get values from element */
     this.get = function(item, valueNames) {
         var values = {};
@@ -367,7 +378,7 @@ List.prototype.templateEngines.standard = function(settings) {
     /* Sets values at element */
     this.set = function(item, values) {
         for(var v in values) {
-            // TODO speed up if possible
+            // TODO: speed up if possible
             var hej = ListJsHelpers.getByClass(v, item.elm, true);
             if (hej) {
                 hej.innerHTML = values[v];
@@ -398,6 +409,27 @@ List.prototype.templateEngines.standard = function(settings) {
     this.hide = function(item) {
         item.elm.style.display = "none";
     };
+    this.clear = function() {
+        listSource.innerHTML = '';
+    }
+
+    function ensureCreated(item) {
+        if (typeof item.elm === 'undefined') {
+            templater.create(item);
+        }
+    }
+    function ensureAdded(item) {
+        if (item.elm.parentNode === null) {
+            templater.add(item);
+        }
+    }
+	function getItemSource(item) {
+		if (typeof(item) == 'string') {
+			return document.getElementById(item); 
+		} else {
+			return item;
+		}
+	}
 };
 
 

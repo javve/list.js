@@ -21,6 +21,8 @@ Some of the option parameters are required at some times
 		Array of strings (needed if )
 		* **list** _(String, default: undefined)_  
 		ID to 
+		* **item** _(String, default: undefined)_  
+		ID to 
 	* **indexAsync** _(Boolean, default: false)_  
 	If there already are items in the list to which the 
 	List.js-script is added, should the indexing be done 
@@ -136,7 +138,6 @@ Called by ListJsHelpers.functionName()
 * **addEvent()** 
 
 * **getAttribute()** 
-
 
 # Changelog
 ### 2011-08-08 Alpha 0.2 release
