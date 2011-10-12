@@ -139,6 +139,9 @@ Called by ListJsHelpers.functionName()
 
 * **getAttribute()** 
 
+## How to build the script
+Type just *ant* in the console while in root folder.
+
 # Changelog
 ### 2011-08-08 Alpha 0.2 release
 * Added asynchronous item adding
