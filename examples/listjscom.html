@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List.js examples</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+    <div id="example-list">
+        <input class="search" />
+        <span class="sort" rel="feature">Sort features</span>
+        <ul class="list">
+            <li>
+                <strong class="feature">Search</strong>
+                <small class="description">Search through all items.</small>
+            </li>                          
+            <li>
+                <strong class="feature">Sort</strong>
+                <small class="description">Sort lists by value that you choose.</small>
+            </li>                            
+            <li>
+                <strong class="feature">Filter</strong>
+                <small class="description">Write your own filter functions.</small>
+            </li>
+        </ul>
+    </div>
+
+
+    <script src="../src/list.js"></script>
+    <script type="text/javascript">
+        var values = [
+        	{ feature: 'Add', description:'Add items on the fly.' }
+        	, { feature: 'Get', description:'Get item based on value.' }
+        	, { feature: 'Update', description:'Update items as you go.' }
+        ];
+        var templates = {
+        	valueNames: [ 'feature', 'description' ]
+        };
+
+        var featureList = new List('example-list', templates, values);
+        featureList.add({ feature: 'Remove', description:'Remove items whenever you feel like.' });
+    </script>
+
+</body>
+</html>
