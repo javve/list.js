@@ -533,22 +533,8 @@ var ListJsHelpers = {
     })( this, document )
     /* (elm, attribute) Source: http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method */
     , getAttribute: function(a,b){var c=(a.getAttribute&&a.getAttribute(b))||null;if(!c){var d=a.attributes;var e=d.length;for(var i=0;i<e;i++)if(b[i].nodeName===b)c=b[i].nodeValue}return c}
-    // http://blog.stevenlevithan.com/archives/faster-than-innerhtml
-    , replaceHtml: function(el, html) {
-        var oldEl = typeof el === "string" ? document.getElementById(el) : el;
-        /*@cc_on // Pure innerHTML is slightly faster in IE
-        oldEl.innerHTML = html;
-        return oldEl;
-        @*/
-        var newEl = oldEl.cloneNode(false);
-        newEl.innerHTML = html;
-        oldEl.parentNode.replaceChild(newEl, oldEl);
-        /* Since we just removed the old element from the DOM, return a reference
-        to the new element, which can be used to restore variable references. */
-        return newEl;
-    },
-	// http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript
-	isNodeList: function(nodes) {
+	/* http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript */
+	, isNodeList: function(nodes) {
 		var result = Object.prototype.toString.call(nodes);
 		if (
 			typeof nodes === 'object'
