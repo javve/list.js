@@ -42,7 +42,16 @@ function List(id, templates, values) {
     var dateObj = null;
     var initialItems = {
         get: function() {
-            return ListJsHelpers.getByClass('item', self.list);
+            // return ListJsHelpers.getByClass('item', self.list);
+			var nodes = self.list.childNodes,
+				items = [];
+			for (var i = 0, il = nodes.length; i < il; i++) {
+				// Only textnodes have a data attribute
+				if (typeof nodes[i].data === 'undefined') {
+					items.push(nodes[i]);
+				}
+			}
+			return items;
         },
         index: function(itemElements, valueNames) {
             for (var i = 0, il = itemElements.length; i < il; i++) {
@@ -403,7 +412,16 @@ List.prototype.templateEngines.standard = function(settings) {
         /* If item source does not exists, use the first item in list as 
         source for new items */
         if (itemSource === null) {
-            itemSource = ListJsHelpers.getByClass('item', listSource, true);
+			var nodes = listSource.childNodes,
+				items = [];
+			for (var i = 0, il = nodes.length; i < il; i++) {
+				// Only textnodes have a data attribute
+				if (typeof nodes[i].data === 'undefined') {
+					itemSource = nodes[i];
+					break;
+				}
+			}
+            //itemSource = ListJsHelpers.getByClass('item', listSource, true);
         }
         var newItem = itemSource.cloneNode(true);
         newItem.id = "";
