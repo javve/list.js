@@ -509,7 +509,7 @@ var ListJsHelpers = {
         if ( document.addEventListener ) {  
             return function( elem, type, cb ) {
                 /* !elem.length tests if it is a nodelist */
-                if ((elem && !(elem instanceof Array) && !elem.length) || elem === window ) {  
+                if ((elem && !(elem instanceof Array) && !elem.length && !ListJsHelpers.isNodeList(elem)) || elem === window ) {  
                     elem.addEventListener(type, cb, false );  
                 } else if ( elem && elem[0] !== undefined ) {  
                     var len = elem.length;
@@ -548,5 +548,21 @@ var ListJsHelpers = {
         /* Since we just removed the old element from the DOM, return a reference
         to the new element, which can be used to restore variable references. */
         return newEl;
-    }
+    },
+	// http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript
+	isNodeList: function(nodes) {
+		var result = Object.prototype.toString.call(nodes);
+		if (
+			typeof nodes === 'object'
+			&&
+			/^\[object (HTMLCollection|NodeList|Object)\]$/.test(result)
+			&&
+			nodes.hasOwnProperty('length')
+			&&
+			(nodes.length == 0 || (typeof node === "object" && nodes[0].nodeType > 0))
+		) {
+			return true;
+		}
+		return false;
+	}
 };
