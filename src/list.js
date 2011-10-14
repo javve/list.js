@@ -508,7 +508,6 @@ var ListJsHelpers = {
     , addEvent: (function( window, document ) {  
         if ( document.addEventListener ) {  
             return function( elem, type, cb ) {
-                /* !elem.length tests if it is a nodelist */
                 if ((elem && !(elem instanceof Array) && !elem.length && !ListJsHelpers.isNodeList(elem)) || elem === window ) {  
                     elem.addEventListener(type, cb, false );  
                 } else if ( elem && elem[0] !== undefined ) {  
@@ -521,10 +520,9 @@ var ListJsHelpers = {
         }  
         else if ( document.attachEvent ) {  
             return function ( elem, type, cb ) {  
-                if ( (elem && !elem.length) || elem === window ) {  
+                if ((elem && !(elem instanceof Array) && !elem.length && !ListJsHelpers.isNodeList(elem)) || elem === window ) {  
                     elem.attachEvent( 'on' + type, function() { return cb.call(elem, window.event) } );  
-                }  
-                else if ( elem.length ) {  
+                } else if ( elem && elem[0] !== undefined ) { 
                     var len = elem.length;
                     for ( var i = 0; i < len; i++ ) {
                         ListJsHelpers.addEvent( elem[i], type, cb );
