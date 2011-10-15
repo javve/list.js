@@ -25,7 +25,7 @@ And the Javascript
  
     var hackerList = new List('hacker-list', templates);
 
-#### Create list on initizialisation 
+#### Create list on initialization 
     <div id="hacker-list">
         <ul class="list"></ul>
     </div>
@@ -113,8 +113,8 @@ And the Javascript (nothing special)
 * **options**  
 Some of the option parameters are required at some times
 	* **templates** _(Object)_
-		* **valueNames** _(Array, default: null) (*only required if list already contains items before initizalization)_   
-		If the list contains items on initizialisation does this array
+		* **valueNames** _(Array, default: null) (*only required if list already contains items before initialization)_   
+		If the list contains items on initialization does this array
 		have to contain the value names (class names) for the different values of 
 		each list item.
 		    
