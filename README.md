@@ -3,7 +3,9 @@ You do want a 6.899kb native JavaScript file that enables you to create super fl
 
 # Super simple examples
 
-#### Index existing list
+## Index existing list
+HTML
+
     <div id="hacker-list">
         <ul class="list">                            
            <li>
@@ -17,7 +19,7 @@ You do want a 6.899kb native JavaScript file that enables you to create super fl
         </ul>
     </div>
 
-And the Javascript
+Javascript
  
     var templates = {
         valueNames: [ 'name', 'city' ]
@@ -25,7 +27,9 @@ And the Javascript
  
     var hackerList = new List('hacker-list', templates);
 
-#### Create list on initialization 
+## Create list on initialization 
+HTML
+
     <div id="hacker-list">
         <ul class="list"></ul>
     </div>
@@ -38,7 +42,7 @@ And the Javascript
         </li>
     </div>
        
-And the JavaScript
+JavaScript
  
     var templates = {
         item: 'hacker-item'
@@ -52,7 +56,9 @@ And the JavaScript
     var hackerList = new List('hacker-list', templates, values);
 
 
-#### Index existing list and then add
+## Index existing list and then add
+HTML
+
     <div id="hacker-list">
         <ul class="list">                            
            <li>
@@ -62,7 +68,7 @@ And the JavaScript
         </ul>
     </div>
        
-And the JavaScript
+JavaScript
  
     var templates = {
         valueNames: ['name', 'city']
@@ -72,7 +78,9 @@ And the JavaScript
     
     hackerList.add( { name: 'Jonas', city:'Berlin' } );
  
-#### Add automagic search and sort inputs and buttons
+## Add automagic search and sort inputs and buttons
+HTML
+
     <div id="hacker-list">
         
         <input class="search" />
@@ -91,7 +99,7 @@ And the JavaScript
         </ul>
     </div>
 
-And the Javascript (nothing special)
+Javascript (nothing special)
  
     var templates = {
         valueNames: [ 'name', 'city' ]
