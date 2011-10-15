@@ -3,7 +3,7 @@ You do want a 6.899kb native JavaScript file that enables you to create super fl
 
 # Super simple examples
 
-#### Index existing list
+## Index existing list
     <div id="hacker-list">
         <ul class="list">                            
            <li>
@@ -25,7 +25,7 @@ And the Javascript
  
     var hackerList = new List('hacker-list', templates);
 
-#### Create list on initialization 
+## Create list on initialization 
     <div id="hacker-list">
         <ul class="list"></ul>
     </div>
@@ -52,7 +52,7 @@ And the JavaScript
     var hackerList = new List('hacker-list', templates, values);
 
 
-#### Index existing list and then add
+## Index existing list and then add
     <div id="hacker-list">
         <ul class="list">                            
            <li>
@@ -72,7 +72,7 @@ And the JavaScript
     
     hackerList.add( { name: 'Jonas', city:'Berlin' } );
  
-#### Add automagic search and sort inputs and buttons
+## Add automagic search and sort inputs and buttons
     <div id="hacker-list">
         
         <input class="search" />
