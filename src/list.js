@@ -172,13 +172,13 @@ function List(id, templates, values) {
     * 
     * TODO: Add Desc || Asc
     */
-    this.sort = function(valueOrEvent, sortFunction) {            
+    this.sort = function(valueName, sortFunction) {            
         var length = self.items.length,
             value = null; 
-        if (valueOrEvent.target === 'undefined') {
-            value = valueOrEvent;
+        if (valueName.target === 'undefined') {
+            value = valueName;
         } else {	
-            value = ListJsHelpers.getAttribute(valueOrEvent.target, 'rel');
+            value = ListJsHelpers.getAttribute(valueName.target, 'rel');
         }
         if (sortFunction) {
             sortFunction = sortFunction;
@@ -251,13 +251,12 @@ function List(id, templates, values) {
     * The columns parameter defines if all values should be included in the search,
     * defaults to undefined which means "all". 
     */
-    this.search = function(searchStringOrEvent, columns) {
-        var searchString = ''
-            , foundItems = [];
-        if (typeof searchStringOrEvent.target !== 'undefined') {
-            searchString = searchStringOrEvent.target.value.toLowerCase();
+    this.search = function(searchString, columns) {
+        var foundItems = [];
+        if (typeof searchString.target !== 'undefined') {
+            searchString = searchString.target.value.toLowerCase();
         } else {
-            searchString = searchStringOrEvent.toLowerCase();
+            searchString = searchString.toLowerCase();
         }
         var useAllColumns = false;
         if (typeof columns === 'undefined') {
