@@ -17,12 +17,22 @@ A 5kb small script written in native JavaScript that blabla, lists
 * **options**  
 Some of the option parameters are required at some times
 	* **templates** _(Object)_
-		* **valueNames** _(Array, default: null)_   
-		Array of strings (needed if )
-		* **list** _(String, default: undefined)_  
-		ID to 
+		* **valueNames** _(Array, default: null) (*only required if list already contains items before initizalization)_   
+		If the list contains items on initizialisation does this array
+		have to contain the value names (class names) for the different values of 
+		each list item.
+		    
+		        <ul class="list">
+		            <li>
+		                <span class="name">Jonny</span>
+		                <span class="city">Sundsvall</span>
+		            </li>
+		        </ul>
+		        
+		        var valueNames = ['name', 'city'];
+		    
 		* **item** _(String, default: undefined)_  
-		ID to 
+		ID to item template element 
 	* **indexAsync** _(Boolean, default: false)_  
 	If there already are items in the list to which the 
 	List.js-script is added, should the indexing be done 
@@ -33,7 +43,102 @@ Values to add to the list on initialization.
 ### Examples
 
 #### Index existing list
-#### Create 
+    <div id="hacker-list">
+        <ul class="list">                            
+           <li>
+               <h3 class="name">Jonny</h3>
+               <p class="city">Stockholm</p>
+           </li>                            
+           <li>
+               <h3 class="name">Jonas</h3>
+               <p class="city">Berlin</p>
+           </li>
+        </ul>
+    </div>
+
+And the Javascript
+ 
+    var templates = {
+        valueNames: [ 'name', 'city' ]
+    };
+ 
+    var hackerList = new List('hacker-list', templates);
+
+#### Create list on initizialisation 
+    <div id="hacker-list">
+        <ul class="list"></ul>
+    </div>
+ 
+    <div style="display:none;">                            
+        <!-- A template element is needed when list is empty, TODO: needs a better solution -->
+        <li id="hacker-item">
+           <h3 class="name"></h3>
+           <p class="city"></p>
+        </li>
+    </div>
+       
+And the JavaScript
+ 
+    var templates = {
+        item: 'hacker-item'
+    };
+ 
+    var values = [
+        { name: 'Jonny', city:'Stockholm' }
+        , { name: 'Jonas', city:'Berlin' }
+    ];
+ 
+    var hackerList = new List('hacker-list', templates, values);
+
+
+#### Index existing list and then add
+    <div id="hacker-list">
+        <ul class="list">                            
+           <li>
+               <h3 class="name">Jonny</h3>
+               <p class="city">Stockholm</p>
+           </li>  
+        </ul>
+    </div>
+       
+And the JavaScript
+ 
+    var templates = {
+        valueNames: ['name', 'city']
+    };
+ 
+    var hackerList = new List('hacker-list', templates);
+    
+    hackerList.add( { name: 'Jonas', city:'Berlin' } );
+ 
+#### Add automagic search and sort inputs and buttons
+    <div id="hacker-list">
+        
+        <input class="search" />
+        <span class="sort" rel="name">Sort by name</span>
+        <span class="sort" rel="city">Sort by city</span>
+        
+        <ul class="list">                            
+           <li>
+               <h3 class="name">Jonny</h3>
+               <p class="city">Stockholm</p>
+           </li>                            
+           <li>
+               <h3 class="name">Jonas</h3>
+               <p class="city">Berlin</p>
+           </li>
+        </ul>
+    </div>
+
+And the Javascript (nothing special)
+ 
+    var templates = {
+        valueNames: [ 'name', 'city' ]
+    };
+ 
+    var hackerList = new List('hacker-list', templates);
+
+
 
 ## List API
 These methods are available for the List-object.
@@ -78,13 +183,13 @@ Returns values from the list where the value named "valueName" has value "value"
 			]
 			listObj.get("id", 2); -> return { id: 2, name "Gustaf" }
 
-* **sort(valueOrEvent, sortFunction)**  
+* **sort(valueName, sortFunction)**  
 Sorts the list based in values in column named "valueOrEvent". The sortFunction 
 parameter is used if you want to make you one sort function.
 	* valueOrEvent
 	* sortFunction
 
-* **search(searchStringOrEvent, columns)**  
+* **search(searchString, columns)**  
 Searches the list 	
 
 * **filter(filterFunction)**  
