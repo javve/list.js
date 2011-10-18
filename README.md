@@ -207,22 +207,36 @@ Returns the size of the list
 These methods are available for all Items that are returned by
 the list.
 ### Attributes
-None.
+
+* **elm** _(Element)_  
+The actual item DOM element
+
 ### Functions
 * **values(newValues)**
-	* newValues
+	* newValues _optional_
+	If variable newValues are present the new values replaces the current item values
+	and updates the list. 
+	If newValues are not present, the function returns the current values.
+	
+	        item.values() -> { name: "Jonny", age: 25 }
+	        item.values({
+	            age: 26,
+	            city: "Sundsvall"
+	        });
+	        item.values() -> { name: "Jonny", age: 26, city: "Sundsvall" }
+	    
 * **show()**
-Shows the item (add style.display = "block", not perfect, I know, please help)
+Shows the item 
 * **hide()**
-Hides the item (add style.display = "none")
+Hides the item (removes the element from the list, and then when its shown its appended again, the element will thereby change position in the list, bug, but a good solution is yet to find)
 
 
 ## TemplateEngine API 
 Only needed if you want to build you own template engine
 
 ### Attributes
-None in the standard engine. 
-But there may be included in other engines.
+
+None
 
 ### Functions
 * **get(item, valueNames)** 
@@ -253,6 +267,11 @@ Called by ListJsHelpers.functionName()
 Type just *ant* in the console while in root folder.
 
 # Changelog
+### 2011-10-18 Beta 0.1 release
+* Examples at Listjs.com works in IE7,8,9 (IE6 is not tested, should work)
+* More documentation
+* Misc bug fixes
+
 ### 2011-10-15 Final alpha 0.3 release
 * More documentation
 * Only show 200 items at same time, huge speed increase
