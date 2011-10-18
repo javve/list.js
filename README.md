@@ -1,7 +1,11 @@
 # List.js
-You do want a 6.899kb native JavaScript file that enables you to create super flexible, searchable, sortable, filterable lists based on dead simple templating (or your favorite template engine, soon). Yes?
+Do you want a 6.899kb cross-browser native JavaScript that makes your plain HTML lists super flexible, searchable, sortable and filterable? **Yeah!**
+Do you also want the possibility to add, edit and remove items by dead simple templating? **Hell yeah!**
 
 # Super simple examples
+
+More examples are found at [Listjs.com](http://listjs.com) and
+[Listjs.com/examples.html](http://listjs.com/examples.html)
 
 ## Index existing list
 HTML
