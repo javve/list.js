@@ -1,0 +1,270 @@
+<!doctype html>  
+
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>List.js - Examples of how to use the script</title>
+    <meta name="description" content="List.js is super flexible and here are two examples of how to use it.">
+    <meta name="author" content="Jonny Strömberg">
+
+    <!-- 
+    
+    Nothing to see here that has to do with List.js, look at the bottom of the page!
+    
+    -->
+    <link rel="shortcut icon" href="images/graphics/favicon.ico">
+
+    <link rel="stylesheet" href="http://listjs.com/css/style.css">
+    <link href="http://listjs.com/js/libs/syntaxhighlighter_3.0.83/styles/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="http://listjs.com/js/libs/syntaxhighlighter_3.0.83/styles/shThemeListJs.css" rel="stylesheet" type="text/css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+
+    <div id="container" class="example-page">
+        <div>
+            <h1>List.js - Examples</h1>
+        </div>
+
+            <div id="main">
+                
+                <p class="note"><b>Note</b>: These examples are build using jQuery, but that is not required.</p>
+
+                <div class="example c1">
+                    <h2>Lovely things list</h2>
+                    <div id="lovely-things-list">
+                        <input class="search" placeholder="Search lovely things" />
+                        <ul class="sort-by">
+                            <li class="sort btn" rel="name">Sort by name</li>
+                            <li class="sort btn" rel="category">Sort by category</li>
+                        </ul>
+                        <ul class="filter">
+                            <li class="btn" id="filter-none">Show all</li>
+                            <li class="btn" id="filter-games">Only show games</li>
+                            <li class="btn" id="filter-beverages">Only show beverages</li>
+                        </ul>
+                        <ul class="list">
+                            <li>
+                                <img src="http://listjs.com/images/examples/monkeyisland.jpg" class="thumb" />
+                                <h4><span class="name">Monkey Island 2: LeChuck's Revenge</span> <span class="category">Game</span></h4></h4>
+                                <p class="description">Monkey Island 2: LeChuck's Revenge is an adventure game developed and published by LucasArts in 1991. It was the second game of the Monkey Island series, following The Secret...</p>
+                            </li>
+                            <li>
+                                <img src="http://listjs.com/images/examples/coffee.jpg" class="thumb" />
+                                <h4><span class="name">Coffee</span> <span class="category">Beverage</span></h4></h4>
+                                <p class="description">Coffee is a brewed beverage with a dark, slightly acidic flavor prepared from the roasted seeds of the coffee plant, colloquially called coffee beans.</p>
+                            </li>
+                            <li>
+                                <img src="http://listjs.com/images/examples/fullthrottle.jpg" class="thumb" />
+                                <h4><span class="name">Full Throttle</span> <span class="category">Game</span></h4></h4>
+                                <p class="description">Full Throttle is a computer adventure game developed and published by LucasArts. It was designed by Tim Schafer, who would later go on to design the critically acclaimed titles Grim Fandango, Psychonauts and Brütal Legend.</p>
+                            </li>
+                            <li>
+                                <img src="http://listjs.com/images/examples/brooklyn.jpg" class="thumb" />
+                                <h4><span class="name">Brooklyn Lager</span> <span class="category">Beverage</span></h4>
+                                <p class="description">Brooklyn Brewery was started in 1987 by former Associated Press correspondent Steve Hindy and former Chemical Bank lending officer Tom Potter.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="example c1">
+                    <h2>Contact list</h2>
+                    <div id="contacts">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="sort" rel="name">Name</th>
+                                    <th class="sort" rel="age">Age</th>
+                                    <th class="sort" rel="city">City</th>
+                                    <th colspan="2">
+                                        <input type="text" class="search" placeholder="Search contact" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                <tr>
+                                    <td class="id" style="display:none;">1</td>
+                                    <td class="name">Jonny</td>
+                                    <td class="age">25</td>
+                                    <td class="city">Stockholm</td>
+                                    <td class="edit"><button class="edit-item-btn">Edit</button></td>
+                                    <td class="remove"><button class="remove-item-btn">Remove</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="id" style="display:none;">2</td>
+                                    <td class="name">Jonas</td>
+                                    <td class="age">26</td>
+                                    <td class="city">Berlin</td>
+                                    <td class="edit"><button class="edit-item-btn">Edit</button></td>
+                                    <td class="remove"><button class="remove-item-btn">Remove</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table>
+                            <td class="name">
+                                <input type="hidden" id="id-field" />
+                                <input type="text" id="name-field" placeholder="Name" />
+                            </td>
+                            <td class="age">
+                                <input type="text" id="age-field" placeholder="Age" />
+                            </td>
+                            <td class="city">
+                                <input type="text" id="city-field" placeholder="City" />
+                            </td>
+                            <td class="add">
+                                <button id="add-btn">Add</button>
+                                <button id="edit-btn">Edit</button>
+                            </td>
+                        </table>
+                    </div>
+                </div>
+        </div>
+
+    </div> <!-- end of #container -->
+
+
+    <!-- Start of List.js stuff -->
+    <script src="http://listjs.com/js/list.js"></script>
+
+    <script type="text/javascript">
+            
+        /* 
+        * LOVELY THINGS
+        */
+        
+        var templates = {
+    	    valueNames: [ 'name', 'description', 'category' ]
+        };
+
+        var featureList = new List('lovely-things-list', templates);
+        
+        $('#filter-games').click(function() {
+            featureList.filter(function(values) {
+                if (values.category == "Game") {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            return false;
+        });
+        
+        $('#filter-beverages').click(function() {
+            featureList.filter(function(values) {
+                if (values.category == "Beverage") {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            return false;
+        });
+        $('#filter-none').click(function() {
+            featureList.filter(function(values) {
+                return true;
+            });
+            return false;
+        });
+    </script>
+
+    <script type="text/javascript">
+        
+        /* 
+        * CONTACT LIST 
+        */
+        
+        // Define value names
+        var templates = {
+    	    valueNames: [ 'id', 'name', 'age', 'city' ]
+        };
+
+        // Init list
+        var contactList = new List('contacts', templates);
+        
+        var idField = $('#id-field'),
+            nameField = $('#name-field'),
+            ageField = $('#age-field'),
+            cityField = $('#city-field'),
+            addBtn = $('#add-btn'),
+            editBtn = $('#edit-btn').hide(),
+            removeBtns = $('.remove-item-btn'),
+            editBtns = $('.edit-item-btn');
+        
+        // Sets callbacks to the buttons in the list
+        refreshCallbacks();
+
+        addBtn.click(function() {
+           contactList.add({
+               id: Math.floor(Math.random()*110000),
+               name: nameField.val(),
+               age: ageField.val(),
+               city: cityField.val() 
+           });
+           clearFields();
+           refreshCallbacks();
+        });
+        
+        editBtn.click(function() {
+           var item = contactList.get('id', idField.val());
+           item.values({
+               id:idField.val(),
+               name: nameField.val(),
+               age: ageField.val(),
+               city: cityField.val() 
+           });
+           clearFields();
+           editBtn.hide();
+           addBtn.show();
+        });
+        
+        function refreshCallbacks() {
+            // Needed to add new buttons to jQuery-extended object
+            removeBtns = $(removeBtns.selector);
+            editBtns = $(editBtns.selector);
+            
+            removeBtns.click(function() {
+               var itemId = $(this).closest('tr').find('.id').text(); 
+               contactList.remove('id', itemId);
+            });
+        
+            editBtns.click(function() {
+               var itemId = $(this).closest('tr').find('.id').text(); 
+               var itemValues = contactList.get('id', itemId).values();
+               idField.val(itemValues.id);
+               nameField.val(itemValues.name);
+               ageField.val(itemValues.age);
+               cityField.val(itemValues.city);
+
+               editBtn.show();
+               addBtn.hide();
+            });
+        }
+        
+        function clearFields() {
+           nameField.val('');
+           ageField.val('');
+           cityField.val('');
+        }
+    </script>
+    <!-- End of List.js stuff -->
+
+
+
+    <script src="http://listjs.com/js/libs/syntaxhighlighter_3.0.83/scripts/shCore.js"></script>
+    <script src="http://listjs.com/js/libs/syntaxhighlighter_3.0.83/scripts/shBrushJScript.js"></script>
+    <script type="text/javascript">
+    SyntaxHighlighter.all()
+    </script>
+</body>
+</html>
