@@ -1,12 +1,11 @@
 /*
 ListJS Alpha 0.1
-By Jonny Strömberg (www.poseinteractive.se)
+By Jonny Strömberg (www.jonnystromberg.se, www.listjs.com)
 
 Licence: Dunno yet. Everything should be allowed except for redistributing 
-the script under an other name. MIT or something.
+the script under a new name. MIT or something.
 
-OBS. The API is not frozen. It WILL change! Wait for beta.
-
+OBS. The API is not frozen. It MAY change!
 */
 
 function List(id, templates, values) {
@@ -22,7 +21,7 @@ function List(id, templates, values) {
         if (typeof templates.list === 'undefined') {
             templates.list = id;
         }
-        templater = new Templater(templates);
+        templater = new Templater(self, templates);
         self.list = ListJsHelpers.getByClass('list', self.listContainer, true);
         ListJsHelpers.addEvent(ListJsHelpers.getByClass('search', self.listContainer), 'keyup', self.search);
         ListJsHelpers.addEvent(ListJsHelpers.getByClass('sort', self.listContainer), 'click', self.sort);
@@ -59,9 +58,6 @@ function List(id, templates, values) {
             }
         },
         indexAsync: function(itemElements, valueNames) {
-            if (dateObj == null) {
-                dateObj = new Date();
-            }
             var itemsToIndex = itemElements.splice(0, 100); // TODO: If < 100 items, what happens in IE etc?
             this.index(itemsToIndex, valueNames);
             if (itemElements.length > 0) {
@@ -69,10 +65,7 @@ function List(id, templates, values) {
                     initialItems.indexAsync(itemElements, valueNames);
                 }, 10);
             } else {
-                var time = dateObj.getTime();
-                dateObj = new Date();
                 // TODO: Add indexed callback
-                console.log("Async index took " + (dateObj.getTime() - time));
             }
         }
     }
@@ -110,9 +103,6 @@ function List(id, templates, values) {
     * data. Defaults to add 100 items a time
     */
     this.addAsync = function(values, options) {
-        if (dateObj2 == null) {
-            dateObj2 = new Date();
-        }
         var count = options ? options.count || 100 : 100
             , valuesToAdd = values.splice(0, count);
         self.add(valuesToAdd, options);
@@ -122,10 +112,6 @@ function List(id, templates, values) {
             }, 10);
         } else {
             // TODO: Add added callback
-                var time = dateObj2.getTime();
-                dateObj2 = new Date();
-                // TODO: Add indexed callback
-                console.log("Async add took " + (dateObj2.getTime() - time));
         }
     }
 
@@ -174,11 +160,12 @@ function List(id, templates, values) {
     */
     this.sort = function(valueName, sortFunction) {            
         var length = self.items.length,
-            value = null; 
-        if (valueName.target === 'undefined') {
+            value = null,
+        	target = valueName.target || valueName.srcElement; /* IE have srcElement */ 
+        if (target === 'undefined') {
             value = valueName;
         } else {	
-            value = ListJsHelpers.getAttribute(valueName.target, 'rel');
+            value = ListJsHelpers.getAttribute(target, 'rel');
         }
         if (sortFunction) {
             sortFunction = sortFunction;
@@ -252,9 +239,10 @@ function List(id, templates, values) {
     * defaults to undefined which means "all". 
     */
     this.search = function(searchString, columns) {
-        var foundItems = [];
-        if (typeof searchString.target !== 'undefined') {
-            searchString = searchString.target.value.toLowerCase();
+        var foundItems = [],
+        	target = searchString.target || searchString.srcElement; /* IE have srcElement */
+        if (typeof target !== 'undefined') {
+            searchString = target.value.toLowerCase();
         } else {
             searchString = searchString.toLowerCase();
         }
@@ -364,13 +352,13 @@ function List(id, templates, values) {
     * - reload(item)
     * - remove(item)
     */
-    var Templater = function(settings) {
+    var Templater = function(list, settings) {
         if (typeof settings.engine === 'undefined') {
             settings.engine = "standard";
         } else {
             settings.engine = settings.engine.toLowerCase();
         }
-        return new self.constructor.prototype.templateEngines[settings.engine](settings);
+        return new self.constructor.prototype.templateEngines[settings.engine](list, settings);
     }
 
     init(values, templates);
@@ -378,10 +366,12 @@ function List(id, templates, values) {
 
 List.prototype.templateEngines = {};
 
-List.prototype.templateEngines.standard = function(settings) {
+
+List.prototype.templateEngines.standard = function(list, settings) {
     var listSource = ListJsHelpers.getByClass('list', document.getElementById(settings.list))[0]
         , itemSource = document.getElementById(settings.item)
-        , templater = this;
+        , templater = this
+		, list = list;
     /* Get values from element */
     this.get = function(item, valueNames) {
         ensureCreated(item);
@@ -438,14 +428,23 @@ List.prototype.templateEngines.standard = function(settings) {
     this.show = function(item) {
         ensureCreated(item);
         ensureAdded(item);
-        item.elm.style.display = "block";
+		listSource.appendChild(item.elm);
+        //item.elm.style.display = "block";
     };
     this.hide = function(item) {
         ensureCreated(item);
-        item.elm.style.display = "none";
+		listSource.removeChild(item.elm);
+        //item.elm.style.display = "none";
     };
     this.clear = function() {
-        listSource.innerHTML = '';
+    	/* .innerHTML = ''; fucks up IE */
+        //listSource.innerHTML = '';
+        if (listSource.hasChildNodes()) {
+		    while (listSource.childNodes.length >= 1)
+		    {
+		        listSource.removeChild(listSource.firstChild);       
+		    } 
+		}
     }
 
     function ensureCreated(item) {
@@ -531,19 +530,21 @@ var ListJsHelpers = {
         }  
     })( this, document )
     /* (elm, attribute) Source: http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method */
-    , getAttribute: function(a,b){var c=(a.getAttribute&&a.getAttribute(b))||null;if(!c){var d=a.attributes;var e=d.length;for(var i=0;i<e;i++)if(b[i].nodeName===b)c=b[i].nodeValue}return c}
+    , getAttribute: function(ele, attr) {
+        var result = (ele.getAttribute && ele.getAttribute(attr)) || null;
+        if( !result ) {
+            var attrs = ele.attributes;
+            var length = attrs.length;
+            for(var i = 0; i < length; i++)
+                if(attr[i].nodeName === attr)
+                    result = attr[i].nodeValue;
+        }
+        return result;
+    }
 	/* http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript */
 	, isNodeList: function(nodes) {
 		var result = Object.prototype.toString.call(nodes);
-		if (
-			typeof nodes === 'object'
-			&&
-			/^\[object (HTMLCollection|NodeList|Object)\]$/.test(result)
-			&&
-			nodes.hasOwnProperty('length')
-			&&
-			(nodes.length == 0 || (typeof node === "object" && nodes[0].nodeType > 0))
-		) {
+		if (typeof nodes === 'object' && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(result) && (nodes.length == 0 || (typeof node === "object" && nodes[0].nodeType > 0))) {
 			return true;
 		}
 		return false;
