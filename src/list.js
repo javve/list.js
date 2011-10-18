@@ -330,7 +330,12 @@ function List(id, templates, values) {
         };
         this.values = function(newValues, notCreate) {
             if (newValues !== undefined) {
-                values = newValues;
+				for(name in newValues) {
+					if (newValues.hasOwnProperty(name)) {
+						values[name] = newValues[name];
+					}
+				}
+                //values = newValues;
                 if (notCreate !== true) {
                     templater.set(item, item.values());
                 }
@@ -374,6 +379,7 @@ List.prototype.templateEngines.standard = function(list, settings) {
 		, list = list;
     /* Get values from element */
     this.get = function(item, valueNames) {
+		tryEnsureItemSourceExists();
         ensureCreated(item);
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
@@ -400,21 +406,9 @@ List.prototype.templateEngines.standard = function(list, settings) {
         }
         /* If item source does not exists, use the first item in list as 
         source for new items */
-        if (itemSource === null) {
-			var nodes = listSource.childNodes,
-				items = [];
-			for (var i = 0, il = nodes.length; i < il; i++) {
-				// Only textnodes have a data attribute
-				if (typeof nodes[i].data === 'undefined') {
-					itemSource = nodes[i];
-					break;
-				}
-			}
-            //itemSource = ListJsHelpers.getByClass('item', listSource, true);
-        }
+        tryEnsureItemSourceExists();
         var newItem = itemSource.cloneNode(true);
         newItem.id = "";
-        newItem.style.display = "block";
         item.elm = newItem; 
         templater.set(item, item.values());
     };
@@ -446,7 +440,19 @@ List.prototype.templateEngines.standard = function(list, settings) {
 		    } 
 		}
     }
-
+	function tryEnsureItemSourceExists() {
+		if (itemSource === null) {
+			var nodes = listSource.childNodes,
+				items = [];
+			for (var i = 0, il = nodes.length; i < il; i++) {
+				// Only textnodes have a data attribute
+				if (typeof nodes[i].data === 'undefined') {
+					itemSource = nodes[i];
+					break;
+				}
+			}
+        }
+	}
     function ensureCreated(item) {
         if (typeof item.elm === 'undefined') {
             templater.create(item);
