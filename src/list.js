@@ -139,7 +139,7 @@ function List(id, templates, values) {
         var matchedItems = [];
         for (var i = 0, il = self.items.length; i < il; i++) {
             var item = self.items[i];
-            if (item.values()[valueName] === value) {
+            if (item.values()[valueName] == value) {
                 matchedItems.push(item);
             }
         }
