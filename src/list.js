@@ -8,7 +8,7 @@ the script under a new name. MIT or something.
 OBS. The API is not frozen. It MAY change!
 */
 
-function List(id, templates, values) {
+function List(id, options, values) {
     var self = this
         , templater = null;
     this.listContainer = document.getElementById(id);
@@ -17,18 +17,18 @@ function List(id, templates, values) {
     this.templateEngines = {};    
     this.maxVisibleItemsCount = 200;
 
-    var init = function(values, templates) {
-        if (typeof templates.list === 'undefined') {
-            templates.list = id;
+    var init = function(values, options) {
+        if (typeof options.list === 'undefined') {
+            options.list = id;
         }
-        templater = new Templater(self, templates);
+        templater = new Templater(self, options);
         self.list = ListJsHelpers.getByClass('list', self.listContainer, true);
         ListJsHelpers.addEvent(ListJsHelpers.getByClass('search', self.listContainer), 'keyup', self.search);
         ListJsHelpers.addEvent(ListJsHelpers.getByClass('sort', self.listContainer), 'click', self.sort);
-        if (templates.valueNames) {
+        if (options.valueNames) {
             var itemsToIndex = initialItems.get(),
-                valueNames = templates.valueNames;
-            if (templates.indexAsync) {
+                valueNames = options.valueNames;
+            if (options.indexAsync) {
                 initialItems.indexAsync(itemsToIndex, valueNames);
             } else {
                 initialItems.index(itemsToIndex, valueNames);
@@ -366,7 +366,7 @@ function List(id, templates, values) {
         return new self.constructor.prototype.templateEngines[settings.engine](list, settings);
     }
 
-    init(values, templates);
+    init(values, options);
 };
 
 List.prototype.templateEngines = {};
