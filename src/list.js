@@ -1,5 +1,5 @@
 /*
-ListJS Alpha 0.1
+ListJS Beta 0.1
 By Jonny Strömberg (www.jonnystromberg.se, www.listjs.com)
 
 Licence: Dunno yet. Everything should be allowed except for redistributing 
