@@ -18,13 +18,16 @@ function List(id, options, values) {
     this.maxVisibleItemsCount = 200;
 
     var init = function(values, options) {
-        if (typeof options.list === 'undefined') {
-            options.list = id;
-        }
+	
+		options.list = options.list || id;
+		options.listClass = options.listClass || 'list';
+		options.searchClass = options.searchClass || 'search';
+		options.sortClass = options.sortClass || 'sort';
+		
         templater = new Templater(self, options);
-        self.list = ListJsHelpers.getByClass('list', self.listContainer, true);
-        ListJsHelpers.addEvent(ListJsHelpers.getByClass('search', self.listContainer), 'keyup', self.search);
-        ListJsHelpers.addEvent(ListJsHelpers.getByClass('sort', self.listContainer), 'click', self.sort);
+        self.list = ListJsHelpers.getByClass(options.listClass, self.listContainer, true);
+        ListJsHelpers.addEvent(ListJsHelpers.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
+        ListJsHelpers.addEvent(ListJsHelpers.getByClass(options.sortClass, self.listContainer), 'click', self.sort);
         if (options.valueNames) {
             var itemsToIndex = initialItems.get(),
                 valueNames = options.valueNames;
@@ -373,7 +376,7 @@ List.prototype.templateEngines = {};
 
 
 List.prototype.templateEngines.standard = function(list, settings) {
-    var listSource = ListJsHelpers.getByClass('list', document.getElementById(settings.list))[0]
+    var listSource = ListJsHelpers.getByClass(settings.listClass, document.getElementById(settings.list))[0]
         , itemSource = document.getElementById(settings.item)
         , templater = this
 		, list = list;
