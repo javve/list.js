@@ -289,28 +289,45 @@ None
 
 ### Functions
 * **get(item, valueNames)** 
+Get values from `item` corresponding to `valueNames` 
 
 * **set(item, values)** 
+Sets `values` to item
 
 * **create(item)** 
+Creates html element and adds to `item`
 
 * **add(item)** 
+Adds a `item`s html element to the list
 
 * **remove(item)** 
+Removes `item`
 
 * **show(item)** 
+Shows `item`
 
 * **hide(item)** 
+Hides the `item`
+
+* **clear()**
+Removes all items from the list
 
 
 ## Helper functions
 Called by ListJsHelpers.functionName()
 
-* **getByClass()** 
+* **getByClass()**  
+[http://www.dustindiaz.com/getelementsbyclass](http://www.dustindiaz.com/getelementsbyclass)
 
-* **addEvent()** 
+* **addEvent()**  
+[http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/](http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/)
+Updated in some ways, thought.
 
-* **getAttribute()** 
+* **getAttribute()**  
+[http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method](http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method)
+
+* **isNodeList()**  
+[http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript](http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript)
 
 ## How to build the script
 Type just *ant* in the console while in root folder.
