@@ -25,11 +25,11 @@ HTML
 
 Javascript
  
-    var templates = {
+    var options = {
         valueNames: [ 'name', 'city' ]
     };
  
-    var hackerList = new List('hacker-list', templates);
+    var hackerList = new List('hacker-list', options);
 
 ## Create list on initialization 
 HTML
@@ -48,7 +48,7 @@ HTML
        
 JavaScript
  
-    var templates = {
+    var options = {
         item: 'hacker-item'
     };
  
@@ -57,7 +57,7 @@ JavaScript
         , { name: 'Jonas', city:'Berlin' }
     ];
  
-    var hackerList = new List('hacker-list', templates, values);
+    var hackerList = new List('hacker-list', options, values);
 
 
 ## Index existing list and then add
@@ -74,11 +74,11 @@ HTML
        
 JavaScript
  
-    var templates = {
+    var options = {
         valueNames: ['name', 'city']
     };
  
-    var hackerList = new List('hacker-list', templates);
+    var hackerList = new List('hacker-list', options);
     
     hackerList.add( { name: 'Jonas', city:'Berlin' } );
  
@@ -105,14 +105,33 @@ HTML
 
 Javascript (nothing special)
  
-    var templates = {
+    var options = {
         valueNames: [ 'name', 'city' ]
     };
  
-    var hackerList = new List('hacker-list', templates);
+    var hackerList = new List('hacker-list', options);
 
 
 # Documentation 
+
+## Search, sort and list container elemenet
+The secret behind the search field, the sort buttons and the list container element are the classes. 
+By default does all inputs with class `search` becomes search fields for the list. 
+
+    <input type="text" class="search" />
+
+The sorting gets activated for all elements with class `sort` and then sorts the 
+`valueName` corresponding the the `rel` value of the element.
+
+    <span class="sort" rel="name">Sort names</span>
+
+The element containing the list have to have the class `list` (or one that _you_ define)
+
+    <ul class="list"></ul>
+    # Can be a div, table, dl, or whatever fits your purpose
+
+All of these classes can be defined by yourself when creating the list by setting the options
+`searchClass`, `listClass` and `sortClass`.
 
 ## Create a list
 
@@ -124,23 +143,32 @@ Javascript (nothing special)
  Id the element in which the list area should be initialized.
 * **options**  
 Some of the option parameters are required at some times
-	* **templates** _(Object)_
-		* **valueNames** _(Array, default: null) (*only required if list already contains items before initialization)_   
-		If the list contains items on initialization does this array
-		have to contain the value names (class names) for the different values of 
-		each list item.
-		    
-		        <ul class="list">
-		            <li>
-		                <span class="name">Jonny</span>
-		                <span class="city">Sundsvall</span>
-		            </li>
-		        </ul>
-		        
-		        var valueNames = ['name', 'city'];
-		    
-		* **item** _(String, default: undefined)_  
-		ID to item template element 
+	* **valueNames** _(Array, default: null) (*only required if list already contains items before initialization)_   
+	If the list contains items on initialization does this array
+	have to contain the value names (class names) for the different values of 
+	each list item.
+	    
+	        <ul class="list">
+	            <li>
+	                <span class="name">Jonny</span>
+	                <span class="city">Sundsvall</span>
+	            </li>
+	        </ul>
+	        
+	        var valueNames = ['name', 'city'];
+	    
+	* **item** _(String, default: undefined)_  
+	ID to item template element 
+	
+	* **listClass** _(String, default: "list")_  
+	What is class of the list-container?
+	
+	* **searchClass** _(String, default: "search")_  
+	What is class of the search field?
+	
+	* **sortClass** _(String, default: "sort")_  
+	What is class of the sort buttons?
+	
 	* **indexAsync** _(Boolean, default: false)_  
 	If there already are items in the list to which the 
 	List.js-script is added, should the indexing be done 
@@ -163,16 +191,22 @@ The element containing all items.
 Contains all template engines available.
 
 ### Functions
-* **add(values, options)**  
+* **add(values)**  
 Adds one or more items to the list. 
-	* values
-	* options
-* **addAsync(values, options)**  
-Adds one or more items the the list in a asynchronous way.
-	* values
-	* options
-* **remove(valueName, value, options)**  
-Removes items from the list where the value named "valueName" has value "value". 
+        
+        listObj.add({ name: "Jonny", city: "Stockholm" });
+        
+        listObj.add([
+            { name: "Gustaf", city: "Sundsvall" }
+            , { name: "Jonas", city: "Berlin" }
+        ]);
+
+* **addAsync(values)**  
+Adds one or more items the the list in a asynchronous way, works like regular `.add()`
+but better if adding very many items (100+ or something).
+
+* **remove(valueName, value)**  
+Removes items from the list where the value named `valueName` has value `value`. 
 Returns the count of items that where removed.
 
 		itemsInList = [
@@ -182,7 +216,7 @@ Returns the count of items that where removed.
 		listObj.remove("id", 1); -> return 1
 
 * **get(valueName, value)**  
-Returns values from the list where the value named "valueName" has value "value".
+Returns values from the list where the value named `valueName` has value `value`.
 	* valueName
 	* value  
 	
@@ -193,16 +227,29 @@ Returns values from the list where the value named "valueName" has value "value"
 			listObj.get("id", 2); -> return { id: 2, name "Gustaf" }
 
 * **sort(valueName, sortFunction)**  
-Sorts the list based in values in column named "valueOrEvent". The sortFunction 
+Sorts the list based in values in column named `valeuName`. The sortFunction 
 parameter is used if you want to make you one sort function.
-	* valueOrEvent
-	* sortFunction
+
 
 * **search(searchString, columns)**  
 Searches the list 	
 
 * **filter(filterFunction)**  
-	* filterFunction
+
+        itemsInList = [
+    	    { id: 1, name: "Jonny" }
+    	    , { id: 2, name "Gustaf" }
+    	    , { id: 3, name "Jonas" }
+    	]
+    	
+    	listObj.filter(function(itemValues) {
+    	   if (itemValues.id > 1) {
+    	       return true;
+    	   } else {
+    	       return false;
+    	   }
+    	}); -> Only items with id > 1 are shown in list
+
 * **size()**  
 Returns the size of the list
 
@@ -222,12 +269,12 @@ The actual item DOM element
 	and updates the list. 
 	If newValues are not present, the function returns the current values.
 	
-	        item.values() -> { name: "Jonny", age: 25 }
+	        item.values() -> { name: "Jonny", age: 24, city: "Umeå" }
 	        item.values({
-	            age: 26,
-	            city: "Sundsvall"
+	            age: 25,
+	            city: "Stockholm"
 	        });
-	        item.values() -> { name: "Jonny", age: 26, city: "Sundsvall" }
+	        item.values() -> { name: "Jonny", age: 25, city: "Stockholm" }
 	    
 * **show()**
 Shows the item 
