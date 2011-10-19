@@ -217,8 +217,6 @@ Returns the count of items that where removed.
 
 * **get(valueName, value)**  
 Returns values from the list where the value named `valueName` has value `value`.
-	* valueName
-	* value  
 	
 			itemsInList = [
 				{ id: 1, name: "Jonny" }
