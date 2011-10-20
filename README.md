@@ -226,7 +226,8 @@ Returns values from the list where the value named `valueName` has value `value`
 
 * **sort(valueName, sortFunction)**  
 Sorts the list based in values in column named `valeuName`. The sortFunction 
-parameter is used if you want to make you one sort function.
+parameter is used if you want to make you one sort function.  
+Default sort function is found here [http://my.opera.com/GreyWyvern/blog/show.dml/1671288](http://my.opera.com/GreyWyvern/blog/show.dml/1671288)
 
 
 * **search(searchString, columns)**  
@@ -331,6 +332,10 @@ Updated in some ways, thought.
 
 ## How to build the script
 Type just *ant* in the console while in root folder.
+
+# Known bugs/obscurities
+* If items first are filtered and then sorted, all elements are shown again
+* API for sorting asc/desc should be better
 
 # Changelog
 ### 2011-10-18 Beta 0.1 release
