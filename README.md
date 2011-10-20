@@ -338,6 +338,9 @@ Type just *ant* in the console while in root folder.
 * API for sorting asc/desc should be better
 
 # Changelog
+### 2011-10-20 Beta 0.1.1 release
+* Added possibility to reverse sort the list
+
 ### 2011-10-18 Beta 0.1 release
 * Examples at Listjs.com works in IE7,8,9 (IE6 is not tested, should work)
 * More documentation
