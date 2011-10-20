@@ -173,6 +173,10 @@ Some of the option parameters are required at some times
 	If there already are items in the list to which the 
 	List.js-script is added, should the indexing be done 
 	in a asynchronous way? Good for large lists (> 500 items).
+	
+	* **maxVisibleItemsCount** _(Int, default: 200)_
+	Defines how many items that should be visible at the same time. This affects 
+	performance.
 * **values** _(Array of objects) (*optional)_  
 Values to add to the list on initialization.
 

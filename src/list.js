@@ -37,7 +37,7 @@ function List(id, options, values) {
     this.items = [];
     this.list = null;
     this.templateEngines = {};    
-    this.maxVisibleItemsCount = 200;
+    this.maxVisibleItemsCount = options.maxVisibleItemsCount || 200;
 
     var init = function(values, options) {
 	
