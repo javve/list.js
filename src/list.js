@@ -164,17 +164,30 @@ function List(id, options, values) {
     this.sort = function(valueName, sortFunction) {            
         var length = self.items.length,
             value = null,
-        	target = valueName.target || valueName.srcElement; /* IE have srcElement */ 
-        if (target === 'undefined') {
+        	target = valueName.target || valueName.srcElement, /* IE have srcElement */ 
+			sorting = '',
+			asc = false;
+        
+		if (target === 'undefined') {
             value = valueName;
         } else {	
             value = ListJsHelpers.getAttribute(target, 'rel');
+			sorting = ListJsHelpers.getAttribute(target, 'sorting');
+			
+			if (sorting == 'asc') {
+				target.setAttribute('sorting', 'desc');
+				asc = false;
+			} else {
+				target.setAttribute('sorting', 'asc');
+				asc = true;
+			}
         }
+		
         if (sortFunction) {
             sortFunction = sortFunction;
         } else {
             sortFunction = function(a, b) {
-                return sorter.alphanum(a.values()[value], b.values()[value]);
+                return sorter.alphanum(a.values()[value], b.values()[value], asc);
             };
         }
         self.items.sort(sortFunction);
@@ -190,7 +203,7 @@ function List(id, options, values) {
     * The sort function. From http://my.opera.com/GreyWyvern/blog/show.dml/1671288
     */
     var sorter = {
-        alphanum: function(a,b) {
+        alphanum: function(a,b,asc) {
             if (typeof a === 'undefined') {
                 a = "";
             }
@@ -212,11 +225,19 @@ function List(id, options, values) {
             for (x = 0; aa[x] && bb[x]; x++) {
                 if (aa[x] !== bb[x]) {
                     var c = Number(aa[x]), d = Number(bb[x]);
-                    if (c == aa[x] && d == bb[x]) {
-                        return c - d;
-                    } else { 
-                        return (aa[x] > bb[x]) ? 1 : -1;
-                    }
+                    if (asc) {
+						if (c == aa[x] && d == bb[x]) {
+	                        return c - d;
+	                    } else { 
+	                        return (aa[x] > bb[x]) ? 1 : -1;
+	                    }
+					} else {
+						if (c == aa[x] && d == bb[x]) {
+	                        return d-c;//c - d;
+	                    } else { 
+	                        return (aa[x] > bb[x]) ? -1 : 1; //(aa[x] > bb[x]) ? 1 : -1;
+	                    }
+					}
                 }
             }
             return aa.length - bb.length;
@@ -544,9 +565,14 @@ var ListJsHelpers = {
         if( !result ) {
             var attrs = ele.attributes;
             var length = attrs.length;
-            for(var i = 0; i < length; i++)
-                if(attr[i].nodeName === attr)
-                    result = attr[i].nodeValue;
+            for(var i = 0; i < length; i++) {
+            	if (typeof attr[i] !== 'undefined') {
+                	if(attr[i].nodeName === attr) {
+                		alert(attar[i]);
+                	    result = attr[i].nodeValue;
+                	}
+                }
+            }
         }
         return result;
     }
