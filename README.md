@@ -1,5 +1,5 @@
 # List.js
-Do you want a 6.899kb cross-browser native JavaScript that makes your plain HTML lists super flexible, searchable, sortable and filterable? **Yeah!**
+Do you want a 7 KB cross-browser native JavaScript that makes your plain HTML lists super flexible, searchable, sortable and filterable? **Yeah!**
 Do you also want the possibility to add, edit and remove items by dead simple templating? **Hell yeah!**
 
 # Super simple examples
