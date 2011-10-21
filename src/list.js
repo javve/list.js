@@ -190,7 +190,7 @@ function List(id, options, values) {
 			sorting = '',
 			asc = false;
         
-		if (target === 'undefined') {
+		if (target === undefined) {
             value = valueName;
         } else {	
             value = ListJsHelpers.getAttribute(target, 'rel');
