@@ -29,6 +29,11 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 */
+(function( window, undefined ) {
+
+var document = window.document,
+	navigator = window.navigator,
+	location = window.location;
 
 function List(id, options, values) {
     var self = this
@@ -59,7 +64,7 @@ function List(id, options, values) {
                 initialItems.index(itemsToIndex, valueNames);
             }
         }
-        if (typeof values !== 'undefined') {
+        if (values !== undefined) {
             self.add(values);
         }
     };
@@ -71,7 +76,7 @@ function List(id, options, values) {
 				items = [];
 			for (var i = 0, il = nodes.length; i < il; i++) {
 				// Only textnodes have a data attribute
-				if (typeof nodes[i].data === 'undefined') {
+				if (nodes[i].data === undefined) {
 					items.push(nodes[i]);
 				}
 			}
@@ -101,7 +106,7 @@ function List(id, options, values) {
     this.add = function(values, options) {
         var added = [], 
             notCreate = false;
-        if (typeof values[0] === 'undefined'){
+        if (values[0] === undefined){
             values = [values];
         }
         for (var i = 0, il = values.length; i < il; i++) {
@@ -226,10 +231,10 @@ function List(id, options, values) {
     */
     var sorter = {
         alphanum: function(a,b,asc) {
-            if (typeof a === 'undefined') {
+            if (a === undefined) {
                 a = "";
             }
-            if (typeof b === 'undefined') {
+            if (b === undefined) {
                 b = "";
             }
             a = a.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
@@ -287,13 +292,13 @@ function List(id, options, values) {
     this.search = function(searchString, columns) {
         var foundItems = [],
         	target = searchString.target || searchString.srcElement; /* IE have srcElement */
-        if (typeof target !== 'undefined') {
+        if (target !== undefined) {
             searchString = target.value.toLowerCase();
         } else {
             searchString = searchString.toLowerCase();
         }
         var useAllColumns = false;
-        if (typeof columns === 'undefined') {
+        if (columns === undefined) {
             useAllColumns = true;
         }
         templater.clear();
@@ -333,7 +338,7 @@ function List(id, options, values) {
         var visibleItems = [];
         for (var i = 0, il = self.items.length; i < il; i++) {
             var item = self.items[i];
-            if (filterFunction === false || typeof filterFunction === 'undefined') {
+            if (filterFunction === false || filterFunction === undefined) {
                 item.show();
                 visibleItems.push(item);
             } else {
@@ -360,7 +365,7 @@ function List(id, options, values) {
             values = {};
 
         var init = function(initValues, element, notCreate) {
-            if (typeof element === 'undefined') {
+            if (element === undefined) {
                 if (notCreate) {
                     item.values(initValues, notCreate);
                 } else {
@@ -404,7 +409,7 @@ function List(id, options, values) {
     * - remove(item)
     */
     var Templater = function(list, settings) {
-        if (typeof settings.engine === 'undefined') {
+        if (settings.engine === undefined) {
             settings.engine = "standard";
         } else {
             settings.engine = settings.engine.toLowerCase();
@@ -447,7 +452,7 @@ List.prototype.templateEngines.standard = function(list, settings) {
     };
     
     this.create = function(item) {
-        if (typeof item.elm !== 'undefined') {
+        if (item.elm !== undefined) {
             return;
         }
         /* If item source does not exists, use the first item in list as 
@@ -492,7 +497,7 @@ List.prototype.templateEngines.standard = function(list, settings) {
 				items = [];
 			for (var i = 0, il = nodes.length; i < il; i++) {
 				// Only textnodes have a data attribute
-				if (typeof nodes[i].data === 'undefined') {
+				if (nodes[i].data === undefined) {
 					itemSource = nodes[i];
 					break;
 				}
@@ -500,7 +505,7 @@ List.prototype.templateEngines.standard = function(list, settings) {
         }
 	}
     function ensureCreated(item) {
-        if (typeof item.elm === 'undefined') {
+        if (item.elm === undefined) {
             templater.create(item);
         }
     }
@@ -588,7 +593,7 @@ var ListJsHelpers = {
             var attrs = ele.attributes;
             var length = attrs.length;
             for(var i = 0; i < length; i++) {
-            	if (typeof attr[i] !== 'undefined') {
+            	if (attr[i] !== undefined) {
                 	if(attr[i].nodeName === attr) {
                 		alert(attar[i]);
                 	    result = attr[i].nodeValue;
@@ -607,3 +612,7 @@ var ListJsHelpers = {
 		return false;
 	}
 };
+
+window.List = List;
+window.ListJsHelpers = ListJsHelpers;
+})(window);
