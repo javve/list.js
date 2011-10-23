@@ -30,21 +30,28 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 */
 (function( window, undefined ) {
-
+"use strict";
 var document = window.document,
 	navigator = window.navigator,
-	location = window.location;
+	location = window.location,
+	ListJsHelpers;
 
 function List(id, options, values) {
-    var self = this
-        , templater = null;
+    var self = this, 
+		templater,
+		init,
+		initialItems,
+		sorter,
+		Item,
+		Templater;
+
     this.listContainer = document.getElementById(id);
     this.items = [];
     this.list = null;
     this.templateEngines = {};    
     this.maxVisibleItemsCount = options.maxVisibleItemsCount || 200;
 
-    var init = function(values, options) {
+    init = function(values, options) {
 	
 		options.list = options.list || id;
 		options.listClass = options.listClass || 'list';
@@ -68,8 +75,8 @@ function List(id, options, values) {
             self.add(values);
         }
     };
-    var dateObj = null;
-    var initialItems = {
+    
+	initialItems = {
         get: function() {
             // return ListJsHelpers.getByClass('item', self.list);
 			var nodes = self.list.childNodes,
@@ -94,11 +101,11 @@ function List(id, options, values) {
                 setTimeout(function() {
                     initialItems.indexAsync(itemElements, valueNames);
                 }, 10);
-            } else {
+            }/* else {
                 // TODO: Add indexed callback
-            }
+            }*/
         }
-    }
+    };
 
     /* 
     * Add object to list
@@ -133,17 +140,17 @@ function List(id, options, values) {
     * data. Defaults to add 100 items a time
     */
     this.addAsync = function(values, options) {
-        var count = options ? options.count || 100 : 100
-            , valuesToAdd = values.splice(0, count);
+        var count = options ? options.count || 100 : 100, 
+			valuesToAdd = values.splice(0, count);
         self.add(valuesToAdd, options);
         if (values.length > 0) {
             setTimeout(function() {
                 self.addAsync(values, options);
             }, 10);
-        } else {
+        }/* else {
             // TODO: Add added callback
-        }
-    }
+        }*/
+    };
 
     /* Removes object from list. 
     * Loops through the list and removes objects where
@@ -191,7 +198,7 @@ function List(id, options, values) {
     this.sort = function(valueName, sortFunction) {            
         var length = self.items.length,
             value = null,
-        	target = valueName.target || valueName.srcElement, /* IE have srcElement */ 
+			target = valueName.target || valueName.srcElement, /* IE have srcElement */ 
 			sorting = '',
 			asc = false;
         
@@ -229,7 +236,7 @@ function List(id, options, values) {
     /*
     * The sort function. From http://my.opera.com/GreyWyvern/blog/show.dml/1671288
     */
-    var sorter = {
+    sorter = {
         alphanum: function(a,b,asc) {
             if (a === undefined) {
                 a = "";
@@ -249,7 +256,7 @@ function List(id, options, values) {
             var aa = this.chunkify(a);
             var bb = this.chunkify(b);
 
-            for (x = 0; aa[x] && bb[x]; x++) {
+            for (var x = 0; aa[x] && bb[x]; x++) {
                 if (aa[x] !== bb[x]) {
                     var c = Number(aa[x]), d = Number(bb[x]);
                     if (asc) {
@@ -291,7 +298,7 @@ function List(id, options, values) {
     */
     this.search = function(searchString, columns) {
         var foundItems = [],
-        	target = searchString.target || searchString.srcElement; /* IE have srcElement */
+			target = searchString.target || searchString.srcElement; /* IE have srcElement */
         if (target !== undefined) {
             searchString = target.value.toLowerCase();
         } else {
@@ -307,17 +314,19 @@ function List(id, options, values) {
                 self.items[i].show();
             }
         } else {
-            for (var i = 0, il = self.items.length; i < il; i++) {
+            for (var k = 0, kl = self.items.length; k < kl; k++) {
                 var found = false,
-                    item = self.items[i];
+                    item = self.items[k];
                 if (useAllColumns) {
                     columns = item.values();
                 }
                 for(var j in columns) {
-                    var text = columns[j].toString().toLowerCase();
-                    if ((searchString !== "") && (text.search(searchString) > -1)) {
-                        found = true;
-                    }
+					if(columns.hasOwnProperty(j)) {
+						var text = columns[j].toString().toLowerCase();
+						if ((searchString !== "") && (text.search(searchString) > -1)) {
+							found = true;
+						}
+					}
                 }
                 if (found) {
                     foundItems.push(item);
@@ -360,7 +369,7 @@ function List(id, options, values) {
         return self.items.length;
     };
 
-    function Item(initValues, element, notCreate) {
+    Item = function(initValues, element, notCreate) {
         var item = this,
             values = {};
 
@@ -381,7 +390,7 @@ function List(id, options, values) {
         };
         this.values = function(newValues, notCreate) {
             if (newValues !== undefined) {
-				for(name in newValues) {
+				for(var name in newValues) {
 					if (newValues.hasOwnProperty(name)) {
 						values[name] = newValues[name];
 					}
@@ -408,30 +417,55 @@ function List(id, options, values) {
     * - reload(item)
     * - remove(item)
     */
-    var Templater = function(list, settings) {
+    Templater = function(list, settings) {
         if (settings.engine === undefined) {
             settings.engine = "standard";
         } else {
             settings.engine = settings.engine.toLowerCase();
         }
         return new self.constructor.prototype.templateEngines[settings.engine](list, settings);
-    }
+    };
 
     init(values, options);
-};
+}
 
 List.prototype.templateEngines = {};
 
 
 List.prototype.templateEngines.standard = function(list, settings) {
-    var listSource = ListJsHelpers.getByClass(settings.listClass, document.getElementById(settings.list))[0]
-        , itemSource = document.getElementById(settings.item)
-        , templater = this
-		, list = list;
+    var listSource = ListJsHelpers.getByClass(settings.listClass, document.getElementById(settings.list))[0],
+		itemSource = document.getElementById(settings.item),
+		templater = this,
+		ensure = {
+			tryItemSourceExists: function() {
+				if (itemSource === null) {
+					var nodes = listSource.childNodes,
+					items = [];
+					for (var i = 0, il = nodes.length; i < il; i++) {
+						// Only textnodes have a data attribute
+						if (nodes[i].data === undefined) {
+							itemSource = nodes[i];
+							break;
+						}
+					}
+				}
+			},
+			created: function(item) {
+				if (item.elm === undefined) {
+					templater.create(item);
+				}
+			},
+			added: function(item) {
+				if (item.elm.parentNode === null) {
+					templater.add(item);
+				}
+			}
+		};
+
     /* Get values from element */
     this.get = function(item, valueNames) {
-		tryEnsureItemSourceExists();
-        ensureCreated(item);
+		ensure.tryItemSourceExists();
+        ensure.created(item);
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
             values[valueNames[i]] = ListJsHelpers.getByClass(valueNames[i], item.elm)[0].innerHTML;
@@ -441,13 +475,15 @@ List.prototype.templateEngines.standard = function(list, settings) {
     
     /* Sets values at element */
     this.set = function(item, values) {
-        ensureCreated(item);
+        ensure.created(item);
         for(var v in values) {
-            // TODO speed up if possible
-            var hej = ListJsHelpers.getByClass(v, item.elm, true);
-            if (hej) {
-                hej.innerHTML = values[v];
-            }
+			if (values.hasOwnProperty(v)) {
+				// TODO speed up if possible
+				var hej = ListJsHelpers.getByClass(v, item.elm, true);
+				if (hej) {
+					hej.innerHTML = values[v];
+				}
+			}
         }
     };
     
@@ -457,63 +493,37 @@ List.prototype.templateEngines.standard = function(list, settings) {
         }
         /* If item source does not exists, use the first item in list as 
         source for new items */
-        tryEnsureItemSourceExists();
+        ensure.tryItemSourceExists();
         var newItem = itemSource.cloneNode(true);
         newItem.id = "";
         item.elm = newItem; 
         templater.set(item, item.values());
     };
     this.add = function(item) {
-        ensureCreated(item);
+        ensure.created(item);
         listSource.appendChild(item.elm);
     };
     this.remove = function(item) {
         listSource.removeChild(item.elm);
     };
     this.show = function(item) {
-        ensureCreated(item);
-        ensureAdded(item);
+        ensure.created(item);
+        ensure.added(item);
 		listSource.appendChild(item.elm);
-        //item.elm.style.display = "block";
     };
     this.hide = function(item) {
-        ensureCreated(item);
+        ensure.created(item);
 		listSource.removeChild(item.elm);
-        //item.elm.style.display = "none";
     };
     this.clear = function() {
-    	/* .innerHTML = ''; fucks up IE */
-        //listSource.innerHTML = '';
+		/* .innerHTML = ''; fucks up IE */
         if (listSource.hasChildNodes()) {
 		    while (listSource.childNodes.length >= 1)
 		    {
 		        listSource.removeChild(listSource.firstChild);       
 		    } 
 		}
-    }
-	function tryEnsureItemSourceExists() {
-		if (itemSource === null) {
-			var nodes = listSource.childNodes,
-				items = [];
-			for (var i = 0, il = nodes.length; i < il; i++) {
-				// Only textnodes have a data attribute
-				if (nodes[i].data === undefined) {
-					itemSource = nodes[i];
-					break;
-				}
-			}
-        }
-	}
-    function ensureCreated(item) {
-        if (item.elm === undefined) {
-            templater.create(item);
-        }
-    }
-    function ensureAdded(item) {
-        if (item.elm.parentNode === null) {
-            templater.add(item);
-        }
-    }
+    };
 };
 
 
@@ -521,7 +531,7 @@ List.prototype.templateEngines.standard = function(list, settings) {
 * These helper functions are not written by List.js author Jonny (they may have been 
 * adjusted, thought).
 */
-var ListJsHelpers = {
+ListJsHelpers = {
     /*
     * Cross browser getElementsByClassName, which uses native
     * if it exists. Modified version of Dustin Diaz function:
@@ -535,17 +545,18 @@ var ListJsHelpers = {
                 } else {
                     return node.getElementsByClassName(searchClass);
                 }
-            }
+            };
         } else {
             return function(searchClass,node,single) {
-                var classElements = new Array();
-                if ( node == null )
-                node = document;
-                tag = '*';
+                var classElements = [],
+					tag = '*';
+                if (node == null) {
+					node = document;
+				}
                 var els = node.getElementsByTagName(tag);
                 var elsLen = els.length;
                 var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
-                for (i = 0, j = 0; i < elsLen; i++) {
+                for (var i = 0, j = 0; i < elsLen; i++) {
                     if ( pattern.test(els[i].className) ) {
                         if (single) {
                             return els[i];
@@ -556,11 +567,11 @@ var ListJsHelpers = {
                     }
                 }
                 return classElements;
-            }
+            };
         }
-    })()
+    })(),
     /* (elm, 'event' callback) Source: http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/ */
-    , addEvent: (function( window, document ) {  
+    addEvent: (function( window, document ) {  
         if ( document.addEventListener ) {  
             return function( elem, type, cb ) {
                 if ((elem && !(elem instanceof Array) && !elem.length && !ListJsHelpers.isNodeList(elem)) || elem === window ) {  
@@ -576,7 +587,7 @@ var ListJsHelpers = {
         else if ( document.attachEvent ) {  
             return function ( elem, type, cb ) {  
                 if ((elem && !(elem instanceof Array) && !elem.length && !ListJsHelpers.isNodeList(elem)) || elem === window ) {  
-                    elem.attachEvent( 'on' + type, function() { return cb.call(elem, window.event) } );  
+                    elem.attachEvent( 'on' + type, function() { return cb.call(elem, window.event); } );  
                 } else if ( elem && elem[0] !== undefined ) { 
                     var len = elem.length;
                     for ( var i = 0; i < len; i++ ) {
@@ -585,26 +596,25 @@ var ListJsHelpers = {
                 }  
             };  
         }  
-    })( this, document )
+    })(this, document),
     /* (elm, attribute) Source: http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method */
-    , getAttribute: function(ele, attr) {
+    getAttribute: function(ele, attr) {
         var result = (ele.getAttribute && ele.getAttribute(attr)) || null;
         if( !result ) {
             var attrs = ele.attributes;
             var length = attrs.length;
-            for(var i = 0; i < length; i++) {
-            	if (attr[i] !== undefined) {
-                	if(attr[i].nodeName === attr) {
-                		alert(attar[i]);
-                	    result = attr[i].nodeValue;
-                	}
+			for(var i = 0; i < length; i++) {
+				if (attr[i] !== undefined) {
+					if(attr[i].nodeName === attr) {
+						result = attr[i].nodeValue;
+					}
                 }
             }
         }
         return result;
-    }
+    },
 	/* http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript */
-	, isNodeList: function(nodes) {
+	isNodeList: function(nodes) {
 		var result = Object.prototype.toString.call(nodes);
 		if (typeof nodes === 'object' && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(result) && (nodes.length == 0 || (typeof node === "object" && nodes[0].nodeType > 0))) {
 			return true;
