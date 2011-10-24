@@ -12,6 +12,7 @@
     <title>List.js - Examples of how to use the script</title>
     <meta name="description" content="List.js is super flexible and here are two examples of how to use it.">
     <meta name="author" content="Jonny Strömberg">
+	<meta name="google-site-verification" content="CxtqsFWhMxG32DK5A7Hbtg1ficvqhu9sybSeDP25JpI" />
 
     <!-- 
     
@@ -20,16 +21,37 @@
     -->
     <link rel="shortcut icon" href="images/graphics/favicon.ico">
 
-    <link rel="stylesheet" href="http://listjs.com/css/style.css">
-    <link href="http://listjs.com/js/libs/syntaxhighlighter_3.0.83/styles/shCore.css" rel="stylesheet" type="text/css" />
-    <link href="http://listjs.com/js/libs/syntaxhighlighter_3.0.83/styles/shThemeListJs.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="../css/style.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script type="text/javascript">
 
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-26278829-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
 </head>
 
 <body>
 
+	<div class="menu">
+		<ul>
+			<li class="name">List.js</li>
+			<li><a href="../">Home</a></li>
+			<li><a href="standard.html">Examples</a></li>
+			<li><a href="https://github.com/javve/list/blob/master/README.md">Documentation</a></li>
+			<li><a href="https://github.com/javve/list">Source</a></li>
+			<li><a href="http://blog.listjs.com">Blog</a></li>
+			<li><a href="https://raw.github.com/javve/list/master/list.min.js"><b>Download</b></a></li>
+		</ul>
+	</div>
 
     <div id="container" class="example-page">
         <div>
@@ -55,22 +77,22 @@
                         </ul>
                         <ul class="list">
                             <li>
-                                <img src="http://listjs.com/images/examples/monkeyisland.jpg" class="thumb" />
+                                <img src="images/monkeyisland.jpg" class="thumb" />
                                 <h4><span class="name">Monkey Island 2: LeChuck's Revenge</span> <span class="category">Game</span></h4></h4>
                                 <p class="description">Monkey Island 2: LeChuck's Revenge is an adventure game developed and published by LucasArts in 1991. It was the second game of the Monkey Island series, following The Secret...</p>
                             </li>
                             <li>
-                                <img src="http://listjs.com/images/examples/coffee.jpg" class="thumb" />
+                                <img src="images/coffee.jpg" class="thumb" />
                                 <h4><span class="name">Coffee</span> <span class="category">Beverage</span></h4></h4>
                                 <p class="description">Coffee is a brewed beverage with a dark, slightly acidic flavor prepared from the roasted seeds of the coffee plant, colloquially called coffee beans.</p>
                             </li>
                             <li>
-                                <img src="http://listjs.com/images/examples/fullthrottle.jpg" class="thumb" />
+                                <img src="images/fullthrottle.jpg" class="thumb" />
                                 <h4><span class="name">Full Throttle</span> <span class="category">Game</span></h4></h4>
                                 <p class="description">Full Throttle is a computer adventure game developed and published by LucasArts. It was designed by Tim Schafer, who would later go on to design the critically acclaimed titles Grim Fandango, Psychonauts and Brütal Legend.</p>
                             </li>
                             <li>
-                                <img src="http://listjs.com/images/examples/brooklyn.jpg" class="thumb" />
+                                <img src="images/brooklyn.jpg" class="thumb" />
                                 <h4><span class="name">Brooklyn Lager</span> <span class="category">Beverage</span></h4>
                                 <p class="description">Brooklyn Brewery was started in 1987 by former Associated Press correspondent Steve Hindy and former Chemical Bank lending officer Tom Potter.</p>
                             </li>
@@ -127,6 +149,8 @@
                                 <button id="edit-btn">Edit</button>
                             </td>
                         </table>
+                    	
+                    	<p>This is just a simple example showing how to use <code>add()</code>, <code>values()</code> and <code>remove()</code>. The example have bugs (not List.js (I hope ;)) so do not recommend copy-paste programming.</p>
                     </div>
                 </div>
         </div>
@@ -135,7 +159,7 @@
 
 
     <!-- Start of List.js stuff -->
-    <script src="http://listjs.com/js/list.js"></script>
+    <script src="js/list.js"></script>
 
     <script type="text/javascript">
             
@@ -258,13 +282,5 @@
         }
     </script>
     <!-- End of List.js stuff -->
-
-
-
-    <script src="http://listjs.com/js/libs/syntaxhighlighter_3.0.83/scripts/shCore.js"></script>
-    <script src="http://listjs.com/js/libs/syntaxhighlighter_3.0.83/scripts/shBrushJScript.js"></script>
-    <script type="text/javascript">
-    SyntaxHighlighter.all()
-    </script>
 </body>
 </html>
