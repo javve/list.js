@@ -574,7 +574,7 @@ ListJsHelpers = {
     addEvent: (function( window, document ) {  
         if ( document.addEventListener ) {  
             return function( elem, type, cb ) {
-                if ((elem && !(elem instanceof Array) && !elem.length && !ListJsHelpers.isNodeList(elem)) || elem === window ) {  
+                if ((elem && !(elem instanceof Array) && !elem.length && !ListJsHelpers.isNodeList(elem) && (elem.length !== 0)) || elem === window ) {  
                     elem.addEventListener(type, cb, false );  
                 } else if ( elem && elem[0] !== undefined ) {  
                     var len = elem.length;
@@ -586,7 +586,7 @@ ListJsHelpers = {
         }  
         else if ( document.attachEvent ) {  
             return function ( elem, type, cb ) {  
-                if ((elem && !(elem instanceof Array) && !elem.length && !ListJsHelpers.isNodeList(elem)) || elem === window ) {  
+                if ((elem && !(elem instanceof Array) && !elem.length && !ListJsHelpers.isNodeList(elem) && (elem.length !== 0)) || elem === window ) {  
                     elem.attachEvent( 'on' + type, function() { return cb.call(elem, window.event); } );  
                 } else if ( elem && elem[0] !== undefined ) { 
                     var len = elem.length;
