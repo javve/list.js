@@ -42,15 +42,21 @@
 <body>
 
 	<div class="menu">
-		<ul>
-			<li class="name">List.js</li>
-			<li><a href="../">Home</a></li>
-			<li><a href="standard.html">Examples</a></li>
-			<li><a href="https://github.com/javve/list/blob/master/README.md">Documentation</a></li>
-			<li><a href="https://github.com/javve/list">Source</a></li>
-			<li><a href="http://blog.listjs.com">Blog</a></li>
-			<li><a href="https://raw.github.com/javve/list/master/list.min.js"><b>Download</b></a></li>
-		</ul>
+	    <div class="menu-container">
+	        <ul class="main">
+        		<li class="name">List.js</li>
+        		<li><a href="../">Home</a></li>
+        		<li><a href="standard.html">Examples</a></li>
+        		<li><a href="https://github.com/javve/list/blob/master/README.md">Documentation</a></li>
+        		<li><a href="https://github.com/javve/list">Source</a></li>
+        		<li><a href="http://blog.listjs.com">Blog</a></li>
+        		<li><a href="https://raw.github.com/javve/list/master/list.min.js"><b>Download</b></a></li>
+        	</ul>
+    		<ul class="secondary">
+    			<li><a href="standard.html">Basic examples</a></li>
+    			<li><a href="performance-test.html">Performance</a></li>
+    		</ul>
+    	</div>
 	</div>
 
     <div id="container" class="example-page">
@@ -62,7 +68,7 @@
                 
                 <p class="note"><b>Note</b>: These examples are build using jQuery, but that is not required.</p>
 
-                <div class="example c1">
+                <div class="c1">
                     <h2>Lovely things list</h2>
                     <div id="lovely-things-list">
                         <input class="search" placeholder="Search lovely things" />
@@ -100,7 +106,7 @@
                     </div>
                 </div>
                 
-                <div class="example c1">
+                <div class="c1">
                     <h2>Contact list</h2>
                     <div id="contacts">
                         <table>
@@ -126,8 +132,24 @@
                                 <tr>
                                     <td class="id" style="display:none;">2</td>
                                     <td class="name">Jonas</td>
-                                    <td class="age">26</td>
+                                    <td class="age">-132</td>
                                     <td class="city">Berlin</td>
+                                    <td class="edit"><button class="edit-item-btn">Edit</button></td>
+                                    <td class="remove"><button class="remove-item-btn">Remove</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="id" style="display:none;">2</td>
+                                    <td class="name">Gustaf</td>
+                                    <td class="age">-23</td>
+                                    <td class="city">Sundsvall</td>
+                                    <td class="edit"><button class="edit-item-btn">Edit</button></td>
+                                    <td class="remove"><button class="remove-item-btn">Remove</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="id" style="display:none;">2</td>
+                                    <td class="name">Fredrik</td>
+                                    <td class="age">26</td>
+                                    <td class="city">Goteborg</td>
                                     <td class="edit"><button class="edit-item-btn">Edit</button></td>
                                     <td class="remove"><button class="remove-item-btn">Remove</button></td>
                                 </tr>
