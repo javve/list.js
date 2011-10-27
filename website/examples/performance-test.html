@@ -9,7 +9,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <title>List.js - Performance, wrooooom! Index, search and sort thousands of items within milliseconds. By @javve </title>
+    <title>List.js - Performance, wrooooom! Index, search and sort thousands of items. By @javve </title>
     <meta name="description" content="List.js is super flexible and here are two examples of how to use it.">
     <meta name="author" content="Jonny Strömberg">
 	<meta name="google-site-verification" content="CxtqsFWhMxG32DK5A7Hbtg1ficvqhu9sybSeDP25JpI" />
@@ -19,11 +19,24 @@
     Nothing to see here that has to do with List.js, look at the bottom of the page!
 
     -->
-    <link rel="shortcut icon" href="images/graphics/favicon.ico">
+    <link rel="shortcut icon" href="../images/graphics/favicon.ico">
 
     <link rel="stylesheet" href="../css/style.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    
+    <script type="text/javascript">
+    /* <![CDATA[ */
+        (function() {
+            var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+            t.parentNode.insertBefore(s, t);
+        })();
+    /* ]]> */
+    </script>
+    
     <script type="text/javascript">
 
       var _gaq = _gaq || [];
@@ -122,6 +135,11 @@
                             <tbody class="list"></table>
                         </table>
                     </div>
+                    
+                    <input type="text" value="100" id="add-items-count" />
+                    <button class="btn" id="add-items">Add more items</button>
+                    
+                    <p style="clear:both; padding-top:30px;">Note: The default setting <code>{ maxVisibleItemsCount: 200 }</code> is set</p>
                 </div>
 
             </div>
@@ -163,6 +181,8 @@
         $('#sort-col-1').click(function () { sortColumn('column1'); });
         $('#sort-numbers').click(function () { sortColumn('column2'); });
         $('#sort-col-2').click(function () { sortColumn('column3'); });
+        
+        $('#add-items').click(addItems);
 
         /* CREATION */
         function createList() {
@@ -192,7 +212,7 @@
             theList = new List('performance-list', { valueNames: [ 'column1', 'column2', 'column3' ] });
             dateObj2 = new Date();
             
-            $('#list-size-val   ').text(theList.size());
+            $('#list-size-val').text(theList.size());
             
             $('#time-table').slideDown(function(){
                 timeTable.add({
@@ -253,6 +273,39 @@
             showShare();
         }
         
+        function addItems() {
+            var dateObj1,
+                dateObj2,
+                numberOfItems = $('#add-items-count').val();
+                
+            /* Only search when press 'enter', otherwise the time table
+            is flooded */
+            if (!isNaN(numberOfItems)) {
+                numberOfItems = Math.abs(numberOfItems);
+                var items = [];
+                
+                for (var i = 0; i < numberOfItems; i++) {
+                    items.push({
+                        column1: randomString(13),
+                        column2: Math.floor(Math.random()*11000),
+                        column3: randomString(13)
+                    });
+                }
+        
+                /* ADD ITEMS TO LIST PERFORMANCE */
+                dateObj1 = new Date();
+                theList.add(items);
+                dateObj2 = new Date();
+                
+                timeTable.add({
+                    operation: "Added "+numberOfItems+" items",
+                    time: dateObj2.getTime() - dateObj1.getTime()
+                });
+                $('#list-size-val').text(theList.size());
+            }
+            
+        }
+        
         function showShare() {
             if (sorted && searched) {
                 setTimeout(function() {
@@ -260,7 +313,6 @@
                 }, 3000);
             }
         }
-
 
         /* SORT */
     </script>

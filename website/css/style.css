@@ -471,6 +471,7 @@ h1 {
 #performance-list .scroll-container {
     height:300px;
     overflow:scroll;
+    margin-bottom:10px;
 }
 #performance-share {
     padding:13px 20px 5px;
