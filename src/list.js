@@ -136,7 +136,7 @@ function List(id, options, values) {
     
     var dateObj2 = null;
     /*
-    * Adds items asyncrounous to the list, good for adding hugh about of 
+    * Adds items asynchronous to the list, good for adding huge amount of 
     * data. Defaults to add 100 items a time
     */
     this.addAsync = function(values, options) {
@@ -513,6 +513,7 @@ List.prototype.templateEngines.standard = function(list, settings) {
     };
     this.hide = function(item) {
         ensure.created(item);
+        ensure.added(item);
 		listSource.removeChild(item.elm);
     };
     this.clear = function() {
