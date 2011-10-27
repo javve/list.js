@@ -119,8 +119,12 @@
             </div>
 
             <div id="size">
-                <h2>How large list do you want to index?</h2>
-                <input type="text" value="1000" id="list-size" />
+                <h2>
+                    How many <strong>items</strong> and with how many <strong>value names</strong>
+                    do you want to index?
+                </h2>
+                <input type="text" value="1000" style="margin-left:60px;" id="list-size" />
+                <input type="text" value="3" style="width:40px;" id="column-count" />
                 <button class="btn" id="make-list">Make and index list</button>
             </div>
 
@@ -128,8 +132,6 @@
                 <div id="performance-list" style="display:none;">
                     <input type="text" id="search-field" placeholder="Press enter to search" />
                     <span class="btn" id="sort-col-1">Sort column 1</span>
-                    <span class="btn" id="sort-numbers">Sort column 2</span>
-                    <span class="btn" id="sort-col-2">Sort column 3</span>
                     <div class="scroll-container c1">
                         <table>
                             <tbody class="list"></table>
@@ -160,6 +162,7 @@
         var theList,
             sorted = false,
             searched = false,
+            columnCount = 0,
             timeTable = new List('time-table', { valueNames: ['operation', 'time' ], item: 'time-table-item'});
 
         function randomString(length) {
@@ -178,9 +181,11 @@
 
         $('#make-list').click(createList);
         $('#search-field').keypress(searchList);
-        $('#sort-col-1').click(function () { sortColumn('column1'); });
-        $('#sort-numbers').click(function () { sortColumn('column2'); });
-        $('#sort-col-2').click(function () { sortColumn('column3'); });
+        $('#sort-col-1').click(function () { sortColumn('column0'); });
+        /*
+        $('#sort-col-2').click(function () { sortColumn('column2'); });
+        $('#sort-col-3').click(function () { sortColumn('column3'); });
+        */
         
         $('#add-items').click(addItems);
 
@@ -188,9 +193,15 @@
         function createList() {
             var itemCount = +$('#list-size').val(),
                 htmlStuff = '';
-                
+            
+            columnCount = +$('#column-count').val();
+
             for (var i = 0; i < itemCount; i++) {
-                htmlStuff += '<tr><td class="column1">'+randomString(13)+'</td><td class="column2">'+Math.floor(Math.random()*11000)+'</td><td class="column3">'+randomString(13)+'</td></tr>';
+                htmlStuff += '<tr>';
+                for (var j = 0; j < columnCount; j++) {
+                    htmlStuff += '<td class="column'+j+'">'+randomString(13)+'</td>';
+                }
+                htmlStuff += '</tr>';
             }
             $('#performance-list .list').html(htmlStuff);
 
@@ -205,18 +216,23 @@
         function indexList() {
             var itemCount = +$('#list-size').val(),
                 dateObj1,
-                dateObj2;
+                dateObj2,
+                valueNames = [];
+            
+            for (var j = 0; j < columnCount; j++) {
+                valueNames.push('column'+j);
+            }
 
             /* CREATE LIST PERFORMANCE */
             dateObj1 = new Date();
-            theList = new List('performance-list', { valueNames: [ 'column1', 'column2', 'column3' ] });
+            theList = new List('performance-list', { valueNames: valueNames });
             dateObj2 = new Date();
             
             $('#list-size-val').text(theList.size());
             
             $('#time-table').slideDown(function(){
                 timeTable.add({
-                    operation: "Index list with "+itemCount+" items",
+                    operation: "Index list with "+itemCount+" items and "+columnCount+" value names",
                     time: dateObj2.getTime() - dateObj1.getTime()
                 });
             });
@@ -285,11 +301,11 @@
                 var items = [];
                 
                 for (var i = 0; i < numberOfItems; i++) {
-                    items.push({
-                        column1: randomString(13),
-                        column2: Math.floor(Math.random()*11000),
-                        column3: randomString(13)
-                    });
+                    var item = {};
+                    for (var j = 0; j < columnCount; j++) {
+                        item['column'+j] = randomString(13);
+                    }
+                    items.push(item);
                 }
         
                 /* ADD ITEMS TO LIST PERFORMANCE */
