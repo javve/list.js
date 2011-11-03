@@ -53,7 +53,8 @@
         		<li><a href="https://raw.github.com/javve/list/master/list.min.js"><b>Download</b></a></li>
         	</ul>
     		<ul class="secondary">
-    			<li><a href="standard.html">Basic examples</a></li>
+    			<li><a href="standard.html">Basic example</a></li>
+    			<li><a href="add-edit-remove.html">Add, edit & remove</a></li>
     			<li><a href="performance-test.html">Performance</a></li>
     		</ul>
     	</div>
@@ -61,7 +62,7 @@
 
     <div id="container" class="example-page">
         <div>
-            <h1>List.js - Examples</h1>
+            <h1>List.js - Basic example</h1>
         </div>
 
             <div id="main">
@@ -103,76 +104,6 @@
                                 <p class="description">Brooklyn Brewery was started in 1987 by former Associated Press correspondent Steve Hindy and former Chemical Bank lending officer Tom Potter.</p>
                             </li>
                         </ul>
-                    </div>
-                </div>
-                
-                <div class="c1">
-                    <h2>Contact list</h2>
-                    <div id="contacts">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th class="sort" rel="name">Name</th>
-                                    <th class="sort" rel="age">Age</th>
-                                    <th class="sort" rel="city">City</th>
-                                    <th colspan="2">
-                                        <input type="text" class="search" placeholder="Search contact" />
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="list">
-                                <tr>
-                                    <td class="id" style="display:none;">1</td>
-                                    <td class="name">Jonny</td>
-                                    <td class="age">25</td>
-                                    <td class="city">Stockholm</td>
-                                    <td class="edit"><button class="edit-item-btn">Edit</button></td>
-                                    <td class="remove"><button class="remove-item-btn">Remove</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="id" style="display:none;">2</td>
-                                    <td class="name">Jonas</td>
-                                    <td class="age">-132</td>
-                                    <td class="city">Berlin</td>
-                                    <td class="edit"><button class="edit-item-btn">Edit</button></td>
-                                    <td class="remove"><button class="remove-item-btn">Remove</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="id" style="display:none;">2</td>
-                                    <td class="name">Gustaf</td>
-                                    <td class="age">-23</td>
-                                    <td class="city">Sundsvall</td>
-                                    <td class="edit"><button class="edit-item-btn">Edit</button></td>
-                                    <td class="remove"><button class="remove-item-btn">Remove</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="id" style="display:none;">2</td>
-                                    <td class="name">Fredrik</td>
-                                    <td class="age">26</td>
-                                    <td class="city">Goteborg</td>
-                                    <td class="edit"><button class="edit-item-btn">Edit</button></td>
-                                    <td class="remove"><button class="remove-item-btn">Remove</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table>
-                            <td class="name">
-                                <input type="hidden" id="id-field" />
-                                <input type="text" id="name-field" placeholder="Name" />
-                            </td>
-                            <td class="age">
-                                <input type="text" id="age-field" placeholder="Age" />
-                            </td>
-                            <td class="city">
-                                <input type="text" id="city-field" placeholder="City" />
-                            </td>
-                            <td class="add">
-                                <button id="add-btn">Add</button>
-                                <button id="edit-btn">Edit</button>
-                            </td>
-                        </table>
-                    	
-                    	<p>This is just a simple example showing how to use <code>add()</code>, <code>values()</code> and <code>remove()</code>. The example have bugs (not List.js (I hope ;)) so do not recommend copy-paste programming.</p>
                     </div>
                 </div>
         </div>
@@ -222,86 +153,6 @@
             });
             return false;
         });
-    </script>
-
-    <script type="text/javascript">
-        
-        /* 
-        * CONTACT LIST 
-        */
-        
-        // Define value names
-        var templates = {
-    	    valueNames: [ 'id', 'name', 'age', 'city' ]
-        };
-
-        // Init list
-        var contactList = new List('contacts', templates);
-        
-        var idField = $('#id-field'),
-            nameField = $('#name-field'),
-            ageField = $('#age-field'),
-            cityField = $('#city-field'),
-            addBtn = $('#add-btn'),
-            editBtn = $('#edit-btn').hide(),
-            removeBtns = $('.remove-item-btn'),
-            editBtns = $('.edit-item-btn');
-        
-        // Sets callbacks to the buttons in the list
-        refreshCallbacks();
-
-        addBtn.click(function() {
-           contactList.add({
-               id: Math.floor(Math.random()*110000),
-               name: nameField.val(),
-               age: ageField.val(),
-               city: cityField.val() 
-           });
-           clearFields();
-           refreshCallbacks();
-        });
-        
-        editBtn.click(function() {
-           var item = contactList.get('id', idField.val());
-           item.values({
-               id:idField.val(),
-               name: nameField.val(),
-               age: ageField.val(),
-               city: cityField.val() 
-           });
-           clearFields();
-           editBtn.hide();
-           addBtn.show();
-        });
-        
-        function refreshCallbacks() {
-            // Needed to add new buttons to jQuery-extended object
-            removeBtns = $(removeBtns.selector);
-            editBtns = $(editBtns.selector);
-            
-            removeBtns.click(function() {
-               var itemId = $(this).closest('tr').find('.id').text(); 
-               contactList.remove('id', itemId);
-            });
-        
-            editBtns.click(function() {
-               var itemId = $(this).closest('tr').find('.id').text(); 
-               var itemValues = contactList.get('id', itemId).values();
-               idField.val(itemValues.id);
-               nameField.val(itemValues.name);
-               ageField.val(itemValues.age);
-               cityField.val(itemValues.city);
-
-               editBtn.show();
-               addBtn.hide();
-            });
-        }
-        
-        function clearFields() {
-           nameField.val('');
-           ageField.val('');
-           cityField.val('');
-        }
     </script>
     <!-- End of List.js stuff -->
 </body>
