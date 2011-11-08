@@ -148,9 +148,7 @@
             return false;
         });
         $('#filter-none').click(function() {
-            featureList.filter(function(values) {
-                return true;
-            });
+            featureList.filter(false);
             return false;
         });
     </script>
