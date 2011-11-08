@@ -304,6 +304,8 @@ function List(id, options, values) {
         } else {
             searchString = searchString.toLowerCase();
         }
+        // Escape regular expression characters
+        searchString = searchString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
         var useAllColumns = false;
         if (columns === undefined) {
             useAllColumns = true;
