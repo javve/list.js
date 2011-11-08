@@ -514,8 +514,9 @@ List.prototype.templateEngines.standard = function(list, settings) {
 		listSource.appendChild(item.elm);
     };
     this.hide = function(item) {
-        ensure.created(item);
-		listSource.removeChild(item.elm);
+        if (item.elm !== undefined && item.elm.parentNode === listSource) {
+		    listSource.removeChild(item.elm);
+	    }
     };
     this.clear = function() {
 		/* .innerHTML = ''; fucks up IE */
