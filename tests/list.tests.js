@@ -80,6 +80,27 @@ test('Search', function() {
    theList.search(''); 
 });
 
+test('Search with null values', function() {
+    var objectWithNulls = {
+        id: 7
+        , name: null
+        , feature: null
+    };
+    theList.add(objectWithNulls);
+    try {
+        var items = theList.search('Node');
+        equals(items.length, 2);
+        items = [
+            items[0].values(),
+            items[1].values()
+        ];
+        deepEqual(items, [ryah, tj]);
+    }
+    finally {
+        theList.search('');
+    }
+});
+
 test('Filter', function() {
     var visibleItems = theList.filter(function(values) {
         if (+values.id < 3) {
@@ -95,5 +116,5 @@ test('Filter', function() {
 
 test('Restore from filter', function() {
     var visibleItems = theList.filter(false);
-    equals(visibleItems.length, 5); 
+    equals(visibleItems.length, 6); 
 });
