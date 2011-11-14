@@ -323,7 +323,7 @@ function List(id, options, values) {
                     columns = item.values();
                 }
                 for(var j in columns) {
-					if(columns.hasOwnProperty(j)) {
+					if(columns.hasOwnProperty(j) && columns[j] !== null) {
 						var text = columns[j].toString().toLowerCase();
 						if ((searchString !== "") && (text.search(searchString) > -1)) {
 							found = true;
