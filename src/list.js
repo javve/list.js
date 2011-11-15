@@ -470,7 +470,8 @@ List.prototype.templateEngines.standard = function(list, settings) {
         ensure.created(item);
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
-            values[valueNames[i]] = ListJsHelpers.getByClass(valueNames[i], item.elm)[0].innerHTML;
+            var it = ListJsHelpers.getByClass(valueNames[i], item.elm)[0];
+            values[valueNames[i]] = it.innerText || it.textContent;
         }
         return values;
     };
