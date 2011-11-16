@@ -238,10 +238,10 @@ function List(id, options, values) {
     */
     sorter = {
         alphanum: function(a,b,asc) {
-            if (a === undefined) {
+            if (a === undefined || a === null) {
                 a = "";
             }
-            if (b === undefined) {
+            if (b === undefined || b === null) {
                 b = "";
             }
             a = a.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
