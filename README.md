@@ -321,18 +321,29 @@ Removes all items from the list
 ## Helper functions
 Called by ListJsHelpers.functionName()
 
-* **getByClass()**  
+* **getByClass(element, class, isSingle)**  
 [http://www.dustindiaz.com/getelementsbyclass](http://www.dustindiaz.com/getelementsbyclass)
 
-* **addEvent()**  
+* **addEvent(element, type, callback)**  
 [http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/](http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/)
 Updated in some ways, thought.
 
-* **getAttribute()**  
+* **getAttribute(element, attribute)**  
 [http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method](http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method)
 
-* **isNodeList()**  
+* **isNodeList(element)**  
 [http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript](http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript)
+
+* **hasClass(element, class)**  
+Checks if `element` has class name `class`
+
+* **addClass(element, class)**  
+Adds class name `class` to `element`
+
+* **removeClass(element, class)**  
+Removes class name `class` from `element`
+
+
 
 # Performance and benchmarking
 Read about it at [The List.js Blog: Performance, wroooooom! Index, search and sort thousands of items](http://blog.listjs.com/post/12006163208/performance-wroooooom-index-search-and-sort)
@@ -347,6 +358,11 @@ Type just *ant* in the console while in root folder.
 * API for sorting asc/desc should be better
 
 # Changelog
+### 2011-11-16 Beta 0.1.2 release
+* Sorting is now indicated by class `asc` or `desc` at sorting buttons
+* Added three new small helper functions `hasClass(element, class)`, `addClass(element, class)`
+and `removeClass(element, class)`
+
 ### 2011-10-20 Beta 0.1.1 release
 * Added possibility to reverse sort the list
 
