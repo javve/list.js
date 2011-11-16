@@ -198,30 +198,33 @@ function List(id, options, values) {
     this.sort = function(valueName, sortFunction) {            
         var length = self.items.length,
             value = null,
-			target = valueName.target || valueName.srcElement, /* IE have srcElement */ 
-			sorting = '',
-			asc = false;
-        
-		if (target === undefined) {
+            target = valueName.target || valueName.srcElement, /* IE have srcElement */ 
+            sorting = '',
+            isAsc = false,
+            asc = 'asc',
+            desc = 'desc';
+
+        if (target === undefined) {
             value = valueName;
         } else {	
             value = ListJsHelpers.getAttribute(target, 'rel');
-			sorting = ListJsHelpers.getAttribute(target, 'sorting');
-			
-			if (sorting == 'asc') {
-				target.setAttribute('sorting', 'desc');
-				asc = false;
-			} else {
-				target.setAttribute('sorting', 'asc');
-				asc = true;
-			}
+            
+            if (ListJsHelpers.hasClass(target, asc)) {
+                ListJsHelpers.addClass(target, desc);
+                ListJsHelpers.removeClass(target, asc);
+                isAsc = false;
+            } else {
+                ListJsHelpers.addClass(target, asc);
+                ListJsHelpers.removeClass(target, desc);
+                isAsc = true;
+            }
         }
-		
+
         if (sortFunction) {
             sortFunction = sortFunction;
         } else {
             sortFunction = function(a, b) {
-                return sorter.alphanum(a.values()[value], b.values()[value], asc);
+                return sorter.alphanum(a.values()[value], b.values()[value], isAsc);
             };
         }
         self.items.sort(sortFunction);
@@ -260,18 +263,18 @@ function List(id, options, values) {
                 if (aa[x] !== bb[x]) {
                     var c = Number(aa[x]), d = Number(bb[x]);
                     if (asc) {
-						if (c == aa[x] && d == bb[x]) {
-	                        return c - d;
-	                    } else { 
-	                        return (aa[x] > bb[x]) ? 1 : -1;
-	                    }
-					} else {
-						if (c == aa[x] && d == bb[x]) {
-	                        return d-c;//c - d;
-	                    } else { 
-	                        return (aa[x] > bb[x]) ? -1 : 1; //(aa[x] > bb[x]) ? 1 : -1;
-	                    }
-					}
+                        if (c == aa[x] && d == bb[x]) {
+                            return c - d;
+                        } else { 
+                            return (aa[x] > bb[x]) ? 1 : -1;
+                        }
+                    } else {
+                        if (c == aa[x] && d == bb[x]) {
+                            return d-c;//c - d;
+                        } else { 
+                            return (aa[x] > bb[x]) ? -1 : 1; //(aa[x] > bb[x]) ? 1 : -1;
+                        }
+                    }
                 }
             }
             return aa.length - bb.length;
@@ -323,12 +326,12 @@ function List(id, options, values) {
                     columns = item.values();
                 }
                 for(var j in columns) {
-					if(columns.hasOwnProperty(j) && columns[j] !== null) {
-						var text = columns[j].toString().toLowerCase();
-						if ((searchString !== "") && (text.search(searchString) > -1)) {
-							found = true;
-						}
-					}
+                    if(columns.hasOwnProperty(j) && columns[j] !== null) {
+                        var text = columns[j].toString().toLowerCase();
+                        if ((searchString !== "") && (text.search(searchString) > -1)) {
+                            found = true;
+                        }
+                    }
                 }
                 if (found) {
                     foundItems.push(item);
@@ -392,11 +395,11 @@ function List(id, options, values) {
         };
         this.values = function(newValues, notCreate) {
             if (newValues !== undefined) {
-				for(var name in newValues) {
-					if (newValues.hasOwnProperty(name)) {
-						values[name] = newValues[name];
-					}
-				}
+                for(var name in newValues) {
+                    if (newValues.hasOwnProperty(name)) {
+                        values[name] = newValues[name];
+                    }
+                }
                 //values = newValues;
                 if (notCreate !== true) {
                     templater.set(item, item.values());
@@ -436,37 +439,37 @@ List.prototype.templateEngines = {};
 
 List.prototype.templateEngines.standard = function(list, settings) {
     var listSource = ListJsHelpers.getByClass(settings.listClass, document.getElementById(settings.list))[0],
-		itemSource = document.getElementById(settings.item),
-		templater = this,
-		ensure = {
-			tryItemSourceExists: function() {
-				if (itemSource === null) {
-					var nodes = listSource.childNodes,
-					items = [];
-					for (var i = 0, il = nodes.length; i < il; i++) {
-						// Only textnodes have a data attribute
-						if (nodes[i].data === undefined) {
-							itemSource = nodes[i];
-							break;
-						}
-					}
-				}
-			},
-			created: function(item) {
-				if (item.elm === undefined) {
-					templater.create(item);
-				}
-			},
-			added: function(item) {
-				if (item.elm.parentNode === null) {
-					templater.add(item);
-				}
-			}
-		};
+        itemSource = document.getElementById(settings.item),
+        templater = this,
+        ensure = {
+            tryItemSourceExists: function() {
+                if (itemSource === null) {
+                    var nodes = listSource.childNodes,
+                    items = [];
+                    for (var i = 0, il = nodes.length; i < il; i++) {
+                        // Only textnodes have a data attribute
+                        if (nodes[i].data === undefined) {
+                            itemSource = nodes[i];
+                            break;
+                        }
+                    }
+                }
+            },
+            created: function(item) {
+                if (item.elm === undefined) {
+                    templater.create(item);
+                }
+            },
+            added: function(item) {
+                if (item.elm.parentNode === null) {
+                    templater.add(item);
+                }
+            }
+        };
 
     /* Get values from element */
     this.get = function(item, valueNames) {
-		ensure.tryItemSourceExists();
+        ensure.tryItemSourceExists();
         ensure.created(item);
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
@@ -479,13 +482,13 @@ List.prototype.templateEngines.standard = function(list, settings) {
     this.set = function(item, values) {
         ensure.created(item);
         for(var v in values) {
-			if (values.hasOwnProperty(v)) {
-				// TODO speed up if possible
-				var hej = ListJsHelpers.getByClass(v, item.elm, true);
-				if (hej) {
-					hej.innerHTML = values[v];
-				}
-			}
+            if (values.hasOwnProperty(v)) {
+                // TODO speed up if possible
+                var hej = ListJsHelpers.getByClass(v, item.elm, true);
+                if (hej) {
+                    hej.innerHTML = values[v];
+                }
+            }
         }
     };
     
@@ -511,21 +514,21 @@ List.prototype.templateEngines.standard = function(list, settings) {
     this.show = function(item) {
         ensure.created(item);
         ensure.added(item);
-		listSource.appendChild(item.elm);
+        listSource.appendChild(item.elm);
     };
     this.hide = function(item) {
         if (item.elm !== undefined && item.elm.parentNode === listSource) {
-		    listSource.removeChild(item.elm);
-	    }
+            listSource.removeChild(item.elm);
+        }
     };
     this.clear = function() {
-		/* .innerHTML = ''; fucks up IE */
+        /* .innerHTML = ''; fucks up IE */
         if (listSource.hasChildNodes()) {
-		    while (listSource.childNodes.length >= 1)
-		    {
-		        listSource.removeChild(listSource.firstChild);       
-		    } 
-		}
+            while (listSource.childNodes.length >= 1)
+            {
+                listSource.removeChild(listSource.firstChild);       
+            } 
+        }
     };
 };
 
@@ -552,10 +555,10 @@ ListJsHelpers = {
         } else {
             return function(searchClass,node,single) {
                 var classElements = [],
-					tag = '*';
+                    tag = '*';
                 if (node == null) {
-					node = document;
-				}
+                    node = document;
+                }
                 var els = node.getElementsByTagName(tag);
                 var elsLen = els.length;
                 var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
@@ -606,24 +609,41 @@ ListJsHelpers = {
         if( !result ) {
             var attrs = ele.attributes;
             var length = attrs.length;
-			for(var i = 0; i < length; i++) {
-				if (attr[i] !== undefined) {
-					if(attr[i].nodeName === attr) {
-						result = attr[i].nodeValue;
-					}
+            for(var i = 0; i < length; i++) {
+                if (attr[i] !== undefined) {
+                    if(attr[i].nodeName === attr) {
+                        result = attr[i].nodeValue;
+                    }
                 }
             }
         }
         return result;
     },
-	/* http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript */
-	isNodeList: function(nodes) {
-		var result = Object.prototype.toString.call(nodes);
-		if (typeof nodes === 'object' && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(result) && (nodes.length == 0 || (typeof node === "object" && nodes[0].nodeType > 0))) {
-			return true;
-		}
-		return false;
-	}
+    /* http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript */
+    isNodeList: function(nodes) {
+        var result = Object.prototype.toString.call(nodes);
+        if (typeof nodes === 'object' && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(result) && (nodes.length == 0 || (typeof node === "object" && nodes[0].nodeType > 0))) {
+            return true;
+        }
+        return false;
+    },
+    hasClass: function(ele, classN) {
+        var classes = this.getAttribute(ele, 'class');
+        return (classes.search(classN) > -1);
+    },
+    addClass: function(ele, classN) {
+        if (!this.hasClass(ele, classN)) {
+            var classes = this.getAttribute(ele, 'class');
+            ele.setAttribute('class', classes + ' ' + classN + ' ');
+        }
+    },
+    removeClass: function(ele, classN) {
+        if (this.hasClass(ele, classN)) {
+            var classes = this.getAttribute(ele, 'class');
+            classes = classes.replace(classN, '');
+            ele.setAttribute('class', classes);
+        }
+    }
 };
 
 window.List = List;
