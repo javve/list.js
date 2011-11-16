@@ -634,7 +634,9 @@ ListJsHelpers = {
     addClass: function(ele, classN) {
         if (!this.hasClass(ele, classN)) {
             var classes = this.getAttribute(ele, 'class');
-            ele.setAttribute('class', classes + ' ' + classN + ' ');
+            classes = classes + ' ' + classN + ' ';
+            classes = classes.replace(/\s{2,}/g, ' ');
+            ele.setAttribute('class', classes);
         }
     },
     removeClass: function(ele, classN) {
