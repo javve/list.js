@@ -207,7 +207,7 @@ function List(id, options, values) {
         if (target === undefined) {
             value = valueName;
         } else {	
-            value = ListJsHelpers.getAttribute(target, 'rel');
+            value = ListJsHelpers.getAttribute(target, 'data-list');
             
             if (ListJsHelpers.hasClass(target, asc)) {
                 ListJsHelpers.addClass(target, desc);
