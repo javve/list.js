@@ -237,6 +237,9 @@ Default sort function is found here [http://my.opera.com/GreyWyvern/blog/show.dm
 * **search(searchString, columns)**  
 Searches the list 	
 
+* **clear()**  
+Removes all items from the list
+
 * **filter(filterFunction)**  
 
         itemsInList = [

@@ -374,6 +374,14 @@ function List(id, options, values) {
         return self.items.length;
     };
 
+    /*
+    * Removes all items from the list
+    */
+    this.clear = function() {
+        templater.clear();
+        self.items = [];
+    };
+
     Item = function(initValues, element, notCreate) {
         var item = this,
             values = {};
