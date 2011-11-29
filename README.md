@@ -228,11 +228,16 @@ Returns values from the list where the value named `valueName` has value `value`
 			]
 			listObj.get("id", 2); -> return { id: 2, name "Gustaf" }
 
-* **sort(valueName, sortFunction)**  
-Sorts the list based in values in column named `valeuName`. The sortFunction 
-parameter is used if you want to make you one sort function.  
+* **sort(valueName, options)**  
+Sorts the list based in values in column named `valueName`. The options
+parameter can contain two attributes `options.sortFunction` and `options.asc`. 
+`options.sortFunction` is used if you want to make you one sort function.  
 Default sort function is found here [http://my.opera.com/GreyWyvern/blog/show.dml/1671288](http://my.opera.com/GreyWyvern/blog/show.dml/1671288)
+`options.asc = true` means that you want to sort the list in ascending order. Set 
+`false` for descending.
 
+        listObj.sort('name', { asc: true }); -> Sorts the list in abc-order based on names
+        listObj.sort('name', { asc: false }); -> Sorts the list in zxy-order based on names
 
 * **search(searchString, columns)**  
 Searches the list 	
@@ -361,6 +366,13 @@ Type just *ant* in the console while in root folder.
 * API for sorting asc/desc should be better
 
 # Changelog
+
+### 2011-11-29 Beta 0.1.3 release
+* Added function `.clear()` that removes all items from the list
+* Changed the sort function to be based on `data-sort` instead of `rel`
+* When sorting one category, all sort-related classes will be removed from the other sort buttons
+* Updated `.sort(valueName, sortFunction)` to `.sort(valueName, options)`, se more info in the documentation
+
 ### 2011-11-16 Beta 0.1.2 release
 * Sorting is now indicated by class `asc` or `desc` at sorting buttons
 * Added three new small helper functions `hasClass(element, class)`, `addClass(element, class)`
