@@ -88,8 +88,8 @@ HTML
     <div id="hacker-list">
         
         <input class="search" />
-        <span class="sort" rel="name">Sort by name</span>
-        <span class="sort" rel="city">Sort by city</span>
+        <span class="sort" data-sort="name">Sort by name</span>
+        <span class="sort" data-sort="city">Sort by city</span>
         
         <ul class="list">                            
            <li>
@@ -121,9 +121,9 @@ By default does all inputs with class `search` becomes search fields for the lis
     <input type="text" class="search" />
 
 The sorting gets activated for all elements with class `sort` and then sorts the 
-`valueName` corresponding the the `rel` value of the element.
+`valueName` corresponding the the `data-sort` value of the element.
 
-    <span class="sort" rel="name">Sort names</span>
+    <span class="sort" data-sort="name">Sort names</span>
 
 The element containing the list have to have the class `list` (or one that _you_ define)
 
