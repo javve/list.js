@@ -43,7 +43,8 @@ function List(id, options, values) {
 		initialItems,
 		sorter,
 		Item,
-		Templater;
+		Templater,
+		sortButtons;
 
     this.listContainer = document.getElementById(id);
     this.items = [];
@@ -61,7 +62,8 @@ function List(id, options, values) {
         templater = new Templater(self, options);
         self.list = ListJsHelpers.getByClass(options.listClass, self.listContainer, true);
         ListJsHelpers.addEvent(ListJsHelpers.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
-        ListJsHelpers.addEvent(ListJsHelpers.getByClass(options.sortClass, self.listContainer), 'click', self.sort);
+        sortButtons = ListJsHelpers.getByClass(options.sortClass, self.listContainer);
+        ListJsHelpers.addEvent(sortButtons, 'click', self.sort);
         if (options.valueNames) {
             var itemsToIndex = initialItems.get(),
                 valueNames = options.valueNames;
@@ -195,39 +197,47 @@ function List(id, options, values) {
     * 
     * TODO: Add Desc || Asc
     */
-    this.sort = function(valueName, sortFunction) {            
+    this.sort = function(valueName, options) {            
         var length = self.items.length,
             value = null,
             target = valueName.target || valueName.srcElement, /* IE have srcElement */ 
             sorting = '',
             isAsc = false,
             asc = 'asc',
-            desc = 'desc';
+            desc = 'desc',
+            options = options || {};
 
         if (target === undefined) {
             value = valueName;
+            isAsc = options.asc || false;
         } else {	
             value = ListJsHelpers.getAttribute(target, 'data-sort');
-            
-            if (ListJsHelpers.hasClass(target, asc)) {
-                ListJsHelpers.addClass(target, desc);
-                ListJsHelpers.removeClass(target, asc);
-                isAsc = false;
-            } else {
-                ListJsHelpers.addClass(target, asc);
-                ListJsHelpers.removeClass(target, desc);
-                isAsc = true;
+            isAsc = ListJsHelpers.hasClass(target, asc) ? false : true;
+        }
+        for (var i = 0, il = sortButtons.length; i < il; i++) {
+            ListJsHelpers.removeClass(sortButtons[i], asc);
+            ListJsHelpers.removeClass(sortButtons[i], desc);
+        }
+        if (isAsc) {
+            if (target !== undefined) { 
+                ListJsHelpers.addClass(target, asc); 
             }
+            isAsc = true;
+        } else {
+            if (target !== undefined) { 
+                ListJsHelpers.addClass(target, desc);
+            }
+            isAsc = false;            
         }
 
-        if (sortFunction) {
-            sortFunction = sortFunction;
+        if (options.sortFunction) {
+            options.sortFunction = options.sortFunction;
         } else {
-            sortFunction = function(a, b) {
+            options.sortFunction = function(a, b) {
                 return sorter.alphanum(a.values()[value], b.values()[value], isAsc);
             };
         }
-        self.items.sort(sortFunction);
+        self.items.sort(options.sortFunction);
         templater.clear();
         for (var i = 0, il = self.items.length; i < il; i++) {
             if (self.maxVisibleItemsCount > i) {
