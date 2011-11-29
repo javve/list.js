@@ -1,5 +1,5 @@
 /*
-ListJS Beta 0.1
+ListJS Beta 0.1.3
 By Jonny Strömberg (www.jonnystromberg.se, www.listjs.com)
 
 OBS. The API is not frozen. It MAY change!
@@ -207,7 +207,7 @@ function List(id, options, values) {
         if (target === undefined) {
             value = valueName;
         } else {	
-            value = ListJsHelpers.getAttribute(target, 'data-list');
+            value = ListJsHelpers.getAttribute(target, 'data-sort');
             
             if (ListJsHelpers.hasClass(target, asc)) {
                 ListJsHelpers.addClass(target, desc);
