@@ -414,11 +414,10 @@ function List(id, options, values) {
         this.values = function(newValues, notCreate) {
             if (newValues !== undefined) {
                 for(var name in newValues) {
-                    if (newValues.hasOwnProperty(name)) {
-                        values[name] = newValues[name];
-                    }
+                    //if (newValues.hasOwnProperty(name)) {
+                    values[name] = newValues[name];
+                    //}
                 }
-                //values = newValues;
                 if (notCreate !== true) {
                     templater.set(item, item.values());
                 }
