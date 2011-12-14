@@ -47,8 +47,6 @@ var List = function(id, options, values) {
 
     this.listContainer = document.getElementById(id);
     this.items = [];
-    this.visible = [];
-    this.matching = [];
 
     this.searched = false;
     this.filtered = false;
@@ -242,12 +240,7 @@ var List = function(id, options, values) {
             };
         }
         self.items.sort(options.sortFunction);
-        templater.clear();
-        for (var i = 0, il = self.items.length; i < il; i++) {
-            if (self.maxVisibleItemsCount > i) {
-                templater.add(self.items[i]);
-            }
-        }
+        updateVisible();
     };
 
     /*
@@ -325,8 +318,7 @@ var List = function(id, options, values) {
             target = searchString.target || searchString.srcElement; /* IE have srcElement */
 
         searchString = (target === undefined) ? searchString.toLowerCase() : target.value.toLowerCase();
-        is = self.filtered || (self.searched && (searchString.indexOf(lastSearch) == 0)) ? self.matching : self.items;
-
+        is = self.items;
         // Escape regular expression characters
         searchString = searchString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 
@@ -358,47 +350,11 @@ var List = function(id, options, values) {
                     item.found = false;
                 }
             }
-            self.matching = matching;
             updateVisible();
         }
         lastSearch = searchString;
         return matching;
     };
-
-    var reset = {
-        filter: function() {
-            var is = self.items,
-                il = is.length;
-            while (il--) {
-                is[il].filtered = false;
-            }
-            if (self.searched) {
-                self.matching = [];
-                il = is.length;
-                while (il--) {
-                    console.log(il, is[il], is[il].found);
-                    if (is[il].found) {
-                        self.matching.push(is[il]);
-                    }
-                }
-            }
-        },
-        search: function() {
-            var is = self.items,
-                il = is.length;
-            while (il--) {
-                is[il].found = false;
-            }
-        }
-    }
-
-    var updateVisible = function() {
-        var is = (!self.searched && !self.filtered) ? self.items : self.matching;
-        templater.clear();
-        for (var i = 0, il = is.length; i < il && i < self.maxVisibleItemsCount; i++) {
-            is[i].show();
-        }
-    }
 
     /*
     * Filters the list. If filterFunction() returns False hides the Item.
@@ -412,8 +368,7 @@ var List = function(id, options, values) {
         } else {
             matching = [];
             self.filtered = true;
-            var is = self.searched ? self.matching : self.items;
-            console.log(is.length, is);
+            var is = self.items; 
             for (var i = 0, il = is.length; i < il; i++) {
                 var item = is[i];
                 if (filterFunction(item.values())) {
@@ -423,7 +378,6 @@ var List = function(id, options, values) {
                     item.filtered = false;
                 }
             }
-            self.matching = matching;
         }
         updateVisible();
         return matching;
@@ -443,6 +397,39 @@ var List = function(id, options, values) {
         templater.clear();
         self.items = [];
     };
+
+    var reset = {
+        filter: function() {
+            var is = self.items,
+                il = is.length;
+            while (il--) {
+                is[il].filtered = false;
+            }
+        },
+        search: function() {
+            var is = self.items,
+                il = is.length;
+            while (il--) {
+                is[il].found = false;
+            }
+        }
+    }
+
+    var updateVisible = function() {
+        var is = self.items;
+        templater.clear();
+        for (var i = 0, il = is.length; i < il && i < self.maxVisibleItemsCount; i++) {
+            if (
+                (self.filtered && self.searched && is[i].found && is[i].filtered) ||
+                (self.filtered && !self.searched && is[i].filtered) ||
+                (!self.filtered && self.searched && is[i].found) ||
+                (!self.filtered && !self.searched) 
+            ) {
+                is[i].show();
+            }
+        }
+    }
+
 
     Item = function(initValues, element, notCreate) {
         var item = this,
