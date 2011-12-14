@@ -242,6 +242,16 @@ Default sort function is found here [http://my.opera.com/GreyWyvern/blog/show.dm
 * **search(searchString, columns)**  
 Searches the list 	
 
+        itemsInList = [
+            { id: 1, name: "Jonny" }
+            , { id: 2, name "Gustaf" }
+            , { id: 3, name "Jonas" }
+        ]
+
+        listObj.search('Jonny'); -> Only item with name Jonny is shown (also returns this item)
+        
+        listObj.search(); -> Show all items in list
+
 * **clear()**  
 Removes all items from the list
 
@@ -260,6 +270,8 @@ Removes all items from the list
     	       return false;
     	   }
     	}); -> Only items with id > 1 are shown in list
+    	
+    	listObjs.filter(); -> Remove all filters
 
 * **size()**  
 Returns the size of the list
@@ -366,6 +378,11 @@ Type just *ant* in the console while in root folder.
 * API for sorting asc/desc should be better
 
 # Changelog
+
+### 0.1.4
+* `.filters()`, `.sort()` and `.search()` now deped on each other. If the list is filtered and then
+there is a search, the items hidden by the filters will stay hidden etc.
+* `.filter()` is the only way to reset filter. `.filter(false)` does not work anymore.
 
 ### 2011-11-29 Beta 0.1.3 release
 * Added function `.clear()` that removes all items from the list

@@ -1,5 +1,5 @@
 /*
-ListJS Beta 0.1.3
+ListJS Beta 0.1.4
 By Jonny Strömberg (www.jonnystromberg.se, www.listjs.com)
 
 OBS. The API is not frozen. It MAY change!
