@@ -8,62 +8,67 @@ License (MIT)
 
 Copyright (c) 2011 Jonny Strömberg http://jonnystromberg.se/
 
-Permission is hereby granted, free of charge, to any person 
-obtaining a copy of this software and associated documentation 
-files (the "Software"), to deal in the Software without restriction, 
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without restriction,
 including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Software, 
-and to permit persons to whom the Software is furnished to do so, 
+publish, distribute, sublicense, and/or sell copies of the Software,
+and to permit persons to whom the Software is furnished to do so,
 subject to the following conditions:
 
-The above copyright notice and this permission notice shall be 
+The above copyright notice and this permission notice shall be
 included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 */
 (function( window, undefined ) {
 "use strict";
 var document = window.document,
-	navigator = window.navigator,
-	location = window.location,
-	ListJsHelpers;
+	h;
 
-function List(id, options, values) {
-    var self = this, 
+var List = function(id, options, values) {
+    var self = this,
 		templater,
 		init,
 		initialItems,
 		sorter,
 		Item,
 		Templater,
-		sortButtons;
+		sortButtons,
+		lastSearch = "";
 
     this.listContainer = document.getElementById(id);
     this.items = [];
+    this.visible = [];
+    this.matching = [];
+
+    this.searched = false;
+    this.filtered = false;
+
     this.list = null;
-    this.templateEngines = {};    
+    this.templateEngines = {};
     this.maxVisibleItemsCount = options.maxVisibleItemsCount || 200;
 
     init = function(values, options) {
-	
-		options.list = options.list || id;
-		options.listClass = options.listClass || 'list';
-		options.searchClass = options.searchClass || 'search';
-		options.sortClass = options.sortClass || 'sort';
-		
+
+        options.list = options.list || id;
+        options.listClass = options.listClass || 'list';
+        options.searchClass = options.searchClass || 'search';
+        options.sortClass = options.sortClass || 'sort';
+
         templater = new Templater(self, options);
-        self.list = ListJsHelpers.getByClass(options.listClass, self.listContainer, true);
-        ListJsHelpers.addEvent(ListJsHelpers.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
-        sortButtons = ListJsHelpers.getByClass(options.sortClass, self.listContainer);
-        ListJsHelpers.addEvent(sortButtons, 'click', self.sort);
+        self.list = h.getByClass(options.listClass, self.listContainer, true);
+        h.addEvent(h.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
+        sortButtons = h.getByClass(options.sortClass, self.listContainer);
+        h.addEvent(sortButtons, 'click', self.sort);
         if (options.valueNames) {
             var itemsToIndex = initialItems.get(),
                 valueNames = options.valueNames;
@@ -77,19 +82,19 @@ function List(id, options, values) {
             self.add(values);
         }
     };
-    
+
 	initialItems = {
         get: function() {
-            // return ListJsHelpers.getByClass('item', self.list);
-			var nodes = self.list.childNodes,
-				items = [];
-			for (var i = 0, il = nodes.length; i < il; i++) {
-				// Only textnodes have a data attribute
-				if (nodes[i].data === undefined) {
-					items.push(nodes[i]);
-				}
-			}
-			return items;
+            // return h.getByClass('item', self.list);
+            var nodes = self.list.childNodes,
+            items = [];
+            for (var i = 0, il = nodes.length; i < il; i++) {
+                // Only textnodes have a data attribute
+                if (nodes[i].data === undefined) {
+                    items.push(nodes[i]);
+                }
+            }
+            return items;
         },
         index: function(itemElements, valueNames) {
             for (var i = 0, il = itemElements.length; i < il; i++) {
@@ -109,11 +114,11 @@ function List(id, options, values) {
         }
     };
 
-    /* 
+    /*
     * Add object to list
     */
     this.add = function(values, options) {
-        var added = [], 
+        var added = [],
             notCreate = false;
         if (values[0] === undefined){
             values = [values];
@@ -135,15 +140,14 @@ function List(id, options, values) {
         }
         return added;
     };
-    
-    var dateObj2 = null;
+
     /*
-    * Adds items asynchronous to the list, good for adding huge amount of 
+    * Adds items asynchronous to the list, good for adding huge amount of
     * data. Defaults to add 100 items a time
     */
     this.addAsync = function(values, options) {
-        var count = options ? options.count || 100 : 100, 
-			valuesToAdd = values.splice(0, count);
+        var count = options ? options.count || 100 : 100,
+            valuesToAdd = values.splice(0, count);
         self.add(valuesToAdd, options);
         if (values.length > 0) {
             setTimeout(function() {
@@ -154,7 +158,7 @@ function List(id, options, values) {
         }*/
     };
 
-    /* Removes object from list. 
+    /* Removes object from list.
     * Loops through the list and removes objects where
     * property "valuename" === value
     */
@@ -171,7 +175,7 @@ function List(id, options, values) {
         return found;
     };
 
-    /* Gets the objects in the list which 
+    /* Gets the objects in the list which
     * property "valueName" === value
     */
     this.get = function(valueName, value) {
@@ -183,7 +187,7 @@ function List(id, options, values) {
             }
         }
         if (matchedItems.length == 0) {
-            return null; 
+            return null;
         } else if (matchedItems.length == 1) {
             return matchedItems[0];
         } else {
@@ -194,13 +198,13 @@ function List(id, options, values) {
     /* Sorts the list.
     * @valueOrEvent Either a JavaScript event object or a valueName
     * @sortFunction (optional) Define if natural sorting does not fullfill your needs
-    * 
+    *
     * TODO: Add Desc || Asc
     */
-    this.sort = function(valueName, options) {            
+    this.sort = function(valueName, options) {
         var length = self.items.length,
             value = null,
-            target = valueName.target || valueName.srcElement, /* IE have srcElement */ 
+            target = valueName.target || valueName.srcElement, /* IE have srcElement */
             sorting = '',
             isAsc = false,
             asc = 'asc',
@@ -210,24 +214,24 @@ function List(id, options, values) {
         if (target === undefined) {
             value = valueName;
             isAsc = options.asc || false;
-        } else {	
-            value = ListJsHelpers.getAttribute(target, 'data-sort');
-            isAsc = ListJsHelpers.hasClass(target, asc) ? false : true;
+        } else {
+            value = h.getAttribute(target, 'data-sort');
+            isAsc = h.hasClass(target, asc) ? false : true;
         }
         for (var i = 0, il = sortButtons.length; i < il; i++) {
-            ListJsHelpers.removeClass(sortButtons[i], asc);
-            ListJsHelpers.removeClass(sortButtons[i], desc);
+            h.removeClass(sortButtons[i], asc);
+            h.removeClass(sortButtons[i], desc);
         }
         if (isAsc) {
-            if (target !== undefined) { 
-                ListJsHelpers.addClass(target, asc); 
+            if (target !== undefined) {
+                h.addClass(target, asc);
             }
             isAsc = true;
         } else {
-            if (target !== undefined) { 
-                ListJsHelpers.addClass(target, desc);
+            if (target !== undefined) {
+                h.addClass(target, desc);
             }
-            isAsc = false;            
+            isAsc = false;
         }
 
         if (options.sortFunction) {
@@ -275,13 +279,13 @@ function List(id, options, values) {
                     if (asc) {
                         if (c == aa[x] && d == bb[x]) {
                             return c - d;
-                        } else { 
+                        } else {
                             return (aa[x] > bb[x]) ? 1 : -1;
                         }
                     } else {
                         if (c == aa[x] && d == bb[x]) {
                             return d-c;//c - d;
-                        } else { 
+                        } else {
                             return (aa[x] > bb[x]) ? -1 : 1; //(aa[x] > bb[x]) ? 1 : -1;
                         }
                     }
@@ -302,81 +306,129 @@ function List(id, options, values) {
             }
             return tz;
         }
-    }; 
+    };
 
     /*
     * Searches the list after values with content "searchStringOrEvent".
     * The columns parameter defines if all values should be included in the search,
-    * defaults to undefined which means "all". 
+    * defaults to undefined which means "all".
     */
     this.search = function(searchString, columns) {
-        var foundItems = [],
-			target = searchString.target || searchString.srcElement; /* IE have srcElement */
-        if (target !== undefined) {
-            searchString = target.value.toLowerCase();
-        } else {
-            searchString = searchString.toLowerCase();
-        }
+        var matching = [],
+            found,
+            item,
+            text,
+            values,
+            is,
+            columns = (columns === undefined) ? self.items[0].values() : columns,
+            searchString = (searchString === undefined) ? "" : searchString,
+            target = searchString.target || searchString.srcElement; /* IE have srcElement */
+
+        searchString = (target === undefined) ? searchString.toLowerCase() : target.value.toLowerCase();
+        is = self.filtered || (self.searched && (searchString.indexOf(lastSearch) == 0)) ? self.matching : self.items;
+
         // Escape regular expression characters
         searchString = searchString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-        var useAllColumns = false;
-        if (columns === undefined) {
-            useAllColumns = true;
-        }
+
         templater.clear();
-        if (searchString === "") {
-            for (var i = 0, il = self.items.length; ((i < il) && (i < self.maxVisibleItemsCount)); i++) {
-                self.items[i].show();
-            }
+        if (searchString === "" ) {
+            reset.search();
+            self.searched = false;
+            updateVisible();
         } else {
-            for (var k = 0, kl = self.items.length; k < kl; k++) {
-                var found = false,
-                    item = self.items[k];
-                if (useAllColumns) {
-                    columns = item.values();
-                }
+            self.searched = true;
+
+            for (var k = 0, kl = is.length; k < kl; k++) {
+                found = false;
+                item = is[k];
+                values = item.values();
+
                 for(var j in columns) {
-                    if(columns.hasOwnProperty(j) && columns[j] !== null) {
-                        var text = columns[j].toString().toLowerCase();
+                    if(values.hasOwnProperty(j) && columns[j] !== null) {
+                        text = values[j].toString().toLowerCase();
                         if ((searchString !== "") && (text.search(searchString) > -1)) {
                             found = true;
                         }
                     }
                 }
                 if (found) {
-                    foundItems.push(item);
-                }
-                if (found && (self.maxVisibleItemsCount > foundItems.length)) {
-                    item.show();
+                    item.found = true;
+                    matching.push(item);
+                } else {
+                    item.found = false;
                 }
             }
+            self.matching = matching;
+            updateVisible();
         }
-        return foundItems;
+        lastSearch = searchString;
+        return matching;
     };
+
+    var reset = {
+        filter: function() {
+            var is = self.items,
+                il = is.length;
+            while (il--) {
+                is[il].filtered = false;
+            }
+            if (self.searched) {
+                self.matching = [];
+                il = is.length;
+                while (il--) {
+                    console.log(il, is[il], is[il].found);
+                    if (is[il].found) {
+                        self.matching.push(is[il]);
+                    }
+                }
+            }
+        },
+        search: function() {
+            var is = self.items,
+                il = is.length;
+            while (il--) {
+                is[il].found = false;
+            }
+        }
+    }
+
+    var updateVisible = function() {
+        var is = (!self.searched && !self.filtered) ? self.items : self.matching;
+        templater.clear();
+        for (var i = 0, il = is.length; i < il && i < self.maxVisibleItemsCount; i++) {
+            is[i].show();
+        }
+    }
 
     /*
     * Filters the list. If filterFunction() returns False hides the Item.
     * if filterFunction == false are the filter removed
     */
     this.filter = function(filterFunction) {
-        var visibleItems = [];
-        for (var i = 0, il = self.items.length; i < il; i++) {
-            var item = self.items[i];
-            if (filterFunction === false || filterFunction === undefined) {
-                item.show();
-                visibleItems.push(item);
-            } else {
+        var matching = undefined;
+        reset.filter();
+        if (filterFunction === undefined) {
+            self.filtered = false;
+        } else {
+            matching = [];
+            self.filtered = true;
+            var is = self.searched ? self.matching : self.items;
+            console.log(is.length, is);
+            for (var i = 0, il = is.length; i < il; i++) {
+                var item = is[i];
                 if (filterFunction(item.values())) {
-                    visibleItems.push(item);
-                    item.show();
+                    item.filtered = true;
+                    matching.push(item);
                 } else {
-                    item.hide();
+                    item.filtered = false;
                 }
             }
+            self.matching = matching;
         }
-        return visibleItems;
+        updateVisible();
+        return matching;
     };
-    
+
     /*
     * Get size of the list
     */
@@ -396,14 +448,15 @@ function List(id, options, values) {
         var item = this,
             values = {};
 
+        this.found = false;
+        this.filtered = false;
+
         var init = function(initValues, element, notCreate) {
             if (element === undefined) {
                 if (notCreate) {
                     item.values(initValues, notCreate);
                 } else {
-                    //templater.create(item);
                     item.values(initValues);
-                    //templater.add(item);
                 }
             } else {
                 item.elm = element;
@@ -414,9 +467,7 @@ function List(id, options, values) {
         this.values = function(newValues, notCreate) {
             if (newValues !== undefined) {
                 for(var name in newValues) {
-                    //if (newValues.hasOwnProperty(name)) {
                     values[name] = newValues[name];
-                    //}
                 }
                 if (notCreate !== true) {
                     templater.set(item, item.values());
@@ -455,7 +506,7 @@ List.prototype.templateEngines = {};
 
 
 List.prototype.templateEngines.standard = function(list, settings) {
-    var listSource = ListJsHelpers.getByClass(settings.listClass, document.getElementById(settings.list))[0],
+    var listSource = h.getByClass(settings.listClass, document.getElementById(settings.list))[0],
         itemSource = document.getElementById(settings.item),
         templater = this,
         ensure = {
@@ -490,35 +541,35 @@ List.prototype.templateEngines.standard = function(list, settings) {
         ensure.created(item);
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
-            values[valueNames[i]] = ListJsHelpers.getByClass(valueNames[i], item.elm)[0].innerHTML;
+            values[valueNames[i]] = h.getByClass(valueNames[i], item.elm)[0].innerHTML;
         }
         return values;
     };
-    
+
     /* Sets values at element */
     this.set = function(item, values) {
         ensure.created(item);
         for(var v in values) {
             if (values.hasOwnProperty(v)) {
                 // TODO speed up if possible
-                var hej = ListJsHelpers.getByClass(v, item.elm, true);
+                var hej = h.getByClass(v, item.elm, true);
                 if (hej) {
                     hej.innerHTML = values[v];
                 }
             }
         }
     };
-    
+
     this.create = function(item) {
         if (item.elm !== undefined) {
             return;
         }
-        /* If item source does not exists, use the first item in list as 
+        /* If item source does not exists, use the first item in list as
         source for new items */
         ensure.tryItemSourceExists();
         var newItem = itemSource.cloneNode(true);
         newItem.id = "";
-        item.elm = newItem; 
+        item.elm = newItem;
         templater.set(item, item.values());
     };
     this.add = function(item) {
@@ -543,22 +594,22 @@ List.prototype.templateEngines.standard = function(list, settings) {
         if (listSource.hasChildNodes()) {
             while (listSource.childNodes.length >= 1)
             {
-                listSource.removeChild(listSource.firstChild);       
-            } 
+                listSource.removeChild(listSource.firstChild);
+            }
         }
     };
 };
 
 
 /*
-* These helper functions are not written by List.js author Jonny (they may have been 
+* These helper functions are not written by List.js author Jonny (they may have been
 * adjusted, thought).
 */
-ListJsHelpers = {
+h = {
     /*
     * Cross browser getElementsByClassName, which uses native
     * if it exists. Modified version of Dustin Diaz function:
-    * http://www.dustindiaz.com/getelementsbyclass 
+    * http://www.dustindiaz.com/getelementsbyclass
     */
     getByClass: (function() {
         if (document.getElementsByClassName) {
@@ -594,31 +645,31 @@ ListJsHelpers = {
         }
     })(),
     /* (elm, 'event' callback) Source: http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/ */
-    addEvent: (function( window, document ) {  
-        if ( document.addEventListener ) {  
+    addEvent: (function( window, document ) {
+        if ( document.addEventListener ) {
             return function( elem, type, cb ) {
-                if ((elem && !(elem instanceof Array) && !elem.length && !ListJsHelpers.isNodeList(elem) && (elem.length !== 0)) || elem === window ) {  
-                    elem.addEventListener(type, cb, false );  
-                } else if ( elem && elem[0] !== undefined ) {  
+                if ((elem && !(elem instanceof Array) && !elem.length && !h.isNodeList(elem) && (elem.length !== 0)) || elem === window ) {
+                    elem.addEventListener(type, cb, false );
+                } else if ( elem && elem[0] !== undefined ) {
                     var len = elem.length;
                     for ( var i = 0; i < len; i++ ) {
-                        ListJsHelpers.addEvent(elem[i], type, cb);
-                    }  
-                }  
-            };  
-        }  
-        else if ( document.attachEvent ) {  
-            return function ( elem, type, cb ) {  
-                if ((elem && !(elem instanceof Array) && !elem.length && !ListJsHelpers.isNodeList(elem) && (elem.length !== 0)) || elem === window ) {  
-                    elem.attachEvent( 'on' + type, function() { return cb.call(elem, window.event); } );  
-                } else if ( elem && elem[0] !== undefined ) { 
+                        h.addEvent(elem[i], type, cb);
+                    }
+                }
+            };
+        }
+        else if ( document.attachEvent ) {
+            return function ( elem, type, cb ) {
+                if ((elem && !(elem instanceof Array) && !elem.length && !h.isNodeList(elem) && (elem.length !== 0)) || elem === window ) {
+                    elem.attachEvent( 'on' + type, function() { return cb.call(elem, window.event); } );
+                } else if ( elem && elem[0] !== undefined ) {
                     var len = elem.length;
                     for ( var i = 0; i < len; i++ ) {
-                        ListJsHelpers.addEvent( elem[i], type, cb );
-                    }  
-                }  
-            };  
-        }  
+                        h.addEvent( elem[i], type, cb );
+                    }
+                }
+            };
+        }
     })(this, document),
     /* (elm, attribute) Source: http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method */
     getAttribute: function(ele, attr) {
@@ -666,5 +717,5 @@ ListJsHelpers = {
 };
 
 window.List = List;
-window.ListJsHelpers = ListJsHelpers;
+window.ListJsHelpers = h;
 })(window);
