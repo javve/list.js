@@ -112,10 +112,14 @@ var List = function(id, options, values) {
         }
     };
 
+
     /*
     * Add object to list
     */
-    this.add = function(values, options) {
+    this.add = function(values, callback) {
+        if (callback) {
+            addAsync(values, callback);
+        }
         var added = [],
             notCreate = false;
         if (values[0] === undefined){
@@ -143,17 +147,17 @@ var List = function(id, options, values) {
     * Adds items asynchronous to the list, good for adding huge amount of
     * data. Defaults to add 100 items a time
     */
-    this.addAsync = function(values, options) {
-        var count = options ? options.count || 100 : 100,
-            valuesToAdd = values.splice(0, count);
-        self.add(valuesToAdd, options);
+    var addAsync = function(values, callback, items) {
+        var valuesToAdd = values.splice(0, 100);
+        items = items || [];
+        items = items.concat(self.add(valuesToAdd));
         if (values.length > 0) {
             setTimeout(function() {
-                self.addAsync(values, options);
+                addAsync(values, callback, items);
             }, 10);
-        }/* else {
-            // TODO: Add added callback
-        }*/
+        } else {
+            callback(items);
+        }
     };
 
     /* Removes object from list.
