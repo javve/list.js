@@ -368,7 +368,7 @@ var List = function(id, options, values) {
         } else {
             matching = [];
             self.filtered = true;
-            var is = self.items; 
+            var is = self.items;
             for (var i = 0, il = is.length; i < il; i++) {
                 var item = is[i];
                 if (filterFunction(item.values())) {
@@ -423,7 +423,7 @@ var List = function(id, options, values) {
                 (self.filtered && self.searched && is[i].found && is[i].filtered) ||
                 (self.filtered && !self.searched && is[i].filtered) ||
                 (!self.filtered && self.searched && is[i].found) ||
-                (!self.filtered && !self.searched) 
+                (!self.filtered && !self.searched)
             ) {
                 is[i].show();
             }
