@@ -378,10 +378,6 @@ and try it at the [performance test page](http://listjs.com/examples/performance
 # How to build the script
 Type just *ant* in the console while in root folder.
 
-# Known bugs/obscurities
-* If items first are filtered and then sorted, all elements are shown again
-* API for sorting asc/desc should be better
-
 # Changelog
 
 ### 0.1.4
