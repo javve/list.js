@@ -381,6 +381,7 @@ Type just *ant* in the console while in root folder.
 # Changelog
 
 ### 0.1.4
+### 2011-12-15 Beta 0.1.4
 * `.filters()`, `.sort()` and `.search()` now deped on each other. If the list is filtered and then
 there is a search, the items hidden by the filters will stay hidden etc.
 * `.filter()` is the only way to reset filter. `.filter(false)` does not work anymore.
