@@ -67,6 +67,27 @@ var List = function(id, options, values) {
         h.addEvent(h.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
         sortButtons = h.getByClass(options.sortClass, self.listContainer);
         h.addEvent(sortButtons, 'click', self.sort);
+        // Kill highlight on sort buttons
+        var btn, computed_style;
+        for (var i = 0, il = sortButtons.length; i < il; i++) {
+            btn = sortButtons[i];
+            if ("unselectable" in btn) {
+                // IE, Opera
+                btn.unselectable = true;
+            } else if (window.getComputedStyle) {
+                computed_style = window.getComputedStyle(btn, null);
+
+                if ('MozUserSelect' in computed_style) {
+                    btn.style.MozUserSelect = "none";
+                } else if ('webkitUserSelect' in computed_style) {
+                    btn.style.webkitUserSelect = "none";
+                } else {
+                    return;
+                }
+            } else {
+                return;
+            }
+        }
         if (options.valueNames) {
             var itemsToIndex = initialItems.get(),
                 valueNames = options.valueNames;
