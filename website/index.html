@@ -188,11 +188,11 @@
 
                 <h3>JavaScript</h3>
                 <script type="syntaxhighlighter" class="brush: js"><![CDATA[
-                var templates = {
+                var options = {
                     valueNames: [ 'feature', 'description' ]
                 };
 
-                var featureList = new List('example-list', templates);
+                var featureList = new List('example-list', options);
                 ]]></script>
                 </div>
             </div>
@@ -230,7 +230,7 @@
 
             <h3>JavaScript</h3>
             <script type="syntaxhighlighter" class="brush: js"><![CDATA[
-            var templates = {
+            var options = {
                 valueNames: [ 'feature', 'description' ]
             };
 
@@ -240,7 +240,7 @@
                 , { feature: 'Update', description:'Update items as you go.' }
             ];
 
-            var featureList = new List('example-list', templates, values);
+            var featureList = new List('example-list', options, values);
 
             var newFeature = {
                 feature: 'Remove'
@@ -263,11 +263,11 @@
         	, { feature: 'Get', description:'Get item based on value.' }
         	, { feature: 'Update', description:'Update items as you go.' }
         ];
-        var templates = {
+        var options = {
         	valueNames: [ 'feature', 'description' ]
         };
 
-        var featureList = new List('example-list', templates, values);
+        var featureList = new List('example-list', options, values);
         featureList.add({ feature: 'Remove', description:'Remove items whenever you feel like.' });
     </script>
     <!-- End of List.js stuff -->

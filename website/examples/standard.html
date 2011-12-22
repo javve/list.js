@@ -120,11 +120,11 @@
         * LOVELY THINGS
         */
         
-        var templates = {
+        var options = {
     	    valueNames: [ 'name', 'description', 'category' ]
         };
 
-        var featureList = new List('lovely-things-list', templates);
+        var featureList = new List('lovely-things-list', options);
         
         $('#filter-games').click(function() {
             featureList.filter(function(values) {
