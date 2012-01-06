@@ -47,7 +47,8 @@ var List = function(id, options, values) {
 
     this.listContainer = document.getElementById(id);
     this.items = [];
-
+    this.visibleItems = []; // These are the items currently visible
+    this.matchingItems = []; // These are the items currently matching filters and search, regadlessof visible count
     this.searched = false;
     this.filtered = false;
 
@@ -357,7 +358,7 @@ var List = function(id, options, values) {
             updateVisible();
         }
         lastSearch = searchString;
-        return matching;
+        return self.visibleItem;
     };
 
     /*
@@ -384,7 +385,7 @@ var List = function(id, options, values) {
             }
         }
         updateVisible();
-        return matching;
+        return self.visibleItem;
     };
 
     /*
@@ -421,6 +422,7 @@ var List = function(id, options, values) {
 
     var updateVisible = function() {
         var is = self.items;
+        self.visibleItems = [];
         templater.clear();
         for (var i = 0, il = is.length; i < il && i < self.maxVisibleItemsCount; i++) {
             if (
@@ -430,6 +432,7 @@ var List = function(id, options, values) {
                 (!self.filtered && !self.searched)
             ) {
                 is[i].show();
+                self.visibleItems.push(is[i]);
             }
         }
     }
