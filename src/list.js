@@ -60,11 +60,13 @@ var List = function(id, options, values) {
         options.list = options.list || id;
         options.listClass = options.listClass || 'list';
         options.searchClass = options.searchClass || 'search';
+        options.searchId = options.searchId || '';
         options.sortClass = options.sortClass || 'sort';
 
         templater = new Templater(self, options);
         self.list = h.getByClass(options.listClass, self.listContainer, true);
-        h.addEvent(h.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
+        h.addEvent(options.searchId != '' ? document.getElementById(options.searchId) :
+            h.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
         sortButtons = h.getByClass(options.sortClass, self.listContainer);
         h.addEvent(sortButtons, 'click', self.sort);
         if (options.valueNames) {
