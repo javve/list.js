@@ -422,7 +422,8 @@ var List = function(id, options, values) {
     var updateVisible = function() {
         var is = self.items;
         templater.clear();
-        for (var i = 0, il = is.length; i < il && i < self.maxVisibleItemsCount; i++) {
+        var numShown = 0;
+        for (var i = 0, il = is.length; i < il && numShown < self.maxVisibleItemsCount; i++) {
             if (
                 (self.filtered && self.searched && is[i].found && is[i].filtered) ||
                 (self.filtered && !self.searched && is[i].filtered) ||
@@ -430,6 +431,7 @@ var List = function(id, options, values) {
                 (!self.filtered && !self.searched)
             ) {
                 is[i].show();
+                numShown++;
             }
         }
     }
