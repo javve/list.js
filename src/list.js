@@ -79,6 +79,7 @@ var List = function(id, options, values) {
         if (values !== undefined) {
             self.add(values);
         }
+        updateVisible();
     };
 
 	initialItems = {
