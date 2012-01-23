@@ -57,65 +57,74 @@ var List = function(id, options, values) {
     this.page = options.page || 200;
     this.i = options.i || 1;
 
-    init = function(values, options) {
-
-        options.list = options.list || id;
-        options.listClass = options.listClass || 'list';
-        options.searchClass = options.searchClass || 'search';
-        options.sortClass = options.sortClass || 'sort';
-
-        templater = new Templater(self, options);
-        self.list = h.getByClass(options.listClass, self.listContainer, true);
-        h.addEvent(h.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
-        sortButtons = h.getByClass(options.sortClass, self.listContainer);
-        h.addEvent(sortButtons, 'click', self.sort);
-
-        if (options.valueNames) {
-            var itemsToIndex = initialItems.get(),
-                valueNames = options.valueNames;
-            if (options.indexAsync) {
-                initialItems.indexAsync(itemsToIndex, valueNames);
-            } else {
-                initialItems.index(itemsToIndex, valueNames);
-                updateVisible();
-            }
-        }
-        if (values !== undefined) {
-            self.add(values);
-        }
-    };
-
-	initialItems = {
-        get: function() {
-            // return h.getByClass('item', self.list);
-            var nodes = self.list.childNodes,
-            items = [];
-            for (var i = 0, il = nodes.length; i < il; i++) {
-                // Only textnodes have a data attribute
-                if (nodes[i].data === undefined) {
-                    items.push(nodes[i]);
+    init = {
+        start: function(values, options) {
+            this.classes(options);
+            templater = new Templater(self, options);
+            this.callbacks(options);
+            this.items.start(values, options);
+        },
+        classes: function(options) {
+            options.list = options.list || id;
+            options.listClass = options.listClass || 'list';
+            options.searchClass = options.searchClass || 'search';
+            options.sortClass = options.sortClass || 'sort';
+        },
+        callbacks: function(options) {
+            self.list = h.getByClass(options.listClass, self.listContainer, true);
+            h.addEvent(h.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
+            sortButtons = h.getByClass(options.sortClass, self.listContainer);
+            h.addEvent(sortButtons, 'click', self.sort);
+        },
+        items: {
+            start: function(values, options) {
+                if (options.valueNames) {
+                    var itemsToIndex = this.get(),
+                    valueNames = options.valueNames;
+                    if (options.indexAsync) {
+                        this.indexAsync(itemsToIndex, valueNames);
+                    } else {
+                        this.index(itemsToIndex, valueNames);
+                        updateVisible();
+                    }
+                }
+                if (values !== undefined) {
+                    self.add(values);
+                }
+            },
+            get: function() {
+                // return h.getByClass('item', self.list);
+                var nodes = self.list.childNodes,
+                items = [];
+                for (var i = 0, il = nodes.length; i < il; i++) {
+                    // Only textnodes have a data attribute
+                    if (nodes[i].data === undefined) {
+                        items.push(nodes[i]);
+                    }
+                }
+                return items;
+            },
+            index: function(itemElements, valueNames) {
+                for (var i = 0, il = itemElements.length; i < il; i++) {
+                    self.items.push(new Item(valueNames, itemElements[i]));
+                }
+            },
+            indexAsync: function(itemElements, valueNames) {
+                var itemsToIndex = itemElements.splice(0, 100); // TODO: If < 100 items, what happens in IE etc?
+                this.index(itemsToIndex, valueNames);
+                if (itemElements.length > 0) {
+                    setTimeout(function() {
+                        init.items.indexAsync(itemElements, valueNames);
+                        }, 
+                    10);
+                } else {
+                    updateVisible();
+                    // TODO: Add indexed callback
                 }
             }
-            return items;
-        },
-        index: function(itemElements, valueNames) {
-            for (var i = 0, il = itemElements.length; i < il; i++) {
-                self.items.push(new Item(valueNames, itemElements[i]));
-            }
-        },
-        indexAsync: function(itemElements, valueNames) {
-            var itemsToIndex = itemElements.splice(0, 100); // TODO: If < 100 items, what happens in IE etc?
-            this.index(itemsToIndex, valueNames);
-            if (itemElements.length > 0) {
-                setTimeout(function() {
-                    initialItems.indexAsync(itemElements, valueNames);
-                }, 10);
-            } else {
-                updateVisible();
-                // TODO: Add indexed callback
-            }
         }
     };
+
 
     /*
     * Add object to list
@@ -427,7 +436,7 @@ var List = function(id, options, values) {
                 is[il].found = false;
             }
         }
-    }
+    };
 
     var updateVisible = function() {
         var is = self.items,
@@ -512,11 +521,10 @@ var List = function(id, options, values) {
         return new self.constructor.prototype.templateEngines[settings.engine](list, settings);
     };
 
-    init(values, options);
-}
+    init.start(values, options);
+};
 
 List.prototype.templateEngines = {};
-
 
 List.prototype.templateEngines.standard = function(list, settings) {
     var listSource = h.getByClass(settings.listClass, document.getElementById(settings.list))[0],
