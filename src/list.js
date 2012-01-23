@@ -537,37 +537,45 @@ List.prototype.plugins = {};
 
 List.prototype.templateEngines.standard = function(list, settings) {
     var listSource = h.getByClass(settings.listClass, document.getElementById(settings.list))[0],
-        itemSource = document.getElementById(settings.item),
-        templater = this,
-        ensure = {
-            tryItemSourceExists: function() {
-                if (itemSource === null) {
-                    var nodes = listSource.childNodes,
-                    items = [];
-                    for (var i = 0, il = nodes.length; i < il; i++) {
-                        // Only textnodes have a data attribute
-                        if (nodes[i].data === undefined) {
-                            itemSource = nodes[i];
-                            break;
-                        }
-                    }
-                }
-            },
-            created: function(item) {
-                if (item.elm === undefined) {
-                    templater.create(item);
-                }
-            },
-            added: function(item) {
-                if (item.elm.parentNode === null) {
-                    templater.add(item);
+        itemSource = getItemSource(settings.item),
+        templater = this;
+
+    function getItemSource(item) {
+        if (item === undefined) {
+            var nodes = listSource.childNodes,
+                items = [];
+
+            for (var i = 0, il = nodes.length; i < il; i++) {
+                // Only textnodes have a data attribute
+                if (nodes[i].data === undefined) {
+                    return nodes[i];
                 }
             }
-        };
+            return null;
+        } else if (item.indexOf("<") !== -1) { // Try create html element of list, do not work for tables!!
+            var div = document.createElement('div');
+            div.innerHTML = item;
+            return div.firstChild;
+        } else {
+            return document.getElementById(settings.item);
+        }
+    }
+
+    var ensure = {
+        created: function(item) {
+            if (item.elm === undefined) {
+                templater.create(item);
+            }
+        },
+        added: function(item) {
+            if (item.elm.parentNode === null) {
+                templater.add(item);
+            }
+        }
+    };
 
     /* Get values from element */
     this.get = function(item, valueNames) {
-        ensure.tryItemSourceExists();
         ensure.created(item);
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
@@ -596,7 +604,6 @@ List.prototype.templateEngines.standard = function(list, settings) {
         }
         /* If item source does not exists, use the first item in list as
         source for new items */
-        ensure.tryItemSourceExists();
         var newItem = itemSource.cloneNode(true);
         newItem.id = "";
         item.elm = newItem;
