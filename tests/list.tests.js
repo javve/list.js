@@ -77,7 +77,7 @@ test('Search', function() {
         items[1].values()
     ];
     deepEqual(items, [ryah, tj]);
-   theList.search(''); 
+    theList.search(); 
 });
 
 test('Search with null values', function() {
@@ -86,7 +86,6 @@ test('Search with null values', function() {
         , name: null
         , feature: null
     };
-    theList.add(objectWithNulls);
     try {
         var items = theList.search('Node');
         equals(items.length, 2);
@@ -97,7 +96,52 @@ test('Search with null values', function() {
         deepEqual(items, [ryah, tj]);
     }
     finally {
-        theList.search('');
+        theList.search();
+    }
+});
+
+test('Search for 0', function() {
+    var objectWithZeros = {
+        id: 7
+        , name: "Node"
+        , feature: 0
+    };
+    theList.add(objectWithZeros);
+    try {
+        var items = theList.search(0);
+        equals(items.length, 1);
+        items = [
+            items[0].values()
+        ];
+        deepEqual(items, [objectWithZeros]);
+    }
+    finally {
+        theList.search();
+    }
+});
+
+test('Search with undefined values', function() {
+    var objectWithZeros = {
+        id: 7
+        , name: "Node"
+        , feature: 0
+    };
+    var objectWithUndefined = {
+        id: 8
+        , name: "Node"
+        , feature: undefined
+    };
+    theList.add(objectWithUndefined);
+    try {
+        var items = theList.search(0);
+        equals(items.length, 1);
+        items = [
+            items[0].values()
+        ];
+        deepEqual(items, [objectWithZeros]);
+    }
+    finally {
+        theList.search();
     }
 });
 
@@ -115,6 +159,6 @@ test('Filter', function() {
 });
 
 test('Restore from filter', function() {
-    var visibleItems = theList.filter(false);
-    equals(visibleItems.length, 6); 
+    var visibleItems = theList.filter();
+    equals(visibleItems.length, 7); 
 });
