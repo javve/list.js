@@ -319,10 +319,10 @@ var List = function(id, options, values) {
             values,
             is,
             columns = (columns === undefined) ? self.items[0].values() : columns,
-            searchString = (searchString === undefined) ? "" : ""+searchString,
+            searchString = (searchString === undefined) ? "" : searchString,
             target = searchString.target || searchString.srcElement; /* IE have srcElement */
 
-        searchString = (target === undefined) ? searchString.toLowerCase() : target.value.toLowerCase();
+        searchString = (target === undefined) ? ""+searchString.toLowerCase() : ""+target.value.toLowerCase();
         is = self.items;
         // Escape regular expression characters
         searchString = searchString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
