@@ -127,9 +127,9 @@ var List = function(id, options, values) {
                 }
             }
         },
-        plugins: function(options) {
-            for (var i in self.plugins) {
-                self.plugins[i](self, options[i]);
+        plugins: function(plugins) {
+            for (var i in plugins) {
+                self.plugins[i](self, plugins[i]);
             }
         }
     };
