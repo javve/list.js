@@ -43,7 +43,9 @@ var List = function(id, options, values) {
 		Item,
 		Templater,
 		sortButtons,
-		lastSearch = "";
+		events = {
+		    'updated': []
+		};
 
     this.listContainer = document.getElementById(id);
     this.items = [];
@@ -117,7 +119,7 @@ var List = function(id, options, values) {
                 if (itemElements.length > 0) {
                     setTimeout(function() {
                         init.items.indexAsync(itemElements, valueNames);
-                        }, 
+                        },
                     10);
                 } else {
                     updateVisible();
@@ -126,7 +128,6 @@ var List = function(id, options, values) {
             }
         },
         plugins: function(options) {
-            console.log(options);
             for (var i in self.plugins) {
                 self.plugins[i](self, options[i]);
             }
@@ -429,6 +430,17 @@ var List = function(id, options, values) {
         self.items = [];
     };
 
+    this.on = function(event, callback) {
+        events[event].push(callback);
+    };
+
+    var trigger = function(event) {
+        var i = events[event].length;
+        while(i--) {
+            events[event][i]();
+        }
+    };
+
     var reset = {
         filter: function() {
             var is = self.items,
@@ -460,8 +472,8 @@ var List = function(id, options, values) {
                 is[i].hide();
 			}
         }
+        trigger('updated');
     };
-
 
     Item = function(initValues, element, notCreate) {
         var item = this,
