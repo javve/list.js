@@ -1,12 +1,12 @@
 /*
-ListJS Beta 0.1.4
-By Jonny Strömberg (www.jonnystromberg.se, www.listjs.com)
+ListJS Beta 0.1.5
+By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
 
 OBS. The API is not frozen. It MAY change!
 
 License (MIT)
 
-Copyright (c) 2011 Jonny Strömberg http://jonnystromberg.se/
+Copyright (c) 2011 Jonny Strömberg http://jonnystromberg.com
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -59,10 +59,12 @@ var List = function(id, options, values) {
 
     init = {
         start: function(values, options) {
+            options.plugins = options.plugins || {};
             this.classes(options);
             templater = new Templater(self, options);
             this.callbacks(options);
             this.items.start(values, options);
+            this.plugins(options.plugins);
         },
         classes: function(options) {
             options.list = options.list || id;
@@ -121,6 +123,12 @@ var List = function(id, options, values) {
                     updateVisible();
                     // TODO: Add indexed callback
                 }
+            }
+        },
+        plugins: function(options) {
+            console.log(options);
+            for (var i in self.plugins) {
+                self.plugins[i](self, options[i]);
             }
         }
     };
@@ -525,6 +533,7 @@ var List = function(id, options, values) {
 };
 
 List.prototype.templateEngines = {};
+List.prototype.plugins = {};
 
 List.prototype.templateEngines.standard = function(list, settings) {
     var listSource = h.getByClass(settings.listClass, document.getElementById(settings.list))[0],
