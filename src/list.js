@@ -67,6 +67,7 @@ var List = function(id, options, values) {
             this.callbacks(options);
             this.items.start(values, options);
             this.plugins(options.plugins);
+            updateVisible();
         },
         classes: function(options) {
             options.list = options.list || id;
@@ -89,7 +90,6 @@ var List = function(id, options, values) {
                         this.indexAsync(itemsToIndex, valueNames);
                     } else {
                         this.index(itemsToIndex, valueNames);
-                        updateVisible();
                     }
                 }
                 if (values !== undefined) {
@@ -156,12 +156,10 @@ var List = function(id, options, values) {
                 notCreate = (self.items.length > self.page) ? true : false;
                 item = new Item(values[i], undefined, notCreate);
             }
-            if (!notCreate) {
-                templater.add(item, options);
-            }
             self.items.push(item);
             added.push(item);
         }
+        updateVisible();
         return added;
     };
 
@@ -178,6 +176,7 @@ var List = function(id, options, values) {
                 addAsync(values, callback, items);
             }, 10);
         } else {
+            updateVisible();
             callback(items);
         }
     };
@@ -202,6 +201,7 @@ var List = function(id, options, values) {
                 found++;
             }
         }
+        updateVisible();
         return found;
     };
 
@@ -578,11 +578,6 @@ List.prototype.templateEngines.standard = function(list, settings) {
             if (item.elm === undefined) {
                 templater.create(item);
             }
-        },
-        added: function(item) {
-            if (item.elm.parentNode === null) {
-                templater.add(item);
-            }
         }
     };
 
@@ -602,9 +597,9 @@ List.prototype.templateEngines.standard = function(list, settings) {
         for(var v in values) {
             if (values.hasOwnProperty(v)) {
                 // TODO speed up if possible
-                var hej = h.getByClass(v, item.elm, true);
-                if (hej) {
-                    hej.innerHTML = values[v];
+                var elm = h.getByClass(v, item.elm, true);
+                if (elm) {
+                    elm.innerHTML = values[v];
                 }
             }
         }
@@ -621,16 +616,11 @@ List.prototype.templateEngines.standard = function(list, settings) {
         item.elm = newItem;
         templater.set(item, item.values());
     };
-    this.add = function(item) {
-        ensure.created(item);
-        listSource.appendChild(item.elm);
-    };
     this.remove = function(item) {
         listSource.removeChild(item.elm);
     };
     this.show = function(item) {
         ensure.created(item);
-        ensure.added(item);
         listSource.appendChild(item.elm);
     };
     this.hide = function(item) {
