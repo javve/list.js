@@ -383,7 +383,6 @@ var List = function(id, options, values) {
             }
             updateVisible();
         }
-        lastSearch = searchString;
         return self.visibleItems;
     };
 
