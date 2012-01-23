@@ -319,7 +319,7 @@ var List = function(id, options, values) {
             values,
             is,
             columns = (columns === undefined) ? self.items[0].values() : columns,
-            searchString = (searchString === undefined) ? "" : searchString,
+            searchString = (searchString === undefined) ? "" : ""+searchString,
             target = searchString.target || searchString.srcElement; /* IE have srcElement */
 
         searchString = (target === undefined) ? searchString.toLowerCase() : target.value.toLowerCase();
@@ -342,7 +342,7 @@ var List = function(id, options, values) {
 
                 for(var j in columns) {
                     if(values.hasOwnProperty(j) && columns[j] !== null) {
-                        text = values[j].toString().toLowerCase();
+                        text = (values[j] != null) ? values[j].toString().toLowerCase() : "";
                         if ((searchString !== "") && (text.search(searchString) > -1)) {
                             found = true;
                         }
