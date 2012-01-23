@@ -54,7 +54,8 @@ var List = function(id, options, values) {
 
     this.list = null;
     this.templateEngines = {};
-    this.maxVisibleItemsCount = options.maxVisibleItemsCount || 200;
+    this.page = options.page || 200;
+    this.i = options.i || 1;
 
     init = function(values, options) {
 
@@ -68,6 +69,7 @@ var List = function(id, options, values) {
         h.addEvent(h.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
         sortButtons = h.getByClass(options.sortClass, self.listContainer);
         h.addEvent(sortButtons, 'click', self.sort);
+
         if (options.valueNames) {
             var itemsToIndex = initialItems.get(),
                 valueNames = options.valueNames;
@@ -75,6 +77,7 @@ var List = function(id, options, values) {
                 initialItems.indexAsync(itemsToIndex, valueNames);
             } else {
                 initialItems.index(itemsToIndex, valueNames);
+                updateVisible();
             }
         }
         if (values !== undefined) {
@@ -107,12 +110,12 @@ var List = function(id, options, values) {
                 setTimeout(function() {
                     initialItems.indexAsync(itemElements, valueNames);
                 }, 10);
-            }/* else {
+            } else {
+                updateVisible();
                 // TODO: Add indexed callback
-            }*/
+            }
         }
     };
-
 
     /*
     * Add object to list
@@ -132,7 +135,7 @@ var List = function(id, options, values) {
                 item = values[i];
                 item.reload();
             } else {
-                notCreate = (self.items.length > self.maxVisibleItemsCount) ? true : false;
+                notCreate = (self.items.length > self.page) ? true : false;
                 item = new Item(values[i], undefined, notCreate);
             }
             if (!notCreate) {
@@ -160,6 +163,12 @@ var List = function(id, options, values) {
             callback(items);
         }
     };
+
+	this.show = function(i, page) {
+		this.i = i;
+		this.page = page;
+		updateVisible();
+	};
 
     /* Removes object from list.
     * Loops through the list and removes objects where
@@ -201,8 +210,6 @@ var List = function(id, options, values) {
     /* Sorts the list.
     * @valueOrEvent Either a JavaScript event object or a valueName
     * @sortFunction (optional) Define if natural sorting does not fullfill your needs
-    *
-    * TODO: Add Desc || Asc
     */
     this.sort = function(valueName, options) {
         var length = self.items.length,
@@ -312,6 +319,7 @@ var List = function(id, options, values) {
     * defaults to undefined which means "all".
     */
     this.search = function(searchString, columns) {
+        self.i = 1; // Reset paging
         var matching = [],
             found,
             item,
@@ -358,7 +366,7 @@ var List = function(id, options, values) {
             updateVisible();
         }
         lastSearch = searchString;
-        return self.visibleItem;
+        return self.visibleItems;
     };
 
     /*
@@ -366,6 +374,7 @@ var List = function(id, options, values) {
     * if filterFunction == false are the filter removed
     */
     this.filter = function(filterFunction) {
+        self.i = 1; // Reset paging
         var matching = undefined;
         reset.filter();
         if (filterFunction === undefined) {
@@ -385,7 +394,7 @@ var List = function(id, options, values) {
             }
         }
         updateVisible();
-        return self.visibleItem;
+        return self.visibleItems;
     };
 
     /*
@@ -421,29 +430,28 @@ var List = function(id, options, values) {
     }
 
     var updateVisible = function() {
-        var is = self.items;
+        var is = self.items,
+			il = is.length;
+
         self.visibleItems = [];
         templater.clear();
-        for (var i = 0, il = is.length; i < il && i < self.maxVisibleItemsCount; i++) {
-            if (
-                (self.filtered && self.searched && is[i].found && is[i].filtered) ||
-                (self.filtered && !self.searched && is[i].filtered) ||
-                (!self.filtered && self.searched && is[i].found) ||
-                (!self.filtered && !self.searched)
-            ) {
+        for (var i = 0; i < il; i++) {
+            if (is[i].matching() && ((i+1) >= self.i && self.visibleItems.length < self.page)) {
                 is[i].show();
                 self.visibleItems.push(is[i]);
-            }
+			} else {
+                is[i].hide();
+			}
         }
-    }
+    };
 
 
     Item = function(initValues, element, notCreate) {
         var item = this,
             values = {};
 
-        this.found = false;
-        this.filtered = false;
+        this.found = false; // Show if list.searched == true and this.found == true
+        this.filtered = false;// Show if list.filtered == true and this.filtered == true
 
         var init = function(initValues, element, notCreate) {
             if (element === undefined) {
@@ -475,6 +483,17 @@ var List = function(id, options, values) {
         };
         this.hide = function() {
             templater.hide(item);
+        };
+        this.matching = function() {
+            return (
+                (self.filtered && self.searched && item.found && item.filtered) ||
+               	(self.filtered && !self.searched && item.filtered) ||
+                (!self.filtered && self.searched && item.found) ||
+                (!self.filtered && !self.searched)
+            );
+        };
+        this.visible = function() {
+            return (item.elm.parentNode) ? true : false;
         };
         init(initValues, element, notCreate);
     };
