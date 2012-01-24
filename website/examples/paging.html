@@ -83,28 +83,37 @@
                             <li class="btn" id="filter-games">Only show games</li>
                             <li class="btn" id="filter-beverages">Only show beverages</li>
                         </ul>
+                        <ul class="paging topPaging clearfix"></ul>
                         <ul class="list">
                             <li>
-                                <img src="images/monkeyisland.jpg" class="thumb" />
-                                <h4><span class="name">Monkey Island 2: LeChuck's Revenge</span> <span class="category">Game</span></h4></h4>
-                                <p class="description">Monkey Island 2: LeChuck's Revenge is an adventure game developed and published by LucasArts in 1991. It was the second game of the Monkey Island series, following The Secret...</p>
+                                <span class="name">1 Monkey Island 2: LeChuck's Revenge</span> <span class="category">Game</span>
                             </li>
                             <li>
-                                <img src="images/coffee.jpg" class="thumb" />
-                                <h4><span class="name">Good Coffee</span> <span class="category">Beverage</span></h4></h4>
-                                <p class="description">Coffee is a brewed beverage with a dark, slightly acidic flavor prepared from the roasted seeds of the coffee plant, colloquially called coffee beans.</p>
+                                <span class="name">2 Good Coffee</span> <span class="category">Beverage</span>
                             </li>
                             <li>
-                                <img src="images/fullthrottle.jpg" class="thumb" />
-                                <h4><span class="name">Full Throttle</span> <span class="category">Game</span></h4></h4>
-                                <p class="description">Full Throttle is a computer adventure game developed and published by LucasArts. It was designed by Tim Schafer, who would later go on to design the critically acclaimed titles Grim Fandango, Psychonauts and Brütal Legend.</p>
+                                <span class="name">3 Full Throttle</span> <span class="category">Game</span>
                             </li>
                             <li>
-                                <img src="images/brooklyn.jpg" class="thumb" />
-                                <h4><span class="name">Brooklyn Lager</span> <span class="category">Beverage</span></h4>
-                                <p class="description">Brooklyn Brewery was started in 1987 by former Associated Press correspondent Steve Hindy and former Chemical Bank lending officer Tom Potter.</p>
+                                <span class="name">4 Brooklyn Lager</span> <span class="category">Beverage</span>
+                            </li>
+                            <li>
+                                <span class="name">5 Monkey Island 2: LeChuck's Revenge</span> <span class="category">Game</span>
+                            </li>
+                            <li>
+                                <span class="name">6 Good Coffee</span> <span class="category">Beverage</span>
+                            </li>
+                            <li>
+                                <span class="name">7 Full Throttle</span> <span class="category">Game</span>
+                            </li>
+                            <li>
+                                <span class="name">8 Brooklyn Lager</span> <span class="category">Beverage</span>
+                            </li>
+                            <li>
+                                <span class="name">9 Brooklyn Lager</span> <span class="category">Beverage</span>
                             </li>
                         </ul>
+                        <ul class="paging bottomPaging clearfix"></ul>
                     </div>
                 </div>
         </div>
@@ -114,6 +123,7 @@
 
     <!-- Start of List.js stuff -->
     <script src="../../src/list.js"></script>
+    <script src="../../plugins/paging/list.paging.js"></script>
 
     <script type="text/javascript">
             
@@ -122,7 +132,12 @@
         */
         
         var options = {
-    	    valueNames: [ 'name', 'description', 'category' ]
+    	    valueNames: [ 'name', 'category' ],
+    	    page: 3,
+    	    plugins: [
+    	        [ 'paging', { pagingClass: "topPaging" } ],
+    	        [ 'paging', { pagingClass: "bottomPaging" } ]
+    	    ]
         };
 
         var featureList = new List('lovely-things-list', options);
@@ -148,6 +163,7 @@
             });
             return false;
         });
+        
         $('#filter-none').click(function() {
             featureList.filter();
             return false;

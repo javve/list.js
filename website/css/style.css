@@ -1,6 +1,6 @@
 /* WARNING: This css extreamly unoranized, go away :) */
 
-body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {
 	margin:0;
 	padding:0;
 }
@@ -8,7 +8,7 @@ table {
 	border-collapse:collapse;
 	border-spacing:0;
 }
-fieldset,img { 
+fieldset,img {
 	border:0;
 }
 address,caption,cite,code,dfn,em,strong,th,var {
@@ -31,8 +31,28 @@ q:before,q:after {
 abbr,acronym { border:0;
 }
 
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
 
-/* * * * * * * * * * * * * * * * * * * * * 
+.clearfix {
+	display: inline-block;
+}
+
+html[xmlns] .clearfix {
+	display: block;
+}
+
+* html .clearfix {
+	height: 1%;
+}
+
+/* * * * * * * * * * * * * * * * * * * * *
 * General
 * * * * * * * * * * * * * * * * * * * * */
 
@@ -41,6 +61,8 @@ body {
     font:normal 14px/1.3 'helvetica neue', helvetica, arial;
     color:#bbb;
 	text-shadow:#262729 0 -1px 0;
+    -webkit-font-smoothing: antialiased;
+    padding-top:120px;
 }
 header {
 	float:left;
@@ -49,7 +71,7 @@ header {
 }
 #container {
 	width:750px;
-	margin: 80px auto;
+	margin: 0 auto 80px;
 }
 
 .c1 {
@@ -109,10 +131,10 @@ input {
     font:normal 12px/1.3 'helvetica neue', helvetica, arial;
 	font-size:20px;
     padding:2px 10px;
-    border-radius:10px;  
+    border-radius:10px;
     border:solid 1px #555;
     float:left;
-    margin-right:10px;  
+    margin-right:10px;
     margin-bottom:15px;
 }
 input:focus {
@@ -123,7 +145,7 @@ input:focus {
     border-right:solid 1px #e6e6e6;
     border-bottom:solid 1px #e6e6e6;
     border-left:solid 1px #aaa;}
-    
+
 .btn {
     color:#ccc;
     margin-right:5px;
@@ -161,7 +183,7 @@ td {
 }
 
 
-/* * * * * * * * * * * * * * * * * * * * * 
+/* * * * * * * * * * * * * * * * * * * * *
 * Meny
 * * * * * * * * * * * * * * * * * * * * */
 .menu {
@@ -172,7 +194,8 @@ td {
 	margin-left:-20px;
 	width:100%;
 	padding:0 20px;
-	background-color:rgba(30,30,30,.8);
+	background:#333;
+    background:rgba(30,30,30,.8);
 	border-bottom:solid 1px rgba(0,0,0,.1);
 	box-shadow: 0 0 20px rgba(0,0,0,1);
 	z-index: 100;
@@ -239,7 +262,7 @@ td {
 	margin-bottom:15px;
 }
 
-/* * * * * * * * * * * * * * * * * * * * * 
+/* * * * * * * * * * * * * * * * * * * * *
 * Start page
 * * * * * * * * * * * * * * * * * * * * */
 .logo {
@@ -248,7 +271,7 @@ td {
 	height:334px;
 	float:left;
 	margin:0 0 0 215px;
-}	
+}
 .slogan {display:none;}
 .logo span,
 .slogan span {
@@ -349,11 +372,11 @@ div.info {
 }
 
 
-/* * * * * * * * * * * * * * * * * * * * * 
+/* * * * * * * * * * * * * * * * * * * * *
 * Examples
 * * * * * * * * * * * * * * * * * * * * */
 #container.example-page {
-    margin-top:130px;
+    margin-top:30px;
 }
 
 h1 {
@@ -388,6 +411,7 @@ h1 {
 }
 #lovely-things-list .list {
     clear:both;
+    margin-bottom:10px;
 }
 #lovely-things-list .list li {
     padding:20px;
@@ -457,7 +481,7 @@ h1 {
 }
 
 
-/* * * * * * * * * * * * * * * * * * * * * 
+/* * * * * * * * * * * * * * * * * * * * *
 * Performance
 * * * * * * * * * * * * * * * * * * * * */
 
@@ -481,4 +505,35 @@ h1 {
     width:520px;
     border-bottom:solid 1px #666;
     background-color: rgba(255,255,255,0.1);
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * *
+* Paging
+* * * * * * * * * * * * * * * * * * * * */
+.paging {
+    padding-bottom:10px;
+    clear:both;
+    float:left;
+}
+.paging li {
+    display:block;
+    float:left;
+    padding:10px 15px;
+    border-radius:50%;
+}
+.paging li a {
+    color:#999;
+    text-decoration:none;
+    display:inline-block;
+    line-height:14px;
+}
+.paging li a.active {
+    font-weight:bold;
+    color:#eee;
+    font-size:18px;
+    margin:-1px;
+}
+.paging li a:hover {
+    color:#eee;
 }
