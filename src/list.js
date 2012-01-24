@@ -128,8 +128,8 @@ var List = function(id, options, values) {
             }
         },
         plugins: function(plugins) {
-            for (var i in plugins) {
-                self.plugins[i](self, plugins[i]);
+            for (var i = 0; i < plugins.length; i++) {
+                self.plugins[plugins[i][0]](self, plugins[i][1]);
             }
         }
     };
