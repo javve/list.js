@@ -66,8 +66,8 @@ var List = function(id, options, values) {
             templater = new Templater(self, options);
             this.callbacks(options);
             this.items.start(values, options);
-            this.plugins(options.plugins);
             updateVisible();
+            this.plugins(options.plugins);
         },
         classes: function(options) {
             options.list = options.list || id;
