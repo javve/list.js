@@ -129,7 +129,8 @@ var List = function(id, options, values) {
         },
         plugins: function(plugins) {
             for (var i = 0; i < plugins.length; i++) {
-                self.plugins[plugins[i][0]](self, plugins[i][1]);
+                var pluginName = plugins[i][1].name || plugins[i][0];
+                self[pluginName] = new self.plugins[plugins[i][0]](self, plugins[i][1]);
             }
         }
     };
