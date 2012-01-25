@@ -688,6 +688,10 @@ h = {
     },
     hasClass: function(ele, classN) {
         var classes = this.getAttribute(ele, 'class');
+        if (!classes) {
+        	// getAttribute() on 'class' failed, browser uses className instead
+        	var classes = this.getAttribute(ele, 'className');
+        }
         return (classes.search(classN) > -1);
     },
     addClass: function(ele, classN) {
