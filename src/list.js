@@ -65,7 +65,7 @@ var List = function(id, options, values) {
             templater = new Templater(self, options);
             this.callbacks(options);
             this.items.start(values, options);
-            updateVisible();
+            self.update();
             this.plugins(options.plugins);
         },
         classes: function(options) {
@@ -121,7 +121,7 @@ var List = function(id, options, values) {
                         },
                     10);
                 } else {
-                    updateVisible();
+                    self.update();
                     // TODO: Add indexed callback
                 }
             }
@@ -159,7 +159,7 @@ var List = function(id, options, values) {
             self.items.push(item);
             added.push(item);
         }
-        updateVisible();
+        self.update();
         return added;
     };
 
@@ -176,7 +176,7 @@ var List = function(id, options, values) {
                 addAsync(values, callback, items);
             }, 10);
         } else {
-            updateVisible();
+            self.update();
             callback(items);
         }
     };
@@ -184,7 +184,7 @@ var List = function(id, options, values) {
 	this.show = function(i, page) {
 		this.i = i;
 		this.page = page;
-		updateVisible();
+		self.update();
 	};
 
     /* Removes object from list.
@@ -201,7 +201,7 @@ var List = function(id, options, values) {
                 found++;
             }
         }
-        updateVisible();
+        self.update();
         return found;
     };
 
@@ -270,7 +270,7 @@ var List = function(id, options, values) {
             };
         }
         self.items.sort(options.sortFunction);
-        updateVisible();
+        self.update();
     };
 
     /*
@@ -299,7 +299,7 @@ var List = function(id, options, values) {
         if (searchString === "" ) {
             reset.search();
             self.searched = false;
-            updateVisible();
+            self.update();
         } else {
             self.searched = true;
 
@@ -323,7 +323,7 @@ var List = function(id, options, values) {
                     item.found = false;
                 }
             }
-            updateVisible();
+            self.update();
         }
         return self.visibleItems;
     };
@@ -352,7 +352,7 @@ var List = function(id, options, values) {
                 }
             }
         }
-        updateVisible();
+        self.update();
         return self.visibleItems;
     };
 
@@ -399,7 +399,7 @@ var List = function(id, options, values) {
         }
     };
 
-    var updateVisible = function() {
+    this.update = function() {
         var is = self.items,
 			il = is.length;
 
