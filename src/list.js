@@ -290,7 +290,7 @@ var List = function(id, options, values) {
             searchString = (searchString === undefined) ? "" : searchString,
             target = searchString.target || searchString.srcElement; /* IE have srcElement */
 
-        searchString = (target === undefined) ? ""+searchString.toLowerCase() : ""+target.value.toLowerCase();
+        searchString = (target === undefined) ? (""+searchString).toLowerCase() : ""+target.value.toLowerCase();
         is = self.items;
         // Escape regular expression characters
         searchString = searchString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
