@@ -452,8 +452,8 @@ Type just *ant* in the console while in root folder.
 
 # Changelog
 
-### 2012-01-23 Beta 0.1.5 
-* Lots of updates and interesting features. **[Read more »](http://jonnystromberg.com/listjs-0-1-5-plugins-paging/)**
+### 2012-01-23 Beta 0.2.0
+* Lots of updates and interesting features. **[Read more »](http://jonnystromberg.com/listjs-0-2-0-plugins-paging/)**
 
 ### 2011-12-15 Beta 0.1.4
 * `.filters()`, `.sort()` and `.search()` now deped on each other. If the list is filtered and then
