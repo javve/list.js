@@ -32,6 +32,29 @@ Javascript
     var hackerList = new List('hacker-list', options);
 
 ## Create list on initialization
+
+### Version 1 (do not work with tables)
+HTML
+
+    <div id="hacker-list">
+        <ul class="list"></ul>
+    </div>
+
+JavaScript
+
+    var options = {
+        item: '<li><h3 class="name"></h3><p class="city"></p></li>'
+    };
+
+    var values = [
+        { name: 'Jonny', city:'Stockholm' }
+        , { name: 'Jonas', city:'Berlin' }
+    ];
+
+    var hackerList = new List('hacker-list', options, values);
+
+
+### Version 2 
 HTML
 
     <div id="hacker-list">
@@ -58,6 +81,7 @@ JavaScript
     ];
 
     var hackerList = new List('hacker-list', options, values);
+
 
 
 ## Index existing list and then add
@@ -112,6 +136,19 @@ Javascript (nothing special)
     var hackerList = new List('hacker-list', options);
 
 
+# Plugins
+
+List.js offers a possiblity to use and add plugins that are integrated in the list objects 
+and are initiated at the same time as the lists. [Read more here »](http://jonnystromberg.com.dev/listjs-plugins-guide/)
+
+## List of plugins
+
+* **[Paging plugin](http://jonnystromberg.com.dev/listjs-paging-plugin/)** - A plugin for easily adding 
+paging to List.js
+
+As you see are there only one plugin currently. But I would very much like to add your plugin
+to this list if you just mails me.
+
 # Documentation
 
 ## Search, sort and list container elemenet
@@ -143,7 +180,7 @@ All of these classes can be defined by yourself when creating the list by settin
  Id the element in which the list area should be initialized.
 * **options**
 Some of the option parameters are required at some times
-	* **valueNames** _(Array, default: null) (*only required if list already contains items before initialization)_
+	* **valueNames** _(Array, default: null) (*only required if list already contains items before initialization)_  
 	If the list contains items on initialization does this array
 	have to contain the value names (class names) for the different values of
 	each list item.
@@ -157,45 +194,77 @@ Some of the option parameters are required at some times
 
 	        var valueNames = ['name', 'city'];
 
-	* **item** _(String, default: undefined)_
-	ID to item template element
+	* **item** _(String, default: undefined)_  
+	ID to item template element or a string of HTML (**notice**: does not work with `<tr>`)
+	
+	        var options = {
+	            item: "<li><span class='name'></span><span class='city'></span></li>"
+	        }
 
-	* **listClass** _(String, default: "list")_
+	* **listClass** _(String, default: "list")_  
 	What is class of the list-container?
 
-	* **searchClass** _(String, default: "search")_
+	* **searchClass** _(String, default: "search")_  
 	What is class of the search field?
 
-	* **sortClass** _(String, default: "sort")_
+	* **sortClass** _(String, default: "sort")_  
 	What is class of the sort buttons?
 
-	* **indexAsync** _(Boolean, default: false)_
+	* **indexAsync** _(Boolean, default: false)_  
 	If there already are items in the list to which the
 	List.js-script is added, should the indexing be done
 	in a asynchronous way? Good for large lists (> 500 items).
 
-	* **maxVisibleItemsCount** _(Int, default: 200)_
+	* **page** _(Int, default: 200)_ (maxVisibleItemsCount previously)  
 	Defines how many items that should be visible at the same time. This affects
 	performance.
+	
+	* **i**  _(Int, default: 1)_  
+	Which items should be shown as the first one.
+	
+	* **plugins** _(Array, default: undefined)_  
+	[Read more about plugins here](http://jonnystromberg.com/listjs-plugins-guide/)
+	
 * **values** _(Array of objects) (*optional)_
 Values to add to the list on initialization.
 
 
-## List API
+# List API
 These methods are available for the List-object.
 
-### Attributes
-* **listContainer** _(Element)_
+### Properties
+* **listContainer** _(Element)_  
 The element node that contains the entire list area.
-* **items** _(Array)_
-A Array of all Item-objects in the list.
-* **list** _(Element)_
+
+* **list** _(Element)_  
 The element containing all items.
-* **templateEngines** _(Object)_
+
+* **items** _(Array)_  
+A Array of all Item-objects in the list.
+
+* **visibleItems** _(Array)_  
+The currently visible items in the list
+
+* **matchingItems** _(Array)_  
+The items matching the currently active filter and search.
+
+* **searched** _(Boolean)_  
+Returns true if the list is searched.
+
+* **filtered** _(Boolean)_  
+Returns true if there are a active filter.
+
+* **list** _(Element)_  
+The element containing all items.
+
+* **templateEngines** _(Object)_  
 Contains all template engines available.
 
-### Functions
-* **add(values, callback)**
+* **plugins** _(Object)_  
+The currently avaliable plugins.
+
+### Methods
+* **add(values, callback)**  
 Adds one or more items to the list.
 
         listObj.add({ name: "Jonny", city: "Stockholm" });
@@ -214,28 +283,28 @@ Adds one or more items to the list.
             console.log('All ' + items.length + ' were added!');
         });
 
-* **remove(valueName, value)**
+* **remove(valueName, value)**  
 Removes items from the list where the value named `valueName` has value `value`.
 Returns the count of items that where removed.
 
 		itemsInList = [
 			{ id: 1, name: "Jonny" }
 			, { id: 2, name "Gustaf" }
-		]
+		];
 		listObj.remove("id", 1); -> return 1
 
-* **get(valueName, value)**
+* **get(valueName, value)**  
 Returns values from the list where the value named `valueName` has value `value`.
 
 			itemsInList = [
 				{ id: 1, name: "Jonny" }
 				, { id: 2, name "Gustaf" }
-			]
+			];
 			listObj.get("id", 2); -> return { id: 2, name "Gustaf" }
 
-* **sort(valueName, options)**
+* **sort(valueName, options)**  
 Sorts the list based in values in column named `valueName`. The options
-parameter can contain two attributes `options.sortFunction` and `options.asc`.
+parameter can contain two properties `options.sortFunction` and `options.asc`.
 `options.sortFunction` is used if you want to make you one sort function.
 Default sort function is found here [http://my.opera.com/GreyWyvern/blog/show.dml/1671288](http://my.opera.com/GreyWyvern/blog/show.dml/1671288)
 `options.asc = true` means that you want to sort the list in ascending order. Set
@@ -244,20 +313,20 @@ Default sort function is found here [http://my.opera.com/GreyWyvern/blog/show.dm
         listObj.sort('name', { asc: true }); -> Sorts the list in abc-order based on names
         listObj.sort('name', { asc: false }); -> Sorts the list in zxy-order based on names
 
-* **search(searchString, columns)**
+* **search(searchString, columns)**    
 Searches the list
 
         itemsInList = [
             { id: 1, name: "Jonny" }
             , { id: 2, name "Gustaf" }
             , { id: 3, name "Jonas" }
-        ]
+        ];
 
         listObj.search('Jonny'); -> Only item with name Jonny is shown (also returns this item)
 
         listObj.search(); -> Show all items in list
 
-* **clear()**
+* **clear()**  
 Removes all items from the list
 
 * **filter(filterFunction)**
@@ -266,7 +335,7 @@ Removes all items from the list
     	    { id: 1, name: "Jonny" }
     	    , { id: 2, name "Gustaf" }
     	    , { id: 3, name "Jonas" }
-    	]
+    	];
 
     	listObj.filter(function(itemValues) {
     	   if (itemValues.id > 1) {
@@ -278,19 +347,42 @@ Removes all items from the list
 
     	listObjs.filter(); -> Remove all filters
 
-* **size()**
-Returns the size of the list
+* **size()**  
+Returns the size of the list.
 
+* **show(i, page)**  
+Shows `page` number of items from `i`. Use for paging etc.
 
-## Item API
+        itemsInList = [
+    	    { id: 1, name: "Jonny" }
+    	    , { id: 2, name "Gustaf" }
+    	    , { id: 3, name "Jonas" }
+    	    , { id: 4, name "Egon" }
+    	    , { id: 5, name "Frank" }
+    	    , { id: &, name "Ester" }
+    	];
+    	
+    	listObj.show(4, 3); -> Display item 4,5,6 
+    	
+    	
+* **update()**  
+Updates the current state of the list. Meaning that if you for instance 
+hides some items with `itemObj.hide()` method then you have to call `listObj.update()` 
+if you want the paging to update.
+
+* **on(event, callback)**  
+Execute `callback` when list have been updated (triggered by `update()`, which is used by a lot of methods).
+
+# Item API
 These methods are available for all Items that are returned by
 the list.
-### Attributes
+
+### Properties
 
 * **elm** _(Element)_
 The actual item DOM element
 
-### Functions
+### Methods
 * **values(newValues)**
 	* newValues _optional_
 	If variable newValues are present the new values replaces the current item values
@@ -304,70 +396,50 @@ The actual item DOM element
 	        });
 	        item.values() -> { name: "Jonny", age: 25, city: "Stockholm" }
 
-* **show()**
+* **show()**  
 Shows the item
-* **hide()**
+
+* **hide()**  
 Hides the item (removes the element from the list, and then when its shown its appended again, the element will thereby change position in the list, bug, but a good solution is yet to find)
 
+* **matching()**  
+Returns boolean. True if the item match the current filter and searches. Visible items 
+always matches, but matching items are not always visible.
 
-## TemplateEngine API
-Only needed if you want to build you own template engine
+* **visisble()**  
+Returns boolean. True if the item is visible. Visible items 
+always matches, but matching items are not always visible.
 
-### Attributes
-
-None
-
-### Functions
-* **get(item, valueNames)**
-Get values from `item` corresponding to `valueNames`
-
-* **set(item, values)**
-Sets `values` to item
-
-* **create(item)**
-Creates html element and adds to `item`
-
-* **add(item)**
-Adds a `item`s html element to the list
-
-* **remove(item)**
-Removes `item`
-
-* **show(item)**
-Shows `item`
-
-* **hide(item)**
-Hides the `item`
-
-* **clear()**
-Removes all items from the list
 
 
 ## Helper functions
 Called by ListJsHelpers.functionName()
 
-* **getByClass(element, class, isSingle)**
+* **getByClass(element, class, isSingle)**  
 [http://www.dustindiaz.com/getelementsbyclass](http://www.dustindiaz.com/getelementsbyclass)
 
-* **addEvent(element, type, callback)**
+* **addEvent(element, type, callback)**  
 [http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/](http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/)
 Updated in some ways, thought.
 
-* **getAttribute(element, attribute)**
+* **getAttribute(element, attribute)**  
 [http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method](http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method)
 
-* **isNodeList(element)**
+* **isNodeList(element)**  
 [http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript](http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript)
 
-* **hasClass(element, class)**
+* **hasClass(element, class)**  
 Checks if `element` has class name `class`
 
-* **addClass(element, class)**
+* **addClass(element, class)**  
 Adds class name `class` to `element`
 
-* **removeClass(element, class)**
+* **removeClass(element, class)**  
 Removes class name `class` from `element`
 
+
+# Plugins (paging)
+Read more about plugins in [this blog post](http://jonnystromberg.com/listjs-plugins-guide/) and find out [how to use the paging plugin here](http://jonnystromberg.com/listjs-paging-plugin/).
 
 
 # Performance and benchmarking
@@ -380,7 +452,9 @@ Type just *ant* in the console while in root folder.
 
 # Changelog
 
-### 0.1.4
+### 2012-01-23 Beta 0.1.5 
+* Lots of updates and interesting features. **[Read more »](http://jonnystromberg.com/listjs-0-1-5-plugins-paging/)**
+
 ### 2011-12-15 Beta 0.1.4
 * `.filters()`, `.sort()` and `.search()` now deped on each other. If the list is filtered and then
 there is a search, the items hidden by the filters will stay hidden etc.
@@ -421,7 +495,7 @@ and `removeClass(element, class)`
 
 # License (MIT)
 
-Copyright (c) 2011 Jonny Strömberg http://jonnystromberg.se/
+Copyright (c) 2012 Jonny Strömberg http://jonnystromberg.com
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the "Software"),
