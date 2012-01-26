@@ -1,12 +1,12 @@
 /*
-ListJS Beta 0.1.4
-By Jonny Strömberg (www.jonnystromberg.se, www.listjs.com)
+ListJS Beta 0.2.0
+By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
 
 OBS. The API is not frozen. It MAY change!
 
 License (MIT)
 
-Copyright (c) 2011 Jonny Strömberg http://jonnystromberg.se/
+Copyright (c) 2011 Jonny Strömberg http://jonnystromberg.com
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -39,11 +39,12 @@ var List = function(id, options, values) {
 		templater,
 		init,
 		initialItems,
-		sorter,
 		Item,
 		Templater,
 		sortButtons,
-		lastSearch = "";
+		events = {
+		    'updated': []
+		};
 
     this.listContainer = document.getElementById(id);
     this.items = [];
@@ -54,63 +55,83 @@ var List = function(id, options, values) {
 
     this.list = null;
     this.templateEngines = {};
-    this.maxVisibleItemsCount = options.maxVisibleItemsCount || 200;
+    
+    this.page = options.page || 200;
+    this.i = options.i || 1;
 
-    init = function(values, options) {
-
-        options.list = options.list || id;
-        options.listClass = options.listClass || 'list';
-        options.searchClass = options.searchClass || 'search';
-        options.sortClass = options.sortClass || 'sort';
-
-        templater = new Templater(self, options);
-        self.list = h.getByClass(options.listClass, self.listContainer, true);
-        h.addEvent(h.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
-        sortButtons = h.getByClass(options.sortClass, self.listContainer);
-        h.addEvent(sortButtons, 'click', self.sort);
-        if (options.valueNames) {
-            var itemsToIndex = initialItems.get(),
-                valueNames = options.valueNames;
-            if (options.indexAsync) {
-                initialItems.indexAsync(itemsToIndex, valueNames);
-            } else {
-                initialItems.index(itemsToIndex, valueNames);
-            }
-        }
-        if (values !== undefined) {
-            self.add(values);
-        }
-        updateVisible();
-    };
-
-	initialItems = {
-        get: function() {
-            // return h.getByClass('item', self.list);
-            var nodes = self.list.childNodes,
-            items = [];
-            for (var i = 0, il = nodes.length; i < il; i++) {
-                // Only textnodes have a data attribute
-                if (nodes[i].data === undefined) {
-                    items.push(nodes[i]);
+    init = {
+        start: function(values, options) {
+            options.plugins = options.plugins || {};
+            this.classes(options);
+            templater = new Templater(self, options);
+            this.callbacks(options);
+            this.items.start(values, options);
+            self.update();
+            this.plugins(options.plugins);
+        },
+        classes: function(options) {
+            options.list = options.list || id;
+            options.listClass = options.listClass || 'list';
+            options.searchClass = options.searchClass || 'search';
+            options.sortClass = options.sortClass || 'sort';
+        },
+        callbacks: function(options) {
+            self.list = h.getByClass(options.listClass, self.listContainer, true);
+            h.addEvent(h.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
+            sortButtons = h.getByClass(options.sortClass, self.listContainer);
+            h.addEvent(sortButtons, 'click', self.sort);
+        },
+        items: {
+            start: function(values, options) {
+                if (options.valueNames) {
+                    var itemsToIndex = this.get(),
+                    valueNames = options.valueNames;
+                    if (options.indexAsync) {
+                        this.indexAsync(itemsToIndex, valueNames);
+                    } else {
+                        this.index(itemsToIndex, valueNames);
+                    }
+                }
+                if (values !== undefined) {
+                    self.add(values);
+                }
+            },
+            get: function() {
+                // return h.getByClass('item', self.list);
+                var nodes = self.list.childNodes,
+                items = [];
+                for (var i = 0, il = nodes.length; i < il; i++) {
+                    // Only textnodes have a data attribute
+                    if (nodes[i].data === undefined) {
+                        items.push(nodes[i]);
+                    }
+                }
+                return items;
+            },
+            index: function(itemElements, valueNames) {
+                for (var i = 0, il = itemElements.length; i < il; i++) {
+                    self.items.push(new Item(valueNames, itemElements[i]));
+                }
+            },
+            indexAsync: function(itemElements, valueNames) {
+                var itemsToIndex = itemElements.splice(0, 100); // TODO: If < 100 items, what happens in IE etc?
+                this.index(itemsToIndex, valueNames);
+                if (itemElements.length > 0) {
+                    setTimeout(function() {
+                        init.items.indexAsync(itemElements, valueNames);
+                        },
+                    10);
+                } else {
+                    self.update();
+                    // TODO: Add indexed callback
                 }
             }
-            return items;
         },
-        index: function(itemElements, valueNames) {
-            for (var i = 0, il = itemElements.length; i < il; i++) {
-                self.items.push(new Item(valueNames, itemElements[i]));
+        plugins: function(plugins) {
+            for (var i = 0; i < plugins.length; i++) {
+                var pluginName = plugins[i][1].name || plugins[i][0];
+                self[pluginName] = new self.plugins[plugins[i][0]](self, plugins[i][1]);
             }
-        },
-        indexAsync: function(itemElements, valueNames) {
-            var itemsToIndex = itemElements.splice(0, 100); // TODO: If < 100 items, what happens in IE etc?
-            this.index(itemsToIndex, valueNames);
-            if (itemElements.length > 0) {
-                setTimeout(function() {
-                    initialItems.indexAsync(itemElements, valueNames);
-                }, 10);
-            }/* else {
-                // TODO: Add indexed callback
-            }*/
         }
     };
 
@@ -133,15 +154,13 @@ var List = function(id, options, values) {
                 item = values[i];
                 item.reload();
             } else {
-                notCreate = (self.items.length > self.maxVisibleItemsCount) ? true : false;
+                notCreate = (self.items.length > self.page) ? true : false;
                 item = new Item(values[i], undefined, notCreate);
-            }
-            if (!notCreate) {
-                templater.add(item, options);
             }
             self.items.push(item);
             added.push(item);
         }
+        self.update();
         return added;
     };
 
@@ -158,9 +177,16 @@ var List = function(id, options, values) {
                 addAsync(values, callback, items);
             }, 10);
         } else {
+            self.update();
             callback(items);
         }
     };
+
+	this.show = function(i, page) {
+		this.i = i;
+		this.page = page;
+		self.update();
+	};
 
     /* Removes object from list.
     * Loops through the list and removes objects where
@@ -176,6 +202,7 @@ var List = function(id, options, values) {
                 found++;
             }
         }
+        self.update();
         return found;
     };
 
@@ -202,8 +229,6 @@ var List = function(id, options, values) {
     /* Sorts the list.
     * @valueOrEvent Either a JavaScript event object or a valueName
     * @sortFunction (optional) Define if natural sorting does not fullfill your needs
-    *
-    * TODO: Add Desc || Asc
     */
     this.sort = function(valueName, options) {
         var length = self.items.length,
@@ -242,69 +267,11 @@ var List = function(id, options, values) {
             options.sortFunction = options.sortFunction;
         } else {
             options.sortFunction = function(a, b) {
-                return sorter.alphanum(a.values()[value], b.values()[value], isAsc);
+                return h.sorter.alphanum(a.values()[value], b.values()[value], isAsc);
             };
         }
         self.items.sort(options.sortFunction);
-        updateVisible();
-    };
-
-    /*
-    * The sort function. From http://my.opera.com/GreyWyvern/blog/show.dml/1671288
-    */
-    sorter = {
-        alphanum: function(a,b,asc) {
-            if (a === undefined || a === null) {
-                a = "";
-            }
-            if (b === undefined || b === null) {
-                b = "";
-            }
-            a = a.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
-                return (p1 == "lt")? "<" : ">";
-            });
-            a = a.replace(/<\/?[^>]+(>|$)/g, "");
-
-            b = b.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
-                return (p1 == "lt")? "<" : ">";
-            });
-            b = b.replace(/<\/?[^>]+(>|$)/g, "");
-            var aa = this.chunkify(a);
-            var bb = this.chunkify(b);
-
-            for (var x = 0; aa[x] && bb[x]; x++) {
-                if (aa[x] !== bb[x]) {
-                    var c = Number(aa[x]), d = Number(bb[x]);
-                    if (asc) {
-                        if (c == aa[x] && d == bb[x]) {
-                            return c - d;
-                        } else {
-                            return (aa[x] > bb[x]) ? 1 : -1;
-                        }
-                    } else {
-                        if (c == aa[x] && d == bb[x]) {
-                            return d-c;//c - d;
-                        } else {
-                            return (aa[x] > bb[x]) ? -1 : 1; //(aa[x] > bb[x]) ? 1 : -1;
-                        }
-                    }
-                }
-            }
-            return aa.length - bb.length;
-        },
-        chunkify: function(t) {
-            var tz = [], x = 0, y = -1, n = 0, i, j;
-
-            while (i = (j = t.charAt(x++)).charCodeAt(0)) {
-                var m = (i == 45 || i == 46 || (i >=48 && i <= 57));
-                if (m !== n) {
-                    tz[++y] = "";
-                    n = m;
-                }
-                tz[y] += j;
-            }
-            return tz;
-        }
+        self.update();
     };
 
     /*
@@ -313,6 +280,7 @@ var List = function(id, options, values) {
     * defaults to undefined which means "all".
     */
     this.search = function(searchString, columns) {
+        self.i = 1; // Reset paging
         var matching = [],
             found,
             item,
@@ -323,7 +291,7 @@ var List = function(id, options, values) {
             searchString = (searchString === undefined) ? "" : searchString,
             target = searchString.target || searchString.srcElement; /* IE have srcElement */
 
-        searchString = (target === undefined) ? searchString.toLowerCase() : target.value.toLowerCase();
+        searchString = (target === undefined) ? (""+searchString).toLowerCase() : ""+target.value.toLowerCase();
         is = self.items;
         // Escape regular expression characters
         searchString = searchString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -332,7 +300,7 @@ var List = function(id, options, values) {
         if (searchString === "" ) {
             reset.search();
             self.searched = false;
-            updateVisible();
+            self.update();
         } else {
             self.searched = true;
 
@@ -343,7 +311,7 @@ var List = function(id, options, values) {
 
                 for(var j in columns) {
                     if(values.hasOwnProperty(j) && columns[j] !== null) {
-                        text = values[j].toString().toLowerCase();
+                        text = (values[j] != null) ? values[j].toString().toLowerCase() : "";
                         if ((searchString !== "") && (text.search(searchString) > -1)) {
                             found = true;
                         }
@@ -356,10 +324,9 @@ var List = function(id, options, values) {
                     item.found = false;
                 }
             }
-            updateVisible();
+            self.update();
         }
-        lastSearch = searchString;
-        return self.visibleItem;
+        return self.visibleItems;
     };
 
     /*
@@ -367,6 +334,7 @@ var List = function(id, options, values) {
     * if filterFunction == false are the filter removed
     */
     this.filter = function(filterFunction) {
+        self.i = 1; // Reset paging
         var matching = undefined;
         reset.filter();
         if (filterFunction === undefined) {
@@ -385,8 +353,8 @@ var List = function(id, options, values) {
                 }
             }
         }
-        updateVisible();
-        return self.visibleItem;
+        self.update();
+        return self.visibleItems;
     };
 
     /*
@@ -404,6 +372,17 @@ var List = function(id, options, values) {
         self.items = [];
     };
 
+    this.on = function(event, callback) {
+        events[event].push(callback);
+    };
+
+    var trigger = function(event) {
+        var i = events[event].length;
+        while(i--) {
+            events[event][i]();
+        }
+    };
+
     var reset = {
         filter: function() {
             var is = self.items,
@@ -419,34 +398,37 @@ var List = function(id, options, values) {
                 is[il].found = false;
             }
         }
-    }
+    };
 
-    var updateVisible = function() {
-        var is = self.items;
+
+    this.update = function() {
+        var is = self.items,
+			il = is.length;
+
         self.visibleItems = [];
+        self.matchingItems = [];
         templater.clear();
-        var numShown = 0;
-        for (var i = 0, il = is.length; i < il && numShown < self.maxVisibleItemsCount; i++) {
-            if (
-                (self.filtered && self.searched && is[i].found && is[i].filtered) ||
-                (self.filtered && !self.searched && is[i].filtered) ||
-                (!self.filtered && self.searched && is[i].found) ||
-                (!self.filtered && !self.searched)
-            ) {
+        for (var i = 0; i < il; i++) {
+            if (is[i].matching() && ((i+1) >= self.i && self.visibleItems.length < self.page)) {
                 is[i].show();
-                numShown++;
                 self.visibleItems.push(is[i]);
-            }
+                self.matchingItems.push(is[i]);
+			} else if (is[i].matching()) {
+                self.matchingItems.push(is[i]);
+                is[i].hide();
+			} else {
+                is[i].hide();
+			}
         }
-    }
-
+        trigger('updated');
+    };
 
     Item = function(initValues, element, notCreate) {
         var item = this,
             values = {};
 
-        this.found = false;
-        this.filtered = false;
+        this.found = false; // Show if list.searched == true and this.found == true
+        this.filtered = false;// Show if list.filtered == true and this.filtered == true
 
         var init = function(initValues, element, notCreate) {
             if (element === undefined) {
@@ -479,6 +461,17 @@ var List = function(id, options, values) {
         this.hide = function() {
             templater.hide(item);
         };
+        this.matching = function() {
+            return (
+                (self.filtered && self.searched && item.found && item.filtered) ||
+               	(self.filtered && !self.searched && item.filtered) ||
+                (!self.filtered && self.searched && item.found) ||
+                (!self.filtered && !self.searched)
+            );
+        };
+        this.visible = function() {
+            return (item.elm.parentNode) ? true : false;
+        };
         init(initValues, element, notCreate);
     };
 
@@ -496,45 +489,48 @@ var List = function(id, options, values) {
         return new self.constructor.prototype.templateEngines[settings.engine](list, settings);
     };
 
-    init(values, options);
-}
+    init.start(values, options);
+};
 
 List.prototype.templateEngines = {};
-
+List.prototype.plugins = {};
 
 List.prototype.templateEngines.standard = function(list, settings) {
     var listSource = h.getByClass(settings.listClass, document.getElementById(settings.list))[0],
-        itemSource = document.getElementById(settings.item),
-        templater = this,
-        ensure = {
-            tryItemSourceExists: function() {
-                if (itemSource === null) {
-                    var nodes = listSource.childNodes,
-                    items = [];
-                    for (var i = 0, il = nodes.length; i < il; i++) {
-                        // Only textnodes have a data attribute
-                        if (nodes[i].data === undefined) {
-                            itemSource = nodes[i];
-                            break;
-                        }
-                    }
-                }
-            },
-            created: function(item) {
-                if (item.elm === undefined) {
-                    templater.create(item);
-                }
-            },
-            added: function(item) {
-                if (item.elm.parentNode === null) {
-                    templater.add(item);
+        itemSource = getItemSource(settings.item),
+        templater = this;
+
+    function getItemSource(item) {
+        if (item === undefined) {
+            var nodes = listSource.childNodes,
+                items = [];
+
+            for (var i = 0, il = nodes.length; i < il; i++) {
+                // Only textnodes have a data attribute
+                if (nodes[i].data === undefined) {
+                    return nodes[i];
                 }
             }
-        };
+            return null;
+        } else if (item.indexOf("<") !== -1) { // Try create html element of list, do not work for tables!!
+            var div = document.createElement('div');
+            div.innerHTML = item;
+            return div.firstChild;
+        } else {
+            return document.getElementById(settings.item);
+        }
+    }
+
+    var ensure = {
+        created: function(item) {
+            if (item.elm === undefined) {
+                templater.create(item);
+            }
+        }
+    };
 
     /* Get values from element */
     this.get = function(item, valueNames) {
-        ensure.tryItemSourceExists();
         ensure.created(item);
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
@@ -549,9 +545,9 @@ List.prototype.templateEngines.standard = function(list, settings) {
         for(var v in values) {
             if (values.hasOwnProperty(v)) {
                 // TODO speed up if possible
-                var hej = h.getByClass(v, item.elm, true);
-                if (hej) {
-                    hej.innerHTML = values[v];
+                var elm = h.getByClass(v, item.elm, true);
+                if (elm) {
+                    elm.innerHTML = values[v];
                 }
             }
         }
@@ -563,22 +559,16 @@ List.prototype.templateEngines.standard = function(list, settings) {
         }
         /* If item source does not exists, use the first item in list as
         source for new items */
-        ensure.tryItemSourceExists();
         var newItem = itemSource.cloneNode(true);
         newItem.id = "";
         item.elm = newItem;
         templater.set(item, item.values());
-    };
-    this.add = function(item) {
-        ensure.created(item);
-        listSource.appendChild(item.elm);
     };
     this.remove = function(item) {
         listSource.removeChild(item.elm);
     };
     this.show = function(item) {
         ensure.created(item);
-        ensure.added(item);
         listSource.appendChild(item.elm);
     };
     this.hide = function(item) {
@@ -693,16 +683,12 @@ h = {
         return false;
     },
     hasClass: function(ele, classN) {
-        var classes = this.getAttribute(ele, 'class');
-        if (!classes) {
-        	// getAttribute() on 'class' failed, browser uses className instead
-        	var classes = this.getAttribute(ele, 'className');
-        }
+        var classes = this.getAttribute(ele, 'class') || this.getAttribute(ele, 'className');
         return (classes.search(classN) > -1);
     },
     addClass: function(ele, classN) {
         if (!this.hasClass(ele, classN)) {
-            var classes = this.getAttribute(ele, 'class');
+            var classes = this.getAttribute(ele, 'class') || this.getAttribute(ele, 'className');
             classes = classes + ' ' + classN + ' ';
             classes = classes.replace(/\s{2,}/g, ' ');
             ele.setAttribute('class', classes);
@@ -710,9 +696,66 @@ h = {
     },
     removeClass: function(ele, classN) {
         if (this.hasClass(ele, classN)) {
-            var classes = this.getAttribute(ele, 'class');
+            var classes = this.getAttribute(ele, 'class') || this.getAttribute(ele, 'className');
             classes = classes.replace(classN, '');
             ele.setAttribute('class', classes);
+        }
+    },
+    /*
+    * The sort function. From http://my.opera.com/GreyWyvern/blog/show.dml/1671288
+    */
+    sorter: {
+        alphanum: function(a,b,asc) {
+            if (a === undefined || a === null) {
+                a = "";
+            }
+            if (b === undefined || b === null) {
+                b = "";
+            }
+            a = a.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
+                return (p1 == "lt")? "<" : ">";
+            });
+            a = a.replace(/<\/?[^>]+(>|$)/g, "");
+
+            b = b.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
+                return (p1 == "lt")? "<" : ">";
+            });
+            b = b.replace(/<\/?[^>]+(>|$)/g, "");
+            var aa = this.chunkify(a);
+            var bb = this.chunkify(b);
+
+            for (var x = 0; aa[x] && bb[x]; x++) {
+                if (aa[x] !== bb[x]) {
+                    var c = Number(aa[x]), d = Number(bb[x]);
+                    if (asc) {
+                        if (c == aa[x] && d == bb[x]) {
+                            return c - d;
+                        } else {
+                            return (aa[x] > bb[x]) ? 1 : -1;
+                        }
+                    } else {
+                        if (c == aa[x] && d == bb[x]) {
+                            return d-c;//c - d;
+                        } else {
+                            return (aa[x] > bb[x]) ? -1 : 1; //(aa[x] > bb[x]) ? 1 : -1;
+                        }
+                    }
+                }
+            }
+            return aa.length - bb.length;
+        },
+        chunkify: function(t) {
+            var tz = [], x = 0, y = -1, n = 0, i, j;
+
+            while (i = (j = t.charAt(x++)).charCodeAt(0)) {
+                var m = (i == 45 || i == 46 || (i >=48 && i <= 57));
+                if (m !== n) {
+                    tz[++y] = "";
+                    n = m;
+                }
+                tz[y] += j;
+            }
+            return tz;
         }
     }
 };
