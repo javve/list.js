@@ -139,7 +139,7 @@ Javascript (nothing special)
 # Plugins
 
 List.js offers a possiblity to use and add plugins that are integrated in the list objects 
-and are initiated at the same time as the lists. [Read more here »](http://jonnystromberg.com.dev/listjs-plugins-guide/)
+and are initiated at the same time as the lists. [Read more here »](http://jonnystromberg.com/listjs-plugins-guide/)
 
 ## List of plugins
 
