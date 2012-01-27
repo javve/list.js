@@ -27,7 +27,6 @@ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
-
 */
 (function( window, undefined ) {
 "use strict";
@@ -45,8 +44,7 @@ var List = function(id, options, values) {
 		events = {
 		    'updated': []
 		};
-
-    this.listContainer = document.getElementById(id);
+    this.listContainer = (typeof(id) == 'string') ? document.getElementById(id) : id;
     this.items = [];
     this.visibleItems = []; // These are the items currently visible
     this.matchingItems = []; // These are the items currently matching filters and search, regadlessof visible count
@@ -70,7 +68,6 @@ var List = function(id, options, values) {
             this.plugins(options.plugins);
         },
         classes: function(options) {
-            options.list = options.list || id;
             options.listClass = options.listClass || 'list';
             options.searchClass = options.searchClass || 'search';
             options.sortClass = options.sortClass || 'sort';
@@ -496,7 +493,7 @@ List.prototype.templateEngines = {};
 List.prototype.plugins = {};
 
 List.prototype.templateEngines.standard = function(list, settings) {
-    var listSource = h.getByClass(settings.listClass, document.getElementById(settings.list))[0],
+    var listSource = h.getByClass(settings.listClass, list.listContainer, true),
         itemSource = getItemSource(settings.item),
         templater = this;
 

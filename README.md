@@ -176,8 +176,8 @@ All of these classes can be defined by yourself when creating the list by settin
 *	List(id, options, values)
 
 ### Parameters
-* **id** *(\*required)*
- Id the element in which the list area should be initialized.
+* **id** or **element** *(\*required)*
+ Id the element in which the list area should be initialized. OR the actual element itself.
 * **options**
 Some of the option parameters are required at some times
 	* **valueNames** _(Array, default: null) (*only required if list already contains items before initialization)_  

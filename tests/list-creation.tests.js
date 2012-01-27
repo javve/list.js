@@ -42,3 +42,13 @@ test('Create List.js from existing list', function() {
     equals(theList3.size(), 10);
     ok(true, "list created" );
 });
+
+test('Create List.js with element instead of id', function() {
+    var templates = { 
+        valueNames: ['id', 'name'],
+        item: '<li id="itemTemplate"><span class="id">1</span><span class="name">John Resig</span></li>'
+    };
+    theList3 = new List(ListJsHelpers.getByClass('list4', document.body, true), templates, listItems);
+    equals(theList3.size(), 10);
+    ok(true, "list created" );
+});
