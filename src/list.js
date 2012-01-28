@@ -31,19 +31,19 @@ OTHER DEALINGS IN THE SOFTWARE.
 (function( window, undefined ) {
 "use strict";
 var document = window.document,
-	h;
+    h;
 
 var List = function(id, options, values) {
     var self = this,
-		templater,
-		init,
-		initialItems,
-		Item,
-		Templater,
-		sortButtons,
-		events = {
-		    'updated': []
-		};
+        templater,
+        init,
+        initialItems,
+        Item,
+        Templater,
+        sortButtons,
+        events = {
+            'updated': []
+        };
     this.listContainer = (typeof(id) == 'string') ? document.getElementById(id) : id;
     this.items = [];
     this.visibleItems = []; // These are the items currently visible
@@ -179,11 +179,11 @@ var List = function(id, options, values) {
         }
     };
 
-	this.show = function(i, page) {
-		this.i = i;
-		this.page = page;
-		self.update();
-	};
+    this.show = function(i, page) {
+        this.i = i;
+        this.page = page;
+        self.update();
+    };
 
     /* Removes object from list.
     * Loops through the list and removes objects where
@@ -337,7 +337,7 @@ var List = function(id, options, values) {
         if (filterFunction === undefined) {
             self.filtered = false;
         } else {
-            matching = [];
+            matching = []; // what is this used for?
             self.filtered = true;
             var is = self.items;
             for (var i = 0, il = is.length; i < il; i++) {
@@ -400,8 +400,8 @@ var List = function(id, options, values) {
 
     this.update = function() {
         var is = self.items,
-			il = is.length;
-
+            il = is.length;
+        
         self.visibleItems = [];
         self.matchingItems = [];
         templater.clear();
@@ -410,12 +410,12 @@ var List = function(id, options, values) {
                 is[i].show();
                 self.visibleItems.push(is[i]);
                 self.matchingItems.push(is[i]);
-			} else if (is[i].matching()) {
+            } else if (is[i].matching()) {
                 self.matchingItems.push(is[i]);
                 is[i].hide();
-			} else {
+            } else {
                 is[i].hide();
-			}
+            }
         }
         trigger('updated');
     };
@@ -423,10 +423,10 @@ var List = function(id, options, values) {
     Item = function(initValues, element, notCreate) {
         var item = this,
             values = {};
-
+        
         this.found = false; // Show if list.searched == true and this.found == true
         this.filtered = false;// Show if list.filtered == true and this.filtered == true
-
+        
         var init = function(initValues, element, notCreate) {
             if (element === undefined) {
                 if (notCreate) {
@@ -461,7 +461,7 @@ var List = function(id, options, values) {
         this.matching = function() {
             return (
                 (self.filtered && self.searched && item.found && item.filtered) ||
-               	(self.filtered && !self.searched && item.filtered) ||
+                   (self.filtered && !self.searched && item.filtered) ||
                 (!self.filtered && self.searched && item.found) ||
                 (!self.filtered && !self.searched)
             );
@@ -471,7 +471,7 @@ var List = function(id, options, values) {
         };
         init(initValues, element, notCreate);
     };
-
+    
     /* Templater with different kinds of template engines.
     * All engines have these methods
     * - reload(item)
@@ -485,7 +485,7 @@ var List = function(id, options, values) {
         }
         return new self.constructor.prototype.templateEngines[settings.engine](list, settings);
     };
-
+    
     init.start(values, options);
 };
 
@@ -496,12 +496,12 @@ List.prototype.templateEngines.standard = function(list, settings) {
     var listSource = h.getByClass(settings.listClass, list.listContainer, true),
         itemSource = getItemSource(settings.item),
         templater = this;
-
+    
     function getItemSource(item) {
         if (item === undefined) {
             var nodes = listSource.childNodes,
                 items = [];
-
+            
             for (var i = 0, il = nodes.length; i < il; i++) {
                 // Only textnodes have a data attribute
                 if (nodes[i].data === undefined) {
@@ -517,7 +517,7 @@ List.prototype.templateEngines.standard = function(list, settings) {
             return document.getElementById(settings.item);
         }
     }
-
+    
     var ensure = {
         created: function(item) {
             if (item.elm === undefined) {
@@ -525,17 +525,25 @@ List.prototype.templateEngines.standard = function(list, settings) {
             }
         }
     };
-
+    
     /* Get values from element */
     this.get = function(item, valueNames) {
         ensure.created(item);
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
-            values[valueNames[i]] = h.getByClass(valueNames[i], item.elm)[0].innerHTML;
+            values[valueNames[i]] = [];
+            var founds = h.getByClass(valueNames[i], item.elm)
+            if (!founds) continue;
+            
+            for (var f in founds) {
+                if (founds[f].innerHTML) {
+                    values[valueNames[i]].push(founds[f].innerHTML); 
+                }
+            }
         }
         return values;
     };
-
+    
     /* Sets values at element */
     this.set = function(item, values) {
         ensure.created(item);
@@ -549,7 +557,7 @@ List.prototype.templateEngines.standard = function(list, settings) {
             }
         }
     };
-
+    
     this.create = function(item) {
         if (item.elm !== undefined) {
             return;
@@ -713,14 +721,14 @@ h = {
                 return (p1 == "lt")? "<" : ">";
             });
             a = a.replace(/<\/?[^>]+(>|$)/g, "");
-
+            
             b = b.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
                 return (p1 == "lt")? "<" : ">";
             });
             b = b.replace(/<\/?[^>]+(>|$)/g, "");
             var aa = this.chunkify(a);
             var bb = this.chunkify(b);
-
+            
             for (var x = 0; aa[x] && bb[x]; x++) {
                 if (aa[x] !== bb[x]) {
                     var c = Number(aa[x]), d = Number(bb[x]);
