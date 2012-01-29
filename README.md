@@ -143,7 +143,7 @@ and are initiated at the same time as the lists. [Read more here »](http://jonn
 
 ## List of plugins
 
-* **[Paging plugin](http://jonnystromberg.com.dev/listjs-paging-plugin/)** - A plugin for easily adding 
+* **[Paging plugin](http://jonnystromberg.com/listjs-paging-plugin/)** - A plugin for easily adding 
 paging to List.js
 
 As you see are there only one plugin currently. But I would very much like to add your plugin
