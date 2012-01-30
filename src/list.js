@@ -96,7 +96,9 @@ var List = function(id, options, values) {
             get: function() {
                 // return h.getByClass('item', self.list);
                 var nodes = self.list.childNodes,
-                items = [];
+                    items = [];
+                if (nodes == null) return items;
+                
                 for (var i = 0, il = nodes.length; i < il; i++) {
                     // Only textnodes have a data attribute
                     if (nodes[i].data === undefined) {
@@ -192,11 +194,15 @@ var List = function(id, options, values) {
     this.remove = function(valueName, value, options) {
         var found = 0;
         for (var i = 0, il = self.items.length; i < il; i++) {
-            if (self.items[i].values()[valueName] == value) {
-                templater.remove(self.items[i], options);
-                self.items.splice(i,1);
-                il--;
-                found++;
+            var item = self.items[i];
+            for (var val in item.values()[valueName]) {
+                if (item.values()[valueName][val] == value) {
+                    templater.remove(self.items[i], options);
+                    self.items.splice(i,1);
+                    il--;
+                    found++;
+                    continue;
+                }
             }
         }
         self.update();
@@ -210,8 +216,11 @@ var List = function(id, options, values) {
         var matchedItems = [];
         for (var i = 0, il = self.items.length; i < il; i++) {
             var item = self.items[i];
-            if (item.values()[valueName] == value) {
-                matchedItems.push(item);
+            for (var val in item.values()[valueName]) {
+                if (item.values()[valueName] == value) {
+                    matchedItems.push(item);
+                    continue;
+                }
             }
         }
         if (matchedItems.length == 0) {
@@ -436,6 +445,7 @@ var List = function(id, options, values) {
                 }
             } else {
                 item.elm = element;
+    			//alert("call get 2");
                 var values = templater.get(item, initValues);
                 item.values(values);
             }
@@ -501,6 +511,7 @@ List.prototype.templateEngines.standard = function(list, settings) {
         if (item === undefined) {
             var nodes = listSource.childNodes,
                 items = [];
+            if (nodes == null) return null;
             
             for (var i = 0, il = nodes.length; i < il; i++) {
                 // Only textnodes have a data attribute
@@ -532,8 +543,9 @@ List.prototype.templateEngines.standard = function(list, settings) {
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
             values[valueNames[i]] = [];
+            //alert("finding: "+valueNames[i]);
             var founds = h.getByClass(valueNames[i], item.elm)
-            if (!founds) continue;
+            if (founds.length == 0) continue;
             
             for (var f in founds) {
                 if (founds[f].innerHTML) {
@@ -550,9 +562,9 @@ List.prototype.templateEngines.standard = function(list, settings) {
         for(var v in values) {
             if (values.hasOwnProperty(v)) {
                 // TODO speed up if possible
-                var elm = h.getByClass(v, item.elm, true);
-                if (elm) {
-                    elm.innerHTML = values[v];
+                var elms = h.getByClass(v, item.elm);
+                for (var e in elms) {
+                    elms[e].innerHTML = values[v][e];
                 }
             }
         }
@@ -582,13 +594,13 @@ List.prototype.templateEngines.standard = function(list, settings) {
         }
     };
     this.clear = function() {
-        /* .innerHTML = ''; fucks up IE */
-        if (listSource.hasChildNodes()) {
-            while (listSource.childNodes.length >= 1)
-            {
-                listSource.removeChild(listSource.firstChild);
-            }
+        /* .innerHTML = ''; hasChildNodes messes up IE */
+        //if (listSource.hasChildNodes()) {
+        if (listSource.childNodes == null) return;
+        while (listSource.childNodes.length >= 1) {
+            listSource.removeChild(listSource.firstChild);
         }
+        //}
     };
 };
 
