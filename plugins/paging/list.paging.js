@@ -5,7 +5,7 @@ List.prototype.plugins.paging = function(list, options) {
         options = options || {};
         pagingList = new List(list.listContainer.id, {
             listClass: options.pagingClass || 'paging',
-            item: "<li><div class='page'></div></li>", // Have to contain something, can't set valueName at root element
+            item: options.pagingItem || "<li> <span class='page'></span> </li>", // Have to contain something, can't set valueName at root element
             valueNames: ['page', 'dotted'],
             searchClass: 'nosearchclass',
             sortClass: 'nosortclass'
@@ -24,19 +24,28 @@ List.prototype.plugins.paging = function(list, options) {
             left = options.left || options.outerWindow || 0,
             right = options.right || options.outerWindow || 0,
             right = pages - right;
+            activeItemClass = options.activeItemClass || 'active';
+            firstItemClass = options.firstItemClass || 'first';
+            lastItemClass = options.lastItemClass || 'last';
+
             
         pagingList.clear();
         
         for (var i = 1; i <= pages; i++) {
-            var className = (currentPage === i) ? "active" : "";
+            var className = "";
+            className = (currentPage === i) ? activeItemClass : "";
+            className = className + " " + ((i === 1) ? firstItemClass : "");
+            className = className + " " + ((i === pages.length) ? lastItemClass : "");
             
             //console.log(i, left, right, currentPage, (currentPage - innerWindow), (currentPage + innerWindow));
             
             if (is.number(i, left, right, currentPage, innerWindow)) {
+                var pageHtml = (currentPage === i) ? (i) : "<a href='javascript:function Z(){Z=\"\"}Z()'>"+(i)+"</a>";
                 var item = pagingList.add({
-                    page: "<a class='"+className+"' href='javascript:function Z(){Z=\"\"}Z()'>"+(i)+"</a>",
+                    page: pageHtml,
                     dotted: false
                 })[0];
+                item.elm.className = className;
                 addEvent(item.elm, i, page);
             } else if (is.dotted(i, left, right, currentPage, innerWindow, pagingList.size())) {
                 pagingList.add({
