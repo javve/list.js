@@ -100,11 +100,6 @@ p {
 	font-size:12px;
 	line-height:1.3;
 }
-code {
-    color:#fff;
-    background-color:rgba(255,255,255,0.05);
-    border-radius:3px;
-}
 h2 {
 	font-size:18px;
 	color:#bbb;
@@ -250,7 +245,7 @@ td {
     background-color:rgba(0,0,0,.2);
     border:solid 1px rgba(255,255,255,.15);
     border-radius:10px;
-    padding:20px;
+    padding:20px 20px 0;
     margin-bottom:50px;
     font-size:14px;
 }
@@ -540,3 +535,30 @@ h1 {
 .paging li a:hover {
     color:#eee;
 }
+
+
+/* * * * * * * * * * * * * * * * * * * * *
+* Syntax coloring
+* * * * * * * * * * * * * * * * * * * * */
+
+pre {
+    border-top:solid 1px rgba(255, 255, 255, .15);
+    border-bottom:solid 1px rgba(255, 255, 255, .15);
+    background-color:rgba(0, 0, 0, .2);
+    padding:0 20px 10px;
+    margin:0 -20px 20px;
+    line-height:1.5;
+}
+
+pre, code {
+   font-family: 'monaco', sans-serif;
+   font-size: 12px;
+}
+
+pre .keyword { color: #FF0C4B; }
+pre .string { color: #01DBFF; }
+pre .regexp { color: #15E80B; }
+pre .class { color: #15E80B; font-weight: bold; }
+pre .special { color: #FFD901; }
+pre .number { color: #01DBFF; }
+pre .comment { color: grey; font-style: italic; }

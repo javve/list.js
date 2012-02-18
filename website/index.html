@@ -13,8 +13,7 @@
     <meta name="description" content="You do want a 3 KB native JavaScript that makes your plain HTML lists super flexible, searchable, sortable and filterable? Yes?">
     <meta name="author" content="Jonny Strömberg">
 	<meta name="google-site-verification" content="CxtqsFWhMxG32DK5A7Hbtg1ficvqhu9sybSeDP25JpI" />
-
-
+	
     <!--
 
     Nothing to see here that has to do with List.js, look at the bottom of the page!
@@ -24,8 +23,6 @@
     <link rel="shortcut icon" href="/images/graphics/favicon.ico">
 
     <link rel="stylesheet" href="css/style.css">
-    <link href="js/libs/syntaxhighlighter_3.0.83/styles/shCore.css" rel="stylesheet" type="text/css" />
-    <link href="js/libs/syntaxhighlighter_3.0.83/styles/shThemeListJs.css" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript">
 
@@ -144,56 +141,56 @@
                 <div class="code">
 
                 <h3>HTML</h3>
-                <script type="syntaxhighlighter" class="brush: js"><![CDATA[
-                &lt;div id="example-list">
-                    <input class="search" />
-                    <span class="sort" data-sort="feature">Sort features</span>
-                    <ul class="list">
-                       <li>
-                           <span class="feature">Search</span>
-                           <small class="description">Search through all items.</small>
-                       </li>
-                       <li>
-                           <span class="feature">Sort</span>
-                           <small class="description">Sort lists by value that
-                               you choose.</small>
-                       </li>
-                       <li>
-                           <span class="feature">Filter</span>
-                           <small class="description">
-                                Write your own filter functions.
-                            </small>
-                       </li>
-                       <li>
-                           <span class="feature">Add</span>
-                           <small class="description">Add items on the fly.</small>
-                       </li>
-                       <li>
-                           <span class="feature">Get</span>
-                           <small class="description">Get item based on value.</small>
-                       </li>
-                       <li>
-                           <span class="feature">Update</span>
-                           <small class="description">Update items as you go.</small>
-                       </li>
-                       <li>
-                           <span class="feature">Remove</span>
-                           <small class="description">
-                                Remove items whenever you feel like.
-                            </small>
-                       </li>
-                    </ul>
-                &lt;/div>
-                ]]></script>
+<pre><code>
+&lt;div id="example-list">
+    &lt;input class="search" />
+    &lt;span class="sort" data-sort="feature">Sort features&lt;/span>
+    &lt;ul class="list">
+       &lt;li>
+           &lt;span class="feature">Search&lt;/span>
+           &lt;small class="description">Search through all items.&lt;/small>
+       &lt;/li>
+       &lt;li>
+           &lt;span class="feature">Sort&lt;/span>
+           &lt;small class="description">Sort lists by value that
+               you choose.&lt;/small>
+       &lt;/li>
+       &lt;li>
+           &lt;span class="feature">Filter&lt;/span>
+           &lt;small class="description">
+                Write your own filter functions.
+            &lt;/small>
+       &lt;/li>
+       &lt;li>
+           &lt;span class="feature">Add&lt;/span>
+           &lt;small class="description">Add items on the fly.&lt;/small>
+       &lt;/li>
+       &lt;li>
+           &lt;span class="feature">Get&lt;/span>
+           &lt;small class="description">Get item based on value.&lt;/small>
+       &lt;/li>
+       &lt;li>
+           &lt;span class="feature">Update&lt;/span>
+           &lt;small class="description">Update items as you go.&lt;/small>
+       &lt;/li>
+       &lt;li>
+           &lt;span class="feature">Remove&lt;/span>
+           &lt;small class="description">
+                Remove items whenever you feel like.
+            &lt;/small>
+       &lt;/li>
+    &lt;/ul>
+&lt;/div>
+</code></pre>
 
                 <h3>JavaScript</h3>
-                <script type="syntaxhighlighter" class="brush: js"><![CDATA[
-                var options = {
-                    valueNames: [ 'feature', 'description' ]
-                };
+<pre><code>
+var options = {
+    valueNames: [ 'feature', 'description' ]
+};
 
-                var featureList = new List('example-list', options);
-                ]]></script>
+var featureList = new List('example-list', options);
+</code></pre>
                 </div>
             </div>
         </div>
@@ -206,49 +203,49 @@
             <div class="code">
 
             <h3>HTML</h3>
-            <script type="syntaxhighlighter" class="brush: js"><![CDATA[
-            &lt;div id="example-list">
-                <input class="search" />
-                <span class="sort" data-sort="feature">Sort features</span>
-                <ul class="list">
-                   <li>
-                       <span class="feature">Search</span>
-                       <small class="description">Search through all items.</small>
-                   </li>
-                   <li>
-                       <span class="feature">Sort</span>
-                       <small class="description">Sort lists by value that
-                           you choose.</small>
-                   </li>
-                   <li>
-                       <span class="feature">Filter</span>
-                       <small class="description">Write your own filter functions.</small>
-                   </li>
-                </ul>
-            &lt;/div>
-            ]]></script>
+<pre><code>
+&lt;div id="example-list">
+    &lt;input class="search" />
+    &lt;span class="sort" data-sort="feature">Sort features&lt;/span>
+    &lt;ul class="list">
+       &lt;li>
+           &lt;span class="feature">Search&lt;/span>
+           &lt;small class="description">Search through all items.&lt;/small>
+       &lt;/li>
+       &lt;li>
+           &lt;span class="feature">Sort&lt;/span>
+           &lt;small class="description">Sort lists by value that
+               you choose.&lt;/small>
+       &lt;/li>
+       &lt;li>
+           &lt;span class="feature">Filter&lt;/span>
+           &lt;small class="description">Write your own filter functions.&lt;/small>
+       &lt;/li>
+    &lt;/ul>
+&lt;/div>
+</code></pre>
 
             <h3>JavaScript</h3>
-            <script type="syntaxhighlighter" class="brush: js"><![CDATA[
-            var options = {
-                valueNames: [ 'feature', 'description' ]
-            };
+<pre><code>
+var options = {
+    valueNames: [ 'feature', 'description' ]
+};
 
-            var values = [
-                { feature: 'Add', description:'Add items on the fly.' }
-                , { feature: 'Get', description:'Get item based on value.' }
-                , { feature: 'Update', description:'Update items as you go.' }
-            ];
+var values = [
+    { feature: 'Add', description:'Add items on the fly.' }
+    , { feature: 'Get', description:'Get item based on value.' }
+    , { feature: 'Update', description:'Update items as you go.' }
+];
 
-            var featureList = new List('example-list', options, values);
+var featureList = new List('example-list', options, values);
 
-            var newFeature = {
-                feature: 'Remove'
-                , description:'Remove items whenever you feel like.'
-            };
+var newFeature = {
+    feature: 'Remove'
+    , description:'Remove items whenever you feel like.'
+};
 
-            featureList.add(newFeature);
-            ]]></script>
+featureList.add(newFeature);
+</code></pre>
             </div>
         </div>
     </div>
@@ -275,10 +272,6 @@
 
 
 	<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=javve"></script>
-    <script type="text/javascript" src="js/libs/syntaxhighlighter_3.0.83/scripts/shCore.js"></script>
-    <script type="text/javascript" src="js/libs/syntaxhighlighter_3.0.83/scripts/shBrushJScript.js"></script>
-    <script type="text/javascript">
-    SyntaxHighlighter.all()
-    </script>
+    <script type="text/javascript" src="js/libs/hijs.js"></script>
 </body>
 </html>
