@@ -206,12 +206,15 @@ td {
 .menu ul li {
 	display:block;
 	float:left;
+	line-height:60px;
 }
 .menu ul li.name {
 	font-size:20px;
-	padding:15px 20px !important;
 	color:#fff;
 	font-weight: bold;
+}
+.menu ul li.name a {
+    color:#eee;
 }
 .menu ul li a,
 .menu ul li.name {
@@ -219,7 +222,7 @@ td {
 	display:block;
 	text-decoration: none;}
 .menu ul li a {
-	padding:20px;
+	padding:0 20px;
 	color:#aaa;
 }
 .menu ul li a b {}
@@ -236,8 +239,11 @@ td {
     border-width:1px 1px 0 1px;
     width:750px;
 }
+.menu ul.secondary li {
+    line-height:30px;
+}
 .menu ul.secondary li a {
-    padding:5px 20px;
+    padding:0 20px;
     font-size:14px;
 }
 
