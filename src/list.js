@@ -346,7 +346,7 @@ var List = function(id, options, values) {
             var is = self.items;
             for (var i = 0, il = is.length; i < il; i++) {
                 var item = is[i];
-                if (filterFunction(item.values())) {
+                if (filterFunction(item)) {
                     item.filtered = true;
                     matching.push(item);
                 } else {
