@@ -337,8 +337,8 @@ Removes all items from the list
     	    , { id: 3, name "Jonas" }
     	];
 
-    	listObj.filter(function(itemValues) {
-    	   if (itemValues.id > 1) {
+    	listObj.filter(function(item) {
+    	   if (item.values().id > 1) {
     	       return true;
     	   } else {
     	       return false;
