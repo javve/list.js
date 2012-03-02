@@ -45,6 +45,10 @@ var List = function(id, options, values) {
 		    'updated': []
 		};
     this.listContainer = (typeof(id) == 'string') ? document.getElementById(id) : id;
+    // Check if the container exists. If not return instead of breaking the javascript
+    if (!this.listContainer)
+        return;
+    
     this.items = [];
     this.visibleItems = []; // These are the items currently visible
     this.matchingItems = []; // These are the items currently matching filters and search, regadlessof visible count
