@@ -199,6 +199,7 @@ FileETag None
   
 	RewriteCond %{REQUEST_URI} !^/website/
 	RewriteCond %{REQUEST_URI} !^/src/
+	RewriteCond %{REQUEST_URI} !^/plugins/
  	RewriteRule ^(.*) /website/$1
  	
 </IfModule>
