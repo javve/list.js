@@ -280,9 +280,11 @@ var List = function(id, options, values) {
     * The columns parameter defines if all values should be included in the search,
     * defaults to undefined which means "all".
     */
-    this.search = function(searchString, columns) {
+    this.search = function(searchString, columns, multiSearch) {
         self.i = 1; // Reset paging
-        var matching = [],
+        var searchArguments,
+            foundArgument,
+            matching = [],
             found,
             item,
             text,
@@ -294,11 +296,18 @@ var List = function(id, options, values) {
 
         searchString = (target === undefined) ? (""+searchString).toLowerCase() : ""+target.value.toLowerCase();
         is = self.items;
+
+        // Substract arguments from the searchString or put searchString as only argument
+        searchArguments = multiSearch ? searchString.replace(/ +$/, '').split(/ +/) : [searchString];
+
+
         // Escape regular expression characters
-        searchString = searchString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+        for(var i = 0; i < searchArguments.length; i++) {
+          searchArguments[i] = searchArguments[i].replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+        }
 
         templater.clear();
-        if (searchString === "" ) {
+        if (searchString === "") {
             reset.search();
             self.searched = false;
             self.update();
@@ -306,17 +315,22 @@ var List = function(id, options, values) {
             self.searched = true;
 
             for (var k = 0, kl = is.length; k < kl; k++) {
-                found = false;
+                found = true;
                 item = is[k];
                 values = item.values();
 
-                for(var j in columns) {
-                    if(values.hasOwnProperty(j) && columns[j] !== null) {
-                        text = (values[j] != null) ? values[j].toString().toLowerCase() : "";
-                        if ((searchString !== "") && (text.search(searchString) > -1)) {
-                            found = true;
-                        }
-                    }
+              for(var i = 0; i < searchArguments.length; i++) {
+                  foundArgument = false;
+
+                  for(var j in columns) {
+                      if(values.hasOwnProperty(j) && columns[j] !== null) {
+                          text = (values[j] != null) ? values[j].toString().toLowerCase() : "";
+                          if ((searchArguments[i] !== "") && (text.search(searchArguments[i]) > -1)) {
+                              foundArgument = true;
+                          }
+                      }
+                  }
+                  if(!foundArgument) found = false;
                 }
                 if (found) {
                     item.found = true;
