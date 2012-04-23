@@ -31,19 +31,19 @@ OTHER DEALINGS IN THE SOFTWARE.
 (function( window, undefined ) {
 "use strict";
 var document = window.document,
-	h;
+    h;
 
 var List = function(id, options, values) {
     var self = this,
-		templater,
-		init,
-		initialItems,
-		Item,
-		Templater,
-		sortButtons,
-		events = {
-		    'updated': []
-		};
+        templater,
+        init,
+        initialItems,
+        Item,
+        Templater,
+        sortButtons,
+        events = {
+            'updated': []
+        };
     this.listContainer = (typeof(id) == 'string') ? document.getElementById(id) : id;
     // Check if the container exists. If not return instead of breaking the javascript
     if (!this.listContainer)
@@ -100,7 +100,9 @@ var List = function(id, options, values) {
             get: function() {
                 // return h.getByClass('item', self.list);
                 var nodes = self.list.childNodes,
-                items = [];
+                    items = [];
+                if (nodes == null) return items;
+                
                 for (var i = 0, il = nodes.length; i < il; i++) {
                     // Only textnodes have a data attribute
                     if (nodes[i].data === undefined) {
@@ -183,11 +185,11 @@ var List = function(id, options, values) {
         }
     };
 
-	this.show = function(i, page) {
-		this.i = i;
-		this.page = page;
-		self.update();
-	};
+    this.show = function(i, page) {
+        this.i = i;
+        this.page = page;
+        self.update();
+    };
 
     /* Removes object from list.
     * Loops through the list and removes objects where
@@ -196,11 +198,15 @@ var List = function(id, options, values) {
     this.remove = function(valueName, value, options) {
         var found = 0;
         for (var i = 0, il = self.items.length; i < il; i++) {
-            if (self.items[i].values()[valueName] == value) {
-                templater.remove(self.items[i], options);
-                self.items.splice(i,1);
-                il--;
-                found++;
+            var item = self.items[i];
+            for (var val in item.values()[valueName]) {
+                if (item.values()[valueName][val] == value) {
+                    templater.remove(self.items[i], options);
+                    self.items.splice(i,1);
+                    il--;
+                    found++;
+                    continue;
+                }
             }
         }
         self.update();
@@ -214,8 +220,11 @@ var List = function(id, options, values) {
         var matchedItems = [];
         for (var i = 0, il = self.items.length; i < il; i++) {
             var item = self.items[i];
-            if (item.values()[valueName] == value) {
-                matchedItems.push(item);
+            for (var val in item.values()[valueName]) {
+                if (item.values()[valueName] == value) {
+                    matchedItems.push(item);
+                    continue;
+                }
             }
         }
         if (matchedItems.length == 0) {
@@ -341,7 +350,7 @@ var List = function(id, options, values) {
         if (filterFunction === undefined) {
             self.filtered = false;
         } else {
-            matching = [];
+            matching = []; // what is this used for?
             self.filtered = true;
             var is = self.items;
             for (var i = 0, il = is.length; i < il; i++) {
@@ -404,8 +413,8 @@ var List = function(id, options, values) {
 
     this.update = function() {
         var is = self.items,
-			il = is.length;
-
+            il = is.length;
+        
         self.visibleItems = [];
         self.matchingItems = [];
         templater.clear();
@@ -414,12 +423,12 @@ var List = function(id, options, values) {
                 is[i].show();
                 self.visibleItems.push(is[i]);
                 self.matchingItems.push(is[i]);
-			} else if (is[i].matching()) {
+            } else if (is[i].matching()) {
                 self.matchingItems.push(is[i]);
                 is[i].hide();
-			} else {
+            } else {
                 is[i].hide();
-			}
+            }
         }
         trigger('updated');
     };
@@ -427,10 +436,10 @@ var List = function(id, options, values) {
     Item = function(initValues, element, notCreate) {
         var item = this,
             values = {};
-
+        
         this.found = false; // Show if list.searched == true and this.found == true
         this.filtered = false;// Show if list.filtered == true and this.filtered == true
-
+        
         var init = function(initValues, element, notCreate) {
             if (element === undefined) {
                 if (notCreate) {
@@ -440,6 +449,7 @@ var List = function(id, options, values) {
                 }
             } else {
                 item.elm = element;
+    			//alert("call get 2");
                 var values = templater.get(item, initValues);
                 item.values(values);
             }
@@ -465,7 +475,7 @@ var List = function(id, options, values) {
         this.matching = function() {
             return (
                 (self.filtered && self.searched && item.found && item.filtered) ||
-               	(self.filtered && !self.searched && item.filtered) ||
+                   (self.filtered && !self.searched && item.filtered) ||
                 (!self.filtered && self.searched && item.found) ||
                 (!self.filtered && !self.searched)
             );
@@ -475,7 +485,7 @@ var List = function(id, options, values) {
         };
         init(initValues, element, notCreate);
     };
-
+    
     /* Templater with different kinds of template engines.
     * All engines have these methods
     * - reload(item)
@@ -489,7 +499,7 @@ var List = function(id, options, values) {
         }
         return new self.constructor.prototype.templateEngines[settings.engine](list, settings);
     };
-
+    
     init.start(values, options);
 };
 
@@ -500,12 +510,13 @@ List.prototype.templateEngines.standard = function(list, settings) {
     var listSource = h.getByClass(settings.listClass, list.listContainer, true),
         itemSource = getItemSource(settings.item),
         templater = this;
-
+    
     function getItemSource(item) {
         if (item === undefined) {
             var nodes = listSource.childNodes,
                 items = [];
-
+            if (nodes == null) return null;
+            
             for (var i = 0, il = nodes.length; i < il; i++) {
                 // Only textnodes have a data attribute
                 if (nodes[i].data === undefined) {
@@ -521,7 +532,7 @@ List.prototype.templateEngines.standard = function(list, settings) {
             return document.getElementById(settings.item);
         }
     }
-
+    
     var ensure = {
         created: function(item) {
             if (item.elm === undefined) {
@@ -529,31 +540,40 @@ List.prototype.templateEngines.standard = function(list, settings) {
             }
         }
     };
-
+    
     /* Get values from element */
     this.get = function(item, valueNames) {
         ensure.created(item);
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
-            values[valueNames[i]] = h.getByClass(valueNames[i], item.elm)[0].innerHTML;
+            values[valueNames[i]] = [];
+            //alert("finding: "+valueNames[i]);
+            var founds = h.getByClass(valueNames[i], item.elm)
+            if (founds.length == 0) continue;
+            
+            for (var f in founds) {
+                if (founds[f].innerHTML) {
+                    values[valueNames[i]].push(founds[f].innerHTML); 
+                }
+            }
         }
         return values;
     };
-
+    
     /* Sets values at element */
     this.set = function(item, values) {
         ensure.created(item);
         for(var v in values) {
             if (values.hasOwnProperty(v)) {
                 // TODO speed up if possible
-                var elm = h.getByClass(v, item.elm, true);
-                if (elm) {
-                    elm.innerHTML = values[v];
+                var elms = h.getByClass(v, item.elm);
+                for (var e in elms) {
+                    elms[e].innerHTML = values[v][e];
                 }
             }
         }
     };
-
+    
     this.create = function(item) {
         if (item.elm !== undefined) {
             return;
@@ -578,13 +598,13 @@ List.prototype.templateEngines.standard = function(list, settings) {
         }
     };
     this.clear = function() {
-        /* .innerHTML = ''; fucks up IE */
-        if (listSource.hasChildNodes()) {
-            while (listSource.childNodes.length >= 1)
-            {
-                listSource.removeChild(listSource.firstChild);
-            }
+        /* .innerHTML = ''; hasChildNodes messes up IE */
+        //if (listSource.hasChildNodes()) {
+        if (listSource.childNodes == null) return;
+        while (listSource.childNodes.length >= 1) {
+            listSource.removeChild(listSource.firstChild);
         }
+        //}
     };
 };
 
@@ -717,14 +737,14 @@ h = {
                 return (p1 == "lt")? "<" : ">";
             });
             a = a.replace(/<\/?[^>]+(>|$)/g, "");
-
+            
             b = b.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
                 return (p1 == "lt")? "<" : ">";
             });
             b = b.replace(/<\/?[^>]+(>|$)/g, "");
             var aa = this.chunkify(a);
             var bb = this.chunkify(b);
-
+            
             for (var x = 0; aa[x] && bb[x]; x++) {
                 if (aa[x] !== bb[x]) {
                     var c = Number(aa[x]), d = Number(bb[x]);
