@@ -16,13 +16,13 @@ List.prototype.plugins.fuzzySearch = function(locals, options) {
     var self = this;
     var searchFunction = function(text, pattern, options) {
         // Aproximately where in the text is the pattern expected to be found?
-        var Match_Location = options.fuzzySearchLocation || 0;
+        var Match_Location = options.location || 0;
 
         //Determines how close the match must be to the fuzzy location (specified above). An exact letter match which is 'distance' characters away from the fuzzy location would score as a complete mismatch. A distance of '0' requires the match be at the exact location specified, a threshold of '1000' would require a perfect match to be within 800 characters of the fuzzy location to be found using a 0.8 threshold.
-        var Match_Distance = options.fuzzySearchDistance || 100;
+        var Match_Distance = options.distance || 100;
 
         // At what point does the match algorithm give up. A threshold of '0.0' requires a perfect match (of both letters and location), a threshold of '1.0' would match anything.
-        var Match_Threshold = options.fuzzySearchThreshold || 0.4;
+        var Match_Threshold = options.threshold || 0.4;
 
         if (pattern === text) return true; // Exact match
         if (pattern.length > 32) return false; // This algorithm cannot be used
@@ -172,18 +172,18 @@ List.prototype.plugins.fuzzySearch = function(locals, options) {
                     item = is[k];
                     values = item.values();
 
-                  for(var i = 0; i < searchArguments.length; i++) {
-                      foundArgument = false;
+                    for(var i = 0; i < searchArguments.length; i++) {
+                        foundArgument = false;
 
-                      for(var j in columns) {
-                          if(values.hasOwnProperty(j) && columns[j] !== null) {
-                              text = (values[j] != null) ? values[j].toString().toLowerCase() : "";
-                              if (searchFunction(text, searchArguments[i], options)) {
-                                  foundArgument = true;
-                              }
-                          }
-                      }
-                      if(!foundArgument) found = false;
+                        for(var j in columns) {
+                            if(values.hasOwnProperty(j) && columns[j] !== null) {
+                                text = (values[j] != null) ? values[j].toString().toLowerCase() : "";
+                                if (searchFunction(text, searchArguments[i], options)) {
+                                    foundArgument = true;
+                                }
+                            }
+                        }
+                        if(!foundArgument) found = false;
                     }
                     if (found) {
                         item.found = true;
