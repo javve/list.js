@@ -129,9 +129,18 @@ var List = function(id, options, values) {
             }
         },
         plugins: function(plugins) {
+            var locals = {
+                templater: templater,
+                init: init,
+                initialItems: initialItems,
+                Item: Item,
+                Templater: Templater,
+                sortButtons: sortButtons,
+                events: events
+            };
             for (var i = 0; i < plugins.length; i++) {
                 var pluginName = plugins[i][1].name || plugins[i][0];
-                self[pluginName] = new self.plugins[plugins[i][0]](self, plugins[i][1]);
+                self[pluginName] = self.plugins[plugins[i][0]].call(self, locals, plugins[i][1]);
             }
         }
     };
@@ -532,7 +541,10 @@ List.prototype.templateEngines.standard = function(list, settings) {
         ensure.created(item);
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
-            values[valueNames[i]] = h.getByClass(valueNames[i], item.elm)[0].innerHTML;
+            var elm = h.getByClass(valueNames[i], item.elm, true);
+            if (elm) {
+                values[valueNames[i]] = elm.innerHTML;
+            }
         }
         return values;
     };
