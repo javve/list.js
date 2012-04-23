@@ -1,4 +1,4 @@
-<!doctype html>  
+<!doctype html>
 
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
@@ -14,10 +14,10 @@
     <meta name="author" content="Jonny Strömberg">
 	<meta name="google-site-verification" content="CxtqsFWhMxG32DK5A7Hbtg1ficvqhu9sybSeDP25JpI" />
 
-    <!-- 
-    
+    <!--
+
     Nothing to see here that has to do with List.js, look at the bottom of the page!
-    
+
     -->
     <link rel="shortcut icon" href="../images/graphics/favicon.ico">
 
@@ -66,7 +66,7 @@
         </div>
 
             <div id="main">
-                
+
                 <p class="note"><b>Note</b>: These examples are build using jQuery, but that is not required.</p>
                 <p class="note">Read more about the plugin <a href="http://jonnystromberg.com/listjs-paging-plugin/">here</a> »</p>
 
@@ -126,25 +126,22 @@
     <script src="../../plugins/paging/list.paging.js"></script>
 
     <script type="text/javascript">
-            
-        /* 
+
+        /*
         * LOVELY THINGS
         */
-        
-        var pagingOptions = {
-	    };
-        
+
         var options = {
     	    valueNames: [ 'name', 'category' ],
     	    page: 3,
     	    plugins: [
-    	        [ 'paging', { 
+    	        [ 'paging', {
     	            pagingClass: "topPaging",
     	            innerWindow: 1,
             	    left: 2,
-            	    right: 2
+            	    right: 3
     	        } ],
-    	        [ 'paging', { 
+    	        [ 'paging', {
     	            name: "duja",
     	            pagingClass: "bottomPaging",
     	            innerWindow: 1,
@@ -152,7 +149,7 @@
     	        } ]
     	    ]
         };
-        
+
         var items = [
             { name: "10 Filler", category: "Game" },
             { name: "11 Filler", category: "Beverage" },
@@ -198,7 +195,7 @@
         ];
 
         var featureList = new List('lovely-things-list', options, items);
-        
+
         $('#filter-games').click(function() {
             featureList.filter(function(values) {
                 if (values.category == "Game") {
@@ -209,7 +206,7 @@
             });
             return false;
         });
-        
+
         $('#filter-beverages').click(function() {
             featureList.filter(function(values) {
                 if (values.category == "Beverage") {
@@ -220,7 +217,7 @@
             });
             return false;
         });
-        
+
         $('#filter-none').click(function() {
             featureList.filter();
             return false;

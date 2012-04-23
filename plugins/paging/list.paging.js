@@ -1,6 +1,6 @@
-List.prototype.plugins.paging = function(list, options) {
+List.prototype.plugins.paging = function(locals, options) {
+    var list = this;
     var pagingList;
-
     var init = function() {
         options = options || {};
         pagingList = new List(list.listContainer.id, {
@@ -26,7 +26,6 @@ List.prototype.plugins.paging = function(list, options) {
             right = pages - right;
 
         pagingList.clear();
-
         for (var i = 1; i <= pages; i++) {
             var className = (currentPage === i) ? "active" : "";
 
