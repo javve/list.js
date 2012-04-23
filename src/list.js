@@ -140,6 +140,7 @@ var List = function(id, options, values) {
                 reset: reset
             };
             for (var i = 0; i < plugins.length; i++) {
+                plugins[i][1] = plugins[i][1] || {};
                 var pluginName = plugins[i][1].name || plugins[i][0];
                 self[pluginName] = self.plugins[plugins[i][0]].call(self, locals, plugins[i][1]);
             }
