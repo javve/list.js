@@ -89,12 +89,6 @@
         	    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
         	    <a class="addthis_counter addthis_pill_style"></a>
 
-        	    <div style="float:left; margin-left:17px;">
-            	    <a class="FlattrButton" style="display:none;" rev="flattr;button:compact;" href="http://listjs.com/examples/performance-test.html"></a>
-                    <noscript><a href="http://flattr.com/thing/423743/List-js-Performance-wrooooom" target="_blank">
-                    <img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a></noscript>
-				</div>
-
         	    </div>
         	    <!-- AddThis Button END -->
         	    <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
@@ -133,16 +127,17 @@
             <div class="c1">
                 <div id="performance-list" style="display:none;">
                     <input type="text" id="search-field" placeholder="Press enter to search" />
+                    <input type="text" id="search-fuzzy-field" placeholder="Press enter to search" />
                     <span class="btn" id="sort-col-1">Sort column 1</span>
                     <div class="scroll-container c1">
                         <table>
                             <tbody class="list"></table>
                         </table>
                     </div>
-                    
+
                     <input type="text" value="100" id="add-items-count" />
                     <button class="btn" id="add-items">Add more items</button>
-                    
+
                     <p style="clear:both; padding-top:30px;">Note: The default setting <code>{ maxVisibleItemsCount: 200 }</code> is set</p>
                 </div>
 
@@ -159,6 +154,7 @@
 
     <!-- Start of List.js stuff -->
     <script src="../../src/list.js"></script>
+    <script src="../../plugins/fuzzy/list.fuzzySearch.js"></script>
 
     <script type="text/javascript">
         var theList,
@@ -183,19 +179,20 @@
 
         $('#make-list').click(createList);
         $('#search-field').keypress(searchList);
+        $('#search-fuzzy-field').keypress(searchFuzzyList);
         $('#sort-col-1').click(function () { sortColumn('column0'); });
         /*
         $('#sort-col-2').click(function () { sortColumn('column2'); });
         $('#sort-col-3').click(function () { sortColumn('column3'); });
         */
-        
+
         $('#add-items').click(addItems);
 
         /* CREATION */
         function createList() {
             var itemCount = +$('#list-size').val(),
                 htmlStuff = '';
-            
+
             columnCount = +$('#column-count').val();
 
             for (var i = 0; i < itemCount; i++) {
@@ -220,7 +217,7 @@
                 dateObj1,
                 dateObj2,
                 valueNames = [];
-            
+
             for (var j = 0; j < columnCount; j++) {
                 valueNames.push('column'+j);
             }
@@ -229,9 +226,9 @@
             dateObj1 = new Date();
             theList = new List('performance-list', { valueNames: valueNames });
             dateObj2 = new Date();
-            
+
             $('#list-size-val').text(theList.size());
-            
+
             $('#time-table').slideDown(function(){
                 timeTable.add({
                     operation: "Index list with "+itemCount+" items and "+columnCount+" value names",
@@ -255,7 +252,7 @@
                 dateObj1 = new Date();
                 theList.search(searchString);
                 dateObj2 = new Date();
-                
+
                 if (searchString != "") {
                     timeTable.add({
                         operation: "Search for "+searchString,
@@ -268,7 +265,38 @@
                     });
                 }
                 searched = true;
-                showShare();              
+                showShare();
+            }
+        }
+
+        /* FuzzySEARCH */
+        function searchFuzzyList(event) {
+            var dateObj1,
+                dateObj2,
+                searchString = $(this).val(),
+                key = event.which;
+
+            /* Only search when press 'enter', otherwise the time table
+            is flooded */
+            if (key == 13) {
+                /* SEARCH LIST PERFORMANCE */
+                dateObj1 = new Date();
+                theList.search(searchString);
+                dateObj2 = new Date();
+
+                if (searchString != "") {
+                    timeTable.add({
+                        operation: "Fuzzy search for "+searchString,
+                        time: dateObj2.getTime() - dateObj1.getTime()
+                    });
+                } else {
+                    timeTable.add({
+                        operation: "Reset list after fuzzy search",
+                        time: dateObj2.getTime() - dateObj1.getTime()
+                    });
+                }
+                searched = true;
+                showShare();
             }
         }
 
@@ -286,22 +314,22 @@
                 operation: "Sort column: "+column,
                 time: dateObj2.getTime() - dateObj1.getTime()
             });
-            
+
             sorted = true;
             showShare();
         }
-        
+
         function addItems() {
             var dateObj1,
                 dateObj2,
                 numberOfItems = $('#add-items-count').val();
-                
+
             /* Only search when press 'enter', otherwise the time table
             is flooded */
             if (!isNaN(numberOfItems)) {
                 numberOfItems = Math.abs(numberOfItems);
                 var items = [];
-                
+
                 for (var i = 0; i < numberOfItems; i++) {
                     var item = {};
                     for (var j = 0; j < columnCount; j++) {
@@ -309,21 +337,21 @@
                     }
                     items.push(item);
                 }
-        
+
                 /* ADD ITEMS TO LIST PERFORMANCE */
                 dateObj1 = new Date();
                 theList.add(items);
                 dateObj2 = new Date();
-                
+
                 timeTable.add({
                     operation: "Added "+numberOfItems+" items",
                     time: dateObj2.getTime() - dateObj1.getTime()
                 });
                 $('#list-size-val').text(theList.size());
             }
-            
+
         }
-        
+
         function showShare() {
             if (sorted && searched) {
                 setTimeout(function() {
