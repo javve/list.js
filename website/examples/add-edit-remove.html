@@ -1,4 +1,4 @@
-<!doctype html>  
+<!doctype html>
 
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
@@ -14,10 +14,10 @@
     <meta name="author" content="Jonny Strömberg">
 	<meta name="google-site-verification" content="CxtqsFWhMxG32DK5A7Hbtg1ficvqhu9sybSeDP25JpI" />
 
-    <!-- 
-    
+    <!--
+
     Nothing to see here that has to do with List.js, look at the bottom of the page!
-    
+
     -->
     <link rel="shortcut icon" href="../images/graphics/favicon.ico">
 
@@ -55,6 +55,7 @@
     			<li><a href="standard.html">Basic example</a></li>
     			<li><a href="add-edit-remove.html">Add, edit & remove</a></li>
     			<li><a href="plugins/paging.html">Paging</a></li>
+                <li><a href="fuzzy-search.html">Fuzzy Search</a></li>
     			<li><a href="performance-test.html">Performance</a></li>
     		</ul>
     	</div>
@@ -66,7 +67,7 @@
         </div>
 
             <div id="main">
-                
+
                 <p class="note"><b>Note</b>: These examples are build using jQuery, but that is not required.</p>
 
                 <div class="c1">
@@ -134,7 +135,7 @@
                                 <button id="edit-btn">Edit</button>
                             </td>
                         </table>
-                    	
+
                     	<p>This is just a simple example showing how to use <code>add()</code>, <code>values()</code> and <code>remove()</code>. The example have bugs (not List.js (I hope ;)) so do not recommend copy-paste programming.</p>
                     </div>
                 </div>
@@ -147,11 +148,11 @@
     <script src="../../src/list.js"></script>
 
     <script type="text/javascript">
-        
-        /* 
-        * CONTACT LIST 
+
+        /*
+        * CONTACT LIST
         */
-        
+
         // Define value names
         var options = {
     	    valueNames: [ 'id', 'name', 'age', 'city' ]
@@ -159,7 +160,7 @@
 
         // Init list
         var contactList = new List('contacts', options);
-        
+
         var idField = $('#id-field'),
             nameField = $('#name-field'),
             ageField = $('#age-field'),
@@ -168,7 +169,7 @@
             editBtn = $('#edit-btn').hide(),
             removeBtns = $('.remove-item-btn'),
             editBtns = $('.edit-item-btn');
-        
+
         // Sets callbacks to the buttons in the list
         refreshCallbacks();
 
@@ -177,37 +178,37 @@
                id: Math.floor(Math.random()*110000),
                name: nameField.val(),
                age: ageField.val(),
-               city: cityField.val() 
+               city: cityField.val()
            });
            clearFields();
            refreshCallbacks();
         });
-        
+
         editBtn.click(function() {
            var item = contactList.get('id', idField.val());
            item.values({
                id:idField.val(),
                name: nameField.val(),
                age: ageField.val(),
-               city: cityField.val() 
+               city: cityField.val()
            });
            clearFields();
            editBtn.hide();
            addBtn.show();
         });
-        
+
         function refreshCallbacks() {
             // Needed to add new buttons to jQuery-extended object
             removeBtns = $(removeBtns.selector);
             editBtns = $(editBtns.selector);
-            
+
             removeBtns.click(function() {
-               var itemId = $(this).closest('tr').find('.id').text(); 
+               var itemId = $(this).closest('tr').find('.id').text();
                contactList.remove('id', itemId);
             });
-        
+
             editBtns.click(function() {
-               var itemId = $(this).closest('tr').find('.id').text(); 
+               var itemId = $(this).closest('tr').find('.id').text();
                var itemValues = contactList.get('id', itemId).values();
                idField.val(itemValues.id);
                nameField.val(itemValues.name);
@@ -218,7 +219,7 @@
                addBtn.hide();
             });
         }
-        
+
         function clearFields() {
            nameField.val('');
            ageField.val('');
