@@ -146,8 +146,8 @@ test('Search with undefined values', function() {
 });
 
 test('Filter', function() {
-    var visibleItems = theList.filter(function(values) {
-        if (+values.id < 3) {
+    var visibleItems = theList.filter(function(item) {
+        if (+item.values().id < 3) {
             return true;
         } else {
             return false;
