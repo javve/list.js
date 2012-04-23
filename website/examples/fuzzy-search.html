@@ -55,6 +55,7 @@
                 <li><a href="standard.html">Basic example</a></li>
                 <li><a href="add-edit-remove.html">Add, edit & remove</a></li>
                 <li><a href="paging.html">Paging</a></li>
+                <li><a href="fuzzy-search.html">Fuzzy Search</a></li>
                 <li><a href="performance-test.html">Performance</a></li>
             </ul>
         </div>
@@ -62,26 +63,21 @@
 
     <div id="container" class="example-page">
         <div>
-            <h1>List.js - Paging Plugin</h1>
+            <h1>Fuzzy Search Plugin</h1>
         </div>
 
             <div id="main">
 
                 <p class="note"><b>Note</b>: These examples are build using jQuery, but that is not required.</p>
-                <p class="note">Read more about the plugin <a href="http://jonnystromberg.com/listjs-paging-plugin/">here</a> »</p>
+                <p class="note">Read more about the plugin at <a href="http://jonnystromberg.com/listjs-fuzzy-search-plugin/">jonnystromberg.com/listjs-fuzzy-search-plugin »</a></p>
 
                 <div class="c1">
-                    <h2>Lovely things list</h2>
+                    <h2>Lovely characters list</h2>
                     <div id="lovely-things-list">
-                        <input class="search-fuzzy" placeholder="Search lovely things" />
+                        <input class="search-fuzzy" placeholder="Search lovely characters" />
                         <ul class="sort-by">
-                            <li class="sort btn" data-sort="name">Sort by name</li>
-                            <li class="sort btn" data-sort="category">Sort by category</li>
-                        </ul>
-                        <ul class="filter">
-                            <li class="btn" id="filter-none">Show all</li>
-                            <li class="btn" id="filter-games">Only show games</li>
-                            <li class="btn" id="filter-beverages">Only show beverages</li>
+                            <li class="sort btn" data-sort="character">Sort by name</li>
+                            <li class="sort btn" data-sort="game">Sort by game</li>
                         </ul>
                         <ul class="paging topPaging clearfix"></ul>
                         <ul class="list">
@@ -101,14 +97,14 @@
     <script type="text/javascript">
 
         /*
-        * LOVELY THINGS
+        * LOVELY CHARACTERS
         */
 
         var options = {
-            item: "<li><span class='character'></span><span class='game'></span></li>",
+            item: "<li><h4 class='character'></h4><span class='game'></span></li>",
             valueNames: [ 'character', 'game' ],
             plugins: [
-                [ 'fuzzySearch', {} ]
+                [ 'fuzzySearch' ]
             ]
         };
 
@@ -129,33 +125,6 @@
 
         $('.search-fuzzy').keyup(function() {
             featureList.fuzzySearch($(this).val());
-        });
-
-        $('#filter-games').click(function() {
-            featureList.filter(function(item) {
-                if (item.values().category == "Game") {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-            return false;
-        });
-
-        $('#filter-beverages').click(function() {
-            featureList.filter(function(item) {
-                if (item.values().category == "Beverage") {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-            return false;
-        });
-
-        $('#filter-none').click(function() {
-            featureList.filter();
-            return false;
         });
     </script>
     <!-- End of List.js stuff -->
