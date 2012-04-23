@@ -197,8 +197,8 @@
         var featureList = new List('lovely-things-list', options, items);
 
         $('#filter-games').click(function() {
-            featureList.filter(function(values) {
-                if (values.category == "Game") {
+            featureList.filter(function(item) {
+                if (item.values().category == "Game") {
                     return true;
                 } else {
                     return false;
@@ -208,8 +208,8 @@
         });
 
         $('#filter-beverages').click(function() {
-            featureList.filter(function(values) {
-                if (values.category == "Beverage") {
+            featureList.filter(function(item) {
+                if (item.values().category == "Beverage") {
                     return true;
                 } else {
                     return false;
