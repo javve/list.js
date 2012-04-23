@@ -136,7 +136,8 @@ var List = function(id, options, values) {
                 Item: Item,
                 Templater: Templater,
                 sortButtons: sortButtons,
-                events: events
+                events: events,
+                reset: reset
             };
             for (var i = 0; i < plugins.length; i++) {
                 var pluginName = plugins[i][1].name || plugins[i][0];
