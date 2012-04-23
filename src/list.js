@@ -48,7 +48,7 @@ var List = function(id, options, values) {
     // Check if the container exists. If not return instead of breaking the javascript
     if (!this.listContainer)
         return;
-    
+
     this.items = [];
     this.visibleItems = []; // These are the items currently visible
     this.matchingItems = []; // These are the items currently matching filters and search, regadlessof visible count
@@ -57,7 +57,7 @@ var List = function(id, options, values) {
 
     this.list = null;
     this.templateEngines = {};
-    
+
     this.page = options.page || 200;
     this.i = options.i || 1;
 
@@ -336,19 +336,16 @@ var List = function(id, options, values) {
     */
     this.filter = function(filterFunction) {
         self.i = 1; // Reset paging
-        var matching = undefined;
         reset.filter();
         if (filterFunction === undefined) {
             self.filtered = false;
         } else {
-            matching = [];
             self.filtered = true;
             var is = self.items;
             for (var i = 0, il = is.length; i < il; i++) {
                 var item = is[i];
                 if (filterFunction(item)) {
                     item.filtered = true;
-                    matching.push(item);
                 } else {
                     item.filtered = false;
                 }
