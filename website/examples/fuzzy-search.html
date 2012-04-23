@@ -1,0 +1,163 @@
+<!doctype html>
+
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>List.js - Paging Plugin</title>
+    <meta name="description" content="List.js is super flexible and here are two examples of how to use it.">
+    <meta name="author" content="Jonny Strömberg">
+    <meta name="google-site-verification" content="CxtqsFWhMxG32DK5A7Hbtg1ficvqhu9sybSeDP25JpI" />
+
+    <!--
+
+    Nothing to see here that has to do with List.js, look at the bottom of the page!
+
+    -->
+    <link rel="shortcut icon" href="../images/graphics/favicon.ico">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-26278829-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+</head>
+
+<body>
+
+    <div class="menu">
+        <div class="menu-container">
+            <ul class="main">
+                <li class="name"><a href="../">List.js</a></li>
+                <li><a href="standard.html">Examples</a></li>
+                <li><a href="https://github.com/javve/list/blob/master/README.md">Documentation</a></li>
+                <li><a href="https://github.com/javve/list">Source</a></li>
+                <li><a href="http://jonnystromberg.com/blog/categories/listjs/">Blog</a></li>
+                <li><a href="https://raw.github.com/javve/list/master/list.min.js"><b>Download</b></a></li>
+            </ul>
+            <ul class="secondary">
+                <li><a href="standard.html">Basic example</a></li>
+                <li><a href="add-edit-remove.html">Add, edit & remove</a></li>
+                <li><a href="paging.html">Paging</a></li>
+                <li><a href="performance-test.html">Performance</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="container" class="example-page">
+        <div>
+            <h1>List.js - Paging Plugin</h1>
+        </div>
+
+            <div id="main">
+
+                <p class="note"><b>Note</b>: These examples are build using jQuery, but that is not required.</p>
+                <p class="note">Read more about the plugin <a href="http://jonnystromberg.com/listjs-paging-plugin/">here</a> »</p>
+
+                <div class="c1">
+                    <h2>Lovely things list</h2>
+                    <div id="lovely-things-list">
+                        <input class="search-fuzzy" placeholder="Search lovely things" />
+                        <ul class="sort-by">
+                            <li class="sort btn" data-sort="name">Sort by name</li>
+                            <li class="sort btn" data-sort="category">Sort by category</li>
+                        </ul>
+                        <ul class="filter">
+                            <li class="btn" id="filter-none">Show all</li>
+                            <li class="btn" id="filter-games">Only show games</li>
+                            <li class="btn" id="filter-beverages">Only show beverages</li>
+                        </ul>
+                        <ul class="paging topPaging clearfix"></ul>
+                        <ul class="list">
+                        </ul>
+                        <ul class="paging bottomPaging clearfix"></ul>
+                    </div>
+                </div>
+        </div>
+
+    </div> <!-- end of #container -->
+
+
+    <!-- Start of List.js stuff -->
+    <script src="../../src/list.js"></script>
+    <script src="../../plugins/fuzzy/list.fuzzySearch.js"></script>
+
+    <script type="text/javascript">
+
+        /*
+        * LOVELY THINGS
+        */
+
+        var options = {
+            item: "<li><span class='character'></span><span class='game'></span></li>",
+            valueNames: [ 'character', 'game' ],
+            plugins: [
+                [ 'fuzzySearch', {} ]
+            ]
+        };
+
+        var items = [
+            { character: "Guybrush Threepwood", game: "The Secret of Monkey Island" },
+            { character: "Manny Calavera", game: "Grim Fandango" },
+            { character: "Bernard Bernoulli", game: "Maniac Mansion" },
+            { character: "LeChuck", game: "Monkey Island" },
+            { character: "Elaine Marley-Threepwood", game: "Monkey Island" },
+            { character: "Purple Tentacle", game: "Day of the Tentacle" },
+            { character: "Adrian Ripburger", game: "Full Throttle" },
+            { character: "Bobbin Threadbare", game: "Loom" },
+            { character: "Murray the Demonic Skull", game: "The Curse of Monkey Island" },
+            { character: "Zak McKracken", game: "Zak McKracken & the Alien Mindbenders" }
+        ];
+
+        var featureList = new List('lovely-things-list', options, items);
+
+        $('.search-fuzzy').keyup(function() {
+            featureList.fuzzySearch($(this).val());
+        });
+
+        $('#filter-games').click(function() {
+            featureList.filter(function(item) {
+                if (item.values().category == "Game") {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            return false;
+        });
+
+        $('#filter-beverages').click(function() {
+            featureList.filter(function(item) {
+                if (item.values().category == "Beverage") {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            return false;
+        });
+
+        $('#filter-none').click(function() {
+            featureList.filter();
+            return false;
+        });
+    </script>
+    <!-- End of List.js stuff -->
+</body>
+</html>
