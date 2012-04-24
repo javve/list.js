@@ -544,9 +544,7 @@ List.prototype.templateEngines.standard = function(list, settings) {
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
             var elm = h.getByClass(valueNames[i], item.elm, true);
-            if (elm) {
-                values[valueNames[i]] = elm.innerHTML;
-            }
+            values[valueNames[i]] = elm ? elm.innerHTML : "";
         }
         return values;
     };
