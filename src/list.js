@@ -698,7 +698,7 @@ h = {
     },
     addClass: function(ele, classN) {
         if (!this.hasClass(ele, classN)) {
-            var classes = this.getAttribute(ele, 'class') || this.getAttribute(ele, 'className');
+            var classes = this.getAttribute(ele, 'class') || this.getAttribute(ele, 'className') || "";
             classes = classes + ' ' + classN + ' ';
             classes = classes.replace(/\s{2,}/g, ' ');
             ele.setAttribute('class', classes);
@@ -706,7 +706,7 @@ h = {
     },
     removeClass: function(ele, classN) {
         if (this.hasClass(ele, classN)) {
-            var classes = this.getAttribute(ele, 'class') || this.getAttribute(ele, 'className');
+            var classes = this.getAttribute(ele, 'class') || this.getAttribute(ele, 'className') || "";
             classes = classes.replace(classN, '');
             ele.setAttribute('class', classes);
         }
