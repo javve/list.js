@@ -452,6 +452,9 @@ Type just *ant* in the console while in root folder.
 
 # Changelog
 
+### 2012-04-24 Beta 0.2.1
+* Fuzzy Search plugin, `.filter()` changes and bug fixes **[Read more »](http://jonnystromberg.com/listjs-0-2-1-release-notes/)**
+
 ### 2012-01-23 Beta 0.2.0
 * Lots of updates and interesting features. **[Read more »](http://jonnystromberg.com/listjs-0-2-0-plugins-paging/)**
 
