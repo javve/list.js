@@ -338,7 +338,7 @@ Removes all items from the list
     	];
 
     	listObj.filter(function(item) {
-    	   if (item.values().id > 1) {
+    	   if (item.id > 1) {
     	       return true;
     	   } else {
     	       return false;
@@ -359,7 +359,7 @@ Shows `page` number of items from `i`. Use for paging etc.
     	    , { id: 3, name "Jonas" }
     	    , { id: 4, name "Egon" }
     	    , { id: 5, name "Frank" }
-    	    , { id: &, name "Ester" }
+    	    , { id: 6, name "Ester" }
     	];
     	
     	listObj.show(4, 3); -> Display item 4,5,6 
@@ -406,7 +406,7 @@ Hides the item (removes the element from the list, and then when its shown its a
 Returns boolean. True if the item match the current filter and searches. Visible items 
 always matches, but matching items are not always visible.
 
-* **visisble()**  
+* **visible()**  
 Returns boolean. True if the item is visible. Visible items 
 always matches, but matching items are not always visible.
 
