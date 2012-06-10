@@ -49,6 +49,7 @@ var List = function(id, options, values) {
     if (!this.listContainer)
         return;
 
+    this.options = options;
     this.items = [];
     this.visibleItems = []; // These are the items currently visible
     this.matchingItems = []; // These are the items currently matching filters and search, regadlessof visible count
@@ -299,7 +300,7 @@ var List = function(id, options, values) {
             text,
             values,
             is,
-            columns = (columns === undefined) ? self.items[0].values() : columns,
+            columns = columns || self.options.searchColumns || self.items[0].values(),
             searchString = (searchString === undefined) ? "" : searchString,
             target = searchString.target || searchString.srcElement; /* IE have srcElement */
 
