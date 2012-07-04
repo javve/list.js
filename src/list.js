@@ -1,8 +1,7 @@
 /*
-ListJS Beta 0.2.0
-By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
-
-OBS. The API is not frozen. It MAY change!
+ListJS with RequireJS support Beta 0.2.0
+Modified by Simone Lusenti (www.plasticpanda.com)
+Original work by Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
 
 License (MIT)
 
@@ -770,6 +769,13 @@ h = {
     }
 };
 
-window.List = List;
-window.ListJsHelpers = h;
+if (typeof define == 'function' && typeof define.amd == 'object') {
+    define([], function() {
+        return List;
+    });
+} else {
+    window.List = List;
+    window.ListJsHelpers = h;
+}
+
 })(window);
