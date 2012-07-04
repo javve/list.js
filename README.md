@@ -455,7 +455,8 @@ Type just *ant* in the console while in root folder.
 
 ### 2012
 * [Feature] Add support for RequireJS
-* [Bugfix] Make sorting case-insensitive (thanks @thomasklemm)
+* [Improvement] Paging plugin default classes and structure now correspons to [Twitter Bootstraps pagination](http://twitter.github.com/bootstrap/components.html#pagination).
+* [Improvement] Make sorting case-insensitive (thanks @thomasklemm)
 
 ### 2012-04-24 Beta 0.2.1
 * Fuzzy Search plugin, `.filter()` changes and bug fixes **[Read more »](http://jonnystromberg.com/listjs-0-2-1-release-notes/)**

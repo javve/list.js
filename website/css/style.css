@@ -532,7 +532,7 @@ h1 {
     display:inline-block;
     line-height:14px;
 }
-.paging li a.active {
+.paging li.active a {
     font-weight:bold;
     color:#eee;
     font-size:18px;

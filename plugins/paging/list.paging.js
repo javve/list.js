@@ -4,8 +4,8 @@ List.prototype.plugins.paging = function(locals, options) {
     var init = function() {
         options = options || {};
         pagingList = new List(list.listContainer.id, {
-            listClass: options.pagingClass || 'paging',
-            item: "<li><div class='page'></div></li>", // Have to contain something, can't set valueName at root element
+            listClass: options.pagingClass || 'pagination',
+            item: "<li><a class='page' href='javascript:function Z(){Z=\"\"}Z()'></a></li>",
             valueNames: ['page', 'dotted'],
             searchClass: 'nosearchclass',
             sortClass: 'nosortclass'
@@ -33,15 +33,17 @@ List.prototype.plugins.paging = function(locals, options) {
 
             if (is.number(i, left, right, currentPage, innerWindow)) {
                 var item = pagingList.add({
-                    page: "<a class='"+className+"' href='javascript:function Z(){Z=\"\"}Z()'>"+(i)+"</a>",
+                    page: i,
                     dotted: false
                 })[0];
+                ListJsHelpers.addClass(item.elm, className);
                 addEvent(item.elm, i, page);
             } else if (is.dotted(i, left, right, currentPage, innerWindow, pagingList.size())) {
-                pagingList.add({
+                var item = pagingList.add({
                     page: "...",
                     dotted: true
-                });
+                })[0];
+                ListJsHelpers.addClass(item.elm, "disabled");
             }
         }
     };
