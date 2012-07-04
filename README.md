@@ -197,7 +197,7 @@ Some of the option parameters are required at some times
 
 	* **item** _(String, default: undefined)_  
 	ID to item template element or a string of HTML (**notice**: does not work with `<tr>`)
-	
+
 	        var options = {
 	            item: "<li><span class='name'></span><span class='city'></span></li>"
 	        }
@@ -219,13 +219,35 @@ Some of the option parameters are required at some times
 	* **page** _(Int, default: 200)_ (maxVisibleItemsCount previously)  
 	Defines how many items that should be visible at the same time. This affects
 	performance.
-	
+
 	* **i**  _(Int, default: 1)_  
-	Which item should be shown as the first one.
-	
+
+	Which items should be shown as the first one.
+
 	* **plugins** _(Array, default: undefined)_  
 	[Read more about plugins here](http://jonnystromberg.com/listjs-plugins-guide/)
-	
+
+    * **events** _(Object, default: undefined)_  
+
+            var options = {
+                updated: function(list) {
+                    console.log('There are now ' + list.visibleItems.length + ' visible items');
+                },
+                sortComplete: function(list) {
+                    console.log('There are now ' + list.matchingItems.length + ' matching items');
+                }
+            };
+
+        Available events (all have `list` as parameter):
+
+        * updated
+        * searchStart
+        * searchComplete
+        * sortStart
+        * sortComplete
+        * filterStart
+        * filterComplete
+
 * **values** _(Array of objects) (*optional)_
 Values to add to the list on initialization.
 
@@ -262,7 +284,10 @@ The element containing all items.
 Contains all template engines available.
 
 * **plugins** _(Object)_  
-The currently avaliable plugins.
+The currently available plugins.
+
+* **events** _(Object with Arrays)_  
+The currently attached event callbacks.
 
 ### Methods
 * **add(values, callback)**  
@@ -372,7 +397,21 @@ hides some items with the `itemObj.hide()` method then you have to call `listObj
 if you want the paging to update.
 
 * **on(event, callback)**  
-Execute `callback` when list have been updated (triggered by `update()`, which is used by a lot of methods).
+Execute `callback` when `event` is triggered.
+
+        list.on('updated', function(list) {
+            console.log('There are now ' + list.visibleItems.length + ' visible items');
+        });
+
+    Available events:
+
+    * updated
+    * searchStart
+    * searchComplete
+    * sortStart
+    * sortComplete
+    * filterStart
+    * filterComplete
 
 # Item API
 These methods are available for all Items that are returned by
@@ -454,6 +493,7 @@ Type just *ant* in the console while in root folder.
 # Changelog
 
 ### 2012
+* [Feature] Add more events and enable to add them on initialization.
 * [Feature] Add support for RequireJS
 * [Improvement] Paging plugin default classes and structure now correspons to [Twitter Bootstraps pagination](http://twitter.github.com/bootstrap/components.html#pagination).
 * [Improvement] Make sorting case-insensitive (thanks @thomasklemm)

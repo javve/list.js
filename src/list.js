@@ -52,10 +52,17 @@ var List = function(id, options, values) {
 		initialItems,
 		Item,
 		Templater,
-		sortButtons,
-		events = {
-		    'updated': []
-		};
+		sortButtons;
+
+	this.events = {
+	    'updated': [],
+        'searchStart': [],
+        'filterStart': [],
+        'sortStart': [],
+        'searchComplete': [],
+        'filterComplete': [],
+        'sortComplete': []
+	};
     this.listContainer = (typeof(id) == 'string') ? document.getElementById(id) : id;
     // Check if the container exists. If not return instead of breaking the javascript
     if (!this.listContainer)
@@ -76,8 +83,10 @@ var List = function(id, options, values) {
     init = {
         start: function(values, options) {
             options.plugins = options.plugins || {};
+            options.events = options.events || {};
             this.classes(options);
             templater = new Templater(self, options);
+            self.list = h.getByClass(options.listClass, self.listContainer, true);
             this.callbacks(options);
             this.items.start(values, options);
             self.update();
@@ -89,10 +98,12 @@ var List = function(id, options, values) {
             options.sortClass = options.sortClass || 'sort';
         },
         callbacks: function(options) {
-            self.list = h.getByClass(options.listClass, self.listContainer, true);
             h.addEvent(h.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
             sortButtons = h.getByClass(options.sortClass, self.listContainer);
             h.addEvent(sortButtons, 'click', self.sort);
+            for (var i in options.events) {
+                self.on(i, options.events[i]);
+            }
         },
         items: {
             start: function(values, options) {
@@ -148,7 +159,6 @@ var List = function(id, options, values) {
                 Item: Item,
                 Templater: Templater,
                 sortButtons: sortButtons,
-                events: events,
                 reset: reset
             };
             for (var i = 0; i < plugins.length; i++) {
@@ -255,6 +265,7 @@ var List = function(id, options, values) {
     * @sortFunction (optional) Define if natural sorting does not fullfill your needs
     */
     this.sort = function(valueName, options) {
+        trigger('sortStart');
         var length = self.items.length,
             value = null,
             target = valueName.target || valueName.srcElement, /* IE have srcElement */
@@ -296,6 +307,7 @@ var List = function(id, options, values) {
         }
         self.items.sort(options.sortFunction);
         self.update();
+        trigger('sortComplete');
     };
 
     /*
@@ -304,6 +316,7 @@ var List = function(id, options, values) {
     * defaults to undefined which means "all".
     */
     this.search = function(searchString, columns) {
+        trigger('searchStart');
         self.i = 1; // Reset paging
         var matching = [],
             found,
@@ -350,6 +363,7 @@ var List = function(id, options, values) {
             }
             self.update();
         }
+        trigger('searchComplete');
         return self.visibleItems;
     };
 
@@ -358,6 +372,7 @@ var List = function(id, options, values) {
     * if filterFunction == false are the filter removed
     */
     this.filter = function(filterFunction) {
+        trigger('filterStart');
         self.i = 1; // Reset paging
         reset.filter();
         if (filterFunction === undefined) {
@@ -375,6 +390,7 @@ var List = function(id, options, values) {
             }
         }
         self.update();
+        trigger('filterComplete');
         return self.visibleItems;
     };
 
@@ -394,13 +410,13 @@ var List = function(id, options, values) {
     };
 
     this.on = function(event, callback) {
-        events[event].push(callback);
+        self.events[event].push(callback);
     };
 
     var trigger = function(event) {
-        var i = events[event].length;
+        var i = self.events[event].length;
         while(i--) {
-            events[event][i]();
+            self.events[event][i](self);
         }
     };
 
