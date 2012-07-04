@@ -1,7 +1,20 @@
 /*
-ListJS with RequireJS support Beta 0.2.0
-Modified by Simone Lusenti (www.plasticpanda.com)
-Original work by Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
+ListJS with RequireJS support Beta 0.2.2
+By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
+
+Contributors
+* lusentis (Simone Lusenti) - http://www.plasticpanda.com
+* dancrew32 (Dan Masquelier) - http://danmasq.com
+* himynameisjonas (Jonas Forsberg) - http://jonasforsberg.se
+* endorama (Edoardo Tenani)
+* sprynmr (Bob Spryn)
+* francescolaffi
+* ryantanner
+* idlefella
+* julienbechade (Julien Béchade) - http://julienbechade.com/
+* matthewheston
+* gvido (Gvido Glazers)
+* karlwestin (Karl Westin) - http://karlwestin.com
 
 License (MIT)
 
