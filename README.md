@@ -494,6 +494,9 @@ Type just *ant* in the console while in root folder.
 
 ### 2012
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Add more events & make available at init
 * [Feature] Add more events and enable to add them on initialization.
 * [Feature] Add support for RequireJS
 * [Improvement] Paging plugin default classes and structure now correspons to [Twitter Bootstraps pagination](http://twitter.github.com/bootstrap/components.html#pagination).
