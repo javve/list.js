@@ -559,17 +559,9 @@ List.prototype.templateEngines.standard = function(list, settings) {
         }
     }
 
-    var ensure = {
-        created: function(item) {
-            if (item.elm === undefined) {
-                templater.create(item);
-            }
-        }
-    };
-
     /* Get values from element */
     this.get = function(item, valueNames) {
-        ensure.created(item);
+        templater.create(item);
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
             var elm = h.getByClass(valueNames[i], item.elm, true);
@@ -580,13 +572,14 @@ List.prototype.templateEngines.standard = function(list, settings) {
 
     /* Sets values at element */
     this.set = function(item, values) {
-        ensure.created(item);
-        for(var v in values) {
-            if (values.hasOwnProperty(v)) {
-                // TODO speed up if possible
-                var elm = h.getByClass(v, item.elm, true);
-                if (elm) {
-                    elm.innerHTML = values[v];
+        if (!templater.create(item)) {
+            for(var v in values) {
+                if (values.hasOwnProperty(v)) {
+                    // TODO speed up if possible
+                    var elm = h.getByClass(v, item.elm, true);
+                    if (elm) {
+                        elm.innerHTML = values[v];
+                    }
                 }
             }
         }
@@ -594,7 +587,7 @@ List.prototype.templateEngines.standard = function(list, settings) {
 
     this.create = function(item) {
         if (item.elm !== undefined) {
-            return;
+            return false;
         }
         /* If item source does not exists, use the first item in list as
         source for new items */
@@ -602,12 +595,13 @@ List.prototype.templateEngines.standard = function(list, settings) {
         newItem.id = "";
         item.elm = newItem;
         templater.set(item, item.values());
+        return true;
     };
     this.remove = function(item) {
         listSource.removeChild(item.elm);
     };
     this.show = function(item) {
-        ensure.created(item);
+        templater.create(item);
         listSource.appendChild(item.elm);
     };
     this.hide = function(item) {
