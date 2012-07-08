@@ -145,8 +145,9 @@ and are initiated at the same time as the lists. [Read more here »](http://jonn
 
 * **[Paging plugin](http://jonnystromberg.com/listjs-paging-plugin/)** - A plugin for easily adding 
 paging to List.js
+* **[Fuzzy search plugin](http://jonnystromberg.com/listjs-fuzzy-search-plugin/)** - A plugin for fuzzy search matching 
 
-As you see are there only one plugin currently. But I would very much like to add your plugin
+As you see are there only two plugins currently. But I would very much like to add your plugin
 to this list if you just mails me.
 
 # Documentation
