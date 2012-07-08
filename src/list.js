@@ -176,6 +176,7 @@ var List = function(id, options, values) {
     this.add = function(values, callback) {
         if (callback) {
             addAsync(values, callback);
+            return;
         }
         var added = [],
             notCreate = false;
