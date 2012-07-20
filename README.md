@@ -33,7 +33,7 @@ Javascript
 
 ## Create list on initialization
 
-### Version 1 (do not work with tables)
+### Version 1 (does not work with tables)
 HTML
 
     <div id="hacker-list">
@@ -138,7 +138,7 @@ Javascript (nothing special)
 
 # Plugins
 
-List.js offers a possiblity to use and add plugins that are integrated in the list objects 
+List.js offers the possiblity to use and add plugins that are integrated in the list objects 
 and are initiated at the same time as the lists. [Read more here »](http://jonnystromberg.com/listjs-plugins-guide/)
 
 ## List of plugins
@@ -147,23 +147,23 @@ and are initiated at the same time as the lists. [Read more here »](http://jonn
 paging to List.js
 * **[Fuzzy search plugin](http://jonnystromberg.com/listjs-fuzzy-search-plugin/)** - A plugin for fuzzy search matching 
 
-As you see are there only two plugins currently. But I would very much like to add your plugin
-to this list if you just mails me.
+As you can see, there are currently only two plugins. But I would very much like to add your plugin
+to this list if you just email me.
 
 # Documentation
 
-## Search, sort and list container elemenet
-The secret behind the search field, the sort buttons and the list container element are the classes.
-By default does all inputs with class `search` becomes search fields for the list.
+## Search, sort and list container element
+The secret behind the search field, the sort buttons, and the list container element are the classes.
+By default, all inputs with class `search` become search fields for the list.
 
     <input type="text" class="search" />
 
 The sorting gets activated for all elements with class `sort` and then sorts the
-`valueName` corresponding the the `data-sort` value of the element.
+`valueName` corresponding to the the `data-sort` value of the element.
 
     <span class="sort" data-sort="name">Sort names</span>
 
-The element containing the list have to have the class `list` (or one that _you_ define)
+The element containing the list has to have the class `list` (or one that _you_ define)
 
     <ul class="list"></ul>
     # Can be a div, table, dl, or whatever fits your purpose
@@ -181,9 +181,9 @@ All of these classes can be defined by yourself when creating the list by settin
  Id the element in which the list area should be initialized. OR the actual element itself.
 * **options**
 Some of the option parameters are required at some times
-	* **valueNames** _(Array, default: null) (*only required if list already contains items before initialization)_  
-	If the list contains items on initialization does this array
-	have to contain the value names (class names) for the different values of
+	* **valueNames** _(Array, default: null) (*only required if the list already contains items before initialization)_  
+	If the list contains items on initialization, then this array
+	has to contain the value names (class names) for the different values of
 	each list item.
 
 	        <ul class="list">
@@ -203,17 +203,17 @@ Some of the option parameters are required at some times
 	        }
 
 	* **listClass** _(String, default: "list")_  
-	What is class of the list-container?
+	What is the class of the list-container?
 
 	* **searchClass** _(String, default: "search")_  
-	What is class of the search field?
+	What is the class of the search field?
 
 	* **sortClass** _(String, default: "sort")_  
-	What is class of the sort buttons?
+	What is the class of the sort buttons?
 
 	* **indexAsync** _(Boolean, default: false)_  
-	If there already are items in the list to which the
-	List.js-script is added, should the indexing be done
+	If there are already items in the list to which the
+	List.js-script is added, then should the indexing be done
 	in a asynchronous way? Good for large lists (> 500 items).
 
 	* **page** _(Int, default: 200)_ (maxVisibleItemsCount previously)  
@@ -221,7 +221,7 @@ Some of the option parameters are required at some times
 	performance.
 	
 	* **i**  _(Int, default: 1)_  
-	Which items should be shown as the first one.
+	Which item should be shown as the first one.
 	
 	* **plugins** _(Array, default: undefined)_  
 	[Read more about plugins here](http://jonnystromberg.com/listjs-plugins-guide/)
@@ -241,7 +241,7 @@ The element node that contains the entire list area.
 The element containing all items.
 
 * **items** _(Array)_  
-A Array of all Item-objects in the list.
+An Array of all Item-objects in the list.
 
 * **visibleItems** _(Array)_  
 The currently visible items in the list
@@ -253,7 +253,7 @@ The items matching the currently active filter and search.
 Returns true if the list is searched.
 
 * **filtered** _(Boolean)_  
-Returns true if there are a active filter.
+Returns true if there is an active filter.
 
 * **list** _(Element)_  
 The element containing all items.
@@ -275,8 +275,8 @@ Adds one or more items to the list.
             , { name: "Jonas", city: "Berlin" }
         ]);
 
-    If `callback` is set items are added to the list in a asynchronous way, and the
-    callback is called when all items are added. Are especially useful
+    If `callback` is set then items are added to the list in a asynchronous way, and the
+    callback is called when all items are added. This is especially useful
     when adding very many items (200+ or something), or if you just like the
     asynchronous coding style.
 
@@ -286,7 +286,7 @@ Adds one or more items to the list.
 
 * **remove(valueName, value)**  
 Removes items from the list where the value named `valueName` has value `value`.
-Returns the count of items that where removed.
+Returns the number of items that where removed.
 
 		itemsInList = [
 			{ id: 1, name: "Jonny" }
@@ -304,10 +304,10 @@ Returns values from the list where the value named `valueName` has value `value`
 			listObj.get("id", 2); -> return { id: 2, name "Gustaf" }
 
 * **sort(valueName, options)**  
-Sorts the list based in values in column named `valueName`. The options
+Sorts the list based on values the in the column named `valueName`. The options
 parameter can contain two properties `options.sortFunction` and `options.asc`.
-`options.sortFunction` is used if you want to make you one sort function.
-Default sort function is found here [http://my.opera.com/GreyWyvern/blog/show.dml/1671288](http://my.opera.com/GreyWyvern/blog/show.dml/1671288)
+`options.sortFunction` is used if you want to make your own sort function.
+The default sort function is found here [http://my.opera.com/GreyWyvern/blog/show.dml/1671288](http://my.opera.com/GreyWyvern/blog/show.dml/1671288)
 `options.asc = true` means that you want to sort the list in ascending order. Set
 `false` for descending.
 
@@ -368,7 +368,7 @@ Shows `page` number of items from `i`. Use for paging etc.
     	
 * **update()**  
 Updates the current state of the list. Meaning that if you for instance 
-hides some items with `itemObj.hide()` method then you have to call `listObj.update()` 
+hides some items with the `itemObj.hide()` method then you have to call `listObj.update()` 
 if you want the paging to update.
 
 * **on(event, callback)**  
@@ -401,10 +401,10 @@ The actual item DOM element
 Shows the item
 
 * **hide()**  
-Hides the item (removes the element from the list, and then when its shown its appended again, the element will thereby change position in the list, bug, but a good solution is yet to find)
+Hides the item (removes the element from the list, and then when its shown it's appended again. The element will thereby change position in the list. A bug, but a good solution is yet to be found.)
 
 * **matching()**  
-Returns boolean. True if the item match the current filter and searches. Visible items 
+Returns boolean. True if the item matches the current filter and search. Visible items 
 always matches, but matching items are not always visible.
 
 * **visisble()**  
