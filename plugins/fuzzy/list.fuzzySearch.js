@@ -4,7 +4,7 @@
  * This method is a based on: Diff Match and Patch
  * http://code.google.com/p/google-diff-match-patch/
  * Author: fraser@google.com (Neil Fraser)
- * Modifications by: l.vanegeraat@gmail.com (Luuk van Egeraat)
+ * Modifications by: l.vanegeraat@gmail.com (Luuk van Egeraat / @LuukvE)
  * Plugin by: jonny.stromberg@gmail.com (Jonny Strömberg / @javve)
  *
  * Licensed under the Apache License
