@@ -499,6 +499,7 @@ Type just *ant* in the console while in root folder.
 * [Improvement] Make sorting case-insensitive (thanks @thomasklemm)
 * [Bugfix] `.add(items, callbak)` with `callback` set does no longer add an extra item.
 * [Bugfix] `templater.set()` no longer is called twice in a `templater.get()` call.
+* [Bugfix] Fix error when trying to sort `undefined` values.
 
 ### 2012-04-24 Beta 0.2.1
 * Fuzzy Search plugin, `.filter()` changes and bug fixes **[Read more »](http://jonnystromberg.com/listjs-0-2-1-release-notes/)**

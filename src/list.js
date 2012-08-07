@@ -303,7 +303,7 @@ var List = function(id, options, values) {
             options.sortFunction = options.sortFunction;
         } else {
             options.sortFunction = function(a, b) {
-                return h.sorter.alphanum(a.values()[value].toLowerCase(), b.values()[value].toLowerCase(), isAsc);
+                return h.sorter.alphanum(a.values()[value], b.values()[value], isAsc);
             };
         }
         self.items.sort(options.sortFunction);
@@ -745,12 +745,12 @@ h = {
             if (b === undefined || b === null) {
                 b = "";
             }
-            a = a.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
+            a = a.toString().toLowerCase().replace(/&(lt|gt);/g, function (strMatch, p1){
                 return (p1 == "lt")? "<" : ">";
             });
             a = a.replace(/<\/?[^>]+(>|$)/g, "");
 
-            b = b.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
+            b = b.toString().toLowerCase().replace(/&(lt|gt);/g, function (strMatch, p1){
                 return (p1 == "lt")? "<" : ">";
             });
             b = b.replace(/<\/?[^>]+(>|$)/g, "");
