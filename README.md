@@ -360,7 +360,7 @@ Shows `page` number of items from `i`. Use for paging etc.
     	    , { id: 3, name "Jonas" }
     	    , { id: 4, name "Egon" }
     	    , { id: 5, name "Frank" }
-    	    , { id: &, name "Ester" }
+    	    , { id: 6, name "Ester" }
     	];
     	
     	listObj.show(4, 3); -> Display item 4,5,6 
