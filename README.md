@@ -455,17 +455,18 @@ Type just *ant* in the console while in root folder.
 
 ### 2012-04-24 Beta 0.2.1-img
 * Support for setting image paths in list items from data values.
-  Template img tag's src property is matched and replaced.
-  example template item/markup (See "Version 1" above):
-    var options = {
-        item: '<li><img class="personid" src="path/to/images/ReplaceMe.jpg" ><h3 class="name"></h3><p class="city"></p></li>'
-    };
-  example data:
-      var values = [
-        { personid: '1', name: 'Jonny', city:'Stockholm' }
-        , { personid: '2', name: 'Jonas', city:'Berlin' }
-    ];
-  The part between the last '/' and '.' ("ReplaceMe") will be replaced with the data (personid) value.
+Template img tag's src property is matched and replaced.
+See [Version 1](#version-1-does-not-work-with-tables) above, example template item/markup and data:
+
+        var options = {
+            item: '<li><img class="personid" src="path/to/images/ReplaceMe.jpg" ><h3 class="name"></h3><p class="city"></p></li>'
+        };
+        var values = [
+            { personid: '1', name: 'Jonny', city:'Stockholm' }
+            , { personid: '2', name: 'Jonas', city:'Berlin' }
+        ];
+
+The part between the last '/' and '.' ("ReplaceMe") will be replaced with the data (personid) value.
 
 ### 2012-04-24 Beta 0.2.1
 * Fuzzy Search plugin, `.filter()` changes and bug fixes **[Read more »](http://jonnystromberg.com/listjs-0-2-1-release-notes/)**
