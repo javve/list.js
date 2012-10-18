@@ -557,7 +557,11 @@ List.prototype.templateEngines.standard = function(list, settings) {
                 // TODO speed up if possible
                 var elm = h.getByClass(v, item.elm, true);
                 if (elm) {
-                    elm.innerHTML = values[v];
+                    if(elm.nodeName.toLowerCase()=='img') {
+                        elm.src = elm.src.replace(/(\/?)([^\/]+)(\.)/, "$1"+values[v]+".");
+                    } else {
+                        elm.innerHTML = values[v];
+                    }
                 }
             }
         }
