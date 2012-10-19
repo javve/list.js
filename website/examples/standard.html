@@ -127,6 +127,25 @@
 
         var featureList = new List('lovely-things-list', options);
 
+        /*------------------------------------------------------*/
+        /**
+         * Alternately build using template markup and data.
+         * IMG tag's src is replaced to build list.
+         */
+        /*
+        var options = {
+            item: '<li><img src="images/ReplaceMe.jpg" class="thumb" /><h4><span class="name"></span> <span class="category"></span></h4></h4><p class="description"></p></li>'
+        };
+        var values = [
+            { thumb: 'monkeyisland', name: 'Monkey Island 2: LeChuck\'s Revenge', category:'Game', description:'Monkey Island 2: LeChuck\'s Revenge is an adventure game developed and published by LucasArts in 1991. It was the second game of the Monkey Island series, following The Secret...' }
+            , { thumb: 'coffee', name: 'Good Coffee', category:'Beverage', description:'Coffee is a brewed beverage with a dark, slightly acidic flavor prepared from the roasted seeds of the coffee plant, colloquially called coffee beans.' }
+            , { thumb: 'fullthrottle', name: 'Full Throttle', category:'Game', description:'Full Throttle is a computer adventure game developed and published by LucasArts. It was designed by Tim Schafer, who would later go on to design the critically acclaimed titles Grim Fandango, Psychonauts and Brütal Legend.' }
+            , { thumb: 'brooklyn', name: 'Brooklyn Lager', category:'Beverage', description:'Brooklyn Brewery was started in 1987 by former Associated Press correspondent Steve Hindy and former Chemical Bank lending officer Tom Potter.' }
+        ];
+        var featureList = new List('lovely-things-list', options, values);
+        */
+        /*------------------------------------------------------*/
+
         $('#filter-games').click(function() {
             featureList.filter(function(item) {
                 if (item.values().category == "Game") {
@@ -151,6 +170,12 @@
         $('#filter-none').click(function() {
             featureList.filter();
             return false;
+        });
+        /*------------------------------------------------------*/
+        /* Example click handler to know which item was clicked */
+        $('.list > li').click(function(){
+            var index = $(this).index();
+            alert("The 'name' in the clicked item was: " + featureList.visibleItems[index].values().name);
         });
     </script>
     <!-- End of List.js stuff -->
