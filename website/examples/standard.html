@@ -171,6 +171,12 @@
             featureList.filter();
             return false;
         });
+        /*------------------------------------------------------*/
+        /* Example click handler to know which item was clicked */
+        $('.list > li').click(function(){
+            var index = $(this).index();
+            alert("The 'name' in the clicked item was: " + featureList.visibleItems[index].values().name);
+        });
     </script>
     <!-- End of List.js stuff -->
 </body>
