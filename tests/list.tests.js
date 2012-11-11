@@ -145,6 +145,25 @@ test('Search with undefined values', function() {
     }
 });
 
+test('Search with searchColumns', function() {
+  var list2options = {
+    item: '<li><div class="title"></div><div class="body"></div></li>',
+    searchColumns: {title: true}
+  };
+  var list2data = [
+    {title: 'title one', body: 'body always has one'},
+    {title: 'title two', body: 'body always has one'},
+    {title: 'title three', body: 'body always has one'}
+  ];
+  var list2 = new List('list2', list2options, list2data);
+  var items = list2.search('title');
+  equal(items.length, 3);
+  var items = list2.search('one');
+  equal(items.length, 1);
+  var items = list2.search('always');
+  equal(items.length, 0);
+});
+
 test('Filter', function() {
     var visibleItems = theList.filter(function(item) {
         if (+item.values().id < 3) {
