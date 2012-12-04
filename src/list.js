@@ -31,19 +31,19 @@ OTHER DEALINGS IN THE SOFTWARE.
 (function( window, undefined ) {
 "use strict";
 var document = window.document,
-	h;
+    h;
 
 var List = function(id, options, values) {
     var self = this,
-		templater,
-		init,
-		initialItems,
-		Item,
-		Templater,
-		sortButtons,
-		events = {
-		    'updated': []
-		};
+        templater,
+        init,
+        initialItems,
+        Item,
+        Templater,
+        sortButtons,
+        events = {
+            'updated': []
+        };
     this.listContainer = (typeof(id) == 'string') ? document.getElementById(id) : id;
     // Check if the container exists. If not return instead of breaking the javascript
     if (!this.listContainer)
@@ -194,11 +194,11 @@ var List = function(id, options, values) {
         }
     };
 
-	this.show = function(i, page) {
-		this.i = i;
-		this.page = page;
-		self.update();
-	};
+    this.show = function(i, page) {
+        this.i = i;
+        this.page = page;
+        self.update();
+    };
 
     /* Removes object from list.
     * Loops through the list and removes objects where
@@ -412,7 +412,7 @@ var List = function(id, options, values) {
 
     this.update = function() {
         var is = self.items,
-			il = is.length;
+            il = is.length;
 
         self.visibleItems = [];
         self.matchingItems = [];
@@ -422,12 +422,12 @@ var List = function(id, options, values) {
                 is[i].show();
                 self.visibleItems.push(is[i]);
                 self.matchingItems.push(is[i]);
-			} else if (is[i].matching()) {
+            } else if (is[i].matching()) {
                 self.matchingItems.push(is[i]);
                 is[i].hide();
-			} else {
+            } else {
                 is[i].hide();
-			}
+            }
         }
         trigger('updated');
     };
@@ -473,7 +473,7 @@ var List = function(id, options, values) {
         this.matching = function() {
             return (
                 (self.filtered && self.searched && item.found && item.filtered) ||
-               	(self.filtered && !self.searched && item.filtered) ||
+                (self.filtered && !self.searched && item.filtered) ||
                 (!self.filtered && self.searched && item.found) ||
                 (!self.filtered && !self.searched)
             );
