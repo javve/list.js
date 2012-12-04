@@ -80,6 +80,32 @@ test('Search', function() {
     theList.search(); 
 });
 
+test('Search with array columns', function() {
+    var items = theList.search('Ryan', ['name']);
+    equals(items.length, 1);
+    items = [
+        items[0].values()
+    ];
+    deepEqual(items, [ryah]);
+    theList.search();
+});
+
+test('Search with object columns', function() {
+    var items = theList.search('TJ', {'name': 1});
+    equals(items.length, 1);
+    items = [
+        items[0].values()
+    ];
+    deepEqual(items, [tj]);
+    theList.search();
+});
+
+test('Search with columns wrong column', function() {
+    var items = theList.search('Node', {'name': 1});
+    equals(items.length, 0);
+    theList.search();
+});
+
 test('Search with null values', function() {
     var objectWithNulls = {
         id: 7
