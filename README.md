@@ -54,7 +54,7 @@ JavaScript
     var hackerList = new List('hacker-list', options, values);
 
 
-### Version 2 
+### Version 2
 HTML
 
     <div id="hacker-list">
@@ -138,14 +138,14 @@ Javascript (nothing special)
 
 # Plugins
 
-List.js offers the possiblity to use and add plugins that are integrated in the list objects 
+List.js offers the possiblity to use and add plugins that are integrated in the list objects
 and are initiated at the same time as the lists. [Read more here »](http://jonnystromberg.com/listjs-plugins-guide/)
 
 ## List of plugins
 
-* **[Paging plugin](http://jonnystromberg.com/listjs-paging-plugin/)** - A plugin for easily adding 
+* **[Paging plugin](http://jonnystromberg.com/listjs-paging-plugin/)** - A plugin for easily adding
 paging to List.js
-* **[Fuzzy search plugin](http://jonnystromberg.com/listjs-fuzzy-search-plugin/)** - A plugin for fuzzy search matching 
+* **[Fuzzy search plugin](http://jonnystromberg.com/listjs-fuzzy-search-plugin/)** - A plugin for fuzzy search matching
 
 As you can see, there are currently only two plugins. But I would very much like to add your plugin
 to this list if you just email me.
@@ -174,58 +174,58 @@ All of these classes can be defined by yourself when creating the list by settin
 ## Create a list
 
 ### Constructor
-*	List(id, options, values)
+*   List(id, options, values)
 
 ### Parameters
 * **id** or **element** *(\*required)*
  Id the element in which the list area should be initialized. OR the actual element itself.
 * **options**
 Some of the option parameters are required at some times
-	* **valueNames** _(Array, default: null) (*only required if the list already contains items before initialization)_  
-	If the list contains items on initialization, then this array
-	has to contain the value names (class names) for the different values of
-	each list item.
+    * **valueNames** _(Array, default: null) (*only required if the list already contains items before initialization)_
+    If the list contains items on initialization, then this array
+    has to contain the value names (class names) for the different values of
+    each list item.
 
-	        <ul class="list">
-	            <li>
-	                <span class="name">Jonny</span>
-	                <span class="city">Sundsvall</span>
-	            </li>
-	        </ul>
+            <ul class="list">
+                <li>
+                    <span class="name">Jonny</span>
+                    <span class="city">Sundsvall</span>
+                </li>
+            </ul>
 
-	        var valueNames = ['name', 'city'];
+            var valueNames = ['name', 'city'];
 
-	* **item** _(String, default: undefined)_  
-	ID to item template element or a string of HTML (**notice**: does not work with `<tr>`)
-	
-	        var options = {
-	            item: "<li><span class='name'></span><span class='city'></span></li>"
-	        }
+    * **item** _(String, default: undefined)_
+    ID to item template element or a string of HTML (**notice**: does not work with `<tr>`)
 
-	* **listClass** _(String, default: "list")_  
-	What is the class of the list-container?
+            var options = {
+                item: "<li><span class='name'></span><span class='city'></span></li>"
+            }
 
-	* **searchClass** _(String, default: "search")_  
-	What is the class of the search field?
+    * **listClass** _(String, default: "list")_
+    What is the class of the list-container?
 
-	* **sortClass** _(String, default: "sort")_  
-	What is the class of the sort buttons?
+    * **searchClass** _(String, default: "search")_
+    What is the class of the search field?
 
-	* **indexAsync** _(Boolean, default: false)_  
-	If there are already items in the list to which the
-	List.js-script is added, then should the indexing be done
-	in a asynchronous way? Good for large lists (> 500 items).
+    * **sortClass** _(String, default: "sort")_
+    What is the class of the sort buttons?
 
-	* **page** _(Int, default: 200)_ (maxVisibleItemsCount previously)  
-	Defines how many items that should be visible at the same time. This affects
-	performance.
-	
-	* **i**  _(Int, default: 1)_  
-	Which item should be shown as the first one.
-	
-	* **plugins** _(Array, default: undefined)_  
-	[Read more about plugins here](http://jonnystromberg.com/listjs-plugins-guide/)
-	
+    * **indexAsync** _(Boolean, default: false)_
+    If there are already items in the list to which the
+    List.js-script is added, then should the indexing be done
+    in a asynchronous way? Good for large lists (> 500 items).
+
+    * **page** _(Int, default: 200)_ (maxVisibleItemsCount previously)
+    Defines how many items that should be visible at the same time. This affects
+    performance.
+
+    * **i**  _(Int, default: 1)_
+    Which item should be shown as the first one.
+
+    * **plugins** _(Array, default: undefined)_
+    [Read more about plugins here](http://jonnystromberg.com/listjs-plugins-guide/)
+
 * **values** _(Array of objects) (*optional)_
 Values to add to the list on initialization.
 
@@ -234,38 +234,38 @@ Values to add to the list on initialization.
 These methods are available for the List-object.
 
 ### Properties
-* **listContainer** _(Element)_  
+* **listContainer** _(Element)_
 The element node that contains the entire list area.
 
-* **list** _(Element)_  
+* **list** _(Element)_
 The element containing all items.
 
-* **items** _(Array)_  
+* **items** _(Array)_
 An Array of all Item-objects in the list.
 
-* **visibleItems** _(Array)_  
+* **visibleItems** _(Array)_
 The currently visible items in the list
 
-* **matchingItems** _(Array)_  
+* **matchingItems** _(Array)_
 The items matching the currently active filter and search.
 
-* **searched** _(Boolean)_  
+* **searched** _(Boolean)_
 Returns true if the list is searched.
 
-* **filtered** _(Boolean)_  
+* **filtered** _(Boolean)_
 Returns true if there is an active filter.
 
-* **list** _(Element)_  
+* **list** _(Element)_
 The element containing all items.
 
-* **templateEngines** _(Object)_  
+* **templateEngines** _(Object)_
 Contains all template engines available.
 
-* **plugins** _(Object)_  
+* **plugins** _(Object)_
 The currently avaliable plugins.
 
 ### Methods
-* **add(values, callback)**  
+* **add(values, callback)**
 Adds one or more items to the list.
 
         listObj.add({ name: "Jonny", city: "Stockholm" });
@@ -284,26 +284,26 @@ Adds one or more items to the list.
             console.log('All ' + items.length + ' were added!');
         });
 
-* **remove(valueName, value)**  
+* **remove(valueName, value)**
 Removes items from the list where the value named `valueName` has value `value`.
 Returns the number of items that where removed.
 
-		itemsInList = [
-			{ id: 1, name: "Jonny" }
-			, { id: 2, name "Gustaf" }
-		];
-		listObj.remove("id", 1); -> return 1
+        itemsInList = [
+            { id: 1, name: "Jonny" }
+            , { id: 2, name "Gustaf" }
+        ];
+        listObj.remove("id", 1); -> return 1
 
-* **get(valueName, value)**  
+* **get(valueName, value)**
 Returns values from the list where the value named `valueName` has value `value`.
 
-			itemsInList = [
-				{ id: 1, name: "Jonny" }
-				, { id: 2, name "Gustaf" }
-			];
-			listObj.get("id", 2); -> return { id: 2, name "Gustaf" }
+            itemsInList = [
+                { id: 1, name: "Jonny" }
+                , { id: 2, name "Gustaf" }
+            ];
+            listObj.get("id", 2); -> return { id: 2, name "Gustaf" }
 
-* **sort(valueName, options)**  
+* **sort(valueName, options)**
 Sorts the list based on values the in the column named `valueName`. The options
 parameter can contain two properties `options.sortFunction` and `options.asc`.
 `options.sortFunction` is used if you want to make your own sort function.
@@ -314,7 +314,7 @@ The default sort function is found here [http://my.opera.com/GreyWyvern/blog/sho
         listObj.sort('name', { asc: true }); -> Sorts the list in abc-order based on names
         listObj.sort('name', { asc: false }); -> Sorts the list in zxy-order based on names
 
-* **search(searchString, columns)**    
+* **search(searchString, columns)**
 Searches the list
 
         itemsInList = [
@@ -327,51 +327,51 @@ Searches the list
 
         listObj.search(); -> Show all items in list
 
-* **clear()**  
+* **clear()**
 Removes all items from the list
 
 * **filter(filterFunction)**
 
         itemsInList = [
-    	    { id: 1, name: "Jonny" }
-    	    , { id: 2, name "Gustaf" }
-    	    , { id: 3, name "Jonas" }
-    	];
+            { id: 1, name: "Jonny" }
+            , { id: 2, name "Gustaf" }
+            , { id: 3, name "Jonas" }
+        ];
 
-    	listObj.filter(function(item) {
-    	   if (item.values().id > 1) {
-    	       return true;
-    	   } else {
-    	       return false;
-    	   }
-    	}); -> Only items with id > 1 are shown in list
+        listObj.filter(function(item) {
+           if (item.values().id > 1) {
+               return true;
+           } else {
+               return false;
+           }
+        }); -> Only items with id > 1 are shown in list
 
-    	listObjs.filter(); -> Remove all filters
+        listObjs.filter(); -> Remove all filters
 
-* **size()**  
+* **size()**
 Returns the size of the list.
 
-* **show(i, page)**  
+* **show(i, page)**
 Shows `page` number of items from `i`. Use for paging etc.
 
         itemsInList = [
-    	    { id: 1, name: "Jonny" }
-    	    , { id: 2, name "Gustaf" }
-    	    , { id: 3, name "Jonas" }
-    	    , { id: 4, name "Egon" }
-    	    , { id: 5, name "Frank" }
-    	    , { id: 6, name "Ester" }
-    	];
-    	
-    	listObj.show(4, 3); -> Display item 4,5,6 
-    	
-    	
-* **update()**  
-Updates the current state of the list. Meaning that if you for instance 
-hides some items with the `itemObj.hide()` method then you have to call `listObj.update()` 
+            { id: 1, name: "Jonny" }
+            , { id: 2, name "Gustaf" }
+            , { id: 3, name "Jonas" }
+            , { id: 4, name "Egon" }
+            , { id: 5, name "Frank" }
+            , { id: 6, name "Ester" }
+        ];
+
+        listObj.show(4, 3); -> Display item 4,5,6
+
+
+* **update()**
+Updates the current state of the list. Meaning that if you for instance
+hides some items with the `itemObj.hide()` method then you have to call `listObj.update()`
 if you want the paging to update.
 
-* **on(event, callback)**  
+* **on(event, callback)**
 Execute `callback` when list have been updated (triggered by `update()`, which is used by a lot of methods).
 
 # Item API
@@ -385,30 +385,30 @@ The actual item DOM element
 
 ### Methods
 * **values(newValues)**
-	* newValues _optional_
-	If variable newValues are present the new values replaces the current item values
-	and updates the list.
-	If newValues are not present, the function returns the current values.
+    * newValues _optional_
+    If variable newValues are present the new values replaces the current item values
+    and updates the list.
+    If newValues are not present, the function returns the current values.
 
-	        item.values() -> { name: "Jonny", age: 24, city: "Umeå" }
-	        item.values({
-	            age: 25,
-	            city: "Stockholm"
-	        });
-	        item.values() -> { name: "Jonny", age: 25, city: "Stockholm" }
+            item.values() -> { name: "Jonny", age: 24, city: "Umeå" }
+            item.values({
+                age: 25,
+                city: "Stockholm"
+            });
+            item.values() -> { name: "Jonny", age: 25, city: "Stockholm" }
 
-* **show()**  
+* **show()**
 Shows the item
 
-* **hide()**  
+* **hide()**
 Hides the item (removes the element from the list, and then when its shown it's appended again. The element will thereby change position in the list. A bug, but a good solution is yet to be found.)
 
-* **matching()**  
-Returns boolean. True if the item matches the current filter and search. Visible items 
+* **matching()**
+Returns boolean. True if the item matches the current filter and search. Visible items
 always matches, but matching items are not always visible.
 
-* **visisble()**  
-Returns boolean. True if the item is visible. Visible items 
+* **visisble()**
+Returns boolean. True if the item is visible. Visible items
 always matches, but matching items are not always visible.
 
 
@@ -416,26 +416,26 @@ always matches, but matching items are not always visible.
 ## Helper functions
 Called by ListJsHelpers.functionName()
 
-* **getByClass(element, class, isSingle)**  
+* **getByClass(element, class, isSingle)**
 [http://www.dustindiaz.com/getelementsbyclass](http://www.dustindiaz.com/getelementsbyclass)
 
-* **addEvent(element, type, callback)**  
+* **addEvent(element, type, callback)**
 [http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/](http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/)
 Updated in some ways, thought.
 
-* **getAttribute(element, attribute)**  
+* **getAttribute(element, attribute)**
 [http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method](http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method)
 
-* **isNodeList(element)**  
+* **isNodeList(element)**
 [http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript](http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript)
 
-* **hasClass(element, class)**  
+* **hasClass(element, class)**
 Checks if `element` has class name `class`
 
-* **addClass(element, class)**  
+* **addClass(element, class)**
 Adds class name `class` to `element`
 
-* **removeClass(element, class)**  
+* **removeClass(element, class)**
 Removes class name `class` from `element`
 
 
