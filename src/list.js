@@ -303,6 +303,14 @@ var List = function(id, options, values) {
             searchString = (searchString === undefined) ? "" : searchString,
             target = searchString.target || searchString.srcElement; /* IE have srcElement */
 
+        if (h.isArray(columns)) {  // convert array to object
+            var arr_columns = columns;
+            columns = {}
+            for (var c = 0, cl = arr_columns.length; c < cl; c++) {
+                columns[arr_columns[c]] = 1;
+            }
+        }
+
         searchString = (target === undefined) ? (""+searchString).toLowerCase() : ""+target.value.toLowerCase();
         is = self.items;
         // Escape regular expression characters
@@ -691,6 +699,10 @@ h = {
             return true;
         }
         return false;
+    },
+    isArray: function(obj) {
+        var result = Object.prototype.toString.call(obj);
+        return result === "[object Array]";
     },
     hasClass: function(ele, classN) {
         var classes = this.getAttribute(ele, 'class') || this.getAttribute(ele, 'className') || "";
