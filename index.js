@@ -43,7 +43,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 (function( window, undefined ) {
 "use strict";
 var document = window.document,
-	h;
+	h,
+    events = require('events');
+
 
 var List = function(id, options, values) {
     var self = this,
@@ -98,9 +100,9 @@ var List = function(id, options, values) {
             options.sortClass = options.sortClass || 'sort';
         },
         callbacks: function(options) {
-            h.addEvent(h.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
+            events.bind(h.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
             sortButtons = h.getByClass(options.sortClass, self.listContainer);
-            h.addEvent(sortButtons, 'click', self.sort);
+            events.bind(sortButtons, 'click', self.sort);
             for (var i in options.events) {
                 self.on(i, options.events[i]);
             }
@@ -664,33 +666,6 @@ h = {
             };
         }
     })(),
-    /* (elm, 'event' callback) Source: http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/ */
-    addEvent: (function( window, document ) {
-        if ( document.addEventListener ) {
-            return function( elem, type, cb ) {
-                if ((elem && !(elem instanceof Array) && !elem.length && !h.isNodeList(elem) && (elem.length !== 0)) || elem === window ) {
-                    elem.addEventListener(type, cb, false );
-                } else if ( elem && elem[0] !== undefined ) {
-                    var len = elem.length;
-                    for ( var i = 0; i < len; i++ ) {
-                        h.addEvent(elem[i], type, cb);
-                    }
-                }
-            };
-        }
-        else if ( document.attachEvent ) {
-            return function ( elem, type, cb ) {
-                if ((elem && !(elem instanceof Array) && !elem.length && !h.isNodeList(elem) && (elem.length !== 0)) || elem === window ) {
-                    elem.attachEvent( 'on' + type, function() { return cb.call(elem, window.event); } );
-                } else if ( elem && elem[0] !== undefined ) {
-                    var len = elem.length;
-                    for ( var i = 0; i < len; i++ ) {
-                        h.addEvent( elem[i], type, cb );
-                    }
-                }
-            };
-        }
-    })(this, document),
     /* (elm, attribute) Source: http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method */
     getAttribute: function(ele, attr) {
         var result = (ele.getAttribute && ele.getAttribute(attr)) || null;

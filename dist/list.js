@@ -371,6 +371,139 @@ exports.unbind = function(el, type, fn, capture){
   }
 };
 });
+require.register("component-type/index.js", function(module, exports, require){
+
+/**
+ * toString ref.
+ */
+
+var toString = Object.prototype.toString;
+
+/**
+ * Return the type of `val`.
+ *
+ * @param {Mixed} val
+ * @return {String}
+ * @api public
+ */
+
+module.exports = function(val){
+  switch (toString.call(val)) {
+    case '[object Function]': return 'function';
+    case '[object Date]': return 'date';
+    case '[object RegExp]': return 'regexp';
+    case '[object Arguments]': return 'arguments';
+    case '[object Array]': return 'array';
+  }
+
+  if (val === null) return 'null';
+  if (val === undefined) return 'undefined';
+  if (val === Object(val)) return 'object';
+
+  return typeof val;
+};
+
+});
+require.register("timoxley-is-collection/index.js", function(module, exports, require){
+var typeOf = require('type')
+
+/**
+ * Evaluates _obj_ to determine if it's an array, an array-like collection, or
+ * something else. This is useful when working with the function `arguments`
+ * collection and `HTMLElement` collections.
+ * Note: This implementation doesn't consider elements that are also
+ *
+ *
+  
+  collections, such as `<form>` and `<select>`, to be array-like.
+
+  @method test
+@param {Object} obj Object to test.
+@return {Number} A number indicating the results of the test:
+
+ * 0: Neither an array nor an array-like collection.
+ * 1: Real array.
+ * 2: Array-like collection.
+
+@api private
+ **/
+module.exports = function isCollection(obj) {
+  var type = typeOf(obj)
+  console.log('typeOf', obj, type)
+  if (type === 'array') return 1
+    switch (type) {
+      case 'arguments': return 2
+      case 'object':
+        if (isNodeList(obj)) return 2
+        try {
+          // indexed, but no tagName (element) or scrollTo/document (window. From DOM.isWindow test which we can't use here),
+          // or functions without apply/call (Safari
+          // HTMLElementCollection bug).
+          if ('length' in obj
+              && !obj.tagName
+            && !(obj.scrollTo && obj.document)
+            && !obj.apply) {
+              return 2
+            }
+        } catch (ex) {}
+      default:
+        return 0
+    }
+}
+
+function isNodeList(nodes) {
+  return typeof nodes === 'object'
+  && /^\[object (NodeList)\]$/.test(Object.prototype.toString.call(nodes))
+  && nodes.hasOwnProperty('length')
+  && (nodes.length == 0 || (typeof nodes[0] === "object" && nodes[0].nodeType > 0))
+}
+
+
+});
+require.register("events/index.js", function(module, exports, require){
+var events = require('event'),
+  isCollection = require('is-collection');
+
+/**
+ * Bind `el` event `type` to `fn`.
+ *
+ * @param {Element} el
+ * @param {String} type
+ * @param {Function} fn
+ * @param {Boolean} capture
+ * @api public
+ */
+
+exports.bind = function(el, type, fn, capture){
+  if (!isCollection(el)) {
+    events.bind(el, type, fn, capture);
+  } else if ( el && el[0] !== undefined ) {
+    for ( var i = 0; i < el.length; i++ ) {
+      events.bind(el[i], type, fn, capture);
+    }
+  }
+};
+
+/**
+ * Unbind `el` event `type`'s callback `fn`.
+ *
+ * @param {Element} el
+ * @param {String} type
+ * @param {Function} fn
+ * @param {Boolean} capture
+ * @api public
+ */
+
+exports.unbind = function(el, type, fn, capture){
+  if (!isCollection(el)) {
+    events.unbind(el, type, fn, capture);
+  } else if ( el && el[0] !== undefined ) {
+    for ( var i = 0; i < el.length; i++ ) {
+      events.unbind(el[i], type, fn, capture);
+    }
+  }
+};
+});
 require.register("list/index.js", function(module, exports, require){
 /*
 ListJS with beta 0.2.2
@@ -417,7 +550,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 (function( window, undefined ) {
 "use strict";
 var document = window.document,
-	h;
+	h,
+    events = require('events');
+
 
 var List = function(id, options, values) {
     var self = this,
@@ -472,9 +607,9 @@ var List = function(id, options, values) {
             options.sortClass = options.sortClass || 'sort';
         },
         callbacks: function(options) {
-            h.addEvent(h.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
+            events.bind(h.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
             sortButtons = h.getByClass(options.sortClass, self.listContainer);
-            h.addEvent(sortButtons, 'click', self.sort);
+            events.bind(sortButtons, 'click', self.sort);
             for (var i in options.events) {
                 self.on(i, options.events[i]);
             }
@@ -1038,33 +1173,6 @@ h = {
             };
         }
     })(),
-    /* (elm, 'event' callback) Source: http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/ */
-    addEvent: (function( window, document ) {
-        if ( document.addEventListener ) {
-            return function( elem, type, cb ) {
-                if ((elem && !(elem instanceof Array) && !elem.length && !h.isNodeList(elem) && (elem.length !== 0)) || elem === window ) {
-                    elem.addEventListener(type, cb, false );
-                } else if ( elem && elem[0] !== undefined ) {
-                    var len = elem.length;
-                    for ( var i = 0; i < len; i++ ) {
-                        h.addEvent(elem[i], type, cb);
-                    }
-                }
-            };
-        }
-        else if ( document.attachEvent ) {
-            return function ( elem, type, cb ) {
-                if ((elem && !(elem instanceof Array) && !elem.length && !h.isNodeList(elem) && (elem.length !== 0)) || elem === window ) {
-                    elem.attachEvent( 'on' + type, function() { return cb.call(elem, window.event); } );
-                } else if ( elem && elem[0] !== undefined ) {
-                    var len = elem.length;
-                    for ( var i = 0; i < len; i++ ) {
-                        h.addEvent( elem[i], type, cb );
-                    }
-                }
-            };
-        }
-    })(this, document),
     /* (elm, attribute) Source: http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method */
     getAttribute: function(ele, attr) {
         var result = (ele.getAttribute && ele.getAttribute(attr)) || null;
@@ -1189,7 +1297,11 @@ if (typeof define === 'function' && define.amd) {
 require.alias("component-classes/index.js", "list/deps/classes/index.js");
 require.alias("component-indexof/index.js", "component-classes/deps/indexof/index.js");
 
-require.alias("component-event/index.js", "list/deps/event/index.js");
+require.alias("events/index.js", "list/deps/events/index.js");
+require.alias("component-event/index.js", "events/deps/event/index.js");
+
+require.alias("timoxley-is-collection/index.js", "events/deps/is-collection/index.js");
+require.alias("component-type/index.js", "timoxley-is-collection/deps/type/index.js");
   if ("undefined" == typeof module) {
     window.List = require("list");
   } else {

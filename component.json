@@ -8,6 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "component/classes": "*",
-    "component/event": "*"
-  }
+    "javve/events": "*"
+  },
+  "paths": ["/Users/Jonny/Sites/components"]
 }
