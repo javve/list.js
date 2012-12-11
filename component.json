@@ -1,0 +1,12 @@
+{
+  "name": "list",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": ["dom", "html", "ui"],
+  "scripts": ["index.js"],
+  "styles": [],
+  "dependencies": {
+    "component/classes": "*",
+    "component/event": "*"
+  }
+}
