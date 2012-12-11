@@ -460,7 +460,7 @@ function isNodeList(nodes) {
 
 
 });
-require.register("events/index.js", function(module, exports, require){
+require.register("javve-events/index.js", function(module, exports, require){
 var events = require('event'),
   isCollection = require('is-collection');
 
@@ -551,7 +551,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 "use strict";
 var document = window.document,
 	h,
-    events = require('events');
+    events = require('events'),
+    classes = require('classes');
 
 
 var List = function(id, options, values) {
@@ -790,20 +791,20 @@ var List = function(id, options, values) {
             isAsc = options.asc || false;
         } else {
             value = h.getAttribute(target, 'data-sort');
-            isAsc = h.hasClass(target, asc) ? false : true;
+            isAsc = classes(target).has(asc) ? false : true;
         }
         for (var i = 0, il = sortButtons.length; i < il; i++) {
-            h.removeClass(sortButtons[i], asc);
-            h.removeClass(sortButtons[i], desc);
+            classes(sortButtons[i]).remove(asc);
+            classes(sortButtons[i]).remove(desc);
         }
         if (isAsc) {
             if (target !== undefined) {
-                h.addClass(target, asc);
+                classes(target).add(asc);
             }
             isAsc = true;
         } else {
             if (target !== undefined) {
-                h.addClass(target, desc);
+                classes(target).add(desc);
             }
             isAsc = false;
         }
@@ -1189,33 +1190,6 @@ h = {
         }
         return result;
     },
-    /* http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript */
-    isNodeList: function(nodes) {
-        var result = Object.prototype.toString.call(nodes);
-        if (typeof nodes === 'object' && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(result) && (nodes.length == 0 || (typeof nodes[0] === "object" && nodes[0].nodeType > 0))) {
-            return true;
-        }
-        return false;
-    },
-    hasClass: function(ele, classN) {
-        var classes = this.getAttribute(ele, 'class') || this.getAttribute(ele, 'className') || "";
-        return (classes.search(classN) > -1);
-    },
-    addClass: function(ele, classN) {
-        if (!this.hasClass(ele, classN)) {
-            var classes = this.getAttribute(ele, 'class') || this.getAttribute(ele, 'className') || "";
-            classes = classes + ' ' + classN + ' ';
-            classes = classes.replace(/\s{2,}/g, ' ');
-            ele.setAttribute('class', classes);
-        }
-    },
-    removeClass: function(ele, classN) {
-        if (this.hasClass(ele, classN)) {
-            var classes = this.getAttribute(ele, 'class') || this.getAttribute(ele, 'className') || "";
-            classes = classes.replace(classN, '');
-            ele.setAttribute('class', classes);
-        }
-    },
     /*
     * The sort function. From http://my.opera.com/GreyWyvern/blog/show.dml/1671288
     */
@@ -1297,10 +1271,10 @@ if (typeof define === 'function' && define.amd) {
 require.alias("component-classes/index.js", "list/deps/classes/index.js");
 require.alias("component-indexof/index.js", "component-classes/deps/indexof/index.js");
 
-require.alias("events/index.js", "list/deps/events/index.js");
-require.alias("component-event/index.js", "events/deps/event/index.js");
+require.alias("javve-events/index.js", "list/deps/events/index.js");
+require.alias("component-event/index.js", "javve-events/deps/event/index.js");
 
-require.alias("timoxley-is-collection/index.js", "events/deps/is-collection/index.js");
+require.alias("timoxley-is-collection/index.js", "javve-events/deps/is-collection/index.js");
 require.alias("component-type/index.js", "timoxley-is-collection/deps/type/index.js");
   if ("undefined" == typeof module) {
     window.List = require("list");
