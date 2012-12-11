@@ -1,10 +1,11 @@
 {
   "name": "list",
-  "version": "0.0.1",
-  "description": "",
-  "keywords": ["dom", "html", "ui"],
+  "repo": "javve/list",
+  "version": "1.0.0",
+  "description": "Add search, sort and flexibility to plain HTML lists or tables with cross-browser native JavaScript.",
+  "keywords": ["list", "search", "sort", "table", "dom", "html", "ui"],
   "scripts": ["index.js"],
-  "styles": [],
+  "license": "MIT",
   "dependencies": {
     "component/classes": "*",
     "component/event": "*"
