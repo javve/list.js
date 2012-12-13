@@ -546,6 +546,22 @@ and `removeClass(element, class)`
 
 ### 2011-07-25 Alpha 0.1 release
 
+
+# Contributor
+* [javve](https://github.com/javve) (Jonny Strömberg) - [http://jonnystromberg.com](http://jonnystromberg.com)
+* [lusentis](https://github.com/lusentis) (Simone Lusenti) - [http://www.plasticpanda.com](http://www.plasticpanda.com)
+* [dancrew32](https://github.com/dancrew32) (Dan Masquelier) - [http://danmasq.com](http://danmasq.com)
+* [himynameisjonas](https://github.com/himynameisjonas) (Jonas Forsberg) - [http://jonasforsberg.se](http://jonasforsberg.se)
+* [endorama](https://github.com/endorama) (Edoardo Tenani)
+* [sprynmr](https://github.com/sprynmr) (Bob Spryn)
+* [francescolaffi](https://github.com/francescolaffi)
+* [ryantanner](https://github.com/ryantanner)
+* [idlefella](https://github.com/idlefella)
+* [julienbechade](https://github.com/julienbechade) (Julien Béchade) - [http://julienbechade.com/](http://julienbechade.com/)
+* [matthewheston](https://github.com/matthewheston)
+* [gvido](https://github.com/gvido) (Gvido Glazers)
+* [karlwestin](https://github.com/karlwestin) (Karl Westin) - [http://karlwestin.com](http://karlwestin.com)
+
 # License (MIT)
 
 Copyright (c) 2012 Jonny Strömberg http://jonnystromberg.com
