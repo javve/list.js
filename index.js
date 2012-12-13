@@ -45,7 +45,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 var document = window.document,
 	h,
     events = require('events'),
-    classes = require('classes');
+    classes = require('classes'),
+    getByClass = require('get-by-class'),
+    getAttribute = require('get-attribute');
 
 
 var List = function(id, options, values) {
@@ -89,7 +91,7 @@ var List = function(id, options, values) {
             options.events = options.events || {};
             this.classes(options);
             templater = new Templater(self, options);
-            self.list = h.getByClass(options.listClass, self.listContainer, true);
+            self.list = getByClass(options.listClass, self.listContainer, true);
             this.callbacks(options);
             this.items.start(values, options);
             self.update();
@@ -101,8 +103,8 @@ var List = function(id, options, values) {
             options.sortClass = options.sortClass || 'sort';
         },
         callbacks: function(options) {
-            events.bind(h.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
-            sortButtons = h.getByClass(options.sortClass, self.listContainer);
+            events.bind(getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
+            sortButtons = getByClass(options.sortClass, self.listContainer);
             events.bind(sortButtons, 'click', self.sort);
             for (var i in options.events) {
                 self.on(i, options.events[i]);
@@ -124,7 +126,7 @@ var List = function(id, options, values) {
                 }
             },
             get: function() {
-                // return h.getByClass('item', self.list);
+                // return getByClass('item', self.list);
                 var nodes = self.list.childNodes,
                 items = [];
                 for (var i = 0, il = nodes.length; i < il; i++) {
@@ -283,7 +285,7 @@ var List = function(id, options, values) {
             value = valueName;
             isAsc = options.asc || false;
         } else {
-            value = h.getAttribute(target, 'data-sort');
+            value = getAttribute(target, 'data-sort');
             isAsc = classes(target).has(asc) ? false : true;
         }
         for (var i = 0, il = sortButtons.length; i < il; i++) {
@@ -537,7 +539,7 @@ List.prototype.templateEngines = {};
 List.prototype.plugins = {};
 
 List.prototype.templateEngines.standard = function(list, settings) {
-    var listSource = h.getByClass(settings.listClass, list.listContainer, true),
+    var listSource = getByClass(settings.listClass, list.listContainer, true),
         itemSource = getItemSource(settings.item),
         templater = this;
 
@@ -567,7 +569,7 @@ List.prototype.templateEngines.standard = function(list, settings) {
         templater.create(item);
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
-            var elm = h.getByClass(valueNames[i], item.elm, true);
+            var elm = getByClass(valueNames[i], item.elm, true);
             values[valueNames[i]] = elm ? elm.innerHTML : "";
         }
         return values;
@@ -579,7 +581,7 @@ List.prototype.templateEngines.standard = function(list, settings) {
             for(var v in values) {
                 if (values.hasOwnProperty(v)) {
                     // TODO speed up if possible
-                    var elm = h.getByClass(v, item.elm, true);
+                    var elm = getByClass(v, item.elm, true);
                     if (elm) {
                         elm.innerHTML = values[v];
                     }
@@ -629,60 +631,6 @@ List.prototype.templateEngines.standard = function(list, settings) {
 * adjusted, thought).
 */
 h = {
-    /*
-    * Cross browser getElementsByClassName, which uses native
-    * if it exists. Modified version of Dustin Diaz function:
-    * http://www.dustindiaz.com/getelementsbyclass
-    */
-    getByClass: (function() {
-        if (document.getElementsByClassName) {
-            return function(searchClass,node,single) {
-                if (single) {
-                    return node.getElementsByClassName(searchClass)[0];
-                } else {
-                    return node.getElementsByClassName(searchClass);
-                }
-            };
-        } else {
-            return function(searchClass,node,single) {
-                var classElements = [],
-                    tag = '*';
-                if (node == null) {
-                    node = document;
-                }
-                var els = node.getElementsByTagName(tag);
-                var elsLen = els.length;
-                var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
-                for (var i = 0, j = 0; i < elsLen; i++) {
-                    if ( pattern.test(els[i].className) ) {
-                        if (single) {
-                            return els[i];
-                        } else {
-                            classElements[j] = els[i];
-                            j++;
-                        }
-                    }
-                }
-                return classElements;
-            };
-        }
-    })(),
-    /* (elm, attribute) Source: http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method */
-    getAttribute: function(ele, attr) {
-        var result = (ele.getAttribute && ele.getAttribute(attr)) || null;
-        if( !result ) {
-            var attrs = ele.attributes;
-            var length = attrs.length;
-            for(var i = 0; i < length; i++) {
-                if (attr[i] !== undefined) {
-                    if(attr[i].nodeName === attr) {
-                        result = attr[i].nodeValue;
-                    }
-                }
-            }
-        }
-        return result;
-    },
     /*
     * The sort function. From http://my.opera.com/GreyWyvern/blog/show.dml/1671288
     */
