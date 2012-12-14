@@ -451,33 +451,6 @@ Returns boolean. True if the item is visible. Visible items
 always matches, but matching items are not always visible.
 
 
-
-## Helper functions
-Called by ListJsHelpers.functionName()
-
-* **getByClass(element, class, isSingle)**  
-[http://www.dustindiaz.com/getelementsbyclass](http://www.dustindiaz.com/getelementsbyclass)
-
-* **addEvent(element, type, callback)**  
-[http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/](http://net.tutsplus.com/tutorials/javascript-ajax/javascript-from-null-cross-browser-event-binding/)
-Updated in some ways, thought.
-
-* **getAttribute(element, attribute)**  
-[http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method](http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method)
-
-* **isNodeList(element)**  
-[http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript](http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript)
-
-* **hasClass(element, class)**  
-Checks if `element` has class name `class`
-
-* **addClass(element, class)**  
-Adds class name `class` to `element`
-
-* **removeClass(element, class)**  
-Removes class name `class` from `element`
-
-
 # Plugins (paging)
 Read more about plugins in [this blog post](http://jonnystromberg.com/listjs-plugins-guide/) and find out [how to use the paging plugin here](http://jonnystromberg.com/listjs-paging-plugin/).
 
