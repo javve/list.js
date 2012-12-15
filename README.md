@@ -465,27 +465,28 @@ Type just *ant* in the console while in root folder.
 
 # Changelog
 
-Read it at [http://listjs.com/changelog.html](http://listjs.com/changelog.html)
+Read it at: **[http://listjs.com/changelog.html](http://listjs.com/changelog.html)**
 
 
 # Contributor
-* [javve](https://github.com/javve) (Jonny Strömberg) - [http://jonnystromberg.com](http://jonnystromberg.com)
-* [lusentis](https://github.com/lusentis) (Simone Lusenti) - [http://www.plasticpanda.com](http://www.plasticpanda.com)
-* [dancrew32](https://github.com/dancrew32) (Dan Masquelier) - [http://danmasq.com](http://danmasq.com)
-* [himynameisjonas](https://github.com/himynameisjonas) (Jonas Forsberg) - [http://jonasforsberg.se](http://jonasforsberg.se)
-* [endorama](https://github.com/endorama) (Edoardo Tenani)
-* [sprynmr](https://github.com/sprynmr) (Bob Spryn)
+* [javve](https://github.com/javve) / [Jonny Strömberg](http://jonnystromberg.com)
+* [lusentis](https://github.com/lusentis) / [Simone Lusenti](http://www.plasticpanda.com)
+* [dancrew32](https://github.com/dancrew32) / [Dan Masquelier](http://danmasq.com)
+* [himynameisjonas](https://github.com/himynameisjonas) / [Jonas Forsberg](http://jonasforsberg.se)
+* [endorama](https://github.com/endorama) / Edoardo Tenani
+* [sprynmr](https://github.com/sprynmr) / Bob Spryn
 * [francescolaffi](https://github.com/francescolaffi)
 * [ryantanner](https://github.com/ryantanner)
 * [idlefella](https://github.com/idlefella)
-* [julienbechade](https://github.com/julienbechade) (Julien Béchade) - [http://julienbechade.com/](http://julienbechade.com/)
+* [julienbechade](https://github.com/julienbechade) / [Julien Béchade/](http://julienbechade.com/)
 * [matthewheston](https://github.com/matthewheston)
-* [gvido](https://github.com/gvido) (Gvido Glazers)
-* [karlwestin](https://github.com/karlwestin) (Karl Westin) - [http://karlwestin.com](http://karlwestin.com)
+* [gvido](https://github.com/gvido) / Gvido Glazers
+* [karlwestin](https://github.com/karlwestin) / [Karl Westin](http://karlwestin.com)
 
 # License (MIT)
 
-Copyright (c) 2012 Jonny Strömberg http://jonnystromberg.com
+Copyright (c) 2012 Jonny Strömberg <[jonny.stromberg@gmail.com](jonny.stromberg@gmail.com)>
+[http://jonnystromberg.com](http://jonnystromberg.com)
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the "Software"),
