@@ -465,59 +465,7 @@ Type just *ant* in the console while in root folder.
 
 # Changelog
 
-### 2012
-* [Feature] Add more events and enable to add them on initialization.
-* [Feature] Add support for RequireJS
-* [Improvement] Paging plugin default classes and structure now correspons to [Twitter Bootstraps pagination](http://twitter.github.com/bootstrap/components.html#pagination).
-* [Improvement] Make sorting case-insensitive (thanks @thomasklemm)
-* [Bugfix] `.add(items, callbak)` with `callback` set does no longer add an extra item.
-* [Bugfix] `templater.set()` no longer is called twice in a `templater.get()` call.
-* [Bugfix] Fix error when trying to sort `undefined` values.
-* [Bugfix] Fix issue #51, problems with filters/search + paging.
-
-### 2012-04-24 Beta 0.2.1
-* Fuzzy Search plugin, `.filter()` changes and bug fixes **[Read more »](http://jonnystromberg.com/listjs-0-2-1-release-notes/)**
-
-### 2012-01-23 Beta 0.2.0
-* Lots of updates and interesting features. **[Read more »](http://jonnystromberg.com/listjs-0-2-0-plugins-paging/)**
-
-### 2011-12-15 Beta 0.1.4
-* `.filters()`, `.sort()` and `.search()` now deped on each other. If the list is filtered and then
-there is a search, the items hidden by the filters will stay hidden etc.
-* `.filter()` is the only way to reset filter. `.filter(false)` does not work anymore.
-
-### 2011-11-29 Beta 0.1.3 release
-* Added function `.clear()` that removes all items from the list
-* Changed the sort function to be based on `data-sort` instead of `rel`
-* When sorting one category, all sort-related classes will be removed from the other sort buttons
-* Updated `.sort(valueName, sortFunction)` to `.sort(valueName, options)`, se more info in the documentation
-
-### 2011-11-16 Beta 0.1.2 release
-* Sorting is now indicated by class `asc` or `desc` at sorting buttons
-* Added three new small helper functions `hasClass(element, class)`, `addClass(element, class)`
-and `removeClass(element, class)`
-
-### 2011-10-20 Beta 0.1.1 release
-* Added possibility to reverse sort the list
-
-### 2011-10-18 Beta 0.1 release
-* Examples at Listjs.com works in IE7,8,9 (IE6 is not tested, should work)
-* More documentation
-* Misc bug fixes
-
-### 2011-10-15 Final alpha 0.3 release
-* More documentation
-* Only show 200 items at same time, huge speed increase
-* Misc bug fixes
-
-### 2011-08-08 Alpha 0.2 release
-* Added asynchronous item adding
-* Added asynchronous list indexing
-* Improved (but incomplete) documentation
-* Bugfixes and improved helper functions
-* Show helper functions non-minified
-
-### 2011-07-25 Alpha 0.1 release
+Read it at [http://listjs.com/changelog.html](http://listjs.com/changelog.html)
 
 
 # Contributor
