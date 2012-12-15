@@ -460,8 +460,14 @@ Read about it at [The List.js Blog: Performance, wroooooom! Index, search and so
 and try it at the [performance test page](http://listjs.com/examples/performance-test.html).
 
 
-# How to build the script
-Type just *ant* in the console while in root folder.
+# Contributing and compiling
+List.js is built using the [Component package manager](https://github.com/component/component)
+
+## Steps to compile the script
+- [Install Component](https://github.com/component/component#installation)
+- Got to the script root
+- Type `make components` to download dependencies
+- `make standalone` to compile List.js into `/build`
 
 # Changelog
 
