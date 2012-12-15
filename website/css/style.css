@@ -542,6 +542,13 @@ h1 {
     color:#eee;
 }
 
+/* * * * * * * * * * * * * * * * * * * * *
+* Filtering
+* * * * * * * * * * * * * * * * * * * * */
+.dropdown-filter select{
+    font-size: 18px;
+    margin-bottom: 10px;
+}
 
 /* * * * * * * * * * * * * * * * * * * * *
 * Syntax coloring
