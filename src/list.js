@@ -1,12 +1,12 @@
 /*
 ListJS Beta 0.2.0
-By Jonny StrÃ¶mberg (www.jonnystromberg.com, www.listjs.com)
+By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
 
 OBS. The API is not frozen. It MAY change!
 
 License (MIT)
 
-Copyright (c) 2011 Jonny StrÃ¶mberg http://jonnystromberg.com
+Copyright (c) 2011 Jonny Strömberg http://jonnystromberg.com
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
