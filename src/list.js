@@ -316,7 +316,6 @@ var List = function(id, options, values) {
             self.update();
         } else {
             self.searched = true;
-            console.log(self);
             if(self.searchType == 'any'){
             	var regpattern = new RegExp(searchString);
             } else if(self.searchType == 'word'){
