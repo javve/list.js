@@ -322,7 +322,7 @@ var List = function(id, options, values) {
             } else if(self.searchType == 'word'){
             	var regpattern = new RegExp('\\b' + searchString);
             } else if(self.searchType == 'wordFull') {
-				var regpattern = new RegExp('\\b' + searchString + '\\b');
+            	var regpattern = new RegExp('\\b' + searchString + '\\b');
             }
 
             for (var k = 0, kl = is.length; k < kl; k++) {
