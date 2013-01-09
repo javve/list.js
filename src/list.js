@@ -1,12 +1,12 @@
 /*
 ListJS Beta 0.2.0
-By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
+By Jonny StrÃ¶mberg (www.jonnystromberg.com, www.listjs.com)
 
 OBS. The API is not frozen. It MAY change!
 
 License (MIT)
 
-Copyright (c) 2011 Jonny Strömberg http://jonnystromberg.com
+Copyright (c) 2011 Jonny StrÃ¶mberg http://jonnystromberg.com
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -60,6 +60,7 @@ var List = function(id, options, values) {
 
     this.page = options.page || 200;
     this.i = options.i || 1;
+    this.searchType = options.searchType || 'any';
 
     init = {
         start: function(values, options) {
@@ -315,6 +316,14 @@ var List = function(id, options, values) {
             self.update();
         } else {
             self.searched = true;
+            console.log(self);
+            if(self.searchType == 'any'){
+            	var regpattern = new RegExp(searchString);
+            } else if(self.searchType == 'word'){
+            	var regpattern = new RegExp('\\b' + searchString);
+            } else if(self.searchType == 'wordFull') {
+				var regpattern = new RegExp('\\b' + searchString + '\\b');
+            }
 
             for (var k = 0, kl = is.length; k < kl; k++) {
                 found = false;
@@ -324,7 +333,7 @@ var List = function(id, options, values) {
                 for(var j in columns) {
                     if(values.hasOwnProperty(j) && columns[j] !== null) {
                         text = (values[j] != null) ? values[j].toString().toLowerCase() : "";
-                        if ((searchString !== "") && (text.search(searchString) > -1)) {
+                        if ((searchString !== "") && (regpattern.test(text))) {
                             found = true;
                         }
                     }
