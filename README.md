@@ -479,6 +479,7 @@ Read it at: **[http://listjs.com/changelog.html](http://listjs.com/changelog.htm
 * [lusentis](https://github.com/lusentis) / [Simone Lusenti](http://www.plasticpanda.com)
 * [dancrew32](https://github.com/dancrew32) / [Dan Masquelier](http://danmasq.com)
 * [himynameisjonas](https://github.com/himynameisjonas) / [Jonas Forsberg](http://jonasforsberg.se)
+* [LuukvE](https://github.com/LuukvE) [Luuk van Egeraat](http://luukvanegeraat.com/)
 * [endorama](https://github.com/endorama) / Edoardo Tenani
 * [sprynmr](https://github.com/sprynmr) / Bob Spryn
 * [francescolaffi](https://github.com/francescolaffi)
