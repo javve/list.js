@@ -446,7 +446,7 @@ Hides the item (removes the element from the list, and then when its shown it's 
 Returns boolean. True if the item matches the current filter and search. Visible items 
 always matches, but matching items are not always visible.
 
-* **visisble()**  
+* **visible()**  
 Returns boolean. True if the item is visible. Visible items 
 always matches, but matching items are not always visible.
 
