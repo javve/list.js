@@ -44,6 +44,7 @@ var List = function(id, options, values) {
     this.list = null;
     this.templateEngines = {};
 
+    options = options || {};
     this.page = options.page || 200;
     this.i = options.i || 1;
 
