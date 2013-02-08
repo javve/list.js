@@ -1,18 +1,19 @@
 describe('Item', function() {
-    var listEl = $('<div id="list">\
-        <ul class="list">\
-            <li>\
-                <span class="name">Jonny</span>\
-                <span class="born">1986</span>\
-                <span class="doin">Living the dream</span>\
-            </li>\
-        </ul>\
-    </div>');
 
-    $(document.body).append(listEl);
+    var list, item;
 
-    var list = new List('list', { valueNames: ['name', 'born', 'doin'] });
-    var item = list.get('name', 'Jonny');
+    before(function() {
+        list = fixture.list(['name', 'born', 'doin'], [{
+            name: "Jonny",
+            born: "1986",
+            doin: "Living the dream"
+        }]);
+        item = list.get('name', 'Jonny');
+    });
+
+    after(function() {
+        fixture.removeList();
+    });
 
     describe('Defaults', function() {
         it('should have all default attributes', function() {
@@ -21,7 +22,7 @@ describe('Item', function() {
         });
 
         it('should have the right elements', function() {
-            expect(item.elm).to.equal(listEl.find('li')[0]);
+            expect(item.elm).to.equal($('#list li')[0]);
         });
 
         it('should have all default methods', function() {
@@ -67,16 +68,16 @@ describe('Item', function() {
 
     describe('Hide, show, visible', function() {
         it('should be hidden', function() {
-            expect(listEl.find('li').size()).to.equal(1);
+            expect($('#list li').size()).to.equal(1);
             item.hide();
             expect(item.visible()).to.be.false;
-            expect(listEl.find('li').size()).to.equal(0);
+            expect($('#list li').size()).to.equal(0);
         });
         it('should be visible', function() {
-            expect(listEl.find('li').size()).to.equal(0);
+            expect($('#list li').size()).to.equal(0);
             item.show();
             expect(item.visible()).to.be.true;
-            expect(listEl.find('li').size()).to.equal(1);
+            expect($('#list li').size()).to.equal(1);
         });
     });
 
@@ -133,5 +134,5 @@ describe('Item', function() {
         });
     });
 
-    listEl.remove();
+    fixture.removeList();
 });

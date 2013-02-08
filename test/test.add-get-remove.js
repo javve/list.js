@@ -1,14 +1,14 @@
 describe('Add, get, remove', function() {
 
-    var listEl = $('<div id="list">\
-        <ul class="list">\
-            <li><span class="name">Jonny</span></li>\
-        </ul>\
-    </div>');
+    var list;
 
-    $(document.body).append(listEl);
+    before(function() {
+        list = fixture.list(['name'], [ { name: "Jonny" } ]);
+    });
 
-    var list = new List('list', { valueNames: ['name'] });
+    after(function() {
+        fixture.removeList();
+    });
 
     describe('Add', function() {
         it('should add one item', function() {
@@ -59,6 +59,4 @@ describe('Add, get, remove', function() {
             expect(list.items.length).to.equal(2);
         });
     });
-
-    listEl.remove();
 });

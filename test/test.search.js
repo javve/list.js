@@ -1,30 +1,21 @@
 describe('Search', function() {
 
-    var listEl = $('<div id="list">\
-        <ul class="list">\
-            <li>\
-                <span class="name">Jonny Strömberg</span>\
-                <span class="born">1986</span>\
-            </li>\
-        </ul>\
-    </div>');
+    var list, jonny, martina, angelica, sebastian, imma, hasse;
 
-    $(document.body).append(listEl);
+    before(function() {
+        list = fixture.list(['name', 'born'], fixture.all);
 
-    var list = new List('list', { valueNames: ['name', 'born'] }, [
-        { name: "Martina Elm", born: '1986' },
-        { name: "Angelica Abraham", born: '1986' },
-        { name: "Sebastian Höglund", born: '1989' },
-        { name: "Imma Grafström", born: '1953' },
-        { name: "Hasse Strömberg", born: '1955' }
-    ]);
-
-    var jonny = list.get('name', 'Jonny Strömberg'),
-        martina = list.get('name', 'Martina Elm'),
-        angelica = list.get('name', 'Angelica Abraham'),
-        sebastian = list.get('name', 'Sebastian Höglund'),
-        imma = list.get('name', 'Imma Grafström'),
+        jonny = list.get('name', 'Jonny Strömberg');
+        martina = list.get('name', 'Martina Elm');
+        angelica = list.get('name', 'Angelica Abraham');
+        sebastian = list.get('name', 'Sebastian Höglund');
+        imma = list.get('name', 'Imma Grafström');
         hasse = list.get('name', 'Hasse Strömberg');
+    });
+
+    after(function() {
+        fixture.removeList();
+    });
 
     afterEach(function() {
         list.search();
@@ -115,5 +106,4 @@ describe('Search', function() {
             });
         });
     });
-    listEl.remove();
 });

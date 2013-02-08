@@ -1,14 +1,13 @@
 describe('Defaults', function() {
+    var list;
 
-    var listEl = $('<div id="list">\
-        <ul class="list">\
-            <li><span class="name">Jonny</span></li>\
-        </ul>\
-    </div>');
+    before(function() {
+        list = fixture.list(['name'], [ { name: 'Jonny' }]);
+    });
 
-    $(document.body).append(listEl);
-
-    var list = new List('list');
+    after(function() {
+        fixture.removeList();
+    });
 
     it('should have all default attributes', function() {
         expect(list.items).to.be.an('array');
@@ -31,8 +30,8 @@ describe('Defaults', function() {
     });
 
     it('should have the right elements', function() {
-        expect(list.list).to.equal(listEl.find('.list')[0]);
-        expect(list.listContainer).to.equal(listEl[0]);
+        expect(list.list).to.equal($('.list')[0]);
+        expect(list.listContainer).to.equal($('#list')[0]);
     });
 
     it('should have all default methods', function() {
@@ -48,6 +47,4 @@ describe('Defaults', function() {
         expect(list).to.respondTo('update');
         expect(list).to.respondTo('on');
     });
-
-    listEl.remove();
 });
