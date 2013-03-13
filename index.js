@@ -220,13 +220,7 @@ var List = function(id, options, values) {
                 matchedItems.push(item);
             }
         }
-        if (matchedItems.length == 0) {
-            return null;
-        } else if (matchedItems.length == 1) {
-            return matchedItems[0];
-        } else {
-            return matchedItems;
-        }
+        return matchedItems;
     };
 
     /* Sorts the list.

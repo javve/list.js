@@ -25,13 +25,13 @@ describe('Add, get, remove', function() {
     });
 
     describe('Get', function() {
-        it('should return one item', function() {
-            var item = list.get('name', 'Jonny');
-            expect(item.values().name).to.equal('Jonny');
+        it('should return array with one item', function() {
+            var items = list.get('name', 'Jonny');
+            expect(items[0].values().name).to.equal('Jonny');
         });
-        it('should return null', function() {
-            var item = list.get('name', 'jonny');
-            expect(item).to.be.null;
+        it('should return empty array', function() {
+            var items = list.get('name', 'jonny');
+            expect(items.length).to.be.zero;
         });
         it('should return two items', function() {
             list.add({ name: 'Jonny' });

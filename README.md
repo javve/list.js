@@ -326,7 +326,7 @@ Returns values from the list where the value named `valueName` has value `value`
 				{ id: 1, name: "Jonny" }
 				, { id: 2, name "Gustaf" }
 			];
-			listObj.get("id", 2); -> return { id: 2, name "Gustaf" }
+			listObj.get("id", 2); -> return [ { id: 2, name "Gustaf" } ]
 
 * **sort(valueName, options)**  
 Sorts the list based on values the in the column named `valueName`. The options
