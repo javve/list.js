@@ -424,8 +424,9 @@ var List = function(id, options, values) {
     };
 
     Item = function(initValues, element, notCreate) {
-        var item = this,
-            values = {};
+        var item = this;
+
+        this._values = {};
 
         this.found = false; // Show if list.searched == true and this.found == true
         this.filtered = false;// Show if list.filtered == true and this.filtered == true
@@ -446,13 +447,13 @@ var List = function(id, options, values) {
         this.values = function(newValues, notCreate) {
             if (newValues !== undefined) {
                 for(var name in newValues) {
-                    values[name] = newValues[name];
+                    item._values[name] = newValues[name];
                 }
                 if (notCreate !== true) {
                     templater.set(item, item.values());
                 }
             } else {
-                return values;
+                return item._values;
             }
         };
         this.show = function() {
