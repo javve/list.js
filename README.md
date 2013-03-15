@@ -352,6 +352,9 @@ Searches the list
 
         listObj.search(); -> Show all items in list
 
+        listObj.search('Jonny', [ 'name' ]); -> Find element
+        listObj.search('Jonny', [ 'id' ]); -> Find no element
+
 * **clear()**  
 Removes all items from the list
 
@@ -491,6 +494,7 @@ Read it at: **[http://listjs.com/changelog.html](http://listjs.com/changelog.htm
 * [karlwestin](https://github.com/karlwestin) / [Karl Westin](http://karlwestin.com)
 * [joakin](https://github.com/joakin) / [Joaquin](http://chimeces.com/)
 * [dancrew32](https://github.com/dancrew32) / [Dan Masquelier](http://danmasq.com/)
+* [jkeyes](https://github.com/jkeyes) / [John Keyes](http://keyes.ie/)
 
 # License (MIT)
 

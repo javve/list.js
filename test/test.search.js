@@ -64,60 +64,14 @@ describe('Search', function() {
             var result = list.search('jonny', { born: true });
             expect(result.length).to.equal(0);
         });
-    });
-
-    /*
-    describe('Show and pages', function() {
-        it('should return the visible items', function() {
-            list.show(1,2);
-            var result = list.search('1986');
-            expect(result).to.deep.equal(list.visibleItems);
+        it('should find match in column', function() {
+            var result = list.search('jonny', [ 'name' ]);
+            expect(result.length).to.equal(1);
+            expect(result[0]).to.deep.equal(jonny);
         });
-
-        it('should return be 2 visible items and 3 matching', function() {
-            list.show(1,2);
-            var result = list.search('1986');
-            expect(result.length).to.equal(2);
-            expect(list.visibleItems.length).to.equal(2);
-            expect(list.matchingItems.length).to.equal(3);
-        });
-
-        describe('Specific items', function() {
-            beforeEach(function() {
-                list.show(1,2);
-                var result = list.search('1986');
-            });
-            it('should match jonny', function() {
-                expect(jonny.matching()).to.be.true;
-                expect(jonny.found).to.be.true;
-                expect(jonny.visible()).to.be.true;
-            });
-            it('should match martina', function() {
-                expect(martina.matching()).to.be.true;
-                expect(martina.found).to.be.true;
-                expect(martina.visible()).to.be.true;
-            });
-            it('should match but not show angelica', function() {
-                expect(angelica.matching()).to.be.true;
-                expect(angelica.found).to.be.true;
-                expect(angelica.visible()).to.be.false;
-            });
-            it('should not match sebastian', function() {
-                expect(sebastian.matching()).to.be.false;
-                expect(sebastian.found).to.be.false;
-                expect(sebastian.visible()).to.be.false;
-            });
-            it('should not match imma', function() {
-                expect(imma.matching()).to.be.false;
-                expect(imma.found).to.be.false;
-                expect(imma.visible()).to.be.false;
-            });
-            it('should not match hasse', function() {
-                expect(hasse.matching()).to.be.false;
-                expect(hasse.found).to.be.false;
-                expect(hasse.visible()).to.be.false;
-            });
+        it('should not find match in column', function() {
+            var result = list.search('jonny', [ 'born' ]);
+            expect(result.length).to.equal(0);
         });
     });
-    */
 });

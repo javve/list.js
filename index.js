@@ -292,6 +292,15 @@ var List = function(id, options, values) {
             searchString = (searchString === undefined) ? "" : searchString,
             target = searchString.target || searchString.srcElement; /* IE have srcElement */
 
+        // Convert { name: 'yadda' } into [ 'name' ]
+        if (columns.constructor == Object) {
+            var tmpColumn = [];
+            for (var name in columns) {
+                tmpColumn.push(name);
+            }
+            columns = tmpColumn;
+        }
+
         searchString = (target === undefined) ? (""+searchString).toLowerCase() : ""+target.value.toLowerCase();
         is = self.items;
         // Escape regular expression characters
@@ -310,9 +319,9 @@ var List = function(id, options, values) {
                 item = is[k];
                 values = item.values();
 
-                for(var j in columns) {
-                    if(values.hasOwnProperty(j) && columns[j] !== null) {
-                        text = (values[j] != null) ? values[j].toString().toLowerCase() : "";
+                for(var j = 0, jl = columns.length; j < jl; j++) {
+                    if(values.hasOwnProperty(columns[j])) {
+                        text = (values[columns[j]] != null) ? values[columns[j]].toString().toLowerCase() : "";
                         if ((searchString !== "") && (text.search(searchString) > -1)) {
                             found = true;
                         }
