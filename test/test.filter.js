@@ -18,8 +18,8 @@ describe('Filter', function() {
 
     afterEach(function() {
         list.filter();
-        list.show(0, 200);
-    })
+        list.show(1, 200);
+    });
 
     describe('Basics', function() {
         it('should return everyone born after 1988', function() {
@@ -42,7 +42,7 @@ describe('Filter', function() {
 
     describe('Show and pages', function() {
         it('should return the visible items', function() {
-            list.show(0,2);
+            list.show(1,2);
             var result = list.filter(function(item) {
                 return (item.values().born > 1985);
             });
@@ -50,7 +50,7 @@ describe('Filter', function() {
         });
 
         it('should return be 2 visible items and 3 matching', function() {
-            list.show(0,2);
+            list.show(1,2);
             var result = list.filter(function(item) {
                 return (item.values().born > 1985);
             });
@@ -61,7 +61,7 @@ describe('Filter', function() {
 
         describe('Specific items', function() {
             beforeEach(function() {
-                list.show(0,2);
+                list.show(1,2);
                 var result = list.filter(function(item) {
                     return (item.values().born > 1985);
                 });
