@@ -489,6 +489,8 @@ Read it at: **[http://listjs.com/changelog.html](http://listjs.com/changelog.htm
 * [matthewheston](https://github.com/matthewheston)
 * [gvido](https://github.com/gvido) / Gvido Glazers
 * [karlwestin](https://github.com/karlwestin) / [Karl Westin](http://karlwestin.com)
+* [joakin](https://github.com/joakin) / [Joaquin](http://chimeces.com/)
+* [dancrew32](https://github.com/dancrew32) / [Dan Masquelier](http://danmasq.com/)
 
 # License (MIT)
 
