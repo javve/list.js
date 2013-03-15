@@ -54,7 +54,7 @@ var List = function(id, options, values) {
             options.events = options.events || {};
             this.classes(options);
             templater = new Templater(self, options);
-            self.list = getByClass(options.listClass, self.listContainer, true);
+            self.list = getByClass(self.listContainer, options.listClass, true);
             this.callbacks(options);
             this.items.start(values, options);
             self.update();
@@ -66,8 +66,8 @@ var List = function(id, options, values) {
             options.sortClass = options.sortClass || 'sort';
         },
         callbacks: function(options) {
-            events.bind(getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
-            sortButtons = getByClass(options.sortClass, self.listContainer);
+            events.bind(getByClass(self.listContainer, options.searchClass), 'keyup', self.search);
+            sortButtons = getByClass(self.listContainer, options.sortClass);
             events.bind(sortButtons, 'click', self.sort);
             for (var i in options.events) {
                 self.on(i, options.events[i]);
@@ -497,7 +497,7 @@ List.prototype.templateEngines = {};
 List.prototype.plugins = {};
 
 List.prototype.templateEngines.standard = function(list, settings) {
-    var listSource = getByClass(settings.listClass, list.listContainer, true),
+    var listSource = getByClass(list.listContainer, settings.listClass, true),
         itemSource = getItemSource(settings.item),
         templater = this;
 
@@ -527,7 +527,7 @@ List.prototype.templateEngines.standard = function(list, settings) {
         templater.create(item);
         var values = {};
         for(var i = 0, il = valueNames.length; i < il; i++) {
-            var elm = getByClass(valueNames[i], item.elm, true);
+            var elm = getByClass(item.elm, valueNames[i], true);
             values[valueNames[i]] = elm ? elm.innerHTML : "";
         }
         return values;
@@ -539,7 +539,7 @@ List.prototype.templateEngines.standard = function(list, settings) {
             for(var v in values) {
                 if (values.hasOwnProperty(v)) {
                     // TODO speed up if possible
-                    var elm = getByClass(v, item.elm, true);
+                    var elm = getByClass(item.elm, v, true);
                     if (elm) {
                         elm.innerHTML = values[v];
                     }
