@@ -54,6 +54,18 @@ describe('Search', function() {
         });
     });
 
+    describe('Specfic columns', function() {
+        it('should find match in column', function() {
+            var result = list.search('jonny', { name: true });
+            expect(result.length).to.equal(1);
+            expect(result[0]).to.deep.equal(jonny);
+        });
+        it('should not find match in column', function() {
+            var result = list.search('jonny', { born: true });
+            expect(result.length).to.equal(0);
+        });
+    });
+
     /*
     describe('Show and pages', function() {
         it('should return the visible items', function() {
