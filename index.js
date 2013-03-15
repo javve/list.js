@@ -239,9 +239,9 @@ var List = function(id, options, values) {
         var options = {},
             valueName;
 
-        if (arguments[0].target || arguments[0].srcElement) {
+        if (arguments[0].currentTarget || arguments[0].srcElement) {
             var e = arguments[0],
-                target = e.target || e.srcElement,
+                target = e.currentTarget || e.srcElement,
                 newSortingOrder;
 
             valueName = getAttribute(target, 'data-sort');
