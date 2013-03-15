@@ -159,9 +159,6 @@ describe('Sort', function() {
             i5.values({ val: "0003.123" });
             i6.values({ val: "09.2123" });
             list.sort('val', { asc: true });
-            list.items.forEach(function(v) {
-                console.log(v._values.val);
-            });
             expect(list.items[0].values().val).to.be.equal("0003.123");
             expect(list.items[1].values().val).to.be.equal("09.2123");
             expect(list.items[2].values().val).to.be.equal("10.021999");
@@ -177,9 +174,6 @@ describe('Sort', function() {
             i5.values({ val: "127.0.0.1" });
             i6.values({ val: "192.168.1.2" });
             list.sort('val', { asc: true });
-            list.items.forEach(function(v) {
-                console.log(v._values.val);
-            });
             expect(list.items[0].values().val).to.be.equal("127.0.0.1");
             expect(list.items[1].values().val).to.be.equal("192.168.0.1");
             expect(list.items[2].values().val).to.be.equal("192.168.0.100");
