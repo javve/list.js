@@ -22,6 +22,14 @@ describe('Add, get, remove', function() {
             ]);
             expect(list.items.length).to.equal(4);
         });
+        it('should add async items', function(done) {
+            list.add([
+                { name: 'Sven' }
+            ], function() {
+                expect(list.items.length).to.equal(5);
+                done();
+            });
+        });
     });
 
     describe('Get', function() {
@@ -44,10 +52,10 @@ describe('Add, get, remove', function() {
 
     describe('Remove', function() {
         it('should remove one item', function() {
-            expect(list.items.length).to.equal(5);
+            expect(list.items.length).to.equal(6);
             var count = list.remove('name', 'Jonas');
             expect(count).to.equal(1);
-            expect(list.items.length).to.equal(4);
+            expect(list.items.length).to.equal(5);
         });
         it('should not remove anything', function() {
             var count = list.remove('name', 'jonny');
@@ -56,7 +64,7 @@ describe('Add, get, remove', function() {
         it('should remove two items', function() {
             var count = list.remove('name', 'Jonny');
             expect(count).to.equal(2);
-            expect(list.items.length).to.equal(2);
+            expect(list.items.length).to.equal(3);
         });
     });
 });
