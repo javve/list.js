@@ -7,7 +7,7 @@ var fixture = {
 
         item = "<li>";
         for (var i = 0; i < valueNames.length; i++) {
-            item += "<span class='"+valueNames[i]+"'</span>";
+            item += '<span class="'+valueNames[i]+'"</span>';
         }
         item += "</li>";
 
