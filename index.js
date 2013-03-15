@@ -11,7 +11,6 @@ var document = window.document,
     getAttribute = require('get-attribute'),
     naturalSort = require('natural-sort');
 
-
 var List = function(id, options, values) {
     var self = this,
 		templater,
@@ -288,6 +287,7 @@ var List = function(id, options, values) {
             text,
             values,
             is,
+            searchEscape = /[-[\]{}()*+?.,\\^$|#\s]/g,
             columns = (columns === undefined) ? self.items[0].values() : columns,
             searchString = (searchString === undefined) ? "" : searchString,
             target = searchString.target || searchString.srcElement; /* IE have srcElement */
@@ -295,7 +295,7 @@ var List = function(id, options, values) {
         searchString = (target === undefined) ? (""+searchString).toLowerCase() : ""+target.value.toLowerCase();
         is = self.items;
         // Escape regular expression characters
-        searchString = searchString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+        searchString = searchString.replace(searchEscape, "\\$&");
 
         templater.clear();
         if (searchString === "" ) {
