@@ -33,6 +33,13 @@ OTHER DEALINGS IN THE SOFTWARE.
 var document = window.document,
 	h;
 
+var RXP = {
+	searchEscape: /[-[\]{}()*+?.,\\^$|#\s]/g,
+	objectTest: /^\[object (HTMLCollection|NodeList|Object)\]$/,
+	ltOrGt: /&(lt|gt);/g,
+	tag: /<\/?[^>]+(>|$)/g
+};
+
 var List = function(id, options, values) {
     var self = this,
 		templater,
@@ -306,7 +313,7 @@ var List = function(id, options, values) {
         searchString = (target === undefined) ? (""+searchString).toLowerCase() : ""+target.value.toLowerCase();
         is = self.items;
         // Escape regular expression characters
-        searchString = searchString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+        searchString = searchString.replace(RXP.searchEscape, "\\$&");
 
         templater.clear();
         if (searchString === "" ) {
@@ -687,7 +694,7 @@ h = {
     /* http://stackoverflow.com/questions/7238177/detect-htmlcollection-nodelist-in-javascript */
     isNodeList: function(nodes) {
         var result = Object.prototype.toString.call(nodes);
-        if (typeof nodes === 'object' && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(result) && (nodes.length == 0 || (typeof nodes[0] === "object" && nodes[0].nodeType > 0))) {
+        if (typeof nodes === 'object' && RXP.objectTest.test(result) && (nodes.length == 0 || (typeof nodes[0] === "object" && nodes[0].nodeType > 0))) {
             return true;
         }
         return false;
@@ -722,15 +729,15 @@ h = {
             if (b === undefined || b === null) {
                 b = "";
             }
-            a = a.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
+            a = a.toString().replace(RXP.ltOrGt, function (strMatch, p1){
                 return (p1 == "lt")? "<" : ">";
             });
-            a = a.replace(/<\/?[^>]+(>|$)/g, "");
+            a = a.replace(RXP.tag, "");
 
-            b = b.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
+            b = b.toString().replace(RXP.ltOrGt, function (strMatch, p1){
                 return (p1 == "lt")? "<" : ">";
             });
-            b = b.replace(/<\/?[^>]+(>|$)/g, "");
+            b = b.replace(RXP.tag, "");
             var aa = this.chunkify(a);
             var bb = this.chunkify(b);
 
