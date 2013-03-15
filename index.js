@@ -9,7 +9,7 @@ var document = window.document,
     classes = require('classes'),
     getByClass = require('get-by-class'),
     getAttribute = require('get-attribute'),
-    alphanumSort = require('alphanum-sort');
+    naturalSort = require('natural-sort');
 
 
 var List = function(id, options, values) {
@@ -31,6 +31,7 @@ var List = function(id, options, values) {
         'sortComplete': []
 	};
     this.listContainer = (typeof(id) == 'string') ? document.getElementById(id) : id;
+
     // Check if the container exists. If not return instead of breaking the javascript
     if (!this.listContainer)
         return;
@@ -233,39 +234,41 @@ var List = function(id, options, values) {
             value = null,
             target = valueName.target || valueName.srcElement, /* IE have srcElement */
             sorting = '',
-            isAsc = false,
+            isDesc = false,
             asc = 'asc',
             desc = 'desc',
-            options = options || {};
+            options = options || {},
+            insensitive;
 
         if (target === undefined) {
             value = valueName;
-            isAsc = options.asc || false;
+            isDesc = options.desc || false;
+            insensitive = options.insensitive || true;
         } else {
             value = getAttribute(target, 'data-sort');
-            isAsc = classes(target).has(asc) ? false : true;
+            isDesc = classes(target).has(desc) ? false : true;
         }
         for (var i = 0, il = sortButtons.length; i < il; i++) {
             classes(sortButtons[i]).remove(asc);
             classes(sortButtons[i]).remove(desc);
         }
-        if (isAsc) {
-            if (target !== undefined) {
-                classes(target).add(asc);
-            }
-            isAsc = true;
-        } else {
+        if (isDesc) {
             if (target !== undefined) {
                 classes(target).add(desc);
             }
-            isAsc = false;
+            isDesc = true;
+        } else {
+            if (target !== undefined) {
+                classes(target).add(asc);
+            }
+            isDesc = false;
         }
 
         if (options.sortFunction) {
             options.sortFunction = options.sortFunction;
         } else {
             options.sortFunction = function(a, b) {
-                return alphanumSort(a.values()[value], b.values()[value], isAsc);
+                return naturalSort(a.values()[value], b.values()[value], { desc: isDesc, insensitive: insensitive });
             };
         }
         self.items.sort(options.sortFunction);

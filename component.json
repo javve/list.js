@@ -10,8 +10,8 @@
     "component/classes": "*",
     "javve/events": "*",
     "javve/get-by-class": "*",
-    "javve/get-attribute": "*"
+    "javve/get-attribute": "*",
+    "javve/natural-sort": "*"
   },
-  "local": [],
-  "paths": ["/Users/Jonny/Sites/components"]
+  "twitter": "javve"
 }
