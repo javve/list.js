@@ -4,12 +4,12 @@ describe('Filter', function() {
 
     before(function() {
         list = fixture.list(['name', 'born'], fixture.all);
-        jonny = list.get('name', 'Jonny Strömberg');
-        martina = list.get('name', 'Martina Elm');
-        angelica = list.get('name', 'Angelica Abraham');
-        sebastian = list.get('name', 'Sebastian Höglund');
-        imma = list.get('name', 'Imma Grafström');
-        hasse = list.get('name', 'Hasse Strömberg');
+        jonny = list.get('name', 'Jonny Strömberg')[0];
+        martina = list.get('name', 'Martina Elm')[0];
+        angelica = list.get('name', 'Angelica Abraham')[0];
+        sebastian = list.get('name', 'Sebastian Höglund')[0];
+        imma = list.get('name', 'Imma Grafström')[0];
+        hasse = list.get('name', 'Hasse Strömberg')[0];
     });
 
     after(function() {

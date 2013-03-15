@@ -11,12 +11,12 @@ describe('Show', function() {
             { id: "5", id2: "bc" },
             { id: "6", id2: "bc" }
         ]);
-        a = list.get('id', '1');
-        b = list.get('id', '2');
-        c = list.get('id', '3');
-        d = list.get('id', '4');
-        e = list.get('id', '5');
-        f = list.get('id', '6');
+        a = list.get('id', '1')[0];
+        b = list.get('id', '2')[0];
+        c = list.get('id', '3')[0];
+        d = list.get('id', '4')[0];
+        e = list.get('id', '5')[0];
+        f = list.get('id', '6')[0];
     });
 
     after(function() {

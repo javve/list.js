@@ -8,7 +8,7 @@ describe('Item', function() {
             born: "1986",
             doin: "Living the dream"
         }]);
-        item = list.get('name', 'Jonny');
+        item = list.get('name', 'Jonny')[0];
     });
 
     after(function() {
