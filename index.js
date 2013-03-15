@@ -224,53 +224,51 @@ var List = function(id, options, values) {
         return matchedItems;
     };
 
+
+    var clearPreviousSorting = function() {
+        for (var i = 0, il = sortButtons.length; i < il; i++) {
+            classes(sortButtons[i]).remove('asc');
+            classes(sortButtons[i]).remove('desc');
+        }
+    };
     /* Sorts the list.
     * @valueOrEvent Either a JavaScript event object or a valueName
     * @sortFunction (optional) Define if natural sorting does not fullfill your needs
     */
-    this.sort = function(valueName, options) {
+    this.sort = function() {
+        var options = {},
+            valueName;
+
+        if (arguments[0].target || arguments[0].srcElement) {
+            var e = arguments[0],
+                target = e.target || e.srcElement,
+                newSortingOrder;
+
+            valueName = getAttribute(target, 'data-sort');
+
+            if (classes(target).has('desc')) {
+                options.desc = false;
+                newSortingOrder = 'asc';
+            } else if (classes(target).has('asc')) {
+                options.desc = true;
+                newSortingOrder = 'desc';
+            } else {
+                options.desc = false;
+                newSortingOrder = 'asc';
+            }
+            clearPreviousSorting();
+            classes(target).add(newSortingOrder);
+        } else {
+            valueName = arguments[0];
+            options = arguments[1] || options;
+        }
+
+        options.insensitive = (typeof options.insensitive == "undefined") ? true : options.insensitive;
+        options.sortFunction = options.sortFunction || function(a, b) {
+            return naturalSort(a.values()[valueName], b.values()[valueName], options);
+        };
+
         trigger('sortStart');
-        var length = self.items.length,
-            value = null,
-            target = valueName.target || valueName.srcElement, /* IE have srcElement */
-            sorting = '',
-            isDesc = false,
-            asc = 'asc',
-            desc = 'desc',
-            options = options || {},
-            insensitive;
-
-        if (target === undefined) {
-            value = valueName;
-            isDesc = options.desc || false;
-            insensitive = options.insensitive || true;
-        } else {
-            value = getAttribute(target, 'data-sort');
-            isDesc = classes(target).has(desc) ? false : true;
-        }
-        for (var i = 0, il = sortButtons.length; i < il; i++) {
-            classes(sortButtons[i]).remove(asc);
-            classes(sortButtons[i]).remove(desc);
-        }
-        if (isDesc) {
-            if (target !== undefined) {
-                classes(target).add(desc);
-            }
-            isDesc = true;
-        } else {
-            if (target !== undefined) {
-                classes(target).add(asc);
-            }
-            isDesc = false;
-        }
-
-        if (options.sortFunction) {
-            options.sortFunction = options.sortFunction;
-        } else {
-            options.sortFunction = function(a, b) {
-                return naturalSort(a.values()[value], b.values()[value], { desc: isDesc, insensitive: insensitive });
-            };
-        }
         self.items.sort(options.sortFunction);
         self.update();
         trigger('sortComplete');
