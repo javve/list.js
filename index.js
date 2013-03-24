@@ -14,7 +14,6 @@ var List = function(id, options, values) {
     var self = this,
 		templater,
 		init,
-		initialItems,
 		sortButtons,
         Item = require('./src/item')(self);
 
@@ -120,7 +119,6 @@ var List = function(id, options, values) {
             var locals = {
                 templater: templater,
                 init: init,
-                initialItems: initialItems,
                 Item: Item,
                 sortButtons: sortButtons,
                 reset: reset
