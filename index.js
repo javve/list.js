@@ -8,17 +8,15 @@ var document = window.document,
     events = require('events'),
     classes = require('classes'),
     getByClass = require('get-by-class'),
-    getAttribute = require('get-attribute'),
-    naturalSort = require('natural-sort');
+    getAttribute = require('get-attribute');
 
 var List = function(id, options, values) {
     var self = this,
 		templater,
 		init,
 		initialItems,
-		Item,
-		Templater,
-		sortButtons;
+		sortButtons,
+        Item = require('./src/item')(self);
 
 	this.events = {
 	    'updated': [],
@@ -41,34 +39,33 @@ var List = function(id, options, values) {
     this.searched = false;
     this.filtered = false;
 
-    this.list = null;
-    this.templateEngines = {};
-
     options = options || {};
+    options.listClass = options.listClass || 'list';
+    options.searchClass = options.searchClass || 'search';
+    options.sortClass = options.sortClass || 'sort';
+
+    this.options = options;
     this.page = options.page || 200;
     this.i = options.i || 1;
+
+    this.list = getByClass(self.listContainer, options.listClass, true);
+    this.templater = require('./src/templater')(self);
+    this.sort = require('./src/sort')(self);
+    this.search = require('./src/search')(self);
+    this.filter = require('./src/filter')(self);
 
     init = {
         start: function(values, options) {
             options.plugins = options.plugins || {};
             options.events = options.events || {};
-            this.classes(options);
-            templater = new Templater(self, options);
-            self.list = getByClass(self.listContainer, options.listClass, true);
+            templater = self.templater;
             this.callbacks(options);
             this.items.start(values, options);
             self.update();
             this.plugins(options.plugins);
         },
-        classes: function(options) {
-            options.listClass = options.listClass || 'list';
-            options.searchClass = options.searchClass || 'search';
-            options.sortClass = options.sortClass || 'sort';
-        },
         callbacks: function(options) {
             events.bind(getByClass(self.listContainer, options.searchClass), 'keyup', self.search);
-            sortButtons = getByClass(self.listContainer, options.sortClass);
-            events.bind(sortButtons, 'click', self.sort);
             for (var i in options.events) {
                 self.on(i, options.events[i]);
             }
@@ -125,7 +122,6 @@ var List = function(id, options, values) {
                 init: init,
                 initialItems: initialItems,
                 Item: Item,
-                Templater: Templater,
                 sortButtons: sortButtons,
                 reset: reset
             };
@@ -223,150 +219,6 @@ var List = function(id, options, values) {
         return matchedItems;
     };
 
-
-    var clearPreviousSorting = function() {
-        for (var i = 0, il = sortButtons.length; i < il; i++) {
-            classes(sortButtons[i]).remove('asc');
-            classes(sortButtons[i]).remove('desc');
-        }
-    };
-    /* Sorts the list.
-    * @valueOrEvent Either a JavaScript event object or a valueName
-    * @sortFunction (optional) Define if natural sorting does not fullfill your needs
-    */
-    this.sort = function() {
-        var options = {},
-            valueName;
-
-        if (arguments[0].currentTarget || arguments[0].srcElement) {
-            var e = arguments[0],
-                target = e.currentTarget || e.srcElement,
-                newSortingOrder;
-
-            valueName = getAttribute(target, 'data-sort');
-
-            if (classes(target).has('desc')) {
-                options.desc = false;
-                newSortingOrder = 'asc';
-            } else if (classes(target).has('asc')) {
-                options.desc = true;
-                newSortingOrder = 'desc';
-            } else {
-                options.desc = false;
-                newSortingOrder = 'asc';
-            }
-            clearPreviousSorting();
-            classes(target).add(newSortingOrder);
-        } else {
-            valueName = arguments[0];
-            options = arguments[1] || options;
-        }
-
-        options.insensitive = (typeof options.insensitive == "undefined") ? true : options.insensitive;
-        options.sortFunction = options.sortFunction || function(a, b) {
-            return naturalSort(a.values()[valueName], b.values()[valueName], options);
-        };
-
-        trigger('sortStart');
-        self.items.sort(options.sortFunction);
-        self.update();
-        trigger('sortComplete');
-    };
-
-    /*
-    * Searches the list after values with content "searchStringOrEvent".
-    * The columns parameter defines if all values should be included in the search,
-    * defaults to undefined which means "all".
-    */
-    this.search = function(searchString, columns) {
-        trigger('searchStart');
-        self.i = 1; // Reset paging
-        var matching = [],
-            found,
-            item,
-            text,
-            values,
-            is,
-            searchEscape = /[-[\]{}()*+?.,\\^$|#\s]/g,
-            columns = (columns === undefined) ? self.items[0].values() : columns,
-            searchString = (searchString === undefined) ? "" : searchString,
-            target = searchString.target || searchString.srcElement; /* IE have srcElement */
-
-        // Convert { name: 'yadda' } into [ 'name' ]
-        if (columns.constructor == Object) {
-            var tmpColumn = [];
-            for (var name in columns) {
-                tmpColumn.push(name);
-            }
-            columns = tmpColumn;
-        }
-
-        searchString = (target === undefined) ? (""+searchString).toLowerCase() : ""+target.value.toLowerCase();
-        is = self.items;
-        // Escape regular expression characters
-        searchString = searchString.replace(searchEscape, "\\$&");
-
-        templater.clear();
-        if (searchString === "" ) {
-            reset.search();
-            self.searched = false;
-            self.update();
-        } else {
-            self.searched = true;
-
-            for (var k = 0, kl = is.length; k < kl; k++) {
-                found = false;
-                item = is[k];
-                values = item.values();
-
-                for(var j = 0, jl = columns.length; j < jl; j++) {
-                    if(values.hasOwnProperty(columns[j])) {
-                        text = (values[columns[j]] != null) ? values[columns[j]].toString().toLowerCase() : "";
-                        if ((searchString !== "") && (text.search(searchString) > -1)) {
-                            found = true;
-                        }
-                    }
-                }
-                if (found) {
-                    item.found = true;
-                    matching.push(item);
-                } else {
-                    item.found = false;
-                }
-            }
-            self.update();
-        }
-        trigger('searchComplete');
-        return self.visibleItems;
-    };
-
-    /*
-    * Filters the list. If filterFunction() returns False hides the Item.
-    * if filterFunction == false are the filter removed
-    */
-    this.filter = function(filterFunction) {
-        trigger('filterStart');
-        self.i = 1; // Reset paging
-        reset.filter();
-        if (filterFunction === undefined) {
-            self.filtered = false;
-        } else {
-            self.filtered = true;
-            var is = self.items;
-            for (var i = 0, il = is.length; i < il; i++) {
-                var item = is[i];
-                if (filterFunction(item)) {
-                    item.filtered = true;
-                } else {
-                    item.filtered = false;
-                }
-            }
-        }
-        self.update();
-        trigger('filterComplete');
-        return self.visibleItems;
-    };
-
     /*
     * Get size of the list
     */
@@ -393,6 +245,8 @@ var List = function(id, options, values) {
         }
     };
 
+    this.trigger = trigger;
+
     var reset = {
         filter: function() {
             var is = self.items,
@@ -409,6 +263,8 @@ var List = function(id, options, values) {
             }
         }
     };
+
+    this.reset = reset;
 
 
     this.update = function() {
@@ -433,165 +289,10 @@ var List = function(id, options, values) {
         trigger('updated');
     };
 
-    Item = function(initValues, element, notCreate) {
-        var item = this;
-
-        this._values = {};
-
-        this.found = false; // Show if list.searched == true and this.found == true
-        this.filtered = false;// Show if list.filtered == true and this.filtered == true
-
-        var init = function(initValues, element, notCreate) {
-            if (element === undefined) {
-                if (notCreate) {
-                    item.values(initValues, notCreate);
-                } else {
-                    item.values(initValues);
-                }
-            } else {
-                item.elm = element;
-                var values = templater.get(item, initValues);
-                item.values(values);
-            }
-        };
-        this.values = function(newValues, notCreate) {
-            if (newValues !== undefined) {
-                for(var name in newValues) {
-                    item._values[name] = newValues[name];
-                }
-                if (notCreate !== true) {
-                    templater.set(item, item.values());
-                }
-            } else {
-                return item._values;
-            }
-        };
-        this.show = function() {
-            templater.show(item);
-        };
-        this.hide = function() {
-            templater.hide(item);
-        };
-        this.matching = function() {
-            return (
-                (self.filtered && self.searched && item.found && item.filtered) ||
-               	(self.filtered && !self.searched && item.filtered) ||
-                (!self.filtered && self.searched && item.found) ||
-                (!self.filtered && !self.searched)
-            );
-        };
-        this.visible = function() {
-            return (item.elm.parentNode) ? true : false;
-        };
-        init(initValues, element, notCreate);
-    };
-
-    /* Templater with different kinds of template engines.
-    * All engines have these methods
-    * - reload(item)
-    * - remove(item)
-    */
-    Templater = function(list, settings) {
-        if (settings.engine === undefined) {
-            settings.engine = "standard";
-        } else {
-            settings.engine = settings.engine.toLowerCase();
-        }
-        return new self.constructor.prototype.templateEngines[settings.engine](list, settings);
-    };
-
     init.start(values, options);
 };
 
-List.prototype.templateEngines = {};
 List.prototype.plugins = {};
-
-List.prototype.templateEngines.standard = function(list, settings) {
-    var listSource = getByClass(list.listContainer, settings.listClass, true),
-        itemSource = getItemSource(settings.item),
-        templater = this;
-
-    function getItemSource(item) {
-        if (item === undefined) {
-            var nodes = listSource.childNodes,
-                items = [];
-
-            for (var i = 0, il = nodes.length; i < il; i++) {
-                // Only textnodes have a data attribute
-                if (nodes[i].data === undefined) {
-                    return nodes[i];
-                }
-            }
-            return null;
-        } else if (item.indexOf("<") !== -1) { // Try create html element of list, do not work for tables!!
-            var div = document.createElement('div');
-            div.innerHTML = item;
-            return div.firstChild;
-        } else {
-            return document.getElementById(settings.item);
-        }
-    }
-
-    /* Get values from element */
-    this.get = function(item, valueNames) {
-        templater.create(item);
-        var values = {};
-        for(var i = 0, il = valueNames.length; i < il; i++) {
-            var elm = getByClass(item.elm, valueNames[i], true);
-            values[valueNames[i]] = elm ? elm.innerHTML : "";
-        }
-        return values;
-    };
-
-    /* Sets values at element */
-    this.set = function(item, values) {
-        if (!templater.create(item)) {
-            for(var v in values) {
-                if (values.hasOwnProperty(v)) {
-                    // TODO speed up if possible
-                    var elm = getByClass(item.elm, v, true);
-                    if (elm) {
-                        elm.innerHTML = values[v];
-                    }
-                }
-            }
-        }
-    };
-
-    this.create = function(item) {
-        if (item.elm !== undefined) {
-            return false;
-        }
-        /* If item source does not exists, use the first item in list as
-        source for new items */
-        var newItem = itemSource.cloneNode(true);
-        newItem.id = "";
-        item.elm = newItem;
-        templater.set(item, item.values());
-        return true;
-    };
-    this.remove = function(item) {
-        listSource.removeChild(item.elm);
-    };
-    this.show = function(item) {
-        templater.create(item);
-        listSource.appendChild(item.elm);
-    };
-    this.hide = function(item) {
-        if (item.elm !== undefined && item.elm.parentNode === listSource) {
-            listSource.removeChild(item.elm);
-        }
-    };
-    this.clear = function() {
-        /* .innerHTML = ''; fucks up IE */
-        if (listSource.hasChildNodes()) {
-            while (listSource.childNodes.length >= 1)
-            {
-                listSource.removeChild(listSource.firstChild);
-            }
-        }
-    };
-};
 
 // AMD support
 if (typeof define === 'function' && define.amd) {

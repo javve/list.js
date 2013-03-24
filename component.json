@@ -4,7 +4,14 @@
   "version": "1.0.0",
   "description": "Add search, sort and flexibility to plain HTML lists or tables with cross-browser native JavaScript.",
   "keywords": ["list", "search", "sort", "table", "dom", "html", "ui"],
-  "scripts": ["index.js"],
+  "scripts": [
+    "index.js",
+    "src/search.js",
+    "src/sort.js",
+    "src/item.js",
+    "src/templater.js",
+    "src/filter.js"
+  ],
   "license": "MIT",
   "dependencies": {
     "component/classes": "*",
