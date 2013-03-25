@@ -13,6 +13,10 @@ var clearPreviousSorting = function() {
 
 module.exports = function(list) {
 
+    // Add events
+    list.events.sortStart = [],
+    list.events.sortComplete = [],
+
     sortButtons = getByClass(list.listContainer, list.options.sortClass);
     events.bind(sortButtons, 'click', self.sort);
 

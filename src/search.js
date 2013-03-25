@@ -1,4 +1,9 @@
 module.exports = function(list) {
+
+    // Add events
+    list.events.searchStart = [],
+    list.events.searchComplete = [],
+
     return function(searchString, columns) {
         list.trigger('searchStart');
         list.i = 1; // Reset paging

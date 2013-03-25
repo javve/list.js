@@ -19,12 +19,7 @@ var List = function(id, options, values) {
         addAsync = require('./src/add-async')(list);
 
 	this.events = {
-	    'updated': [],
-        'filterStart': [],
-        'sortStart': [],
-        'searchComplete': [],
-        'filterComplete': [],
-        'sortComplete': []
+	    'updated': []
 	};
     this.listContainer = (typeof(id) == 'string') ? document.getElementById(id) : id;
 

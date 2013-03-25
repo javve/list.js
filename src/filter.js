@@ -1,4 +1,9 @@
 module.exports = function(list) {
+
+    // Add events
+    list.events.filterStart = [],
+    list.events.filterComplete = [],
+
     return function(filterFunction) {
         list.trigger('filterStart');
         list.i = 1; // Reset paging
