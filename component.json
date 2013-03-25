@@ -10,7 +10,8 @@
     "src/sort.js",
     "src/item.js",
     "src/templater.js",
-    "src/filter.js"
+    "src/filter.js",
+    "src/add-async.js"
   ],
   "license": "MIT",
   "dependencies": {

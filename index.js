@@ -15,11 +15,11 @@ var List = function(id, options, values) {
 		templater,
 		init,
 		sortButtons,
-        Item = require('./src/item')(self);
+        Item = require('./src/item')(self),
+        addAsync = require('./src/add-async')(list);
 
 	this.events = {
 	    'updated': [],
-        'searchStart': [],
         'filterStart': [],
         'sortStart': [],
         'searchComplete': [],
@@ -161,24 +161,6 @@ var List = function(id, options, values) {
         return added;
     };
 
-    /*
-    * Adds items asynchronous to the list, good for adding huge amount of
-    * data. Defaults to add 100 items a time
-    */
-    var addAsync = function(values, callback, items) {
-        var valuesToAdd = values.splice(0, 100);
-        items = items || [];
-        items = items.concat(self.add(valuesToAdd));
-        if (values.length > 0) {
-            setTimeout(function() {
-                addAsync(values, callback, items);
-            }, 10);
-        } else {
-            self.update();
-            callback(items);
-        }
-    };
-
 	this.show = function(i, page) {
 		this.i = i;
 		this.page = page;
@@ -236,16 +218,14 @@ var List = function(id, options, values) {
         self.events[event].push(callback);
     };
 
-    var trigger = function(event) {
+    this.trigger = function(event) {
         var i = self.events[event].length;
         while(i--) {
             self.events[event][i](self);
         }
     };
 
-    this.trigger = trigger;
-
-    var reset = {
+    this.reset = {
         filter: function() {
             var is = self.items,
                 il = is.length;
@@ -261,9 +241,6 @@ var List = function(id, options, values) {
             }
         }
     };
-
-    this.reset = reset;
-
 
     this.update = function() {
         var is = self.items,
@@ -284,7 +261,7 @@ var List = function(id, options, values) {
                 is[i].hide();
 			}
         }
-        trigger('updated');
+        self.trigger('updated');
     };
 
     init.start(values, options);
