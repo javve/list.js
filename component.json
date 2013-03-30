@@ -11,7 +11,8 @@
     "src/item.js",
     "src/templater.js",
     "src/filter.js",
-    "src/add-async.js"
+    "src/add-async.js",
+    "src/parse.js"
   ],
   "license": "MIT",
   "dependencies": {

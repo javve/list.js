@@ -4,57 +4,54 @@ By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
 */
 (function( window, undefined ) {
 "use strict";
+
 var document = window.document,
     events = require('events'),
-    classes = require('classes'),
-    getByClass = require('get-by-class'),
-    getAttribute = require('get-attribute');
+    getByClass = require('get-by-class');
 
 var List = function(id, options, values) {
+
     var self = this,
-		templater,
 		init,
-		sortButtons,
         Item = require('./src/item')(self),
-        addAsync = require('./src/add-async')(list);
+        addAsync = require('./src/add-async')(self),
+        parse = require('./src/parse')(self);
 
-	this.events = {
-	    'updated': []
-	};
-    this.listContainer = (typeof(id) == 'string') ? document.getElementById(id) : id;
+    options             = options               || {};
+    options.listClass   = options.listClass     || 'list';
+    options.searchClass = options.searchClass   || 'search';
+    options.sortClass   = options.sortClass     || 'sort';
+    options.page        = options.page          || 200;
+    options.events      = options.events        || {};
+    options.i           = options.i             || 1;
+    options.plugins     = options.plugins       || {};
 
-    // Check if the container exists. If not return instead of breaking the javascript
-    if (!this.listContainer)
-        return;
+    this.options        = options;
+    this.i              = options.i;
+    this.page           = options.page;
+    this.items          = [];
+    this.visibleItems   = [];
+    this.matchingItems  = [];
+    this.searched       = false;
+    this.filtered       = false;
+    this.events         = { 'updated': [] };
 
-    this.items = [];
-    this.visibleItems = []; // These are the items currently visible
-    this.matchingItems = []; // These are the items currently matching filters and search, regadlessof visible count
-    this.searched = false;
-    this.filtered = false;
+    this.listContainer = (typeof(id) === 'string') ? document.getElementById(id) : id;
+    if (!this.listContainer) { return; }
+    this.list           = getByClass(self.listContainer, options.listClass, true);
 
-    options = options || {};
-    options.listClass = options.listClass || 'list';
-    options.searchClass = options.searchClass || 'search';
-    options.sortClass = options.sortClass || 'sort';
-
-    this.options = options;
-    this.page = options.page || 200;
-    this.i = options.i || 1;
-
-    this.list = getByClass(self.listContainer, options.listClass, true);
-    this.templater = require('./src/templater')(self);
-    this.sort = require('./src/sort')(self);
-    this.search = require('./src/search')(self);
-    this.filter = require('./src/filter')(self);
+    this.templater      = require('./src/templater')(self);
+    this.sort           = require('./src/sort')(self);
+    this.search         = require('./src/search')(self);
+    this.filter         = require('./src/filter')(self);
 
     init = {
         start: function(values, options) {
-            options.plugins = options.plugins || {};
-            options.events = options.events || {};
-            templater = self.templater;
             this.callbacks(options);
-            this.items.start(values, options);
+            parse(list);
+            if (values !== undefined) {
+                self.add(values);
+            }
             self.update();
             this.plugins(options.plugins);
         },
@@ -64,64 +61,11 @@ var List = function(id, options, values) {
                 self.on(i, options.events[i]);
             }
         },
-        items: {
-            start: function(values, options) {
-                if (options.valueNames) {
-                    var itemsToIndex = this.get(),
-                    valueNames = options.valueNames;
-                    if (options.indexAsync) {
-                        this.indexAsync(itemsToIndex, valueNames);
-                    } else {
-                        this.index(itemsToIndex, valueNames);
-                    }
-                }
-                if (values !== undefined) {
-                    self.add(values);
-                }
-            },
-            get: function() {
-                // return getByClass('item', self.list);
-                var nodes = self.list.childNodes,
-                items = [];
-                for (var i = 0, il = nodes.length; i < il; i++) {
-                    // Only textnodes have a data attribute
-                    if (nodes[i].data === undefined) {
-                        items.push(nodes[i]);
-                    }
-                }
-                return items;
-            },
-            index: function(itemElements, valueNames) {
-                for (var i = 0, il = itemElements.length; i < il; i++) {
-                    self.items.push(new Item(valueNames, itemElements[i]));
-                }
-            },
-            indexAsync: function(itemElements, valueNames) {
-                var itemsToIndex = itemElements.splice(0, 100); // TODO: If < 100 items, what happens in IE etc?
-                this.index(itemsToIndex, valueNames);
-                if (itemElements.length > 0) {
-                    setTimeout(function() {
-                        init.items.indexAsync(itemElements, valueNames);
-                        },
-                    10);
-                } else {
-                    self.update();
-                    // TODO: Add indexed callback
-                }
-            }
-        },
         plugins: function(plugins) {
-            var locals = {
-                templater: templater,
-                init: init,
-                Item: Item,
-                sortButtons: sortButtons,
-                reset: reset
-            };
             for (var i = 0; i < plugins.length; i++) {
                 plugins[i][1] = plugins[i][1] || {};
                 var pluginName = plugins[i][1].name || plugins[i][0];
-                self[pluginName] = self.plugins[plugins[i][0]].call(self, locals, plugins[i][1]);
+                self[pluginName] = self.plugins[plugins[i][0]].call(self, plugins[i][1]);
             }
         }
     };
@@ -170,7 +114,7 @@ var List = function(id, options, values) {
         var found = 0;
         for (var i = 0, il = self.items.length; i < il; i++) {
             if (self.items[i].values()[valueName] == value) {
-                templater.remove(self.items[i], options);
+                self.templater.remove(self.items[i], options);
                 self.items.splice(i,1);
                 il--;
                 found++;
@@ -205,7 +149,7 @@ var List = function(id, options, values) {
     * Removes all items from the list
     */
     this.clear = function() {
-        templater.clear();
+        self.templater.clear();
         self.items = [];
     };
 
@@ -243,7 +187,7 @@ var List = function(id, options, values) {
 
         self.visibleItems = [];
         self.matchingItems = [];
-        templater.clear();
+        self.templater.clear();
         for (var i = 0; i < il; i++) {
             if (is[i].matching() && ((self.matchingItems.length+1) >= self.i && self.visibleItems.length < self.page)) {
                 is[i].show();
@@ -277,7 +221,6 @@ if (typeof define === 'function' && define.amd) {
     exports.List = List;
 } else {
     window.List = List;
-    window.ListJsHelpers = h;
 }
 
 })(window);

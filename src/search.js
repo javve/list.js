@@ -2,7 +2,7 @@ module.exports = function(list) {
 
     // Add events
     list.events.searchStart = [],
-    list.events.searchComplete = [],
+    list.events.searchComplete = [];
 
     return function(searchString, columns) {
         list.trigger('searchStart');
