@@ -48,7 +48,7 @@ var List = function(id, options, values) {
     init = {
         start: function(values, options) {
             this.callbacks(options);
-            parse(list);
+            parse(self.list);
             if (values !== undefined) {
                 self.add(values);
             }
