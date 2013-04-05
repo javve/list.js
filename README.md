@@ -5,7 +5,7 @@ Do you also want the possibility to add, edit and remove items by dead simple te
 # Super simple examples
 
 More examples are found at [Listjs.com](http://listjs.com) and
-[Listjs.com/examples.html](http://listjs.com/examples.html)
+[Listjs.com/examples](http://listjs.com/examples)
 
 ## Index existing list
 HTML
