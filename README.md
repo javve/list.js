@@ -372,7 +372,7 @@ hides some items with the `itemObj.hide()` method then you have to call `listObj
 if you want the paging to update.
 
 * **on(event, callback)**  
-Execute `callback` when list have been updated (triggered by `update()`, which is used by a lot of methods).
+Execute `callback` when list have been updated (triggered by `update()`, which is used by a lot of methods). Use `updated` as the event.
 
 # Item API
 These methods are available for all Items that are returned by
