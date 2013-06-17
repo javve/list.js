@@ -346,7 +346,7 @@ Removes all items from the list
     	   }
     	}); -> Only items with id > 1 are shown in list
 
-    	listObjs.filter(); -> Remove all filters
+    	listObj.filter(); -> Remove all filters
 
 * **size()**  
 Returns the size of the list.
