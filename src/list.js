@@ -31,19 +31,19 @@ OTHER DEALINGS IN THE SOFTWARE.
 (function( window, undefined ) {
 "use strict";
 var document = window.document,
-	h;
+    h;
 
 var List = function(id, options, values) {
     var self = this,
-		templater,
-		init,
-		initialItems,
-		Item,
-		Templater,
-		sortButtons,
-		events = {
-		    'updated': []
-		};
+        templater,
+        init,
+        initialItems,
+        Item,
+        Templater,
+        sortButtons,
+        events = {
+            'updated': []
+        };
     this.listContainer = (typeof(id) == 'string') ? document.getElementById(id) : id;
     // Check if the container exists. If not return instead of breaking the javascript
     if (!this.listContainer)
@@ -194,11 +194,11 @@ var List = function(id, options, values) {
         }
     };
 
-	this.show = function(i, page) {
-		this.i = i;
-		this.page = page;
-		self.update();
-	};
+    this.show = function(i, page) {
+        this.i = i;
+        this.page = page;
+        self.update();
+    };
 
     /* Removes object from list.
     * Loops through the list and removes objects where
@@ -245,7 +245,7 @@ var List = function(id, options, values) {
     this.sort = function(valueName, options) {
         var length = self.items.length,
             value = null,
-            target = valueName.target || valueName.srcElement, /* IE have srcElement */
+            target = valueName.currentTarget || valueName.srcElement, /* IE have srcElement */
             sorting = '',
             isAsc = false,
             asc = 'asc',
@@ -263,25 +263,15 @@ var List = function(id, options, values) {
             h.removeClass(sortButtons[i], asc);
             h.removeClass(sortButtons[i], desc);
         }
-        if (isAsc) {
-            if (target !== undefined) {
-                h.addClass(target, asc);
-            }
-            isAsc = true;
-        } else {
-            if (target !== undefined) {
-                h.addClass(target, desc);
-            }
-            isAsc = false;
+
+        if (target !== undefined) {
+            h.addClass(target, isAsc ? asc : desc);
         }
 
-        if (options.sortFunction) {
-            options.sortFunction = options.sortFunction;
-        } else {
-            options.sortFunction = function(a, b) {
-                return h.sorter.alphanum(a.values()[value].toLowerCase(), b.values()[value].toLowerCase(), isAsc);
-            };
-        }
+        options.sortFunction = options.sortFunction || function(a, b) {
+            return h.sorter.alphanum(a.values()[value].toLowerCase(), b.values()[value].toLowerCase(), isAsc);
+        };
+        
         self.items.sort(options.sortFunction);
         self.update();
     };
@@ -412,7 +402,7 @@ var List = function(id, options, values) {
 
     this.update = function() {
         var is = self.items,
-			il = is.length;
+            il = is.length;
 
         self.visibleItems = [];
         self.matchingItems = [];
@@ -422,12 +412,12 @@ var List = function(id, options, values) {
                 is[i].show();
                 self.visibleItems.push(is[i]);
                 self.matchingItems.push(is[i]);
-			} else if (is[i].matching()) {
+            } else if (is[i].matching()) {
                 self.matchingItems.push(is[i]);
                 is[i].hide();
-			} else {
+            } else {
                 is[i].hide();
-			}
+            }
         }
         trigger('updated');
     };
@@ -473,7 +463,7 @@ var List = function(id, options, values) {
         this.matching = function() {
             return (
                 (self.filtered && self.searched && item.found && item.filtered) ||
-               	(self.filtered && !self.searched && item.filtered) ||
+                (self.filtered && !self.searched && item.filtered) ||
                 (!self.filtered && self.searched && item.found) ||
                 (!self.filtered && !self.searched)
             );
@@ -716,11 +706,11 @@ h = {
     */
     sorter: {
         alphanum: function(a,b,asc) {
-            if (a === undefined || a === null) {
-                a = "";
+            if (!a) {
+                a = " ";
             }
-            if (b === undefined || b === null) {
-                b = "";
+            if (!b) {
+                b = " ";
             }
             a = a.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
                 return (p1 == "lt")? "<" : ">";
