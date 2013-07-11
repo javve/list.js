@@ -268,8 +268,12 @@ var List = function(id, options, values) {
             h.addClass(target, isAsc ? asc : desc);
         }
 
-        options.sortFunction = options.sortFunction || function(a, b) {
-            return h.sorter.alphanum(a.values()[value].toLowerCase(), b.values()[value].toLowerCase(), isAsc);
+        options.sortFunction = options.sortFunction || function (a, b) {
+            a = a.values()[value].toLowerCase();
+            b = b.values()[value].toLowerCase();
+            var sorter = h.sorter.alphanum;
+
+            return isAsc ? sorter(a, b) : sorter(b, a);
         };
         
         self.items.sort(options.sortFunction);
@@ -702,60 +706,48 @@ h = {
         }
     },
     /*
-    * The sort function. From http://my.opera.com/GreyWyvern/blog/show.dml/1671288
+    * The sort function. From https://github.com/Mottie/javascript-natural-sort/ forked from https://github.com/overset/javascript-natural-sort original article: http://www.overset.com/2008/09/01/javascript-natural-sort-algorithm-with-unicode-support/
     */
     sorter: {
-        alphanum: function(a,b,asc) {
-            if (!a) {
-                a = " ";
+        alphanum: function naturalSort(a,b,asc) {
+            "use strict";
+            var re = /(^([+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?)?$|^0x[0-9a-f]+$|\d+)/gi,
+                sre = /(^[ ]*|[ ]*$)/g,
+                dre = /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[\/\-]\d{1,4}[\/\-]\d{1,4}|^\w+, \w+ \d+, \d{4})/,
+                hre = /^0x[0-9a-f]+$/i,
+                ore = /^0/,
+                i = function(s) { return naturalSort.insensitive && ('' + s).toLowerCase() || '' + s; },
+                // convert all to strings strip whitespace
+                x = i(a).replace(sre, '') || '',
+                y = i(b).replace(sre, '') || '',
+                // chunk/tokenize
+                xN = x.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
+                yN = y.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
+                // numeric, hex or date detection
+                xD = parseInt(x.match(hre), 16) || (xN.length !== 1 && x.match(dre) && Date.parse(x)),
+                yD = parseInt(y.match(hre), 16) || xD && y.match(dre) && Date.parse(y) || null,
+                oFxNcL, oFyNcL;
+            // first try and sort Hex codes or Dates
+            if (yD) {
+                if ( xD < yD ) { return -1; }
+                else if ( xD > yD ) { return 1; }
             }
-            if (!b) {
-                b = " ";
-            }
-            a = a.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
-                return (p1 == "lt")? "<" : ">";
-            });
-            a = a.replace(/<\/?[^>]+(>|$)/g, "");
-
-            b = b.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
-                return (p1 == "lt")? "<" : ">";
-            });
-            b = b.replace(/<\/?[^>]+(>|$)/g, "");
-            var aa = this.chunkify(a);
-            var bb = this.chunkify(b);
-
-            for (var x = 0; aa[x] && bb[x]; x++) {
-                if (aa[x] !== bb[x]) {
-                    var c = Number(aa[x]), d = Number(bb[x]);
-                    if (asc) {
-                        if (c == aa[x] && d == bb[x]) {
-                            return c - d;
-                        } else {
-                            return (aa[x] > bb[x]) ? 1 : -1;
-                        }
-                    } else {
-                        if (c == aa[x] && d == bb[x]) {
-                            return d-c;//c - d;
-                        } else {
-                            return (aa[x] > bb[x]) ? -1 : 1; //(aa[x] > bb[x]) ? 1 : -1;
-                        }
-                    }
+            // natural sorting through split numeric strings and default strings
+            for(var cLoc=0, numS=Math.max(xN.length, yN.length); cLoc < numS; cLoc++) {
+                // find floats not starting with '0', string or 0 if not defined (Clint Priest)
+                oFxNcL = !(xN[cLoc] || '').match(ore) && parseFloat(xN[cLoc]) || xN[cLoc] || 0;
+                oFyNcL = !(yN[cLoc] || '').match(ore) && parseFloat(yN[cLoc]) || yN[cLoc] || 0;
+                // handle numeric vs string comparison - number < string - (Kyle Adams)
+                if (isNaN(oFxNcL) !== isNaN(oFyNcL)) { return (isNaN(oFxNcL)) ? 1 : -1; }
+                    // rely on string comparison if different types - i.e. '02' < 2 != '02' < '2'
+                else if (typeof oFxNcL !== typeof oFyNcL) {
+                    oFxNcL += '';
+                    oFyNcL += '';
                 }
+                if (oFxNcL < oFyNcL) { return -1; }
+                if (oFxNcL > oFyNcL) { return 1; }
             }
-            return aa.length - bb.length;
-        },
-        chunkify: function(t) {
-            var tz = [], x = 0, y = -1, n = 0, i, j;
-
-            while (i = (j = t.charAt(x++)).charCodeAt(0)) {
-                var m = (i == 45 || i == 46 || (i >=48 && i <= 57));
-                if (m !== n) {
-                    tz[++y] = "";
-                    n = m;
-                }
-                tz[y] += j;
-            }
-            return tz;
+            return 0;
         }
     }
 };
