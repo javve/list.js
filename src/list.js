@@ -54,6 +54,7 @@ var List = function(id, options, values) {
     this.matchingItems = []; // These are the items currently matching filters and search, regadlessof visible count
     this.searched = false;
     this.filtered = false;
+    this.sorted = false; //Used later for re-sorting the list
 
     this.list = null;
     this.templateEngines = {};
@@ -283,7 +284,17 @@ var List = function(id, options, values) {
             };
         }
         self.items.sort(options.sortFunction);
+        self.sorted = { value : valueName, options : options }; //Set this variable so we can re-sort later
         self.update();
+    };
+    
+    /* Re-Sorts the list.
+    * uses the variable 'sorted' to re-sort based on previously sorted parameters
+    */
+    this.resort = function(){
+        if (self.sorted){
+            self.sort(sorted.value, sorted.options)
+        }
     };
 
     /*
