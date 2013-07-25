@@ -303,7 +303,7 @@ var List = function(id, options, values) {
             target = searchString.target || searchString.srcElement; /* IE have srcElement */
 
         searchString = (target === undefined) ? (""+searchString).toLowerCase() : ""+target.value.toLowerCase();
-	// either use the function's argument, the data-attribute on the search input or all fields of an item 
+        // either use the function's argument, the data-attribute on the search input or all fields of an item 
         var columns = searchColumns; 
         if (columns === undefined) {
             if (target) {
@@ -317,7 +317,7 @@ var List = function(id, options, values) {
             columns = self.items[0].values();
         }        
 
-	is = self.items;
+        is = self.items;
         // Escape regular expression characters
         searchString = searchString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 
