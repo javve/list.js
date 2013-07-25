@@ -288,10 +288,10 @@ var List = function(id, options, values) {
 
     /*
     * Searches the list after values with content "searchStringOrEvent".
-    * The columns parameter defines if all values should be included in the search,
+    * The searchColumns parameter defines if all values should be included in the search,
     * defaults to undefined which means "all".
     */
-    this.search = function(searchString, columns) {
+    this.search = function(searchString, searchColumns) {
         self.i = 1; // Reset paging
         var matching = [],
             found,
@@ -299,12 +299,25 @@ var List = function(id, options, values) {
             text,
             values,
             is,
-            columns = (columns === undefined) ? self.items[0].values() : columns,
             searchString = (searchString === undefined) ? "" : searchString,
             target = searchString.target || searchString.srcElement; /* IE have srcElement */
 
         searchString = (target === undefined) ? (""+searchString).toLowerCase() : ""+target.value.toLowerCase();
-        is = self.items;
+	// either use the function's argument, the data-attribute on the search input or all fields of an item 
+        var columns = searchColumns; 
+        if (columns === undefined) {
+            if (target) {
+                var dataSearchColumns = h.getAttribute(target, 'data-searchColumns');
+                if (dataSearchColumns) {
+                    columns = JSON.parse(dataSearchColumns);
+                }
+            }
+        }        
+        if (columns === undefined) {
+            columns = self.items[0].values();
+        }        
+
+	is = self.items;
         // Escape regular expression characters
         searchString = searchString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 
