@@ -1,0 +1,11 @@
+{
+  "name": "list.js",
+  "version": "0.2.1",
+  "ignore": [
+    "**/.*",
+    "plugins",
+    "src",
+    "tests",
+    "website"
+  ]
+}
