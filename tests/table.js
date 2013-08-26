@@ -165,7 +165,7 @@ test('search: undefined values', function() {
   } catch(e) {}
 });
 
-test('Filter', function() {
+test('filter: Filter list', function() {
   var visibleItems = list.filter(function(item) {
     if (+item.values().id < 3) {
       return true;
@@ -178,7 +178,7 @@ test('Filter', function() {
   equals(visibleItems[1].values().id, 2);
 });
 
-test('Restore from filter', function() {
+test('filter: Restore via filter', function() {
   var visibleItems = list.filter();
   equals(visibleItems.length, 3); 
 });
