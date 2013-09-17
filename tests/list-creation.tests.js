@@ -14,7 +14,7 @@ var listItems = [
 ];
 
 test('Create List.js from existing list', function() {
-    var templates = { 
+    var templates = {
         valueNames: ['id', 'name']
     };
     var theList1 = new List('list1', templates, listItems);
@@ -23,7 +23,7 @@ test('Create List.js from existing list', function() {
 });
 
 test('Create List.js from existing list', function() {
-    var templates = { 
+    var templates = {
         valueNames: ['id', 'name'],
         item: "itemTemplate"
     };
@@ -33,7 +33,7 @@ test('Create List.js from existing list', function() {
 });
 
 test('Create List.js from existing list', function() {
-    var templates = { 
+    var templates = {
         valueNames: ['id', 'name'],
         item: '<li id="itemTemplate"><span class="id">1</span><span class="name">John Resig</span></li>'
     };
@@ -43,7 +43,7 @@ test('Create List.js from existing list', function() {
 });
 
 test('Create List.js with element instead of id', function() {
-    var templates = { 
+    var templates = {
         valueNames: ['id', 'name'],
         item: '<li id="itemTemplate"><span class="id">1</span><span class="name">John Resig</span></li>'
     };
@@ -53,7 +53,7 @@ test('Create List.js with element instead of id', function() {
 });
 
 test('Create List.js from existing list with missing markup', function() {
-    var templates = { 
+    var templates = {
         valueNames: ['id', 'name']
     };
     var theListBroken = new List('list-broken', templates);
@@ -69,4 +69,10 @@ test('Create List.js from existing list witb broken template', function() {
     var brokenList = new List('list-broken-item', templates, listItems);
     equals(brokenList.size(), 10);
     ok(true, "list created" );
+});
+test('Create List.js from existing list with flat layout', function(){
+    var options = { valueNames: ['flat'] };
+    var theFlatList = new List('list-flat', options);
+    equals(theFlatList.size(), 3);
+    deepEqual(theFlatList.items[0].values(), { flat: "John Resig" });
 });
