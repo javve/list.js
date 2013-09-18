@@ -475,11 +475,14 @@ and try it at the [performance test page](http://listjs.com/examples/performance
 # Contributing and compiling
 List.js is built using the [Component package manager](https://github.com/component/component)
 
-## Steps to compile the script
+### Steps to compile the script
 - [Install Component](https://github.com/component/component#installation)
 - Got to the script root
 - Type `make components` to download dependencies
 - `make standalone` to compile List.js into `/build`
+
+### Testing
+- Just open `test/index.html` in a web browser
 
 # Changelog
 
