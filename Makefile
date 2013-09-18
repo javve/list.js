@@ -5,7 +5,6 @@ standalone:
 	@component build --standalone List -n list.standalone
 	mkdir -p dist
 	mv build/list.standalone.js dist/list.js
-	rm build/list.standalone.css
 	uglifyjs -o dist/list.min.js dist/list.js
 
 components:
