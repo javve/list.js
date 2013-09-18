@@ -61,7 +61,7 @@ describe('Sort', function() {
             expect(list.items[4].values().val).to.be.equal("b");
             expect(list.items[5].values().val).to.be.equal("a");
         });
-        it('should sort åäö desc', function() {
+        it('should fail to sort åäö desc (becomes äåö)', function() {
             i1.values({ val: "a" });
             i2.values({ val: "å" });
             i3.values({ val: "ä" });
@@ -76,7 +76,7 @@ describe('Sort', function() {
             expect(list.items[4].values().val).to.be.equal("ä");
             expect(list.items[5].values().val).to.be.equal("ö");
         });
-        it('should sort åäö asc', function() {
+        it('should failt to sort åäö asc (becomes öåä)', function() {
             i1.values({ val: "a" });
             i2.values({ val: "å" });
             i3.values({ val: "ä" });
