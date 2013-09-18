@@ -86,6 +86,7 @@ test('Search with null values', function() {
         , name: null
         , feature: null
     };
+    theList.add(objectWithNulls);
     try {
         var items = theList.search('Node');
         equals(items.length, 2);
@@ -160,5 +161,5 @@ test('Filter', function() {
 
 test('Restore from filter', function() {
     var visibleItems = theList.filter();
-    equals(visibleItems.length, 7); 
+    equals(visibleItems.length, 8); 
 });
