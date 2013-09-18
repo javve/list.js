@@ -58,4 +58,6 @@ module.exports = function(list) {
 
     sortButtons = getByClass(list.listContainer, list.sortClass);
     events.bind(sortButtons, 'click', sort);
+
+    return sort;
 };
