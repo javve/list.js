@@ -486,6 +486,7 @@ List.js is built using the [Component package manager](https://github.com/compon
 
 # Known issues
 - Sorting fails with "åä", thinking that ä is before å.
+- There should not be a limit for how many items that could be parsed.
 
 # Changelog
 
