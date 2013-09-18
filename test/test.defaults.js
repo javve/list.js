@@ -14,7 +14,7 @@ describe('Defaults', function() {
         expect(list.visibleItems).to.be.an('array');
         expect(list.matchingItems).to.be.an('array');
 
-        expect(list.events).to.deep.equal({ updated: [],
+        expect(list.handlers).to.deep.equal({ updated: [],
             searchStart: [],
             filterStart: [],
             sortStart: [],
@@ -26,6 +26,10 @@ describe('Defaults', function() {
         expect(list.searched).to.be.false;
         expect(list.filtered).to.be.false;
         expect(list.i).to.equal(1);
+        expect(list.page).to.equal(200);
+        expect(list.listClass).to.equal('list');
+        expect(list.sortClass).to.equal('sort');
+        expect(list.searchClass).to.equal('search');
         expect(list.page).to.equal(200);
     });
 
