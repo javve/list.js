@@ -33,6 +33,7 @@ describe('Parse', function() {
             expect(list.items[2].values().name).to.equal("Sven");
             expect(list.items[0].values().born).to.equal("1986");
             expect(list.items[2].values().born).to.equal(1950);
+            expect($('#parse-list').find('.list div')[2].innerHTML).to.equal('<span class="name">Sven</span><span class="born">1950</span>');
         });
         it('should parsed value always be string while added could be number', function() {
             expect(list.items[0].values().born).to.equal("1986");
