@@ -1,8 +1,8 @@
 module.exports = function(list) {
 
-    // Add events
-    list.events.filterStart = [],
-    list.events.filterComplete = [];
+    // Add handlers
+    list.handlers.filterStart = list.handlers.filterStart || [];
+    list.handlers.filterComplete = list.handlers.filterComplete || [];
 
     return function(filterFunction) {
         list.trigger('filterStart');
