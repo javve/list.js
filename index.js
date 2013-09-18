@@ -43,21 +43,12 @@ var List = function(id, options, values) {
 
     init = {
         start: function(values) {
-            this.callbacks();
             parse(self.list);
             if (values !== undefined) {
                 self.add(values);
             }
             self.update();
             //this.plugins(options.plugins);
-        },
-        callbacks: function() {
-            events.bind(getByClass(self.listContainer, this.searchClass), 'keyup', self.search);
-            /*
-            for (var i in self.handlers) {
-                self.on(i, self.handlers[i]);
-            }
-            */
         },
         plugins: function(plugins) {
             for (var i = 0; i < plugins.length; i++) {
