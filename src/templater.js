@@ -58,7 +58,7 @@ var Templater = function(list) {
         /* If item source does not exists, use the first item in list as
         source for new items */
         var newItem = itemSource.cloneNode(true);
-        newItem.id = "";
+        newItem.removeAttribute('id');
         item.elm = newItem;
         templater.set(item, item.values());
         return true;
