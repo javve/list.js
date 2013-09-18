@@ -2,6 +2,7 @@ var naturalSort = require('natural-sort'),
     classes = require('classes'),
     events = require('events'),
     getByClass = require('get-by-class'),
+    getAttribute = require('get-attribute'),
     sortButtons;
 
 var clearPreviousSorting = function() {
@@ -12,15 +13,7 @@ var clearPreviousSorting = function() {
 };
 
 module.exports = function(list) {
-
-    // Add events
-    list.events.sortStart = [],
-    list.events.sortComplete = [],
-
-    sortButtons = getByClass(list.listContainer, list.sortClass);
-    events.bind(sortButtons, 'click', self.sort);
-
-    return function() {
+    var sort = function() {
         var options = {},
             valueName;
 
@@ -58,4 +51,11 @@ module.exports = function(list) {
         list.update();
         list.trigger('sortComplete');
     };
+
+    // Add handlers
+    list.handlers.sortStart = list.handlers.sortStart || [];
+    list.handlers.sortComplete = list.handlers.sortComplete || [];
+
+    sortButtons = getByClass(list.listContainer, list.sortClass);
+    events.bind(sortButtons, 'click', sort);
 };
