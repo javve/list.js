@@ -1,10 +1,9 @@
+var events = require('events'),
+    getByClass = require('get-by-class');
+
 module.exports = function(list) {
 
-    // Add events
-    list.events.searchStart = [],
-    list.events.searchComplete = [];
-
-    return function(searchString, columns) {
+    var search = function(searchString, columns) {
         list.trigger('searchStart');
         list.i = 1; // Reset paging
 
@@ -66,4 +65,12 @@ module.exports = function(list) {
         list.trigger('searchComplete');
         return list.visibleItems;
     };
+
+    // Add handlers
+    list.handlers.searchStart = list.handlers.searchStart || [];
+    list.handlers.searchComplete = list.handlers.searchComplete || [];
+
+    events.bind(getByClass(list.listContainer, list.searchClass), 'keyup', search);
+
+    return search;
 };
