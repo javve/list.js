@@ -7,7 +7,8 @@ By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
 
 var document = window.document,
     events = require('events'),
-    getByClass = require('get-by-class');
+    getByClass = require('get-by-class'),
+    extend = require('extend');
 
 var List = function(id, options, values) {
 
@@ -17,28 +18,23 @@ var List = function(id, options, values) {
         addAsync = require('./src/add-async')(self),
         parse = require('./src/parse')(self);
 
-    options             = options               || {};
-    options.listClass   = options.listClass     || 'list';
-    options.searchClass = options.searchClass   || 'search';
-    options.sortClass   = options.sortClass     || 'sort';
-    options.page        = options.page          || 200;
-    options.events      = options.events        || {};
-    options.i           = options.i             || 1;
-    options.plugins     = options.plugins       || {};
-
-    this.options        = options;
-    this.i              = options.i;
-    this.page           = options.page;
+    this.listClass      = "list";
+    this.searchClass    = "search";
+    this.sortClass      = "sort";
+    this.page           = 200;
+    this.i              = 1;
     this.items          = [];
     this.visibleItems   = [];
     this.matchingItems  = [];
     this.searched       = false;
     this.filtered       = false;
-    this.events         = { 'updated': [] };
+    this.handlers       = { 'updated': [] };
+
+    extend(this, options);
 
     this.listContainer = (typeof(id) === 'string') ? document.getElementById(id) : id;
     if (!this.listContainer) { return; }
-    this.list           = getByClass(self.listContainer, options.listClass, true);
+    this.list           = getByClass(this.listContainer, this.listClass, true);
 
     this.templater      = require('./src/templater')(self);
     this.sort           = require('./src/sort')(self);
@@ -46,20 +42,22 @@ var List = function(id, options, values) {
     this.filter         = require('./src/filter')(self);
 
     init = {
-        start: function(values, options) {
-            this.callbacks(options);
+        start: function(values) {
+            this.callbacks();
             parse(self.list);
             if (values !== undefined) {
                 self.add(values);
             }
             self.update();
-            this.plugins(options.plugins);
+            //this.plugins(options.plugins);
         },
-        callbacks: function(options) {
-            events.bind(getByClass(self.listContainer, options.searchClass), 'keyup', self.search);
-            for (var i in options.events) {
-                self.on(i, options.events[i]);
+        callbacks: function() {
+            events.bind(getByClass(self.listContainer, this.searchClass), 'keyup', self.search);
+            /*
+            for (var i in self.handlers) {
+                self.on(i, self.handlers[i]);
             }
+            */
         },
         plugins: function(plugins) {
             for (var i = 0; i < plugins.length; i++) {
@@ -154,13 +152,14 @@ var List = function(id, options, values) {
     };
 
     this.on = function(event, callback) {
-        self.events[event].push(callback);
+        self.handlers[event].push(callback);
     };
 
     this.trigger = function(event) {
-        var i = self.events[event].length;
+        var i = self.handlers[event].length;
+        console.log(self.handlers, event, self.handlers[event]);
         while(i--) {
-            self.events[event][i](self);
+            self.handlers[event][i](self);
         }
     };
 
@@ -203,7 +202,7 @@ var List = function(id, options, values) {
         self.trigger('updated');
     };
 
-    init.start(values, options);
+    init.start(values);
 };
 
 List.prototype.plugins = {};

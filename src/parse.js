@@ -35,9 +35,9 @@ module.exports = function(list) {
 
     return function() {
         var itemsToIndex = getChildren(list.list),
-            valueNames = list.options.valueNames;
+            valueNames = list.valueNames;
 
-        if (list.options.indexAsync) {
+        if (list.indexAsync) {
             parseAsync(itemsToIndex, valueNames);
         } else {
             parse(itemsToIndex, valueNames);

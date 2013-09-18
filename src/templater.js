@@ -1,7 +1,7 @@
 var getByClass = require('get-by-class');
 
 var Templater = function(list) {
-    var itemSource = getItemSource(list.options.item),
+    var itemSource = getItemSource(list.item),
         templater = this;
 
     function getItemSource(item) {
@@ -21,7 +21,7 @@ var Templater = function(list) {
             div.innerHTML = item;
             return div.firstChild;
         } else {
-            return document.getElementById(list.options.item);
+            return document.getElementById(list.item);
         }
     }
 

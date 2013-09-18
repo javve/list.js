@@ -17,7 +17,7 @@ module.exports = function(list) {
     list.events.sortStart = [],
     list.events.sortComplete = [],
 
-    sortButtons = getByClass(list.listContainer, list.options.sortClass);
+    sortButtons = getByClass(list.listContainer, list.sortClass);
     events.bind(sortButtons, 'click', self.sort);
 
     return function() {

@@ -17,6 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "component/classes": "*",
+    "segmentio/extend": "*",
     "javve/events": "*",
     "javve/get-by-class": "*",
     "javve/get-attribute": "*",
