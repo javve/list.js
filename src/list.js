@@ -59,6 +59,10 @@ var List = function(id, options, values) {
     this.templateEngines = {};
 
     this.page = options.page || 200;
+    //Added three lines to get the class and the message and if they should be show
+    self.emptyMessageClass=options.emptyMessageClass||"list-empty-message";
+    self.emptyMessageText=options.emptyMessageText||"No Items Found";
+    self.showEmptyMessage=options.showEmptyMessage||true;
     this.i = options.i || 1;
 
     init = {
@@ -68,6 +72,14 @@ var List = function(id, options, values) {
             templater = new Templater(self, options);
             this.callbacks(options);
             this.items.start(values, options);
+            //Create a message element and add it to dom if empty message is enabled
+            if(self.showEmptyMessage) {
+                self.emptyMessageElement=document.createElement("div");
+                self.emptyMessageElement.innerHTML=self.emptyMessageText;
+                self.emptyMessageElement.setAttribute("class",self.emptyMessageClass);
+                self.emptyMessageElement.style.display="none";
+                self.listContainer.appendChild(self.emptyMessageElement);
+            }
             self.update();
             this.plugins(options.plugins);
         },
@@ -387,6 +399,7 @@ var List = function(id, options, values) {
 
     var trigger = function(event) {
         var i = events[event].length;
+
         while(i--) {
             events[event][i]();
         }
@@ -429,6 +442,10 @@ var List = function(id, options, values) {
                 is[i].hide();
 			}
         }
+            //Show the empty message if the list is empty and showEmptyMessageis enabled
+            self.emptyMessageElement.style.display=(!self.visibleItems.length && self.showEmptyMessage)?"block":"none";
+
+        
         trigger('updated');
     };
 

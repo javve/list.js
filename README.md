@@ -223,6 +223,15 @@ Some of the option parameters are required at some times
 	* **i**  _(Int, default: 1)_  
 	Which item should be shown as the first one.
 	
+    * **showEmptyMessage** _(Boolean, default: true)_  
+    If true, a message is displayed if the filtered list has no items.
+
+    * **emptyMessageClass** _(String, default: "list-empty-message")_  
+    What is the class for the empty message?
+
+    * **emptyMessageText** _(String, default: "No Items Found")_  
+    The Message to be shown when the list is empty.
+
 	* **plugins** _(Array, default: undefined)_  
 	[Read more about plugins here](http://jonnystromberg.com/listjs-plugins-guide/)
 	
