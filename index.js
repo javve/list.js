@@ -158,9 +158,17 @@ var List = function(id, options, values) {
         return self;
     };
 
+    this.off = function(event, callback) {
+        var e = self.handlers[event];
+        var index = e.indexOf(callback);
+        if (index > -1) {
+            e.splice(index, 1);
+        }
+        return self;
+    };
+
     this.trigger = function(event) {
         var i = self.handlers[event].length;
-        console.log(self.handlers, event, self.handlers[event]);
         while(i--) {
             self.handlers[event][i](self);
         }

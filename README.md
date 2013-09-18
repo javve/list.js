@@ -416,6 +416,15 @@ Execute `callback` when `event` is triggered.
     * filterStart
     * filterComplete
 
+* **off(event, callback)**  
+Remove `callback`.
+
+        var updatedCallback = function(list) {
+            console.log('There are now ' + list.visibleItems.length + ' visible items');
+        };
+        list.on('updated', updatedCallback);
+        list.off('updated', updatedCallback);
+
 # Item API
 These methods are available for all Items that are returned by
 the list.
