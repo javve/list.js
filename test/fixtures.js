@@ -1,5 +1,3 @@
-
-
 var fixture = {
     list: function(valueNames, items) {
         var listHtml = $('<div id="list"><ul class="list"></ul></div>'),
