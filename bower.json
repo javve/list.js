@@ -1,0 +1,28 @@
+{
+  "name": "list.js",
+  "main": "dist/list.js",
+  "version": "1.0.0",
+  "homepage": "http://listjs.com",
+  "authors": [
+    "Jonny Strömberg <jonny.stromberg@gmail.com>"
+  ],
+  "description": "Add search, sort and flexibility to plain HTML lists or tables with cross-browser native JavaScript.",
+  "keywords": [
+    "list",
+    "search",
+    "sort",
+    "table",
+    "dom",
+    "html",
+    "ui"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "components",
+    "test",
+    "tests"
+  ]
+}
