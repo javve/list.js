@@ -484,6 +484,9 @@ List.js is built using the [Component package manager](https://github.com/compon
 ### Testing
 - Just open `test/index.html` in a web browser
 
+# Known issues
+- Sorting fails with "åä", thinking that ä is before å.
+
 # Changelog
 
 Read it at: **[http://listjs.com/changelog.html](http://listjs.com/changelog.html)**
