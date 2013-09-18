@@ -102,6 +102,7 @@ var List = function(id, options, values) {
 		this.i = i;
 		this.page = page;
 		self.update();
+        return self;
 	};
 
     /* Removes object from list.
@@ -149,10 +150,12 @@ var List = function(id, options, values) {
     this.clear = function() {
         self.templater.clear();
         self.items = [];
+        return self;
     };
 
     this.on = function(event, callback) {
         self.handlers[event].push(callback);
+        return self;
     };
 
     this.trigger = function(event) {
@@ -161,6 +164,7 @@ var List = function(id, options, values) {
         while(i--) {
             self.handlers[event][i](self);
         }
+        return self;
     };
 
     this.reset = {
@@ -170,6 +174,7 @@ var List = function(id, options, values) {
             while (il--) {
                 is[il].filtered = false;
             }
+            return self;
         },
         search: function() {
             var is = self.items,
@@ -177,6 +182,7 @@ var List = function(id, options, values) {
             while (il--) {
                 is[il].found = false;
             }
+            return self;
         }
     };
 
@@ -200,6 +206,7 @@ var List = function(id, options, values) {
 			}
         }
         self.trigger('updated');
+        return self;
     };
 
     init.start(values);
