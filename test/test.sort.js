@@ -72,7 +72,7 @@ describe('Sort', function() {
             expect(list.items[4].values().val).to.be.equal("å");
             expect(list.items[5].values().val).to.be.equal("ö");
         });
-        it('should failt to sort åäö asc (becomes öåä)', function() {
+        it('should fail to sort åäö asc (becomes öåä)', function() {
             i1.values({ val: "a" });
             i2.values({ val: "å" });
             i3.values({ val: "ä" });
