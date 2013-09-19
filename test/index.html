@@ -3,7 +3,13 @@
     <meta charset="utf-8">
     <title>List.js Mocha Tests</title>
     <link rel="stylesheet" href="../build/list.css" />
-    <link rel="stylesheet" href="libs/list-test.css" />
+    <style>
+        #list,
+        #parse-list,
+        .list {
+            margin-left:-1000px;
+        }
+    </style>
 </head>
 <body>
 
@@ -16,7 +22,6 @@
 
         require('mocha');
     </script>
-    <script src="libs/helpers.js"></script>
     <script src="fixtures.js"></script>
 
     <script>mocha.setup('bdd')</script>
