@@ -23,5 +23,10 @@
     "javve/get-attribute": "*",
     "javve/natural-sort": "*"
   },
+  "development": {
+    "visionmedia/mocha": "*",
+    "chaijs/chai": "*",
+    "component/jquery": "1.9.1"
+  },
   "twitter": "javve"
 }
