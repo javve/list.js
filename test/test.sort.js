@@ -177,5 +177,71 @@ describe('Sort', function() {
             expect(list.items[4].values().val).to.be.equal("192.168.1.2");
             expect(list.items[5].values().val).to.be.equal("192.168.1.3");
         });
+
+        it('should show how random values are sorted', function() {
+            list.add({ id: '7', val: "" });
+            list.add({ id: '8', val: "" });
+            list.add({ id: '9', val: "" });
+            list.add({ id: '10', val: "" });
+            list.add({ id: '11', val: "" });
+            list.add({ id: '12', val: "" });
+
+            var i7 = list.get('id', '7')[0],
+                i8 = list.get('id', '8')[0],
+                i9 = list.get('id', '9')[0],
+                i10 = list.get('id', '10')[0],
+                i11 = list.get('id', '11')[0],
+                i12 = list.get('id', '12')[0];
+
+            i1.values({ val: undefined });
+            i2.values({ val: "" });
+            i3.values({ val: null });
+            i4.values({ val: "a" });
+            i5.values({ val: "0" });
+            i6.values({ val: true });
+            i7.values({ val: 0 });
+            i8.values({ val: "z" });
+            i9.values({ val: "!" });
+            i10.values({ val: "?" });
+            i11.values({ val: 100 });
+            i12.values({ val: false });
+
+            list.sort('val', { asc: true });
+            list.sort('val', { desc: true });
+            list.sort('val', { asc: true });
+
+            expect(list.items[0].values().val).to.be.equal("");
+            expect(list.items[1].values().val).to.be.equal("0");
+            expect(list.items[2].values().val).to.be.equal(0);
+            expect(list.items[3].values().val).to.be.equal(100);
+            expect(list.items[4].values().val).to.be.equal("!");
+            expect(list.items[5].values().val).to.be.equal("?");
+            expect(list.items[6].values().val).to.be.equal("a");
+            expect(list.items[7].values().val).to.be.equal(false);
+            expect(list.items[8].values().val).to.be.equal(null);
+            expect(list.items[9].values().val).to.be.equal(true);
+            expect(list.items[10].values().val).to.be.equal(undefined);
+            expect(list.items[11].values().val).to.be.equal("z");
+        });
+
+        it('should handle space and zero the same for desc and asc (random)', function() {
+            list.clear();
+            list.add({ val: "" });
+            list.add({ val: "0" });
+            list.add({ val: 0 });
+
+            list.sort('val', { asc: true });
+            expect(list.items[0].values().val).to.be.equal("");
+            expect(list.items[1].values().val).to.be.equal("0");
+            expect(list.items[2].values().val).to.be.equal(0);
+            list.sort('val', { desc: true });
+            expect(list.items[0].values().val).to.be.equal("");
+            expect(list.items[1].values().val).to.be.equal("0");
+            expect(list.items[2].values().val).to.be.equal(0);
+            list.sort('val', { asc: true });
+            expect(list.items[0].values().val).to.be.equal("");
+            expect(list.items[1].values().val).to.be.equal("0");
+            expect(list.items[2].values().val).to.be.equal(0);
+        });
     });
 });
