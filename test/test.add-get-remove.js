@@ -10,6 +10,11 @@ describe('Add, get, remove', function() {
         fixture.removeList();
     });
 
+    afterEach(function() {
+        list.clear();
+        list.add({ name: "Jonny" });
+    });
+
     describe('Add', function() {
         it('should add one item', function() {
             list.add({ name: 'Jonas' });
@@ -20,13 +25,22 @@ describe('Add, get, remove', function() {
                 { name: 'Martina' },
                 { name: 'Angelica' }
             ]);
-            expect(list.items.length).to.equal(4);
+            expect(list.items.length).to.equal(3);
         });
         it('should add async items', function(done) {
             list.add([
                 { name: 'Sven' }
             ], function() {
-                expect(list.items.length).to.equal(5);
+                expect(list.items.length).to.equal(2);
+                done();
+            });
+        });
+        it('should add async items to empty list', function(done) {
+            list.clear();
+            list.add([
+                { name: 'Sven' }
+            ], function() {
+                expect(list.items.length).to.equal(1);
                 done();
             });
         });
@@ -52,19 +66,31 @@ describe('Add, get, remove', function() {
 
     describe('Remove', function() {
         it('should remove one item', function() {
-            expect(list.items.length).to.equal(6);
+            list.add({ name: "Jonas" })
+            expect(list.items.length).to.equal(2);
             var count = list.remove('name', 'Jonas');
             expect(count).to.equal(1);
-            expect(list.items.length).to.equal(5);
+            expect(list.items.length).to.equal(1);
         });
         it('should not remove anything', function() {
             var count = list.remove('name', 'jonny');
             expect(count).to.be.equal(0);
         });
-        it('should remove two items', function() {
+
+        it('should remove eight items', function() {
+            list.add({ name: 'Jonny' });
+            list.add({ name: 'Jonny' });
+            list.add({ name: 'Sven' });
+            list.add({ name: 'Jonny' });
+            list.add({ name: 'Jonny' });
+            list.add({ name: 'Jonny' });
+            list.add({ name: 'Jonas' });
+            list.add({ name: 'Jonny' });
+            list.add({ name: 'Jonny' });
+            expect(list.items.length).to.equal(10);
             var count = list.remove('name', 'Jonny');
-            expect(count).to.equal(2);
-            expect(list.items.length).to.equal(3);
+            expect(count).to.equal(8);
+            expect(list.items.length).to.equal(2);
         });
     });
 });

@@ -107,6 +107,7 @@ var List = function(id, options, values) {
                 self.templater.remove(self.items[i], options);
                 self.items.splice(i,1);
                 il--;
+                i--;
                 found++;
             }
         }
