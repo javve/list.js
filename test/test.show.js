@@ -71,7 +71,6 @@ describe('Show', function() {
         });
         it('should show item 5, 6', function() {
             list.show(5,3);
-            console.log(list.visibleItems);
             expect(list.visibleItems.length).to.equal(2);
             expect(a.visible()).to.be.false;
             expect(b.visible()).to.be.false;
