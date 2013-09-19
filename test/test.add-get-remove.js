@@ -72,9 +72,10 @@ describe('Add, get, remove', function() {
             expect(count).to.equal(1);
             expect(list.items.length).to.equal(1);
         });
-        it('should not remove anything', function() {
+        it('should not remove anything due to case sensitivity', function() {
             var count = list.remove('name', 'jonny');
             expect(count).to.be.equal(0);
+            expect(list.items.length).to.equal(1);
         });
 
         it('should remove eight items', function() {
