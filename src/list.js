@@ -716,11 +716,11 @@ h = {
     */
     sorter: {
         alphanum: function(a,b,asc) {
-            if (a === undefined || a === null) {
-                a = "";
+            if (!a) {
+                a = " ";
             }
-            if (b === undefined || b === null) {
-                b = "";
+            if (!b) {
+                b = " ";
             }
             a = a.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
                 return (p1 == "lt")? "<" : ">";
