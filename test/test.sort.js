@@ -25,11 +25,7 @@ describe('Sort', function() {
 
     afterEach(function() {
     });
-/*
-            list.items.forEach(function(v) {
-                console.log(v._values.val);
-            });
-*/
+
     describe('Basics', function() {
         it('should sort letters asc', function() {
             i1.values({ val: "b" });
