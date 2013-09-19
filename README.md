@@ -482,7 +482,8 @@ List.js is built using the [Component package manager](https://github.com/compon
 - `make standalone` to compile List.js into `/build`
 
 ### Testing
-- Just open `test/index.html` in a web browser
+- Run `make dev`
+- Open `test/index.html` in a web browser
 
 # Known issues
 - Sorting fails with "åä", thinking that ä is before å.
