@@ -1,6 +1,6 @@
 {
-  "name": "list",
-  "repo": "javve/list",
+  "name": "list.js",
+  "repo": "javve/list.js",
   "version": "1.0.0",
   "description": "Add search, sort and flexibility to plain HTML lists or tables with cross-browser native JavaScript.",
   "keywords": ["list", "search", "sort", "table", "dom", "html", "ui"],
