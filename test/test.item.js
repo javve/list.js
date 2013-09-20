@@ -11,6 +11,13 @@ describe('Item', function() {
         item = list.get('name', 'Jonny')[0];
     });
 
+
+    beforeEach(function() {
+        list.search();
+        list.filter();
+        list.show(1,200);
+    });
+
     after(function() {
         fixture.removeList();
     });
@@ -74,6 +81,7 @@ describe('Item', function() {
             expect($('#list li').size()).to.equal(0);
         });
         it('should be visible', function() {
+            item.hide();
             expect($('#list li').size()).to.equal(0);
             item.show();
             expect(item.visible()).to.be.true;
@@ -91,7 +99,7 @@ describe('Item', function() {
                 expect(item.visible()).to.be.false;
             });
             it('should be visble, match and found but not filterd', function() {
-                var result = list.search('Jonny');
+                var result = list.search('Sven');
                 expect(item.matching()).to.be.true;
                 expect(item.found).to.be.true;
                 expect(item.filtered).to.be.false;
