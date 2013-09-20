@@ -2,21 +2,30 @@ var events = require('events'),
     getByClass = require('get-by-class');
 
 module.exports = function(list) {
-    var matching = [],
-        found,
-        item,
+    var item,
         text,
         columns,
-        searchString;
+        searchString,
+        customSearch;
 
     var prepare = {
         resetList: function() {
             list.i = 1;
             list.templater.clear();
+            customSearch = undefined;
         },
-        setColumns: function(cols) {
-            columns = (cols === undefined) ? list.items[0].values() : cols;
-            prepare.columnsToArray();
+        setOptions: function(args) {
+            if (args.length == 2 && args[1] instanceof Array) {
+                columns = args[1];
+            } else if (args.length == 2 && typeof(args[1]) == "function") {
+                customSearch = args[1];
+            } else if (args.length == 3) {
+                columns = args[1];
+                customSearch = args[2];
+            }
+        },
+        setColumns: function() {
+            columns = (columns === undefined) ? prepare.toArray(list.items[0].values()) : columns;
         },
         setSearchString: function(s) {
             s = (s === undefined) ? "" : s;
@@ -26,19 +35,16 @@ module.exports = function(list) {
             s = s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"); // Escape regular expression characters
             searchString = s;
         },
-        columnsToArray: function() {
-            if (columns.constructor == Object) {
-                var tmpColumn = [];
-                for (var name in columns) {
-                    tmpColumn.push(name);
-                }
-                columns = tmpColumn;
+        toArray: function(values) {
+            var tmpColumn = [];
+            for (var name in values) {
+                tmpColumn.push(name);
             }
+            return tmpColumn;
         }
     };
     var search = {
         list: function() {
-            list.searched = true;
             for (var k = 0, kl = list.items.length; k < kl; k++) {
                 search.item(list.items[k]);
             }
@@ -48,7 +54,6 @@ module.exports = function(list) {
             for (var j = 0, jl = columns.length; j < jl; j++) {
                 if (search.values(item.values(), columns[j])) {
                     item.found = true;
-                    matching.push(item);
                     return;
                 }
             }
@@ -68,24 +73,30 @@ module.exports = function(list) {
         }
     };
 
-    var searchMethod = function(str, cols) {
+    var searchMethod = function(str) {
         list.trigger('searchStart');
 
         prepare.resetList();
         prepare.setSearchString(str);
-        prepare.setColumns(cols);
+        prepare.setOptions(arguments); // str, cols|searchFunction, searchFunction
+        prepare.setColumns();
 
         if (searchString === "" ) {
             search.reset();
         } else {
-            search.list();
+            list.searched = true;
+            if (customSearch) {
+                customSearch(searchString, columns);
+            } else {
+                search.list();
+            }
         }
+
         list.update();
         list.trigger('searchComplete');
         return list.visibleItems;
     };
 
-    // Add handlers
     list.handlers.searchStart = list.handlers.searchStart || [];
     list.handlers.searchComplete = list.handlers.searchComplete || [];
 
