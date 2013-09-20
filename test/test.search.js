@@ -73,5 +73,9 @@ describe('Search', function() {
             var result = list.search('jonny', [ 'born' ]);
             expect(result.length).to.equal(0);
         });
+        it('should work with columns that does not exist', function() {
+            var result = list.search('jonny', [ 'pet' ]);
+            expect(result.length).to.equal(0);
+        });
     });
 });
