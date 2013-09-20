@@ -91,7 +91,7 @@ describe('Item', function() {
                 expect(item.visible()).to.be.false;
             });
             it('should be visble, match and found but not filterd', function() {
-                list.search('Sven');
+                var result = list.search('Jonny');
                 expect(item.matching()).to.be.true;
                 expect(item.found).to.be.true;
                 expect(item.filtered).to.be.false;
