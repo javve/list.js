@@ -2,66 +2,85 @@ var events = require('events'),
     getByClass = require('get-by-class');
 
 module.exports = function(list) {
+    var matching = [],
+        found,
+        item,
+        text,
+        columns,
+        searchString;
 
-    var search = function(searchString, columns) {
-        list.trigger('searchStart');
-        list.i = 1; // Reset paging
-
-        var matching = [],
-            found,
-            item,
-            text,
-            values,
-            is,
-            searchEscape = /[-[\]{}()*+?.,\\^$|#\s]/g,
-            columns = (columns === undefined) ? list.items[0].values() : columns,
-            searchString = (searchString === undefined) ? "" : searchString,
-            target = searchString.target || searchString.srcElement; /* IE have srcElement */
-
-        // Convert { name: 'yadda' } into [ 'name' ]
-        if (columns.constructor == Object) {
-            var tmpColumn = [];
-            for (var name in columns) {
-                tmpColumn.push(name);
-            }
-            columns = tmpColumn;
-        }
-
-        searchString = (target === undefined) ? (""+searchString).toLowerCase() : ""+target.value.toLowerCase();
-        is = list.items;
-        // Escape regular expression characters
-        searchString = searchString.replace(searchEscape, "\\$&");
-
-        list.templater.clear();
-        if (searchString === "" ) {
-            list.reset.search();
-            list.searched = false;
-            list.update();
-        } else {
-            list.searched = true;
-
-            for (var k = 0, kl = is.length; k < kl; k++) {
-                found = false;
-                item = is[k];
-                values = item.values();
-
-                for(var j = 0, jl = columns.length; j < jl; j++) {
-                    if(values.hasOwnProperty(columns[j])) {
-                        text = (values[columns[j]] != null) ? values[columns[j]].toString().toLowerCase() : "";
-                        if ((searchString !== "") && (text.search(searchString) > -1)) {
-                            found = true;
-                        }
-                    }
+    var prepare = {
+        resetList: function() {
+            list.i = 1;
+            list.templater.clear();
+        },
+        setColumns: function(cols) {
+            columns = (cols === undefined) ? list.items[0].values() : cols;
+            prepare.columnsToArray();
+        },
+        setSearchString: function(s) {
+            s = (s === undefined) ? "" : s;
+            s = s.target || s.srcElement || s; // IE have srcElement
+            s = s.value || s;
+            s = s.toLowerCase();
+            s = s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"); // Escape regular expression characters
+            searchString = s;
+        },
+        columnsToArray: function() {
+            if (columns.constructor == Object) {
+                var tmpColumn = [];
+                for (var name in columns) {
+                    tmpColumn.push(name);
                 }
-                if (found) {
+                columns = tmpColumn;
+            }
+        }
+    };
+    var search = {
+        list: function() {
+            list.searched = true;
+            for (var k = 0, kl = list.items.length; k < kl; k++) {
+                search.item(list.items[k]);
+            }
+        },
+        item: function(item) {
+            item.found = false;
+            for (var j = 0, jl = columns.length; j < jl; j++) {
+                if (search.values(item.values(), columns[j])) {
                     item.found = true;
                     matching.push(item);
-                } else {
-                    item.found = false;
+                    return;
                 }
             }
-            list.update();
+        },
+        values: function(values, column) {
+            if (values.hasOwnProperty(column)) {
+                text = (values[column] != null) ? values[column].toString().toLowerCase() : "";
+                if ((searchString !== "") && (text.search(searchString) > -1)) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        reset: function() {
+            list.reset.search();
+            list.searched = false;
         }
+    };
+
+    var searchMethod = function(str, cols) {
+        list.trigger('searchStart');
+
+        prepare.resetList();
+        prepare.setSearchString(str);
+        prepare.setColumns(cols);
+
+        if (searchString === "" ) {
+            search.reset();
+        } else {
+            search.list();
+        }
+        list.update();
         list.trigger('searchComplete');
         return list.visibleItems;
     };
@@ -70,7 +89,7 @@ module.exports = function(list) {
     list.handlers.searchStart = list.handlers.searchStart || [];
     list.handlers.searchComplete = list.handlers.searchComplete || [];
 
-    events.bind(getByClass(list.listContainer, list.searchClass), 'keyup', search);
+    events.bind(getByClass(list.listContainer, list.searchClass), 'keyup', searchMethod);
 
-    return search;
+    return searchMethod;
 };
