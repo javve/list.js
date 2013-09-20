@@ -78,4 +78,22 @@ describe('Search', function() {
             expect(result.length).to.equal(0);
         });
     });
+
+    describe('Custom search function', function() {
+        var customSearchFunction = function(searchString, columns) {
+            for (var k = 0, kl = list.items.length; k < kl; k++) {
+                if (list.items[k].values().born > 1985) {
+                    list.items[k].found = true;
+                }
+            }
+        };
+        it('should use custom function in third argument', function() {
+            var result = list.search('jonny', [ 'name' ], customSearchFunction);
+            expect(result.length).to.equal(4);
+        });
+        it('should use custom function in second argument', function() {
+            var result = list.search('jonny', customSearchFunction);
+            expect(result.length).to.equal(4);
+        });
+    });
 });
