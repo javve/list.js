@@ -20,7 +20,7 @@ describe('Search', function() {
     afterEach(function() {
         list.search();
         list.show(1, 200);
-    })
+    });
 
     describe('Case-sensitive', function() {
         it('should not be case-sensitive', function() {
@@ -56,12 +56,12 @@ describe('Search', function() {
 
     describe('Specfic columns', function() {
         it('should find match in column', function() {
-            var result = list.search('jonny', { name: true });
+            var result = list.search('jonny', [ 'name' ]);
             expect(result.length).to.equal(1);
             expect(result[0]).to.deep.equal(jonny);
         });
         it('should not find match in column', function() {
-            var result = list.search('jonny', { born: true });
+            var result = list.search('jonny', [ 'born' ]);
             expect(result.length).to.equal(0);
         });
         it('should find match in column', function() {
