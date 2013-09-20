@@ -21,12 +21,11 @@
             $ = require('jquery');
 
         require('mocha');
+        mocha.setup('bdd');
+        expect = chai.expect
     </script>
+
     <script src="fixtures.js"></script>
-
-    <script>mocha.setup('bdd')</script>
-    <script>expect = chai.expect</script>
-
     <script src="test.defaults.js"></script>
     <script src="test.create.js"></script>
     <script src="test.add-get-remove.js"></script>
