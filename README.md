@@ -9,132 +9,132 @@ More examples are found at [Listjs.com](http://listjs.com) and
 
 ## Index existing list
 HTML
-
-    <div id="hacker-list">
-        <ul class="list">
-           <li>
-               <h3 class="name">Jonny</h3>
-               <p class="city">Stockholm</p>
-           </li>
-           <li>
-               <h3 class="name">Jonas</h3>
-               <p class="city">Berlin</p>
-           </li>
-        </ul>
-    </div>
+```html
+<div id="hacker-list">
+    <ul class="list">
+       <li>
+           <h3 class="name">Jonny</h3>
+           <p class="city">Stockholm</p>
+       </li>
+       <li>
+           <h3 class="name">Jonas</h3>
+           <p class="city">Berlin</p>
+       </li>
+    </ul>
+</div>
+```
 
 Javascript
+```javascript
+var options = {
+    valueNames: [ 'name', 'city' ]
+};
 
-    var options = {
-        valueNames: [ 'name', 'city' ]
-    };
-
-    var hackerList = new List('hacker-list', options);
-
+var hackerList = new List('hacker-list', options);
+```
 ## Create list on initialization
 
 ### Version 1 (does not work with tables)
 HTML
-
-    <div id="hacker-list">
-        <ul class="list"></ul>
-    </div>
-
+```html
+<div id="hacker-list">
+    <ul class="list"></ul>
+</div>
+```
 JavaScript
+```javascript
+var options = {
+    item: '<li><h3 class="name"></h3><p class="city"></p></li>'
+};
 
-    var options = {
-        item: '<li><h3 class="name"></h3><p class="city"></p></li>'
-    };
+var values = [
+    { name: 'Jonny', city:'Stockholm' }
+    , { name: 'Jonas', city:'Berlin' }
+];
 
-    var values = [
-        { name: 'Jonny', city:'Stockholm' }
-        , { name: 'Jonas', city:'Berlin' }
-    ];
-
-    var hackerList = new List('hacker-list', options, values);
-
+var hackerList = new List('hacker-list', options, values);
+```
 
 ### Version 2 
 HTML
+```html
+<div id="hacker-list">
+    <ul class="list"></ul>
+</div>
 
-    <div id="hacker-list">
-        <ul class="list"></ul>
-    </div>
-
-    <div style="display:none;">
-        <!-- A template element is needed when list is empty, TODO: needs a better solution -->
-        <li id="hacker-item">
-           <h3 class="name"></h3>
-           <p class="city"></p>
-        </li>
-    </div>
-
+<div style="display:none;">
+    <!-- A template element is needed when list is empty, TODO: needs a better solution -->
+    <li id="hacker-item">
+       <h3 class="name"></h3>
+       <p class="city"></p>
+    </li>
+</div>
+```
 JavaScript
+```javascript
+var options = {
+    item: 'hacker-item'
+};
 
-    var options = {
-        item: 'hacker-item'
-    };
+var values = [
+    { name: 'Jonny', city:'Stockholm' }
+    , { name: 'Jonas', city:'Berlin' }
+];
 
-    var values = [
-        { name: 'Jonny', city:'Stockholm' }
-        , { name: 'Jonas', city:'Berlin' }
-    ];
-
-    var hackerList = new List('hacker-list', options, values);
-
-
+var hackerList = new List('hacker-list', options, values);
+```
 
 ## Index existing list and then add
 HTML
-
-    <div id="hacker-list">
-        <ul class="list">
-           <li>
-               <h3 class="name">Jonny</h3>
-               <p class="city">Stockholm</p>
-           </li>
-        </ul>
-    </div>
-
+```html
+<div id="hacker-list">
+    <ul class="list">
+       <li>
+           <h3 class="name">Jonny</h3>
+           <p class="city">Stockholm</p>
+       </li>
+    </ul>
+</div>
+```
 JavaScript
+```javascript
+var options = {
+    valueNames: ['name', 'city']
+};
 
-    var options = {
-        valueNames: ['name', 'city']
-    };
+var hackerList = new List('hacker-list', options);
 
-    var hackerList = new List('hacker-list', options);
-
-    hackerList.add( { name: 'Jonas', city:'Berlin' } );
-
+hackerList.add( { name: 'Jonas', city:'Berlin' } );
+```
 ## Add automagic search and sort inputs and buttons
 HTML
+```html
+<div id="hacker-list">
 
-    <div id="hacker-list">
+    <input class="search" />
+    <span class="sort" data-sort="name">Sort by name</span>
+    <span class="sort" data-sort="city">Sort by city</span>
 
-        <input class="search" />
-        <span class="sort" data-sort="name">Sort by name</span>
-        <span class="sort" data-sort="city">Sort by city</span>
-
-        <ul class="list">
-           <li>
-               <h3 class="name">Jonny</h3>
-               <p class="city">Stockholm</p>
-           </li>
-           <li>
-               <h3 class="name">Jonas</h3>
-               <p class="city">Berlin</p>
-           </li>
-        </ul>
-    </div>
-
+    <ul class="list">
+       <li>
+           <h3 class="name">Jonny</h3>
+           <p class="city">Stockholm</p>
+       </li>
+       <li>
+           <h3 class="name">Jonas</h3>
+           <p class="city">Berlin</p>
+       </li>
+    </ul>
+</div>
+```
 Javascript (nothing special)
+```javascript
+var options = {
+    valueNames: [ 'name', 'city' ]
+};
 
-    var options = {
-        valueNames: [ 'name', 'city' ]
-    };
-
-    var hackerList = new List('hacker-list', options);
-
+var hackerList = new List('hacker-list', options);
+```
 
 # Plugins
 
