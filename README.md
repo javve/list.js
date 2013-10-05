@@ -155,19 +155,19 @@ to this list if you just email me.
 ## Search, sort and list container element
 The secret behind the search field, the sort buttons, and the list container element are the classes.
 By default, all inputs with class `search` become search fields for the list.
-
-    <input type="text" class="search" />
-
+```html
+<input type="text" class="search" />
+```
 The sorting gets activated for all elements with class `sort` and then sorts the
 `valueName` corresponding to the the `data-sort` value of the element.
-
-    <span class="sort" data-sort="name">Sort names</span>
-
+```html
+<span class="sort" data-sort="name">Sort names</span>
+```
 The element containing the list has to have the class `list` (or one that _you_ define)
-
-    <ul class="list"></ul>
-    # Can be a div, table, dl, or whatever fits your purpose
-
+```html
+<ul class="list"></ul>
+# Can be a div, table, dl, or whatever fits your purpose
+```
 All of these classes can be defined by yourself when creating the list by setting the options
 `searchClass`, `listClass` and `sortClass`.
 
@@ -185,23 +185,25 @@ Some of the option parameters are required at some times
 	If the list contains items on initialization, then this array
 	has to contain the value names (class names) for the different values of
 	each list item.
+		```html
+        <ul class="list">
+            <li>
+                <span class="name">Jonny</span>
+                <span class="city">Sundsvall</span>
+            </li>
+        </ul>
+        ```
 
-	        <ul class="list">
-	            <li>
-	                <span class="name">Jonny</span>
-	                <span class="city">Sundsvall</span>
-	            </li>
-	        </ul>
-
-	        var valueNames = ['name', 'city'];
-
+        ```javascript
+        var valueNames = ['name', 'city'];
+		```
 	* **item** _(String, default: undefined)_  
 	ID to item template element or a string of HTML (**notice**: does not work with `<tr>`)
-	
-	        var options = {
-	            item: "<li><span class='name'></span><span class='city'></span></li>"
-	        }
-
+	    ```javascript
+        var options = {
+            item: "<li><span class='name'></span><span class='city'></span></li>"
+        }
+        ```
 	* **listClass** _(String, default: "list")_  
 	What is the class of the list-container?
 
@@ -267,42 +269,43 @@ The currently avaliable plugins.
 ### Methods
 * **add(values, callback)**  
 Adds one or more items to the list.
+    ```javascript
+    listObj.add({ name: "Jonny", city: "Stockholm" });
 
-        listObj.add({ name: "Jonny", city: "Stockholm" });
-
-        listObj.add([
-            { name: "Gustaf", city: "Sundsvall" }
-            , { name: "Jonas", city: "Berlin" }
-        ]);
+    listObj.add([
+        { name: "Gustaf", city: "Sundsvall" }
+        , { name: "Jonas", city: "Berlin" }
+    ]);
+    ```
 
     If `callback` is set then items are added to the list in a asynchronous way, and the
     callback is called when all items are added. This is especially useful
     when adding very many items (200+ or something), or if you just like the
     asynchronous coding style.
-
-        listObj.add(arrayWithManyManyItems, function(items) {
-            console.log('All ' + items.length + ' were added!');
-        });
-
+    ```javascript
+    listObj.add(arrayWithManyManyItems, function(items) {
+        console.log('All ' + items.length + ' were added!');
+    });
+    ```
 * **remove(valueName, value)**  
 Removes items from the list where the value named `valueName` has value `value`.
 Returns the number of items that where removed.
-
-		itemsInList = [
-			{ id: 1, name: "Jonny" }
-			, { id: 2, name "Gustaf" }
-		];
-		listObj.remove("id", 1); -> return 1
-
+    ```javascript
+	itemsInList = [
+		{ id: 1, name: "Jonny" }
+		, { id: 2, name "Gustaf" }
+	];
+	listObj.remove("id", 1); -> return 1
+    ```
 * **get(valueName, value)**  
 Returns values from the list where the value named `valueName` has value `value`.
-
-			itemsInList = [
-				{ id: 1, name: "Jonny" }
-				, { id: 2, name "Gustaf" }
-			];
-			listObj.get("id", 2); -> return { id: 2, name "Gustaf" }
-
+    ```javascript
+	itemsInList = [
+		{ id: 1, name: "Jonny" }
+		, { id: 2, name "Gustaf" }
+	];
+	listObj.get("id", 2); -> return { id: 2, name "Gustaf" }
+    ```
 * **sort(valueName, options)**  
 Sorts the list based on values the in the column named `valueName`. The options
 parameter can contain two properties `options.sortFunction` and `options.asc`.
@@ -310,61 +313,63 @@ parameter can contain two properties `options.sortFunction` and `options.asc`.
 The default sort function is found here [http://my.opera.com/GreyWyvern/blog/show.dml/1671288](http://my.opera.com/GreyWyvern/blog/show.dml/1671288)
 `options.asc = true` means that you want to sort the list in ascending order. Set
 `false` for descending.
-
-        listObj.sort('name', { asc: true }); -> Sorts the list in abc-order based on names
-        listObj.sort('name', { asc: false }); -> Sorts the list in zxy-order based on names
-
+    ```javascript
+    listObj.sort('name', { asc: true }); -> Sorts the list in abc-order based on names
+    listObj.sort('name', { asc: false }); -> Sorts the list in zxy-order based on names
+    ```
 * **search(searchString, columns)**    
 Searches the list
+    ```javascript
+    itemsInList = [
+        { id: 1, name: "Jonny" }
+        , { id: 2, name "Gustaf" }
+        , { id: 3, name "Jonas" }
+    ];
 
-        itemsInList = [
-            { id: 1, name: "Jonny" }
-            , { id: 2, name "Gustaf" }
-            , { id: 3, name "Jonas" }
-        ];
+    listObj.search('Jonny'); -> Only item with name Jonny is shown (also returns this item)
 
-        listObj.search('Jonny'); -> Only item with name Jonny is shown (also returns this item)
-
-        listObj.search(); -> Show all items in list
+    listObj.search(); -> Show all items in list
+    ```
 
 * **clear()**  
 Removes all items from the list
 
 * **filter(filterFunction)**
+    ```javascript
+    itemsInList = [
+	    { id: 1, name: "Jonny" }
+	    , { id: 2, name "Gustaf" }
+	    , { id: 3, name "Jonas" }
+	];
 
-        itemsInList = [
-    	    { id: 1, name: "Jonny" }
-    	    , { id: 2, name "Gustaf" }
-    	    , { id: 3, name "Jonas" }
-    	];
+	listObj.filter(function(item) {
+	   if (item.values().id > 1) {
+	       return true;
+	   } else {
+	       return false;
+	   }
+	}); -> Only items with id > 1 are shown in list
 
-    	listObj.filter(function(item) {
-    	   if (item.values().id > 1) {
-    	       return true;
-    	   } else {
-    	       return false;
-    	   }
-    	}); -> Only items with id > 1 are shown in list
-
-    	listObj.filter(); -> Remove all filters
+	listObj.filter(); -> Remove all filters
+	```
 
 * **size()**  
 Returns the size of the list.
 
 * **show(i, page)**  
 Shows `page` number of items from `i`. Use for paging etc.
-
-        itemsInList = [
-    	    { id: 1, name: "Jonny" }
-    	    , { id: 2, name "Gustaf" }
-    	    , { id: 3, name "Jonas" }
-    	    , { id: 4, name "Egon" }
-    	    , { id: 5, name "Frank" }
-    	    , { id: 6, name "Ester" }
-    	];
-    	
-    	listObj.show(4, 3); -> Display item 4,5,6 
-    	
+    ```javascript
+    itemsInList = [
+	    { id: 1, name: "Jonny" }
+	    , { id: 2, name "Gustaf" }
+	    , { id: 3, name "Jonas" }
+	    , { id: 4, name "Egon" }
+	    , { id: 5, name "Frank" }
+	    , { id: 6, name "Ester" }
+	];
+	
+	listObj.show(4, 3); -> Display item 4,5,6 
+    ```
     	
 * **update()**  
 Updates the current state of the list. Meaning that if you for instance 
@@ -390,12 +395,14 @@ The actual item DOM element
 	and updates the list.
 	If newValues are not present, the function returns the current values.
 
-	        item.values() -> { name: "Jonny", age: 24, city: "Umeå" }
-	        item.values({
-	            age: 25,
-	            city: "Stockholm"
-	        });
-	        item.values() -> { name: "Jonny", age: 25, city: "Stockholm" }
+        ```javascript
+        item.values() -> { name: "Jonny", age: 24, city: "Umeå" }
+        item.values({
+            age: 25,
+            city: "Stockholm"
+        });
+        item.values() -> { name: "Jonny", age: 25, city: "Stockholm" }
+        ```
 
 * **show()**  
 Shows the item
