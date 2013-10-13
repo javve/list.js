@@ -541,10 +541,19 @@ List.prototype.templateEngines.standard = function(list, settings) {
     /* Get values from element */
     this.get = function(item, valueNames) {
         ensure.created(item);
-        var values = {};
+        var values = {}, tmpText;
+		
         for(var i = 0, il = valueNames.length; i < il; i++) {
-            var elm = h.getByClass(valueNames[i], item.elm, true);
-            values[valueNames[i]] = elm ? elm.innerHTML : "";
+			var elm = h.getByClass(valueNames[i], item.elm, true);
+			if(elm){
+            	values[valueNames[i]] = elm.innerHTML;
+			}else if(item.elm.className.match(valueNames[i])){
+				tmpText = item.elm;
+				tmpText = tmpText.textContent || tmpText.innerText;
+				values[valueNames[i]] = tmpText.replace(/^\s+|\s+$/g, '');
+			}else{
+				values[valueNames[i]] = '';
+			}
         }
         return values;
     };
@@ -637,7 +646,7 @@ h = {
                         }
                     }
                 }
-                return classElements;
+                return single? undefined: classElements;
             };
         }
     })(),
