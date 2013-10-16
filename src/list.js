@@ -279,7 +279,7 @@ var List = function(id, options, values) {
             options.sortFunction = options.sortFunction;
         } else {
             options.sortFunction = function(a, b) {
-                return h.sorter.alphanum(a.values()[value].toLowerCase(), b.values()[value].toLowerCase(), isAsc);
+                return h.sorter.alphanum(a.values()[value], b.values()[value], isAsc);
             };
         }
         self.items.sort(options.sortFunction);
@@ -731,8 +731,8 @@ h = {
                 return (p1 == "lt")? "<" : ">";
             });
             b = b.replace(/<\/?[^>]+(>|$)/g, "");
-            var aa = this.chunkify(a);
-            var bb = this.chunkify(b);
+            var aa = this.chunkify(a.toLowerCase());
+            var bb = this.chunkify(b.toLowerCase());
 
             for (var x = 0; aa[x] && bb[x]; x++) {
                 if (aa[x] !== bb[x]) {
