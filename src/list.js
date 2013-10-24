@@ -719,21 +719,24 @@ h = {
     */
     sorter: {
         alphanum: function(a,b,asc) {
-            if (!a) {
+            if (!a && a !== 0) {
                 a = " ";
             }
-            if (!b) {
+            if (!b && b !== 0) {
                 b = " ";
             }
             a = a.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
                 return (p1 == "lt")? "<" : ">";
             });
             a = a.replace(/<\/?[^>]+(>|$)/g, "");
-
             b = b.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
                 return (p1 == "lt")? "<" : ">";
             });
             b = b.replace(/<\/?[^>]+(>|$)/g, "");
+
+            if (a == " " && b == " ") return 0;
+            if (a == " ") return asc ? -1 : 1;
+            if (b == " ") return asc ? 1 : -1;
             var aa = this.chunkify(a);
             var bb = this.chunkify(b);
 
