@@ -279,7 +279,10 @@ var List = function(id, options, values) {
             options.sortFunction = options.sortFunction;
         } else {
             options.sortFunction = function(a, b) {
-                return h.sorter.alphanum(a.values()[value].toLowerCase(), b.values()[value].toLowerCase(), isAsc);
+              var toLowerCase = function(value) {
+                return typeof value === "string" ? value.toLowerCase() : value;
+              };
+              return h.sorter.alphanum(toLowerCase(a.values()[value]), toLowerCase(b.values()[value]), isAsc);
             };
         }
         self.items.sort(options.sortFunction);
