@@ -557,7 +557,11 @@ List.prototype.templateEngines.standard = function(list, settings) {
                 // TODO speed up if possible
                 var elm = h.getByClass(v, item.elm, true);
                 if (elm) {
-                    elm.innerHTML = values[v];
+                    if (elm.tagName === "IMG" && values[v] !== "") {
+                        elm.src = values[v];
+                    } else {
+                        elm.innerHTML = values[v];
+                    }
                 }
             }
         }
