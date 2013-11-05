@@ -44,7 +44,12 @@ var Templater = function(list) {
                     // TODO speed up if possible
                     var elm = getByClass(item.elm, v, true);
                     if (elm) {
-                        elm.innerHTML = values[v];
+                        /* src attribute for image tag & text for other tags */
+                        if (elm.tagName === "IMG" && values[v] !== "") {
+                            elm.src = values[v];
+                        } else {
+                            elm.innerHTML = values[v];
+                        }
                     }
                 }
             }
