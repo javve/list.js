@@ -304,6 +304,7 @@ var List = function(id, options, values) {
             target = searchString.target || searchString.srcElement; /* IE have srcElement */
 
         searchString = (target === undefined) ? (""+searchString).toLowerCase() : ""+target.value.toLowerCase();
+        searchString = self.escapeHtml(searchString);
         is = self.items;
         // Escape regular expression characters
         searchString = searchString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -364,6 +365,18 @@ var List = function(id, options, values) {
         }
         self.update();
         return self.visibleItems;
+    };
+
+    /**
+     * Replace Text to HTML Entities
+     */
+    this.escapeHtml = function (text) {
+        return text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
     };
 
     /*
