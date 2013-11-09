@@ -78,7 +78,7 @@ var List = function(id, options, values) {
         },
         callbacks: function(options) {
             self.list = h.getByClass(options.listClass, self.listContainer, true);
-            h.addEvent(h.getByClass(options.searchClass, self.listContainer), 'keyup', self.search);
+            h.addEvent(h.getByClass(options.searchClass, self.listContainer), 'keydown', self.search);
             sortButtons = h.getByClass(options.sortClass, self.listContainer);
             h.addEvent(sortButtons, 'click', self.sort);
         },
@@ -292,52 +292,55 @@ var List = function(id, options, values) {
     * defaults to undefined which means "all".
     */
     this.search = function(searchString, columns) {
-        self.i = 1; // Reset paging
-        var matching = [],
-            found,
-            item,
-            text,
-            values,
-            is,
-            columns = (columns === undefined) ? self.items[0].values() : columns,
-            searchString = (searchString === undefined) ? "" : searchString,
-            target = searchString.target || searchString.srcElement; /* IE have srcElement */
+        setTimeout(function () { 
+            self.i = 1; // Reset paging
+            var matching = [],
+                found,
+                item,
+                text,
+                values,
+                is,
+                columns = (columns === undefined) ? self.items[0].values() : columns,
+                searchString = (searchString === undefined) ? "" : searchString,
+                target = searchString.target || searchString.srcElement; /* IE have srcElement */
 
-        searchString = (target === undefined) ? (""+searchString).toLowerCase() : ""+target.value.toLowerCase();
-        is = self.items;
-        // Escape regular expression characters
-        searchString = searchString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+            searchString = (target === undefined) ? (""+searchString).toLowerCase() : ""+target.value.toLowerCase();
+            is = self.items;
+            // Escape regular expression characters
+            searchString = searchString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 
-        templater.clear();
-        if (searchString === "" ) {
-            reset.search();
-            self.searched = false;
-            self.update();
-        } else {
-            self.searched = true;
+            templater.clear();
+            if (searchString === "" ) {
+                reset.search();
+                self.searched = false;
+                self.update();
+            } else {
+                self.searched = true;
 
-            for (var k = 0, kl = is.length; k < kl; k++) {
-                found = false;
-                item = is[k];
-                values = item.values();
+                for (var k = 0, kl = is.length; k < kl; k++) {
+                    found = false;
+                    item = is[k];
+                    values = item.values();
 
-                for(var j in columns) {
-                    if(values.hasOwnProperty(j) && columns[j] !== null) {
-                        text = (values[j] != null) ? values[j].toString().toLowerCase() : "";
-                        if ((searchString !== "") && (text.search(searchString) > -1)) {
-                            found = true;
+                    for(var j in columns) {
+                        if(values.hasOwnProperty(j) && columns[j] !== null) {
+                            text = (values[j] != null) ? values[j].toString().toLowerCase() : "";
+                            if ((searchString !== "") && (text.search(searchString) > -1)) {
+                                found = true;
+                            }
                         }
                     }
+                    if (found) {
+                        item.found = true;
+                        matching.push(item);
+                    } else {
+                        item.found = false;
+                    }
                 }
-                if (found) {
-                    item.found = true;
-                    matching.push(item);
-                } else {
-                    item.found = false;
-                }
+                self.update();
             }
-            self.update();
-        }
+        });
+
         return self.visibleItems;
     };
 
