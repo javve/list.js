@@ -1,6 +1,6 @@
-"use strict";
-
 module.exports = function(grunt) {
+  "use strict";
+
   grunt.initConfig({
     pkg: require("./package.json"),
     watch: {
@@ -32,6 +32,29 @@ module.exports = function(grunt) {
         command: 'rm -fr build components dist'
       }
     },
+    jshint: {
+      code: {
+        src: ['Gruntfile.js', '*.js', 'src/*.js'],
+        options: {
+          expr: true,
+          multistr: false,
+          globals: {
+            module: true
+          }
+        }
+      },
+      tests: {
+        src: ['test/*.js'],
+        options: {
+          expr: true,
+          multistr: true,
+          globals: {
+            jQuery: true,
+            module: true
+          }
+        }
+      }
+    },
     uglify: {
       target: {
         files: {
@@ -44,8 +67,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
-  grunt.registerTask('default', ['shell:install', 'shell:build']);
+  grunt.registerTask('dist', ['default', 'shell:standalone', 'shell:mkdir', 'shell:move', 'uglify']);
+  grunt.registerTask('default', ['jshint:code', 'jshint:tests', 'shell:install', 'shell:build']);
   grunt.registerTask('dist', ['default', 'shell:standalone', 'shell:mkdir', 'shell:move', 'uglify']);
   grunt.registerTask('clean', ['shell:remove']);
 
