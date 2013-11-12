@@ -2,11 +2,11 @@ describe('On', function() {
 
     var list;
 
-    before(function() {
+    beforeEach(function() {
         list = fixture.list(['name', 'born'], fixture.all);
     });
 
-    after(function() {
+    afterEach(function() {
         fixture.removeList();
     });
 

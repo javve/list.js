@@ -20,7 +20,7 @@ describe('Button', function() {
 
     var list;
 
-    before(function() {
+    beforeEach(function() {
         $('body').append($('<div id="parse-list">\
             <input class="search" />\
             <span class="sort" data-sort="name">Sort name</span>\
@@ -35,7 +35,7 @@ describe('Button', function() {
         });
     });
 
-    after(function() {
+    afterEach(function() {
         $('#parse-list').remove();
     });
 
