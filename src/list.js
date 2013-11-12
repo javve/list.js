@@ -279,7 +279,10 @@ var List = function(id, options, values) {
             options.sortFunction = options.sortFunction;
         } else {
             options.sortFunction = function(a, b) {
-                return h.sorter.alphanum(a.values()[value].toLowerCase(), b.values()[value].toLowerCase(), isAsc);
+              var toLowerCase = function(value) {
+                return typeof value === "string" ? value.toLowerCase() : value;
+              };
+              return h.sorter.alphanum(toLowerCase(a.values()[value]), toLowerCase(b.values()[value]), isAsc);
             };
         }
         self.items.sort(options.sortFunction);
@@ -716,21 +719,24 @@ h = {
     */
     sorter: {
         alphanum: function(a,b,asc) {
-            if (!a) {
+            if (!a && a !== 0) {
                 a = " ";
             }
-            if (!b) {
+            if (!b && b !== 0) {
                 b = " ";
             }
             a = a.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
                 return (p1 == "lt")? "<" : ">";
             });
             a = a.replace(/<\/?[^>]+(>|$)/g, "");
-
             b = b.toString().replace(/&(lt|gt);/g, function (strMatch, p1){
                 return (p1 == "lt")? "<" : ">";
             });
             b = b.replace(/<\/?[^>]+(>|$)/g, "");
+
+            if (a == " " && b == " ") return 0;
+            if (a == " ") return asc ? -1 : 1;
+            if (b == " ") return asc ? 1 : -1;
             var aa = this.chunkify(a);
             var bb = this.chunkify(b);
 
