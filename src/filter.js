@@ -25,5 +25,5 @@ module.exports = function(list) {
         list.update();
         list.trigger('filterComplete');
         return list.visibleItems;
-    }
+    };
 };

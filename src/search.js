@@ -60,7 +60,7 @@ module.exports = function(list) {
         },
         values: function(values, column) {
             if (values.hasOwnProperty(column)) {
-                text = (values[column] != null) ? values[column].toString().toLowerCase() : "";
+                text = (values[column] !== null) ? values[column].toString().toLowerCase() : "";
                 if ((searchString !== "") && (text.search(searchString) > -1)) {
                     return true;
                 }

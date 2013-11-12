@@ -66,7 +66,7 @@ describe('Add, get, remove', function() {
 
     describe('Remove', function() {
         it('should remove one item', function() {
-            list.add({ name: "Jonas" })
+            list.add({ name: "Jonas" });
             expect(list.items.length).to.equal(2);
             var count = list.remove('name', 'Jonas');
             expect(count).to.equal(1);

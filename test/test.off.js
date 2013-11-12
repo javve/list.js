@@ -13,9 +13,9 @@ describe('Off', function() {
     describe('General', function() {
         it('should be remove added handler', function(done) {
             var updated = function(list) {
-                expect(list.handlers['updated'].length).to.equal(1);
+                expect(list.handlers.updated.length).to.equal(1);
                 list.off('updated', updated);
-                expect(list.handlers['updated'].length).to.equal(0);
+                expect(list.handlers.updated.length).to.equal(0);
                 done();
             };
             list.on('updated', updated);
@@ -24,10 +24,10 @@ describe('Off', function() {
 
         it('should not remove unnamed handlers', function(done) {
             var searchComplete = function(list) {
-                expect(list.handlers['searchComplete'].length).to.equal(3);
+                expect(list.handlers.searchComplete.length).to.equal(3);
                 list.off('searchComplete', function() {});
                 list.off('searchComplete', searchComplete);
-                expect(list.handlers['searchComplete'].length).to.equal(2);
+                expect(list.handlers.searchComplete.length).to.equal(2);
                 done();
             };
             list.on('searchComplete', function() {});

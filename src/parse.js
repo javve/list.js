@@ -25,8 +25,7 @@ module.exports = function(list) {
         if (itemElements.length > 0) {
             setTimeout(function() {
                 init.items.indexAsync(itemElements, valueNames);
-                },
-            10);
+            }, 10);
         } else {
             list.update();
             // TODO: Add indexed callback
@@ -42,5 +41,5 @@ module.exports = function(list) {
         } else {
             parse(itemsToIndex, valueNames);
         }
-    }
+    };
 };
