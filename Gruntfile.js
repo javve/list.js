@@ -4,7 +4,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: require("./package.json"),
     watch: {
-      options: {}
+      scripts: {
+        files: ['**/*.js', '*.js'],
+        tasks: ['default'],
+        options: {
+          spawn: false,
+        },
+      },
     },
     shell: {
       install: {
