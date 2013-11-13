@@ -26,6 +26,7 @@
   "dependencies": {
     "component/classes": "*",
     "segmentio/extend": "*",
+    "component/indexof": "*",
     "javve/events": "*",
     "javve/get-by-class": "*",
     "javve/get-attribute": "*",

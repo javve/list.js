@@ -8,7 +8,8 @@ By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
 var document = window.document,
     events = require('events'),
     getByClass = require('get-by-class'),
-    extend = require('extend');
+    extend = require('extend'),
+    indexOf = require('indexof');
 
 var List = function(id, options, values) {
 
@@ -152,7 +153,7 @@ var List = function(id, options, values) {
 
     this.off = function(event, callback) {
         var e = self.handlers[event];
-        var index = e.indexOf(callback);
+        var index = indexOf(e, callback);
         if (index > -1) {
             e.splice(index, 1);
         }

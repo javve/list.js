@@ -10,7 +10,7 @@ function fireKeyup(el) {
         }
         el.dispatchEvent(evObj);
     } else if( document.createEventObject ) {
-        fireOnThis.fireEvent('keyup');
+        el.fireEvent('keyup');
     } else {
         // IE 5.0, seriously? :)
     }
