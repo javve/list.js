@@ -16,6 +16,7 @@ function fireKeyup(el) {
     }
 }
 
+// http://stackoverflow.com/questions/5658849/whats-the-equivalent-of-jquerys-trigger-method-without-jquery
 function fireClick(el) {
     var evt;
     if (document.createEvent) {
