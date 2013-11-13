@@ -15,12 +15,17 @@
 
     <div id="mocha"></div>
     <script src="../build/build.js"></script>
+    <script src="mocha.js"></script> <!-- this specific version is needed for grunt-mocha (wtf...) -->
 
     <script>
         List = require('list.js');
         $ = require('jquery');
 
-        require('mocha');
+        if (navigator.userAgent.indexOf('PhantomJS') < 0) {
+            // This version is needed to not get "Out of stack space" error in IE
+            require('mocha');
+        }
+
         mocha.setup('bdd');
         expect = require('expect.js');
     </script>
@@ -43,7 +48,9 @@
     <script src="test.parse.js"></script>
 
     <script>
-        mocha.run();
+        if (navigator.userAgent.indexOf('PhantomJS') < 0) {
+            mocha.run();
+        }
     </script>
 </body>
 </html>

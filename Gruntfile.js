@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     pkg: require("./package.json"),
     watch: {
       scripts: {
-        files: ['**/*.js', '*.js'],
+        files: ['**/*.js', '*.js', 'test/*.html'],
         tasks: ['default'],
         options: {
           spawn: false,
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
         }
       },
       tests: {
-        src: ['test/*.js'],
+        src: ['test/(*|!mocha).js'],
         options: {
           expr: true,
           multistr: true,
@@ -61,6 +61,21 @@ module.exports = function(grunt) {
           'dist/list.min.js': ['dist/list.js']
         }
       }
+    },
+    mocha: {
+      cool: {
+        src: [ 'test/index.html' ],
+        options: {
+          run: true,
+          timeout: 10000,
+          bail: false,
+          log: true,
+          reporter: 'Nyan',
+          mocha: {
+            ignoreLeaks: false
+          }
+        }
+      }
     }
   });
 
@@ -68,11 +83,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-mocha');
 
-  grunt.registerTask('dist', ['default', 'shell:standalone', 'shell:mkdir', 'shell:move', 'uglify']);
   grunt.registerTask('default', ['jshint:code', 'jshint:tests', 'shell:install', 'shell:build']);
   grunt.registerTask('dist', ['default', 'shell:standalone', 'shell:mkdir', 'shell:move', 'uglify']);
   grunt.registerTask('clean', ['shell:remove']);
+
+  grunt.registerTask('test', ['mocha']);
 
   return grunt;
 };
