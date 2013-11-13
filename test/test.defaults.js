@@ -14,7 +14,7 @@ describe('Defaults', function() {
         expect(list.visibleItems).to.be.an('array');
         expect(list.matchingItems).to.be.an('array');
 
-        expect(list.handlers).to.deep.equal({ updated: [],
+        expect(list.handlers).to.eql({ updated: [],
             searchStart: [],
             filterStart: [],
             sortStart: [],
@@ -39,16 +39,16 @@ describe('Defaults', function() {
     });
 
     it('should have all default methods', function() {
-        expect(list).to.respondTo('add');
-        expect(list).to.respondTo('remove');
-        expect(list).to.respondTo('get');
-        expect(list).to.respondTo('sort');
-        expect(list).to.respondTo('search');
-        expect(list).to.respondTo('clear');
-        expect(list).to.respondTo('filter');
-        expect(list).to.respondTo('size');
-        expect(list).to.respondTo('show');
-        expect(list).to.respondTo('update');
-        expect(list).to.respondTo('on');
+        expect(list.add).to.be.a('function');
+        expect(list.remove).to.be.a('function');
+        expect(list.get).to.be.a('function');
+        expect(list.sort).to.be.a('function');
+        expect(list.search).to.be.a('function');
+        expect(list.clear).to.be.a('function');
+        expect(list.filter).to.be.a('function');
+        expect(list.size).to.be.a('function');
+        expect(list.show).to.be.a('function');
+        expect(list.update).to.be.a('function');
+        expect(list.on).to.be.a('function');
     });
 });

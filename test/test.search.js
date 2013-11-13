@@ -26,7 +26,7 @@ describe('Search', function() {
         it('should not be case-sensitive', function() {
             var result = list.search('jonny');
             expect(result.length).to.equal(1);
-            expect(result[0]).to.deep.equal(jonny);
+            expect(result[0]).to.eql(jonny);
         });
     });
 
@@ -58,7 +58,7 @@ describe('Search', function() {
         it('should find match in column', function() {
             var result = list.search('jonny', [ 'name' ]);
             expect(result.length).to.equal(1);
-            expect(result[0]).to.deep.equal(jonny);
+            expect(result[0]).to.eql(jonny);
         });
         it('should not find match in column', function() {
             var result = list.search('jonny', [ 'born' ]);
@@ -67,7 +67,7 @@ describe('Search', function() {
         it('should find match in column', function() {
             var result = list.search('jonny', [ 'name' ]);
             expect(result.length).to.equal(1);
-            expect(result[0]).to.deep.equal(jonny);
+            expect(result[0]).to.eql(jonny);
         });
         it('should not find match in column', function() {
             var result = list.search('jonny', [ 'born' ]);

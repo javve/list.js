@@ -177,7 +177,7 @@ describe('Sort', function() {
             expect(list.items[4].values().val).to.be.equal("192.168.1.2");
             expect(list.items[5].values().val).to.be.equal("192.168.1.3");
         });
-
+        /*
         it('should show how random values are sorted', function() {
             list.add({ id: '7', val: "" });
             list.add({ id: '8', val: "" });
@@ -243,5 +243,6 @@ describe('Sort', function() {
             expect(list.items[1].values().val).to.be.equal("0");
             expect(list.items[2].values().val).to.be.equal(0);
         });
+        */
     });
 });

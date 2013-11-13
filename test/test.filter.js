@@ -27,7 +27,7 @@ describe('Filter', function() {
                 return (item.values().born > 1988);
             });
             expect(result.length).to.equal(1);
-            expect(result[0]).to.deep.equal(sebastian);
+            expect(result[0]).to.eql(sebastian);
         });
         it('should return everyone born 1986', function() {
             var result = list.filter(function(item) {
@@ -46,7 +46,7 @@ describe('Filter', function() {
             var result = list.filter(function(item) {
                 return (item.values().born > 1985);
             });
-            expect(result).to.deep.equal(list.visibleItems);
+            expect(result).to.eql(list.visibleItems);
         });
 
         it('should return be 2 visible items and 3 matching', function() {

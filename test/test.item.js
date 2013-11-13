@@ -33,17 +33,17 @@ describe('Item', function() {
         });
 
         it('should have all default methods', function() {
-            expect(item).to.respondTo('hide');
-            expect(item).to.respondTo('matching');
-            expect(item).to.respondTo('show');
-            expect(item).to.respondTo('values');
-            expect(item).to.respondTo('visible');
+            expect(item.hide).to.be.a('function');
+            expect(item.show).to.be.a('function');
+            expect(item.values).to.be.a('function');
+            expect(item.matching).to.be.a('function');
+            expect(item.visible).to.be.a('function');
         });
     });
 
     describe('Values()', function() {
         it('should have the right values', function() {
-            expect(item.values()).to.deep.equal({
+            expect(item.values()).to.eql({
                 name: 'Jonny',
                 born: '1986',
                 doin: 'Living the dream'
@@ -55,7 +55,7 @@ describe('Item', function() {
             expect(item.values().name).to.be.equal('Egon');
         });
         it('should be able to change many value', function() {
-            expect(item.values()).to.deep.equal({
+            expect(item.values()).to.eql({
                 name: 'Egon',
                 born: '1986',
                 doin: 'Living the dream'
@@ -65,7 +65,7 @@ describe('Item', function() {
                 born: '1801',
                 doin: 'Is dead'
             });
-            expect(item.values()).to.deep.equal({
+            expect(item.values()).to.eql({
                 name: 'Sven',
                 born: '1801',
                 doin: 'Is dead'

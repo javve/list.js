@@ -3,7 +3,15 @@
   "repo": "javve/list.js",
   "version": "1.0.0",
   "description": "Add search, sort and flexibility to plain HTML lists or tables with cross-browser native JavaScript.",
-  "keywords": ["list", "search", "sort", "table", "dom", "html", "ui"],
+  "keywords": [
+    "list",
+    "search",
+    "sort",
+    "table",
+    "dom",
+    "html",
+    "ui"
+  ],
   "scripts": [
     "index.js",
     "src/search.js",
@@ -21,12 +29,14 @@
     "javve/events": "*",
     "javve/get-by-class": "*",
     "javve/get-attribute": "*",
-    "javve/natural-sort": "*"
+    "javve/natural-sort": "*",
+    "component/type": "*"
   },
   "development": {
     "visionmedia/mocha": "*",
-    "chaijs/chai": "*",
+    "techjacker/expect.js": "*",
     "component/jquery": "1.9.1"
   },
-  "twitter": "javve"
+  "twitter": "javve",
+  "remotes": []
 }

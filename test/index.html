@@ -15,14 +15,14 @@
 
     <div id="mocha"></div>
     <script src="../build/build.js"></script>
+
     <script>
-        var List = require('list.js'),
-            chai = require('chai'),
-            $ = require('jquery');
+        List = require('list.js');
+        $ = require('jquery');
 
         require('mocha');
         mocha.setup('bdd');
-        expect = chai.expect
+        expect = require('expect.js');
     </script>
 
     <script src="fixtures.js"></script>
