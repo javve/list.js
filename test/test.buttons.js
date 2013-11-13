@@ -16,6 +16,15 @@ function fireKeyup(el) {
     }
 }
 
+function fireClick(el) {
+    var evt;
+    if (document.createEvent) {
+        evt = document.createEvent("MouseEvents");
+        evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    }
+    (evt) ? el.dispatchEvent(evt) : (el.click && el.click());
+}
+
 describe('Button', function() {
 
     var list;
@@ -44,13 +53,13 @@ describe('Button', function() {
             list.on('sortComplete', function() {
                 done();
             });
-            $('#parse-list .sort').click();
+            fireClick($('#parse-list .sort')[0]);
         });
         it('should trigger sortComplete', function(done) {
             list.on('sortComplete', function() {
                 done();
             });
-            $('#parse-list .sort').click();
+            fireClick($('#parse-list .sort')[0]);
         });
     });
 
