@@ -23,8 +23,8 @@ describe('Defaults', function() {
             sortComplete: []
         });
 
-        expect(list.searched).to.be.false;
-        expect(list.filtered).to.be.false;
+        expect(list.searched).to.be(false);
+        expect(list.filtered).to.be(false);
         expect(list.i).to.equal(1);
         expect(list.page).to.equal(200);
         expect(list.listClass).to.equal('list');

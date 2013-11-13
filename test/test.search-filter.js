@@ -28,12 +28,12 @@ describe('Search and filter', function() {
                 return (item.values().born == '1986');
             });
             expect(list.matchingItems.length).to.equal(3);
-            expect(jonny.matching()).to.be.true;
-            expect(martina.matching()).to.be.true;
-            expect(angelica.matching()).to.be.true;
-            expect(sebastian.matching()).to.be.false;
-            expect(imma.matching()).to.be.false;
-            expect(hasse.matching()).to.be.false;
+            expect(jonny.matching()).to.be(true);
+            expect(martina.matching()).to.be(true);
+            expect(angelica.matching()).to.be(true);
+            expect(sebastian.matching()).to.be(false);
+            expect(imma.matching()).to.be(false);
+            expect(hasse.matching()).to.be(false);
         });
         it('should find everyone born 1986 and containes "ö"', function() {
             list.filter(function(item) {
@@ -41,12 +41,12 @@ describe('Search and filter', function() {
             });
             list.search('ö');
             expect(list.matchingItems.length).to.equal(1);
-            expect(jonny.matching()).to.be.true;
-            expect(martina.matching()).to.be.false;
-            expect(angelica.matching()).to.be.false;
-            expect(sebastian.matching()).to.be.false;
-            expect(imma.matching()).to.be.false;
-            expect(hasse.matching()).to.be.false;
+            expect(jonny.matching()).to.be(true);
+            expect(martina.matching()).to.be(false);
+            expect(angelica.matching()).to.be(false);
+            expect(sebastian.matching()).to.be(false);
+            expect(imma.matching()).to.be(false);
+            expect(hasse.matching()).to.be(false);
         });
         it('should find everyone with a "ö"', function() {
             list.filter(function(item) {
@@ -55,12 +55,12 @@ describe('Search and filter', function() {
             list.search('ö');
             list.filter();
             expect(list.matchingItems.length).to.equal(4);
-            expect(jonny.matching()).to.be.true;
-            expect(martina.matching()).to.be.false;
-            expect(angelica.matching()).to.be.false;
-            expect(sebastian.matching()).to.be.true;
-            expect(imma.matching()).to.be.true;
-            expect(hasse.matching()).to.be.true;
+            expect(jonny.matching()).to.be(true);
+            expect(martina.matching()).to.be(false);
+            expect(angelica.matching()).to.be(false);
+            expect(sebastian.matching()).to.be(true);
+            expect(imma.matching()).to.be(true);
+            expect(hasse.matching()).to.be(true);
         });
     });
 });

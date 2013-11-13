@@ -67,34 +67,34 @@ describe('Filter', function() {
                 });
             });
             it('should match jonny', function() {
-                expect(jonny.matching()).to.be.true;
-                expect(jonny.filtered).to.be.true;
-                expect(jonny.visible()).to.be.true;
+                expect(jonny.matching()).to.be(true);
+                expect(jonny.filtered).to.be(true);
+                expect(jonny.visible()).to.be(true);
             });
             it('should match martina', function() {
-                expect(martina.matching()).to.be.true;
-                expect(martina.filtered).to.be.true;
-                expect(martina.visible()).to.be.true;
+                expect(martina.matching()).to.be(true);
+                expect(martina.filtered).to.be(true);
+                expect(martina.visible()).to.be(true);
             });
             it('should match but not show angelica', function() {
-                expect(angelica.matching()).to.be.true;
-                expect(angelica.filtered).to.be.true;
-                expect(angelica.visible()).to.be.false;
+                expect(angelica.matching()).to.be(true);
+                expect(angelica.filtered).to.be(true);
+                expect(angelica.visible()).to.be(false);
             });
             it('should match but not show sebastian', function() {
-                expect(sebastian.matching()).to.be.true;
-                expect(sebastian.filtered).to.be.true;
-                expect(sebastian.visible()).to.be.false;
+                expect(sebastian.matching()).to.be(true);
+                expect(sebastian.filtered).to.be(true);
+                expect(sebastian.visible()).to.be(false);
             });
             it('should not match imma', function() {
-                expect(imma.matching()).to.be.false;
-                expect(imma.filtered).to.be.false;
-                expect(imma.visible()).to.be.false;
+                expect(imma.matching()).to.be(false);
+                expect(imma.filtered).to.be(false);
+                expect(imma.visible()).to.be(false);
             });
             it('should not match hasse', function() {
-                expect(hasse.matching()).to.be.false;
-                expect(hasse.filtered).to.be.false;
-                expect(hasse.visible()).to.be.false;
+                expect(hasse.matching()).to.be(false);
+                expect(hasse.filtered).to.be(false);
+                expect(hasse.visible()).to.be(false);
             });
         });
     });

@@ -24,8 +24,8 @@ describe('Item', function() {
 
     describe('Defaults', function() {
         it('should have all default attributes', function() {
-            expect(item.found).to.be.false;
-            expect(item.filtered).to.be.false;
+            expect(item.found).to.be(false);
+            expect(item.filtered).to.be(false);
         });
 
         it('should have the right elements', function() {
@@ -77,14 +77,14 @@ describe('Item', function() {
         it('should be hidden', function() {
             expect($('#list li').size()).to.equal(1);
             item.hide();
-            expect(item.visible()).to.be.false;
+            expect(item.visible()).to.be(false);
             expect($('#list li').size()).to.equal(0);
         });
         it('should be visible', function() {
             item.hide();
             expect($('#list li').size()).to.equal(0);
             item.show();
-            expect(item.visible()).to.be.true;
+            expect(item.visible()).to.be(true);
             expect($('#list li').size()).to.equal(1);
         });
     });
@@ -93,24 +93,24 @@ describe('Item', function() {
         describe('Searching', function() {
             it('should not be visible, match, found or filtered', function() {
                 list.search('Fredrik');
-                expect(item.matching()).to.be.false;
-                expect(item.found).to.be.false;
-                expect(item.filtered).to.be.false;
-                expect(item.visible()).to.be.false;
+                expect(item.matching()).to.be(false);
+                expect(item.found).to.be(false);
+                expect(item.filtered).to.be(false);
+                expect(item.visible()).to.be(false);
             });
             it('should be visble, match and found but not filterd', function() {
                 var result = list.search('Sven');
-                expect(item.matching()).to.be.true;
-                expect(item.found).to.be.true;
-                expect(item.filtered).to.be.false;
-                expect(item.visible()).to.be.true;
+                expect(item.matching()).to.be(true);
+                expect(item.found).to.be(true);
+                expect(item.filtered).to.be(false);
+                expect(item.visible()).to.be(true);
             });
             it('reset: should be visible and matching but not found or filtered', function() {
                 list.search();
-                expect(item.matching()).to.be.true;
-                expect(item.found).to.be.false;
-                expect(item.filtered).to.be.false;
-                expect(item.visible()).to.be.true;
+                expect(item.matching()).to.be(true);
+                expect(item.found).to.be(false);
+                expect(item.filtered).to.be(false);
+                expect(item.visible()).to.be(true);
             });
         });
         describe('Filtering', function() {
@@ -118,26 +118,26 @@ describe('Item', function() {
                 list.filter(function(item) {
                     return (item.values().name == "Fredrik");
                 });
-                expect(item.matching()).to.be.false;
-                expect(item.found).to.be.false;
-                expect(item.filtered).to.be.false;
-                expect(item.visible()).to.be.false;
+                expect(item.matching()).to.be(false);
+                expect(item.found).to.be(false);
+                expect(item.filtered).to.be(false);
+                expect(item.visible()).to.be(false);
             });
             it('should be visble, match and filtered but not found', function() {
                 list.filter(function(item) {
                     return (item.values().name == "Sven");
                 });
-                expect(item.matching()).to.be.true;
-                expect(item.found).to.be.false;
-                expect(item.filtered).to.be.true;
-                expect(item.visible()).to.be.true;
+                expect(item.matching()).to.be(true);
+                expect(item.found).to.be(false);
+                expect(item.filtered).to.be(true);
+                expect(item.visible()).to.be(true);
             });
             it('reset: should be visble and match but not filtered or found', function() {
                 list.filter();
-                expect(item.matching()).to.be.true;
-                expect(item.found).to.be.false;
-                expect(item.filtered).to.be.false;
-                expect(item.visible()).to.be.true;
+                expect(item.matching()).to.be(true);
+                expect(item.found).to.be(false);
+                expect(item.filtered).to.be(false);
+                expect(item.visible()).to.be(true);
             });
         });
     });

@@ -34,23 +34,23 @@ describe('Search', function() {
         it('should find jonny, martina, angelice', function() {
             var result = list.search('1986');
             expect(result.length).to.equal(3); // 3!!
-            expect(jonny.matching()).to.be.true;
-            expect(martina.matching()).to.be.true;
-            expect(angelica.matching()).to.be.true;
-            expect(sebastian.matching()).to.be.false;
-            expect(imma.matching()).to.be.false;
-            expect(hasse.matching()).to.be.false;
+            expect(jonny.matching()).to.be(true);
+            expect(martina.matching()).to.be(true);
+            expect(angelica.matching()).to.be(true);
+            expect(sebastian.matching()).to.be(false);
+            expect(imma.matching()).to.be(false);
+            expect(hasse.matching()).to.be(false);
             list.search();
         });
         it('should find all with utf-8 char ö', function() {
             var result = list.search('ö');
             expect(result.length).to.equal(4); // 4!!
-            expect(jonny.matching()).to.be.true;
-            expect(martina.matching()).to.be.false;
-            expect(angelica.matching()).to.be.false;
-            expect(sebastian.matching()).to.be.true;
-            expect(imma.matching()).to.be.true;
-            expect(hasse.matching()).to.be.true;
+            expect(jonny.matching()).to.be(true);
+            expect(martina.matching()).to.be(false);
+            expect(angelica.matching()).to.be(false);
+            expect(sebastian.matching()).to.be(true);
+            expect(imma.matching()).to.be(true);
+            expect(hasse.matching()).to.be(true);
         });
     });
 
