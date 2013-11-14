@@ -1,6 +1,7 @@
 # List.js
 Perfect library for adding **search**, **sort**, **filters** and **flexibility** to
 **tables**, **lists** and various HTML elements. Built to be invisible and work on existing HTML.
+Really simple and easy to use!
 
 ### Core idea
 - Simple and invisible
