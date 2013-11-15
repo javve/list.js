@@ -324,6 +324,7 @@ var List = function(id, options, values) {
                 for(var j in columns) {
                     if(values.hasOwnProperty(j) && columns[j] !== null) {
                         text = (values[j] != null) ? values[j].toString().toLowerCase() : "";
+                        text = self.escapeHtml(text);
                         if ((searchString !== "") && (text.search(searchString) > -1)) {
                             found = true;
                         }
@@ -364,6 +365,18 @@ var List = function(id, options, values) {
         }
         self.update();
         return self.visibleItems;
+    };
+
+    /**
+     * Replace Text to HTML Entities
+     */
+    this.escapeHtml = function (text) {
+        return text
+          .replace(/&amp;/g, "&")
+          .replace(/&lt;/g, "<")
+          .replace(/&gt;/g, ">")
+          .replace(/&quot;/g, '"')
+          .replace(/&#039;/g, "'");
     };
 
     /*
