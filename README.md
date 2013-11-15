@@ -64,7 +64,7 @@ HTML
 
 <div style="display:none;">
     <!-- A template element is needed when list is empty, TODO: needs a better solution -->
-    <li id="hacker-item">
+    <li id="hacker-">
        <h3 class="name"></h3>
        <p class="city"></p>
     </li>
@@ -143,8 +143,7 @@ and are initiated at the same time as the lists. [Read more here »](http://jonn
 
 ## List of plugins
 
-* **[Paging plugin](http://jonnystromberg.com/listjs-paging-plugin/)** - A plugin for easily adding 
-paging to List.js
+* **[Paging plugin](http://jonnystromberg.com/listjs-paging-plugin/)** - A plugin for easily adding paging to List.js
 * **[Fuzzy search plugin](http://jonnystromberg.com/listjs-fuzzy-search-plugin/)** - A plugin for fuzzy search matching 
 
 As you can see, there are currently only two plugins. But I would very much like to add your plugin
@@ -178,13 +177,13 @@ All of these classes can be defined by yourself when creating the list by settin
 
 ### Parameters
 * **id** or **element** *(\*required)*
- Id the element in which the list area should be initialized. OR the actual element itself.
+    Id the element in which the list area should be initialized. OR the actual element itself.
 * **options**
-Some of the option parameters are required at some times
+    Some of the option parameters are required at some times
 	* **valueNames** _(Array, default: null) (*only required if the list already contains items before initialization)_  
-	If the list contains items on initialization, then this array
-	has to contain the value names (class names) for the different values of
-	each list item.
+	    If the list contains items on initialization, then this array
+	    has to contain the value names (class names) for the different values of
+	    each list item.
 		```html
         <ul class="list">
             <li>
@@ -198,38 +197,39 @@ Some of the option parameters are required at some times
         var valueNames = ['name', 'city'];
 		```
 	* **item** _(String, default: undefined)_  
-	ID to item template element or a string of HTML (**notice**: does not work with `<tr>`)
+	    ID to item template element or a string of HTML (**notice**: does not work with `<tr>`)
+
 	    ```javascript
-        var options = {
-            item: "<li><span class='name'></span><span class='city'></span></li>"
-        }
-        ```
+            var options = {
+                item: "<li><span class='name'></span><span class='city'></span></li>"
+            }
+            ```
 	* **listClass** _(String, default: "list")_  
-	What is the class of the list-container?
+	    What is the class of the list-container?
 
 	* **searchClass** _(String, default: "search")_  
-	What is the class of the search field?
+	    What is the class of the search field?
 
 	* **sortClass** _(String, default: "sort")_  
-	What is the class of the sort buttons?
+	    What is the class of the sort buttons?
 
 	* **indexAsync** _(Boolean, default: false)_  
-	If there are already items in the list to which the
-	List.js-script is added, then should the indexing be done
-	in a asynchronous way? Good for large lists (> 500 items).
+	    If there are already items in the list to which the
+	    List.js-script is added, then should the indexing be done
+	    in a asynchronous way? Good for large lists (> 500 items).
 
 	* **page** _(Int, default: 200)_ (maxVisibleItemsCount previously)  
-	Defines how many items that should be visible at the same time. This affects
-	performance.
+	    Defines how many items that should be visible at the same time. This affects
+	    performance.
 	
 	* **i**  _(Int, default: 1)_  
-	Which item should be shown as the first one.
+	    Which item should be shown as the first one.
 	
 	* **plugins** _(Array, default: undefined)_  
 	[Read more about plugins here](http://jonnystromberg.com/listjs-plugins-guide/)
 	
 * **values** _(Array of objects) (*optional)_
-Values to add to the list on initialization.
+    Values to add to the list on initialization.
 
 
 # List API
@@ -237,38 +237,38 @@ These methods are available for the List-object.
 
 ### Properties
 * **listContainer** _(Element)_  
-The element node that contains the entire list area.
+    The element node that contains the entire list area.
 
 * **list** _(Element)_  
-The element containing all items.
+    The element containing all items.
 
 * **items** _(Array)_  
-An Array of all Item-objects in the list.
+    An Array of all Item-objects in the list.
 
 * **visibleItems** _(Array)_  
-The currently visible items in the list
+    The currently visible items in the list
 
 * **matchingItems** _(Array)_  
-The items matching the currently active filter and search.
+    The items matching the currently active filter and search.
 
 * **searched** _(Boolean)_  
-Returns true if the list is searched.
+    Returns true if the list is searched.
 
 * **filtered** _(Boolean)_  
-Returns true if there is an active filter.
+    Returns true if there is an active filter.
 
 * **list** _(Element)_  
-The element containing all items.
+    The element containing all items.
 
 * **templateEngines** _(Object)_  
-Contains all template engines available.
+    Contains all template engines available.
 
 * **plugins** _(Object)_  
-The currently avaliable plugins.
+    The currently avaliable plugins.
 
 ### Methods
 * **add(values, callback)**  
-Adds one or more items to the list.
+    Adds one or more items to the list.
     ```javascript
     listObj.add({ name: "Jonny", city: "Stockholm" });
 
@@ -288,37 +288,41 @@ Adds one or more items to the list.
     });
     ```
 * **remove(valueName, value)**  
-Removes items from the list where the value named `valueName` has value `value`.
-Returns the number of items that where removed.
+    Removes items from the list where the value named `valueName` has value `value`.
+    Returns the number of items that where removed.
+
     ```javascript
-	itemsInList = [
-		{ id: 1, name: "Jonny" }
-		, { id: 2, name "Gustaf" }
-	];
-	listObj.remove("id", 1); -> return 1
+    itemsInList = [
+        { id: 1, name: "Jonny" }
+        , { id: 2, name "Gustaf" }
+    ];
+    listObj.remove("id", 1); -> return 1
     ```
 * **get(valueName, value)**  
-Returns values from the list where the value named `valueName` has value `value`.
+    Returns values from the list where the value named `valueName` has value `value`.
+
     ```javascript
-	itemsInList = [
-		{ id: 1, name: "Jonny" }
-		, { id: 2, name "Gustaf" }
-	];
-	listObj.get("id", 2); -> return { id: 2, name "Gustaf" }
+    itemsInList = [
+        { id: 1, name: "Jonny" }
+        , { id: 2, name "Gustaf" }
+    ];
+    listObj.get("id", 2); -> return { id: 2, name "Gustaf" }
     ```
 * **sort(valueName, options)**  
-Sorts the list based on values the in the column named `valueName`. The options
-parameter can contain two properties `options.sortFunction` and `options.asc`.
-`options.sortFunction` is used if you want to make your own sort function.
-The default sort function is found here [http://my.opera.com/GreyWyvern/blog/show.dml/1671288](http://my.opera.com/GreyWyvern/blog/show.dml/1671288)
-`options.asc = true` means that you want to sort the list in ascending order. Set
-`false` for descending.
+    Sorts the list based on values the in the column named `valueName`. The options
+    parameter can contain two properties `options.sortFunction` and `options.asc`.
+    `options.sortFunction` is used if you want to make your own sort function.
+    The default sort function is found here [http://my.opera.com/GreyWyvern/blog/show.dml/1671288](http://my.opera.com/GreyWyvern/blog/show.dml/1671288)
+    `options.asc = true` means that you want to sort the list in ascending order. Set
+    `false` for descending.
+
     ```javascript
     listObj.sort('name', { asc: true }); -> Sorts the list in abc-order based on names
     listObj.sort('name', { asc: false }); -> Sorts the list in zxy-order based on names
     ```
 * **search(searchString, columns)**    
-Searches the list
+    Searches the list
+
     ```javascript
     itemsInList = [
         { id: 1, name: "Jonny" }
@@ -332,7 +336,7 @@ Searches the list
     ```
 
 * **clear()**  
-Removes all items from the list
+    Removes all items from the list
 
 * **filter(filterFunction)**
     ```javascript
@@ -354,10 +358,10 @@ Removes all items from the list
 	```
 
 * **size()**  
-Returns the size of the list.
+    Returns the size of the list.
 
 * **show(i, page)**  
-Shows `page` number of items from `i`. Use for paging etc.
+    Shows `page` number of items from `i`. Use for paging etc.
     ```javascript
     itemsInList = [
 	    { id: 1, name: "Jonny" }
