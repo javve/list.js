@@ -91,7 +91,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-mocha');
 
-  grunt.registerTask('default', ['jshint:code', 'jshint:tests', 'shell:install', 'shell:build']);
+  grunt.registerTask('default', ['jshint:code', 'jshint:tests', 'shell:install', 'shell:build', 'mocha']);
   grunt.registerTask('dist', ['default', 'shell:standalone', 'shell:mkdir', 'shell:move', 'uglify']);
   grunt.registerTask('clean', ['shell:remove']);
 
