@@ -30,7 +30,7 @@ module.exports = function(list) {
         },
         setSearchString: function(s) {
             s = toString(s).toLowerCase();
-            s = s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"); // Escape regular expression characters
+            s = s.replace(/[-[\]{}()*+?.,\\^$|#]/g, "\\$&"); // Escape regular expression characters
             searchString = s;
         },
         toArray: function(values) {
