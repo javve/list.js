@@ -672,6 +672,15 @@ module.exports = function(a, b, options) {
 }
 */
 });
+require.register("javve-to-string/index.js", function(exports, require, module){
+module.exports = function(s) {
+    s = (s === undefined) ? "" : s;
+    s = (s === null) ? "" : s;
+    s = s.toString();
+    return s;
+};
+
+});
 require.register("component-type/index.js", function(exports, require, module){
 
 /**
@@ -945,7 +954,8 @@ if (typeof define === 'function' && define.amd) {
 });
 require.register("list.js/src/search.js", function(exports, require, module){
 var events = require('events'),
-    getByClass = require('get-by-class');
+    getByClass = require('get-by-class'),
+    toString = require('to-string');
 
 module.exports = function(list) {
     var item,
@@ -974,11 +984,8 @@ module.exports = function(list) {
             columns = (columns === undefined) ? prepare.toArray(list.items[0].values()) : columns;
         },
         setSearchString: function(s) {
-            s = (s === undefined) ? "" : s;
-            s = s.target || s.srcElement || s; // IE have srcElement
-            s = s.value || s;
-            s = s.toLowerCase();
-            s = s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"); // Escape regular expression characters
+            s = toString(s).toLowerCase();
+            s = s.replace(/[-[\]{}()*+?.,\\^$|#]/g, "\\$&"); // Escape regular expression characters
             searchString = s;
         },
         toArray: function(values) {
@@ -1006,7 +1013,7 @@ module.exports = function(list) {
         },
         values: function(values, column) {
             if (values.hasOwnProperty(column)) {
-                text = (values[column] !== null) ? values[column].toString().toLowerCase() : "";
+                text = toString(values[column]).toLowerCase();
                 if ((searchString !== "") && (text.search(searchString) > -1)) {
                     return true;
                 }
@@ -1046,7 +1053,10 @@ module.exports = function(list) {
     list.handlers.searchStart = list.handlers.searchStart || [];
     list.handlers.searchComplete = list.handlers.searchComplete || [];
 
-    events.bind(getByClass(list.listContainer, list.searchClass), 'keyup', searchMethod);
+    events.bind(getByClass(list.listContainer, list.searchClass), 'keyup', function(e) {
+        var target = e.target || e.srcElement; // IE have srcElement
+        searchMethod(target.value);
+    });
 
     return searchMethod;
 };
@@ -1380,6 +1390,7 @@ module.exports = function(list) {
 
 
 
+
 require.alias("component-classes/index.js", "list.js/deps/classes/index.js");
 require.alias("component-classes/index.js", "classes/index.js");
 require.alias("component-indexof/index.js", "component-classes/deps/indexof/index.js");
@@ -1406,6 +1417,10 @@ require.alias("javve-get-attribute/index.js", "get-attribute/index.js");
 require.alias("javve-natural-sort/index.js", "list.js/deps/natural-sort/index.js");
 require.alias("javve-natural-sort/index.js", "natural-sort/index.js");
 
+require.alias("javve-to-string/index.js", "list.js/deps/to-string/index.js");
+require.alias("javve-to-string/index.js", "list.js/deps/to-string/index.js");
+require.alias("javve-to-string/index.js", "to-string/index.js");
+require.alias("javve-to-string/index.js", "javve-to-string/index.js");
 require.alias("component-type/index.js", "list.js/deps/type/index.js");
 require.alias("component-type/index.js", "type/index.js");
 if (typeof exports == "object") {
