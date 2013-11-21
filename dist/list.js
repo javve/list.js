@@ -200,20 +200,7 @@ require.relative = function(parent) {
 
   return localRequire;
 };
-require.register("component-indexof/index.js", function(exports, require, module){
-
-var indexOf = [].indexOf;
-
-module.exports = function(arr, obj){
-  if (indexOf) return arr.indexOf(obj);
-  for (var i = 0; i < arr.length; ++i) {
-    if (arr[i] === obj) return i;
-  }
-  return -1;
-};
-});
 require.register("component-classes/index.js", function(exports, require, module){
-
 /**
  * Module dependencies.
  */
@@ -252,6 +239,7 @@ module.exports = function(el){
  */
 
 function ClassList(el) {
+  if (!el) throw new Error('A DOM element reference is required');
   this.el = el;
   this.list = el.classList;
 }
@@ -358,8 +346,9 @@ ClassList.prototype.toggle = function(name){
  */
 
 ClassList.prototype.array = function(){
-  var arr = this.el.className.split(re);
-  if ('' === arr[0]) arr.pop();
+  var str = this.el.className.replace(/^\s+|\s+$/g, '');
+  var arr = str.split(re);
+  if ('' === arr[0]) arr.shift();
   return arr;
 };
 
@@ -396,7 +385,19 @@ module.exports = function extend (object) {
     return object;
 };
 });
+require.register("component-indexof/index.js", function(exports, require, module){
+module.exports = function(arr, obj){
+  if (arr.indexOf) return arr.indexOf(obj);
+  for (var i = 0; i < arr.length; ++i) {
+    if (arr[i] === obj) return i;
+  }
+  return -1;
+};
+});
 require.register("component-event/index.js", function(exports, require, module){
+var bind = (window.addEventListener !== undefined) ? 'addEventListener' : 'attachEvent',
+    unbind = (window.removeEventListener !== undefined) ? 'removeEventListener' : 'detachEvent',
+    prefix = (bind !== 'addEventListener') ? 'on' : '';
 
 /**
  * Bind `el` event `type` to `fn`.
@@ -410,11 +411,8 @@ require.register("component-event/index.js", function(exports, require, module){
  */
 
 exports.bind = function(el, type, fn, capture){
-  if (el.addEventListener) {
-    el.addEventListener(type, fn, capture || false);
-  } else {
-    el.attachEvent('on' + type, fn);
-  }
+  el[bind](prefix + type, fn, capture || false);
+
   return fn;
 };
 
@@ -430,49 +428,10 @@ exports.bind = function(el, type, fn, capture){
  */
 
 exports.unbind = function(el, type, fn, capture){
-  if (el.removeEventListener) {
-    el.removeEventListener(type, fn, capture || false);
-  } else {
-    el.detachEvent('on' + type, fn);
-  }
+  el[unbind](prefix + type, fn, capture || false);
+
   return fn;
 };
-
-});
-require.register("component-type/index.js", function(exports, require, module){
-
-/**
- * toString ref.
- */
-
-var toString = Object.prototype.toString;
-
-/**
- * Return the type of `val`.
- *
- * @param {Mixed} val
- * @return {String}
- * @api public
- */
-
-module.exports = function(val){
-  switch (toString.call(val)) {
-    case '[object Function]': return 'function';
-    case '[object Date]': return 'date';
-    case '[object RegExp]': return 'regexp';
-    case '[object Arguments]': return 'arguments';
-    case '[object Array]': return 'array';
-    case '[object String]': return 'string';
-  }
-
-  if (val === null) return 'null';
-  if (val === undefined) return 'undefined';
-  if (val && val.nodeType === 1) return 'element';
-  if (val === Object(val)) return 'object';
-
-  return typeof val;
-};
-
 });
 require.register("timoxley-is-collection/index.js", function(exports, require, module){
 var typeOf = require('type')
@@ -713,7 +672,42 @@ module.exports = function(a, b, options) {
 }
 */
 });
-require.register("list/index.js", function(exports, require, module){
+require.register("component-type/index.js", function(exports, require, module){
+
+/**
+ * toString ref.
+ */
+
+var toString = Object.prototype.toString;
+
+/**
+ * Return the type of `val`.
+ *
+ * @param {Mixed} val
+ * @return {String}
+ * @api public
+ */
+
+module.exports = function(val){
+  switch (toString.call(val)) {
+    case '[object Function]': return 'function';
+    case '[object Date]': return 'date';
+    case '[object RegExp]': return 'regexp';
+    case '[object Arguments]': return 'arguments';
+    case '[object Array]': return 'array';
+    case '[object String]': return 'string';
+  }
+
+  if (val === null) return 'null';
+  if (val === undefined) return 'undefined';
+  if (val && val.nodeType === 1) return 'element';
+  if (val === Object(val)) return 'object';
+
+  return typeof val;
+};
+
+});
+require.register("list.js/index.js", function(exports, require, module){
 /*
 ListJS with beta 1.0.0
 By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
@@ -724,7 +718,8 @@ By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
 var document = window.document,
     events = require('events'),
     getByClass = require('get-by-class'),
-    extend = require('extend');
+    extend = require('extend'),
+    indexOf = require('indexof');
 
 var List = function(id, options, values) {
 
@@ -764,13 +759,13 @@ var List = function(id, options, values) {
                 self.add(values);
             }
             self.update();
-            //this.plugins(options.plugins);
+            this.plugins();
         },
-        plugins: function(plugins) {
-            for (var i = 0; i < plugins.length; i++) {
-                plugins[i][1] = plugins[i][1] || {};
-                var pluginName = plugins[i][1].name || plugins[i][0];
-                self[pluginName] = self.plugins[plugins[i][0]].call(self, plugins[i][1]);
+        plugins: function() {
+            for (var i = 0; i < self.plugins.length; i++) {
+                var plugin = self.plugins[i];
+                self[plugin.name] = plugin;
+                plugin.init(self);
             }
         }
     };
@@ -823,6 +818,7 @@ var List = function(id, options, values) {
                 self.templater.remove(self.items[i], options);
                 self.items.splice(i,1);
                 il--;
+                i--;
                 found++;
             }
         }
@@ -867,7 +863,7 @@ var List = function(id, options, values) {
 
     this.off = function(event, callback) {
         var e = self.handlers[event];
-        var index = e.indexOf(callback);
+        var index = indexOf(e, callback);
         if (index > -1) {
             e.splice(index, 1);
         }
@@ -947,85 +943,116 @@ if (typeof define === 'function' && define.amd) {
 })(window);
 
 });
-require.register("list/src/search.js", function(exports, require, module){
+require.register("list.js/src/search.js", function(exports, require, module){
 var events = require('events'),
     getByClass = require('get-by-class');
 
 module.exports = function(list) {
+    var item,
+        text,
+        columns,
+        searchString,
+        customSearch;
 
-    var search = function(searchString, columns) {
-        list.trigger('searchStart');
-        list.i = 1; // Reset paging
-
-        var matching = [],
-            found,
-            item,
-            text,
-            values,
-            is,
-            searchEscape = /[-[\]{}()*+?.,\\^$|#\s]/g,
-            columns = (columns === undefined) ? list.items[0].values() : columns,
-            searchString = (searchString === undefined) ? "" : searchString,
-            target = searchString.target || searchString.srcElement; /* IE have srcElement */
-
-        // Convert { name: 'yadda' } into [ 'name' ]
-        if (columns.constructor == Object) {
+    var prepare = {
+        resetList: function() {
+            list.i = 1;
+            list.templater.clear();
+            customSearch = undefined;
+        },
+        setOptions: function(args) {
+            if (args.length == 2 && args[1] instanceof Array) {
+                columns = args[1];
+            } else if (args.length == 2 && typeof(args[1]) == "function") {
+                customSearch = args[1];
+            } else if (args.length == 3) {
+                columns = args[1];
+                customSearch = args[2];
+            }
+        },
+        setColumns: function() {
+            columns = (columns === undefined) ? prepare.toArray(list.items[0].values()) : columns;
+        },
+        setSearchString: function(s) {
+            s = (s === undefined) ? "" : s;
+            s = s.target || s.srcElement || s; // IE have srcElement
+            s = s.value || s;
+            s = s.toLowerCase();
+            s = s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"); // Escape regular expression characters
+            searchString = s;
+        },
+        toArray: function(values) {
             var tmpColumn = [];
-            for (var name in columns) {
+            for (var name in values) {
                 tmpColumn.push(name);
             }
-            columns = tmpColumn;
+            return tmpColumn;
         }
-
-        searchString = (target === undefined) ? (""+searchString).toLowerCase() : ""+target.value.toLowerCase();
-        is = list.items;
-        // Escape regular expression characters
-        searchString = searchString.replace(searchEscape, "\\$&");
-
-        list.templater.clear();
-        if (searchString === "" ) {
-            list.reset.search();
-            list.searched = false;
-            list.update();
-        } else {
-            list.searched = true;
-
-            for (var k = 0, kl = is.length; k < kl; k++) {
-                found = false;
-                item = is[k];
-                values = item.values();
-
-                for(var j = 0, jl = columns.length; j < jl; j++) {
-                    if(values.hasOwnProperty(columns[j])) {
-                        text = (values[columns[j]] != null) ? values[columns[j]].toString().toLowerCase() : "";
-                        if ((searchString !== "") && (text.search(searchString) > -1)) {
-                            found = true;
-                        }
-                    }
-                }
-                if (found) {
+    };
+    var search = {
+        list: function() {
+            for (var k = 0, kl = list.items.length; k < kl; k++) {
+                search.item(list.items[k]);
+            }
+        },
+        item: function(item) {
+            item.found = false;
+            for (var j = 0, jl = columns.length; j < jl; j++) {
+                if (search.values(item.values(), columns[j])) {
                     item.found = true;
-                    matching.push(item);
-                } else {
-                    item.found = false;
+                    return;
                 }
             }
-            list.update();
+        },
+        values: function(values, column) {
+            if (values.hasOwnProperty(column)) {
+                text = (values[column] !== null) ? values[column].toString().toLowerCase() : "";
+                if ((searchString !== "") && (text.search(searchString) > -1)) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        reset: function() {
+            list.reset.search();
+            list.searched = false;
         }
+    };
+
+    var searchMethod = function(str) {
+        list.trigger('searchStart');
+
+        prepare.resetList();
+        prepare.setSearchString(str);
+        prepare.setOptions(arguments); // str, cols|searchFunction, searchFunction
+        prepare.setColumns();
+
+        if (searchString === "" ) {
+            search.reset();
+        } else {
+            list.searched = true;
+            if (customSearch) {
+                customSearch(searchString, columns);
+            } else {
+                search.list();
+            }
+        }
+
+        list.update();
         list.trigger('searchComplete');
         return list.visibleItems;
     };
 
-    // Add handlers
     list.handlers.searchStart = list.handlers.searchStart || [];
     list.handlers.searchComplete = list.handlers.searchComplete || [];
 
-    events.bind(getByClass(list.listContainer, list.searchClass), 'keyup', search);
+    events.bind(getByClass(list.listContainer, list.searchClass), 'keyup', searchMethod);
 
-    return search;
+    return searchMethod;
 };
+
 });
-require.register("list/src/sort.js", function(exports, require, module){
+require.register("list.js/src/sort.js", function(exports, require, module){
 var naturalSort = require('natural-sort'),
     classes = require('classes'),
     events = require('events'),
@@ -1089,8 +1116,9 @@ module.exports = function(list) {
 
     return sort;
 };
+
 });
-require.register("list/src/item.js", function(exports, require, module){
+require.register("list.js/src/item.js", function(exports, require, module){
 module.exports = function(list) {
     return function(initValues, element, notCreate) {
         var item = this;
@@ -1140,13 +1168,14 @@ module.exports = function(list) {
             );
         };
         this.visible = function() {
-            return (item.elm.parentNode) ? true : false;
+            return (item.elm.parentNode == list.list) ? true : false;
         };
         init(initValues, element, notCreate);
     };
 };
+
 });
-require.register("list/src/templater.js", function(exports, require, module){
+require.register("list.js/src/templater.js", function(exports, require, module){
 var getByClass = require('get-by-class');
 
 var Templater = function(list) {
@@ -1193,7 +1222,12 @@ var Templater = function(list) {
                     // TODO speed up if possible
                     var elm = getByClass(item.elm, v, true);
                     if (elm) {
-                        elm.innerHTML = values[v];
+                        /* src attribute for image tag & text for other tags */
+                        if (elm.tagName === "IMG" && values[v] !== "") {
+                            elm.src = values[v];
+                        } else {
+                            elm.innerHTML = values[v];
+                        }
                     }
                 }
             }
@@ -1207,7 +1241,7 @@ var Templater = function(list) {
         /* If item source does not exists, use the first item in list as
         source for new items */
         var newItem = itemSource.cloneNode(true);
-        newItem.id = "";
+        newItem.removeAttribute('id');
         item.elm = newItem;
         templater.set(item, item.values());
         return true;
@@ -1238,8 +1272,9 @@ var Templater = function(list) {
 module.exports = function(list) {
     return new Templater(list);
 };
+
 });
-require.register("list/src/filter.js", function(exports, require, module){
+require.register("list.js/src/filter.js", function(exports, require, module){
 module.exports = function(list) {
 
     // Add handlers
@@ -1267,10 +1302,11 @@ module.exports = function(list) {
         list.update();
         list.trigger('filterComplete');
         return list.visibleItems;
-    }
+    };
 };
+
 });
-require.register("list/src/add-async.js", function(exports, require, module){
+require.register("list.js/src/add-async.js", function(exports, require, module){
 module.exports = function(list) {
     return function(values, callback, items) {
         var valuesToAdd = values.splice(0, 100);
@@ -1287,7 +1323,7 @@ module.exports = function(list) {
     };
 };
 });
-require.register("list/src/parse.js", function(exports, require, module){
+require.register("list.js/src/parse.js", function(exports, require, module){
 module.exports = function(list) {
 
     var Item = require('./item')(list);
@@ -1315,8 +1351,7 @@ module.exports = function(list) {
         if (itemElements.length > 0) {
             setTimeout(function() {
                 init.items.indexAsync(itemElements, valueNames);
-                },
-            10);
+            }, 10);
         } else {
             list.update();
             // TODO: Add indexed callback
@@ -1332,8 +1367,9 @@ module.exports = function(list) {
         } else {
             parse(itemsToIndex, valueNames);
         }
-    }
+    };
 };
+
 });
 
 
@@ -1342,32 +1378,40 @@ module.exports = function(list) {
 
 
 
-require.alias("component-classes/index.js", "list/deps/classes/index.js");
+
+
+require.alias("component-classes/index.js", "list.js/deps/classes/index.js");
 require.alias("component-classes/index.js", "classes/index.js");
 require.alias("component-indexof/index.js", "component-classes/deps/indexof/index.js");
 
-require.alias("segmentio-extend/index.js", "list/deps/extend/index.js");
+require.alias("segmentio-extend/index.js", "list.js/deps/extend/index.js");
 require.alias("segmentio-extend/index.js", "extend/index.js");
 
-require.alias("javve-events/index.js", "list/deps/events/index.js");
+require.alias("component-indexof/index.js", "list.js/deps/indexof/index.js");
+require.alias("component-indexof/index.js", "indexof/index.js");
+
+require.alias("javve-events/index.js", "list.js/deps/events/index.js");
 require.alias("javve-events/index.js", "events/index.js");
 require.alias("component-event/index.js", "javve-events/deps/event/index.js");
 
 require.alias("timoxley-is-collection/index.js", "javve-events/deps/is-collection/index.js");
 require.alias("component-type/index.js", "timoxley-is-collection/deps/type/index.js");
 
-require.alias("javve-get-by-class/index.js", "list/deps/get-by-class/index.js");
+require.alias("javve-get-by-class/index.js", "list.js/deps/get-by-class/index.js");
 require.alias("javve-get-by-class/index.js", "get-by-class/index.js");
 
-require.alias("javve-get-attribute/index.js", "list/deps/get-attribute/index.js");
+require.alias("javve-get-attribute/index.js", "list.js/deps/get-attribute/index.js");
 require.alias("javve-get-attribute/index.js", "get-attribute/index.js");
 
-require.alias("javve-natural-sort/index.js", "list/deps/natural-sort/index.js");
+require.alias("javve-natural-sort/index.js", "list.js/deps/natural-sort/index.js");
 require.alias("javve-natural-sort/index.js", "natural-sort/index.js");
+
+require.alias("component-type/index.js", "list.js/deps/type/index.js");
+require.alias("component-type/index.js", "type/index.js");
 if (typeof exports == "object") {
-  module.exports = require("list");
+  module.exports = require("list.js");
 } else if (typeof define == "function" && define.amd) {
-  define(function(){ return require("list"); });
+  define(function(){ return require("list.js"); });
 } else {
-  this["List"] = require("list");
+  this["List"] = require("list.js");
 }})();
