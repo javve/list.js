@@ -52,6 +52,13 @@ describe('Search', function() {
             expect(imma.matching()).to.be(true);
             expect(hasse.matching()).to.be(true);
         });
+        it('should not break with undefined', function() {
+            expect(list.search).withArgs(undefined).to.not.throwException();
+            expect(list.search).withArgs(null).to.not.throwException();
+            expect(list.search).withArgs(0).to.not.throwException();
+            expect(list.search).withArgs(function() {}).to.not.throwException();
+            expect(list.search).withArgs({ foo: "bar" }).to.not.throwException();
+        });
     });
 
     describe('Specfic columns', function() {
