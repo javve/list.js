@@ -14,10 +14,16 @@ module.exports = function(grunt) {
     },
     shell: {
       install: {
-        command: 'component install --dev'
+        command: 'component install --dev',
+        options: {
+          stderr: true
+        }
       },
       build: {
-        command: 'component build --dev'
+        command: 'component build --dev',
+        options: {
+          stderr: true
+        }
       },
       standalone: {
         command: 'component build --standalone List -n list.standalone'
