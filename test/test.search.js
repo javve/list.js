@@ -2,7 +2,7 @@ describe('Search', function() {
 
     var list, jonny, martina, angelica, sebastian, imma, hasse;
 
-    before(function() {
+    beforeEach(function() {
         list = fixture.list(['name', 'born'], fixture.all);
 
         jonny = list.get('name', 'Jonny Strömberg')[0];
@@ -13,13 +13,8 @@ describe('Search', function() {
         hasse = list.get('name', 'Hasse Strömberg')[0];
     });
 
-    after(function() {
-        fixture.removeList();
-    });
-
     afterEach(function() {
-        list.search();
-        list.show(1, 200);
+        fixture.removeList();
     });
 
     describe('Case-sensitive', function() {
@@ -40,7 +35,6 @@ describe('Search', function() {
             expect(sebastian.matching()).to.be(false);
             expect(imma.matching()).to.be(false);
             expect(hasse.matching()).to.be(false);
-            list.search();
         });
         it('should find all with utf-8 char ö', function() {
             var result = list.search('ö');
@@ -52,7 +46,21 @@ describe('Search', function() {
             expect(imma.matching()).to.be(true);
             expect(hasse.matching()).to.be(true);
         });
-        it('should not break with undefined', function() {
+        it('should not break with weird searches', function() {
+            expect(list.search).withArgs(undefined).to.not.throwException();
+            expect(list.search).withArgs(null).to.not.throwException();
+            expect(list.search).withArgs(0).to.not.throwException();
+            expect(list.search).withArgs(function() {}).to.not.throwException();
+            expect(list.search).withArgs({ foo: "bar" }).to.not.throwException();
+        });
+        it('should not break with weird values', function() {
+            jonny.values({ name: undefined });
+            martina.values({ name: null });
+            angelica.values({ name: 0 });
+            sebastian.values({ name: function() {} });
+            imma.values({ name: { foo: "bar" } });
+
+            expect(list.search).withArgs("jonny").to.not.throwException();
             expect(list.search).withArgs(undefined).to.not.throwException();
             expect(list.search).withArgs(null).to.not.throwException();
             expect(list.search).withArgs(0).to.not.throwException();

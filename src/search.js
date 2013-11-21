@@ -1,5 +1,6 @@
 var events = require('events'),
-    getByClass = require('get-by-class');
+    getByClass = require('get-by-class'),
+    toString = require('to-string');
 
 module.exports = function(list) {
     var item,
@@ -28,10 +29,7 @@ module.exports = function(list) {
             columns = (columns === undefined) ? prepare.toArray(list.items[0].values()) : columns;
         },
         setSearchString: function(s) {
-            s = (s === undefined) ? "" : s;
-            s = (s === null) ? "" : s;
-            s = s + "";
-            s = s.toLowerCase();
+            s = toString(s).toLowerCase();
             s = s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"); // Escape regular expression characters
             searchString = s;
         },
@@ -60,7 +58,7 @@ module.exports = function(list) {
         },
         values: function(values, column) {
             if (values.hasOwnProperty(column)) {
-                text = (values[column] !== null) ? values[column].toString().toLowerCase() : "";
+                text = toString(values[column]).toLowerCase();
                 if ((searchString !== "") && (text.search(searchString) > -1)) {
                     return true;
                 }
