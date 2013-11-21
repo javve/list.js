@@ -2,7 +2,7 @@ describe('Sort', function() {
 
     var list, i1, i2, i3, i4, i5, i6;
 
-    before(function() {
+    beforeEach(function() {
         list = fixture.list(['id'], [
             { id: "1", val: "" },
             { id: "2", val: "" },
@@ -19,11 +19,8 @@ describe('Sort', function() {
         i6 = list.get('id', '6')[0];
     });
 
-    after(function() {
-        fixture.removeList();
-    });
-
     afterEach(function() {
+        fixture.removeList();
     });
 
     describe('Basics', function() {
@@ -176,6 +173,20 @@ describe('Sort', function() {
             expect(list.items[3].values().val).to.be.equal("192.168.1.1");
             expect(list.items[4].values().val).to.be.equal("192.168.1.2");
             expect(list.items[5].values().val).to.be.equal("192.168.1.3");
+        });
+        it('should not break with weird values', function() {
+            i1.values({ val: undefined });
+            i2.values({ val: null });
+            i3.values({ val: 0 });
+            i4.values({ val: function() {} });
+            i5.values({ val: { foo: "bar" } });
+
+            expect(list.sort).withArgs('val').to.not.throwException();
+            expect(list.sort).withArgs('val').to.not.throwException();
+            expect(list.sort).withArgs('val').to.not.throwException();
+            expect(list.sort).withArgs('val').to.not.throwException();
+            expect(list.sort).withArgs('val').to.not.throwException();
+            expect(list.sort).withArgs('val').to.not.throwException();
         });
         /*
         it('should show how random values are sorted', function() {
