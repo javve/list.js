@@ -30,6 +30,7 @@ var List = function(id, options, values) {
     this.searched       = false;
     this.filtered       = false;
     this.handlers       = { 'updated': [] };
+    this.plugins        = {};
 
     extend(this, options);
 
@@ -213,7 +214,6 @@ var List = function(id, options, values) {
     init.start(values);
 };
 
-List.prototype.plugins = {};
 
 // AMD support
 if (typeof define === 'function' && define.amd) {
