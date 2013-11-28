@@ -20,6 +20,14 @@ Really simple and easy to use!
 - Plugins [Read more ›](http://listjs.com/docs/plugins)
 - Support for Chrome, Safari, Firefox, IE6+
 
+### Demo / Examples
+- [Existing list](http://listjs.com/examples/existing-list)
+- [Existing list + add](http://listjs.com/examples/existing-list-add)
+- [New list](http://listjs.com/examples/new-list)
+- [Add, get, remove](http://listjs.com/examples/add-get-remove)
+- [Fuzzy search](http://listjs.com/examples/fuzzy-search)
+- [Pagination](http://listjs.com/examples/pagination)
+
 ## Documentation
 - [Getting started](http://listjs.com/docs)
 - [Options](http://listjs.com/docs/options)
@@ -32,10 +40,6 @@ Really simple and easy to use!
 - [Pagination](http://listjs.com/docs/plugins/pagination)
 - [Fuzzy search](http://listjs.com/docs/plugins/fuzzysearch)
 - [Build your own](http://listjs.com/docs/plugins/build)
-
-### Examples
-- [Existing list](http://listjs.com/examples/existing-list)
-- [Table](http://listjs.com/examples/table)
 
 ### Known issues
 - Sorting fails with `åä`, thinking that `ä` is before `å`.
