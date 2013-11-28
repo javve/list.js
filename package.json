@@ -1,0 +1,29 @@
+{
+  "name": "list.js",
+  "version": "1.0.0",
+  "description": "Component package manager consuming git repositories",
+  "keywords": [
+    "list",
+    "search",
+    "sort",
+    "table",
+    "dom",
+    "html",
+    "ui"
+  ],
+  "author": "Jonny Strömberg <jonny.stromberg@gmail.com>",
+  "repository": "git://github.com/javve/list.js.git",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-shell": "~0.5.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-uglify": "~0.2.7",
+    "grunt-contrib-jshint": "~0.7.1",
+    "grunt-mocha": "~0.4.1"
+  },
+  "main": "index",
+  "engines": {
+    "node": ">= 0.10.21"
+  }
+}
