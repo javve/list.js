@@ -3,6 +3,8 @@ Perfect library for adding **search**, **sort**, **filters** and **flexibility**
 **tables**, **lists** and various HTML elements. Built to be invisible and work on existing HTML.
 Really simple and easy to use!
 
+[![Donate](https://s3.amazonaws.com/listjs/donate-coffee.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M7ZGHV75VSD2E)
+
 ### Core idea
 - Simple and invisible
 - Easy to apply to existing HTML
@@ -71,6 +73,12 @@ Built with [Component](https://github.com/component/component) which is created 
 
 ### Want to contribute?
 - Read more at [listjs.com/overview/contribute](http://listjs.com/overview/contribute)
+
+### Creator
+|               | Jonny Strömberg [@javve](http://twitter.com/javve)            |
+| ------------- | ------------- |
+| ![Image of Jonny](http://listjs.com/images/graphics/javve.jpg) | I hope you like the lib. I’ve put a lot of hours into it! Feel free to follow me on [Twitter](http://twitter.com/javve) for news and [donate a coffee](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M7ZGHV75VSD2E) for good karma ;)  
+
 
 ## License (MIT)
 
