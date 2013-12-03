@@ -43,7 +43,6 @@ Really simple and easy to use!
 
 ### Known issues
 - Sorting fails with `åä`, thinking that `ä` is before `å`.
-- There should not be a limit for how many items that could be parsed.
 - Class `asc` and `desc` should be removed as soon as the sorting breaks.
 - Tables row items can't be created with the `{ item: '<html>' }`-method.
 
@@ -67,6 +66,8 @@ Really simple and easy to use!
 * [dancrew32](https://github.com/dancrew32) / [Dan Masquelier](http://danmasq.com/)
 * [jkeyes](https://github.com/jkeyes) / [John Keyes](http://keyes.ie/)
 * [samosad](https://github.com/samosad) / Alexey Tabakman
+
+Built with [Component](https://github.com/component/component) which is created by [TJ Holowaychuk](https://github.com/visionmedia).
 
 ### Want to contribute?
 - Read more at [listjs.com/overview/contribute](http://listjs.com/overview/contribute)
