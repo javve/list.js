@@ -12,17 +12,20 @@ var clearPreviousSorting = function() {
     }
 };
 
+var defaultSortFunction = function(a, b) {
+    return naturalSort(a.values()[this.valueName], b.values()[this.valueName], this);
+};
+
 module.exports = function(list) {
     var sort = function() {
-        var options = {},
-            valueName;
+        var options = {};
 
         if (arguments[0].currentTarget || arguments[0].srcElement) {
             var e = arguments[0],
                 target = e.currentTarget || e.srcElement,
                 newSortingOrder;
 
-            valueName = getAttribute(target, 'data-sort');
+            options.valueName = getAttribute(target, 'data-sort');
 
             if (classes(target).has('desc')) {
                 options.desc = false;
@@ -37,17 +40,17 @@ module.exports = function(list) {
             clearPreviousSorting();
             classes(target).add(newSortingOrder);
         } else {
-            valueName = arguments[0];
             options = arguments[1] || options;
+            options.valueName = options.valueName || arguments[0];
         }
 
         options.insensitive = (typeof options.insensitive == "undefined") ? true : options.insensitive;
-        options.sortFunction = options.sortFunction || function(a, b) {
-            return naturalSort(a.values()[valueName], b.values()[valueName], options);
-        };
+        options.sortFunction = options.sortFunction || defaultSortFunction;
 
         list.trigger('sortStart');
-        list.items.sort(options.sortFunction);
+        list.items.sort(function(a, b) {
+            return options.sortFunction(a, b);
+        });
         list.update();
         list.trigger('sortComplete');
     };
