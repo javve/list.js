@@ -45,7 +45,7 @@ module.exports = function(list) {
         }
 
         options.insensitive = (typeof options.insensitive == "undefined") ? true : options.insensitive;
-        options.sortFunction = options.sortFunction || defaultSortFunction;
+        options.sortFunction = options.sortFunction || list.sortFunction || defaultSortFunction;
 
         list.trigger('sortStart');
         list.items.sort(function(a, b) {
