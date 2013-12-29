@@ -55,6 +55,9 @@ module.exports = function(list) {
         list.trigger('sortComplete');
     };
 
+    // Expose the naturalSort function so that custom sort functions can make use of it.
+    sort.naturalSort = naturalSort;
+
     // Add handlers
     list.handlers.sortStart = list.handlers.sortStart || [];
     list.handlers.sortComplete = list.handlers.sortComplete || [];
