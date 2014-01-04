@@ -25,5 +25,8 @@
   "main": "index",
   "engines": {
     "node": ">= 0.10.21"
+  },
+  "scripts": {
+    "test": "grunt test"
   }
 }
