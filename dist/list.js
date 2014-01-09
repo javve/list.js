@@ -395,9 +395,9 @@ module.exports = function(arr, obj){
 };
 });
 require.register("component-event/index.js", function(exports, require, module){
-var bind = (window.addEventListener !== undefined) ? 'addEventListener' : 'attachEvent',
-    unbind = (window.removeEventListener !== undefined) ? 'removeEventListener' : 'detachEvent',
-    prefix = (bind !== 'addEventListener') ? 'on' : '';
+var bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
+    unbind = window.removeEventListener ? 'removeEventListener' : 'detachEvent',
+    prefix = bind !== 'addEventListener' ? 'on' : '';
 
 /**
  * Bind `el` event `type` to `fn`.
@@ -412,7 +412,6 @@ var bind = (window.addEventListener !== undefined) ? 'addEventListener' : 'attac
 
 exports.bind = function(el, type, fn, capture){
   el[bind](prefix + type, fn, capture || false);
-
   return fn;
 };
 
@@ -429,11 +428,10 @@ exports.bind = function(el, type, fn, capture){
 
 exports.unbind = function(el, type, fn, capture){
   el[unbind](prefix + type, fn, capture || false);
-
   return fn;
 };
 });
-require.register("timoxley-is-collection/index.js", function(exports, require, module){
+require.register("javve-is-collection/index.js", function(exports, require, module){
 var typeOf = require('type')
 
 /**
@@ -462,6 +460,19 @@ module.exports = function isCollection(obj) {
     switch (type) {
       case 'arguments': return 2
       case 'object':
+        if (isNodeList(obj)) return 2
+        try {
+          // indexed, but no tagName (element) or scrollTo/document (window. From DOM.isWindow test which we can't use here),
+          // or functions without apply/call (Safari
+          // HTMLElementCollection bug).
+          if ('length' in obj
+              && !obj.tagName
+            && !(obj.scrollTo && obj.document)
+            && !obj.apply) {
+              return 2
+            }
+        } catch (ex) {}
+      case 'function':
         if (isNodeList(obj)) return 2
         try {
           // indexed, but no tagName (element) or scrollTo/document (window. From DOM.isWindow test which we can't use here),
@@ -555,6 +566,7 @@ module.exports = (function() {
     };
   } else if (document.querySelector) {
     return function(container, className, single) {
+      className = '.' + className;
       if (single) {
         return container.querySelector(className);
       } else {
@@ -682,7 +694,6 @@ module.exports = function(s) {
 
 });
 require.register("component-type/index.js", function(exports, require, module){
-
 /**
  * toString ref.
  */
@@ -699,20 +710,17 @@ var toString = Object.prototype.toString;
 
 module.exports = function(val){
   switch (toString.call(val)) {
-    case '[object Function]': return 'function';
     case '[object Date]': return 'date';
     case '[object RegExp]': return 'regexp';
     case '[object Arguments]': return 'arguments';
     case '[object Array]': return 'array';
-    case '[object String]': return 'string';
   }
 
   if (val === null) return 'null';
   if (val === undefined) return 'undefined';
   if (val && val.nodeType === 1) return 'element';
-  if (val === Object(val)) return 'object';
 
-  return typeof val;
+  return typeof val.valueOf();
 };
 
 });
@@ -1377,6 +1385,16 @@ module.exports = function(list) {
 
 
 
+
+
+
+
+
+
+
+
+
+
 require.alias("component-classes/index.js", "list.js/deps/classes/index.js");
 require.alias("component-classes/index.js", "classes/index.js");
 require.alias("component-indexof/index.js", "component-classes/deps/indexof/index.js");
@@ -1391,8 +1409,8 @@ require.alias("javve-events/index.js", "list.js/deps/events/index.js");
 require.alias("javve-events/index.js", "events/index.js");
 require.alias("component-event/index.js", "javve-events/deps/event/index.js");
 
-require.alias("timoxley-is-collection/index.js", "javve-events/deps/is-collection/index.js");
-require.alias("component-type/index.js", "timoxley-is-collection/deps/type/index.js");
+require.alias("javve-is-collection/index.js", "javve-events/deps/is-collection/index.js");
+require.alias("component-type/index.js", "javve-is-collection/deps/type/index.js");
 
 require.alias("javve-get-by-class/index.js", "list.js/deps/get-by-class/index.js");
 require.alias("javve-get-by-class/index.js", "get-by-class/index.js");
