@@ -431,77 +431,39 @@ exports.unbind = function(el, type, fn, capture){
   return fn;
 };
 });
-require.register("javve-is-collection/index.js", function(exports, require, module){
-var typeOf = require('type')
-
+require.register("javve-to-array/index.js", function(exports, require, module){
 /**
- * Evaluates _obj_ to determine if it's an array, an array-like collection, or
- * something else. This is useful when working with the function `arguments`
- * collection and `HTMLElement` collections.
- * Note: This implementation doesn't consider elements that are also
+ * Convert an array-like object into an `Array`.
+ * If `collection` is already an `Array`, then will return a clone of `collection`.
  *
- *
-  
-  collections, such as `<form>` and `<select>`, to be array-like.
+ * @param {Array | Mixed} collection An `Array` or array-like object to convert e.g. `arguments` or `NodeList`
+ * @return {Array} Naive conversion of `collection` to a new `Array`.
+ * @api public
+ */
 
-  @method test
-@param {Object} obj Object to test.
-@return {Number} A number indicating the results of the test:
+module.exports = function toArray(collection) {
+  if (typeof collection === 'undefined') return []
+  if (collection === null) return [null]
+  if (collection === window) return [window]
+  if (typeof collection === 'string') return [collection]
+  if (collection instanceof Array) return collection
+  if (typeof collection.length != 'number') return [collection]
+  if (typeof collection === 'function') return [collection]
 
- * 0: Neither an array nor an array-like collection.
- * 1: Real array.
- * 2: Array-like collection.
-
-@api private
- **/
-module.exports = function isCollection(obj) {
-  var type = typeOf(obj)
-  if (type === 'array') return 1
-    switch (type) {
-      case 'arguments': return 2
-      case 'object':
-        if (isNodeList(obj)) return 2
-        try {
-          // indexed, but no tagName (element) or scrollTo/document (window. From DOM.isWindow test which we can't use here),
-          // or functions without apply/call (Safari
-          // HTMLElementCollection bug).
-          if ('length' in obj
-              && !obj.tagName
-            && !(obj.scrollTo && obj.document)
-            && !obj.apply) {
-              return 2
-            }
-        } catch (ex) {}
-      case 'function':
-        if (isNodeList(obj)) return 2
-        try {
-          // indexed, but no tagName (element) or scrollTo/document (window. From DOM.isWindow test which we can't use here),
-          // or functions without apply/call (Safari
-          // HTMLElementCollection bug).
-          if ('length' in obj
-              && !obj.tagName
-            && !(obj.scrollTo && obj.document)
-            && !obj.apply) {
-              return 2
-            }
-        } catch (ex) {}
-      default:
-        return 0
+  var arr = []
+  for (var i = 0; i < collection.length; i++) {
+    if (Object.prototype.hasOwnProperty.call(collection, i) || i in collection) {
+      arr.push(collection[i])
     }
+  }
+  if (!arr.length) return []
+  return arr
 }
-
-function isNodeList(nodes) {
-  return typeof nodes === 'object'
-  && /^\[object (NodeList)\]$/.test(Object.prototype.toString.call(nodes))
-  && nodes.hasOwnProperty('length')
-  && (nodes.length == 0 || (typeof nodes[0] === "object" && nodes[0].nodeType > 0))
-}
-
 
 });
 require.register("javve-events/index.js", function(exports, require, module){
 var events = require('event'),
-  isCollection = require('is-collection');
+  toArray = require('to-array');
 
 /**
  * Bind `el` event `type` to `fn`.
@@ -514,12 +476,9 @@ var events = require('event'),
  */
 
 exports.bind = function(el, type, fn, capture){
-  if (!isCollection(el)) {
-    events.bind(el, type, fn, capture);
-  } else if ( el && el[0] !== undefined ) {
-    for ( var i = 0; i < el.length; i++ ) {
-      events.bind(el[i], type, fn, capture);
-    }
+  el = toArray(el);
+  for ( var i = 0; i < el.length; i++ ) {
+    events.bind(el[i], type, fn, capture);
   }
 };
 
@@ -534,14 +493,12 @@ exports.bind = function(el, type, fn, capture){
  */
 
 exports.unbind = function(el, type, fn, capture){
-  if (!isCollection(el)) {
-    events.unbind(el, type, fn, capture);
-  } else if ( el && el[0] !== undefined ) {
-    for ( var i = 0; i < el.length; i++ ) {
-      events.unbind(el[i], type, fn, capture);
-    }
+  el = toArray(el);
+  for ( var i = 0; i < el.length; i++ ) {
+    events.unbind(el[i], type, fn, capture);
   }
 };
+
 });
 require.register("javve-get-by-class/index.js", function(exports, require, module){
 /**
@@ -714,10 +671,12 @@ module.exports = function(val){
     case '[object RegExp]': return 'regexp';
     case '[object Arguments]': return 'arguments';
     case '[object Array]': return 'array';
+    case '[object Error]': return 'error';
   }
 
   if (val === null) return 'null';
   if (val === undefined) return 'undefined';
+  if (val !== val) return 'nan';
   if (val && val.nodeType === 1) return 'element';
 
   return typeof val.valueOf();
@@ -1409,8 +1368,7 @@ require.alias("javve-events/index.js", "list.js/deps/events/index.js");
 require.alias("javve-events/index.js", "events/index.js");
 require.alias("component-event/index.js", "javve-events/deps/event/index.js");
 
-require.alias("javve-is-collection/index.js", "javve-events/deps/is-collection/index.js");
-require.alias("component-type/index.js", "javve-is-collection/deps/type/index.js");
+require.alias("javve-to-array/index.js", "javve-events/deps/to-array/index.js");
 
 require.alias("javve-get-by-class/index.js", "list.js/deps/get-by-class/index.js");
 require.alias("javve-get-by-class/index.js", "get-by-class/index.js");
