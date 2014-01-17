@@ -2,17 +2,16 @@ var naturalSort = require('natural-sort'),
     classes = require('classes'),
     events = require('events'),
     getByClass = require('get-by-class'),
-    getAttribute = require('get-attribute'),
-    sortButtons;
-
-var clearPreviousSorting = function() {
-    for (var i = 0, il = sortButtons.length; i < il; i++) {
-        classes(sortButtons[i]).remove('asc');
-        classes(sortButtons[i]).remove('desc');
-    }
-};
+    getAttribute = require('get-attribute');
 
 module.exports = function(list) {
+    var sortButtons;
+    var clearPreviousSorting = function() {
+        for (var i = 0, il = sortButtons.length; i < il; i++) {
+            classes(sortButtons[i]).remove('asc');
+            classes(sortButtons[i]).remove('desc');
+        }
+    };
     var sort = function() {
         var options = {},
             valueName;
