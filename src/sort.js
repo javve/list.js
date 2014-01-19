@@ -5,7 +5,11 @@ var naturalSort = require('natural-sort'),
     getAttribute = require('get-attribute');
 
 module.exports = function(list) {
-    var sortButtons;
+    var sortButtons, options, valueName;
+
+    list.sortFunction = list.sortFunction || function(itemA, itemB) {
+        return naturalSort(itemA.values()[valueName], itemB.values()[valueName], options);
+    };
 
     var buttons = {
         els: undefined,
@@ -41,10 +45,10 @@ module.exports = function(list) {
     };
     var sort = function() {
         list.trigger('sortStart');
+        options = {},
+        valueName = "";
 
-        var options = {},
-            valueName,
-            target = arguments[0].currentTarget || arguments[0].srcElement || undefined;
+        var target = arguments[0].currentTarget || arguments[0].srcElement || undefined;
 
         if (target) {
             valueName = getAttribute(target, 'data-sort');
@@ -60,11 +64,10 @@ module.exports = function(list) {
         }
 
         options.desc = options.order == "desc" ? true : false;
-        options.sortFunction = options.sortFunction || function(a, b) {
-            return naturalSort(a.values()[valueName], b.values()[valueName], options);
-        };
-
-        list.items.sort(options.sortFunction);
+        options.sortFunction = options.sortFunction || list.sortFunction;
+        list.items.sort(function(a, b) {
+            return options.sortFunction(a, b, options);
+        });
         list.update();
         list.trigger('sortComplete');
     };

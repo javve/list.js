@@ -256,4 +256,62 @@ describe('Sort', function() {
         });
         */
     });
+
+    describe('Custom sort function', function() {
+        it('should use custom sort option', function() {
+            i1.values({ val: "<input value='b' />" });
+            i2.values({ val: "<input value='a' />" });
+            i3.values({ val: "<input value='c' />" });
+            i4.values({ val: "<input value='z' />" });
+            i5.values({ val: "<input value='s' />" });
+            i6.values({ val: "<input value='y' />" });
+            list.sort('val', {
+                sortFunction: function(itemA, itemB, options) {
+                    return list.helpers.naturalSort($(itemA.values().val).val(), $(itemB.values().val).val(), options);
+                }
+            });
+            expect(list.items[0].values().val).to.be.equal("<input value='a' />");
+            expect(list.items[1].values().val).to.be.equal("<input value='b' />");
+            expect(list.items[2].values().val).to.be.equal("<input value='c' />");
+            expect(list.items[3].values().val).to.be.equal("<input value='s' />");
+            expect(list.items[4].values().val).to.be.equal("<input value='y' />");
+            expect(list.items[5].values().val).to.be.equal("<input value='z' />");
+        });
+        it('should use default custom sort function', function() {
+            list.sortFunction = function(itemA, itemB, options) {
+                return list.helpers.naturalSort($(itemA.values().val).val(), $(itemB.values().val).val(), options);
+            };
+            i1.values({ val: "<input value='b' />" });
+            i2.values({ val: "<input value='a' />" });
+            i3.values({ val: "<input value='c' />" });
+            i4.values({ val: "<input value='z' />" });
+            i5.values({ val: "<input value='s' />" });
+            i6.values({ val: "<input value='y' />" });
+            list.sort('val');
+            expect(list.items[0].values().val).to.be.equal("<input value='a' />");
+            expect(list.items[1].values().val).to.be.equal("<input value='b' />");
+            expect(list.items[2].values().val).to.be.equal("<input value='c' />");
+            expect(list.items[3].values().val).to.be.equal("<input value='s' />");
+            expect(list.items[4].values().val).to.be.equal("<input value='y' />");
+            expect(list.items[5].values().val).to.be.equal("<input value='z' />");
+        });
+        it('should use default custom sort function with options', function() {
+            list.sortFunction = function(itemA, itemB, options) {
+                return list.helpers.naturalSort($(itemA.values().val).val(), $(itemB.values().val).val(), options);
+            };
+            i1.values({ val: "<input value='b' />" });
+            i2.values({ val: "<input value='a' />" });
+            i3.values({ val: "<input value='c' />" });
+            i4.values({ val: "<input value='z' />" });
+            i5.values({ val: "<input value='s' />" });
+            i6.values({ val: "<input value='y' />" });
+            list.sort('val', { order: "desc"});
+            expect(list.items[0].values().val).to.be.equal("<input value='z' />");
+            expect(list.items[1].values().val).to.be.equal("<input value='y' />");
+            expect(list.items[2].values().val).to.be.equal("<input value='s' />");
+            expect(list.items[3].values().val).to.be.equal("<input value='c' />");
+            expect(list.items[4].values().val).to.be.equal("<input value='b' />");
+            expect(list.items[5].values().val).to.be.equal("<input value='a' />");
+        });
+    });
 });
