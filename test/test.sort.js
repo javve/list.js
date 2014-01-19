@@ -46,7 +46,7 @@ describe('Sort', function() {
             i4.values({ val: "z" });
             i5.values({ val: "s" });
             i6.values({ val: "y" });
-            list.sort('val', { desc: true });
+            list.sort('val', { order: "desc" });
             expect(list.items[0].values().val).to.be.equal("z");
             expect(list.items[1].values().val).to.be.equal("y");
             expect(list.items[2].values().val).to.be.equal("s");
@@ -76,7 +76,7 @@ describe('Sort', function() {
             i4.values({ val: "ö" });
             i5.values({ val: "o" });
             i6.values({ val: "s" });
-            list.sort('val', { desc: true });
+            list.sort('val', { order: "desc" });
             expect(list.items[0].values().val).to.be.equal("ö");
             expect(list.items[1].values().val).to.be.equal("å");
             expect(list.items[2].values().val).to.be.equal("ä");
@@ -121,7 +121,7 @@ describe('Sort', function() {
             i4.values({ val: "10/12/2009" });
             i5.values({ val: "4/01/2007" });
             i6.values({ val: "10/12/2006" });
-            list.sort('val', { asc: true });
+            list.sort('val', { order: "asc" });
             expect(list.items[0].values().val).to.be.equal("10/12/2006");
             expect(list.items[1].values().val).to.be.equal("4/01/2007");
             expect(list.items[2].values().val).to.be.equal("10/11/2007");
@@ -136,7 +136,7 @@ describe('Sort', function() {
             i4.values({ val: "my.string_41299.tif" });
             i5.values({ val: "0003.zip" });
             i6.values({ val: "0002.asp" });
-            list.sort('val', { asc: true });
+            list.sort('val', { order: "asc" });
             expect(list.items[0].values().val).to.be.equal("0002.asp");
             expect(list.items[1].values().val).to.be.equal("0003.zip");
             expect(list.items[2].values().val).to.be.equal("001alpha.sgi");
@@ -151,7 +151,7 @@ describe('Sort', function() {
             i4.values({ val: "11.231" });
             i5.values({ val: "0003.123" });
             i6.values({ val: "09.2123" });
-            list.sort('val', { asc: true });
+            list.sort('val', { order: "asc" });
             expect(list.items[0].values().val).to.be.equal("0003.123");
             expect(list.items[1].values().val).to.be.equal("09.2123");
             expect(list.items[2].values().val).to.be.equal("10.021999");
@@ -166,7 +166,7 @@ describe('Sort', function() {
             i4.values({ val: "192.168.1.3" });
             i5.values({ val: "127.0.0.1" });
             i6.values({ val: "192.168.1.2" });
-            list.sort('val', { asc: true });
+            list.sort('val', { order: "asc" });
             expect(list.items[0].values().val).to.be.equal("127.0.0.1");
             expect(list.items[1].values().val).to.be.equal("192.168.0.1");
             expect(list.items[2].values().val).to.be.equal("192.168.0.100");
@@ -217,9 +217,9 @@ describe('Sort', function() {
             i11.values({ val: 100 });
             i12.values({ val: false });
 
-            list.sort('val', { asc: true });
-            list.sort('val', { desc: true });
-            list.sort('val', { asc: true });
+            list.sort('val', { order: "asc" });
+            list.sort('val', { order: "desc" });
+            list.sort('val', { order: "asc" });
 
             expect(list.items[0].values().val).to.be.equal("");
             expect(list.items[1].values().val).to.be.equal("0");
@@ -241,15 +241,15 @@ describe('Sort', function() {
             list.add({ val: "0" });
             list.add({ val: 0 });
 
-            list.sort('val', { asc: true });
+            list.sort('val', { order: "asc" });
             expect(list.items[0].values().val).to.be.equal("");
             expect(list.items[1].values().val).to.be.equal("0");
             expect(list.items[2].values().val).to.be.equal(0);
-            list.sort('val', { desc: true });
+            list.sort('val', { order: "desc" });
             expect(list.items[0].values().val).to.be.equal("");
             expect(list.items[1].values().val).to.be.equal("0");
             expect(list.items[2].values().val).to.be.equal(0);
-            list.sort('val', { asc: true });
+            list.sort('val', { order: "asc" });
             expect(list.items[0].values().val).to.be.equal("");
             expect(list.items[1].values().val).to.be.equal("0");
             expect(list.items[2].values().val).to.be.equal(0);
