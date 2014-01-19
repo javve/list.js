@@ -68,6 +68,7 @@ Really simple and easy to use!
 * [dancrew32](https://github.com/dancrew32) / [Dan Masquelier](http://danmasq.com/)
 * [jkeyes](https://github.com/jkeyes) / [John Keyes](http://keyes.ie/)
 * [samosad](https://github.com/samosad) / Alexey Tabakman
+* [Page-](https://github.com/Page-)
 
 Built with [Component](https://github.com/component/component) which is created by [TJ Holowaychuk](https://github.com/visionmedia).
 
