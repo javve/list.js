@@ -51,4 +51,16 @@ describe('Defaults', function() {
         expect(list.update).to.be.a('function');
         expect(list.on).to.be.a('function');
     });
+
+    it('should have all helper methods', function() {
+        expect(list.helpers.classes).to.be.a('function');
+        expect(list.helpers.getAttribute).to.be.a('function');
+        expect(list.helpers.getByClass).to.be.a('function');
+        expect(list.helpers.naturalSort).to.be.a('function');
+        expect(list.helpers.events.bind).to.be.a('function');
+        expect(list.helpers.events.unbind).to.be.a('function');
+        expect(list.helpers.extend).to.be.a('function');
+        expect(list.helpers.indexOf).to.be.a('function');
+        expect(list.helpers.toString).to.be.a('function');
+    });
 });

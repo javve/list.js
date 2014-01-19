@@ -103,5 +103,6 @@ module.exports = function(list) {
         searchMethod(target.value);
     });
 
+    list.helpers.toString = toString;
     return searchMethod;
 };
