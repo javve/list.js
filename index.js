@@ -6,7 +6,6 @@ By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
 "use strict";
 
 var document = window.document,
-    events = require('events'),
     getByClass = require('get-by-class'),
     extend = require('extend'),
     indexOf = require('indexof');
