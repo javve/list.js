@@ -30,6 +30,11 @@ var List = function(id, options, values) {
     this.filtered       = false;
     this.handlers       = { 'updated': [] };
     this.plugins        = {};
+    this.helpers        = {
+        getByClass: getByClass,
+        extend: extend,
+        indexOf: indexOf
+    };
 
     extend(this, options);
 
