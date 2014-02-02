@@ -22,7 +22,7 @@ module.exports = function(list) {
         getOrder: function(btn, options) {
             var predefinedOrder = getAttribute(btn, 'data-order');
             if (predefinedOrder == "asc" || predefinedOrder == "desc") {
-                optionss.order = predefinedOrder;
+                options.order = predefinedOrder;
             } else if (classes(btn).has('desc')) {
                 options.order = "asc";
             } else if (classes(btn).has('asc')) {
