@@ -156,6 +156,19 @@ describe('Button', function() {
             expect($('#sort3').hasClass('desc')).to.be(false);
             fireClick($('#sort2')[0]);
         });
+
+        it('buttons should change class when sorting programmatically', function(done) {
+            list.on('sortComplete', function() {
+                expect($('#sort1').hasClass('asc')).to.be(true);
+                expect($('#sort1').hasClass('desc')).to.be(false);
+                expect($('#sort2').hasClass('asc')).to.be(true);
+                expect($('#sort2').hasClass('desc')).to.be(false);
+                expect($('#sort3').hasClass('asc')).to.be(false);
+                expect($('#sort3').hasClass('desc')).to.be(false);
+                done();
+            });
+            list.sort('name', { order: "asc" });
+        })
     });
 
 
