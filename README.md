@@ -44,8 +44,7 @@ Really simple and easy to use!
 - [Build your own](http://listjs.com/docs/plugins/build)
 
 ### Known issues
-- Sorting fails with `åä`, thinking that `ä` is before `å`.
-- Class `asc` and `desc` should be removed as soon as the sorting breaks.
+- Sorting fails with some UTF8 characters. Example: `åä`, thinking that `ä` is before `å`.
 - Tables row items can't be created with the `{ item: '<html>' }`-method.
 
 
