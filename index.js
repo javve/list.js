@@ -46,8 +46,8 @@ var List = function(id, options, values) {
 
             self.templater      = require('./src/templater')(self);
             self.search         = require('./src/search')(self);
-            self.sort           = require('./src/sort')(self);
             self.filter         = require('./src/filter')(self);
+            self.sort           = require('./src/sort')(self);
 
             this.items();
             self.update();

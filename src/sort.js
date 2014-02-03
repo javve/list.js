@@ -89,6 +89,7 @@ module.exports = function(list) {
     buttons.els = getByClass(list.listContainer, list.sortClass);
     events.bind(buttons.els, 'click', sort);
     list.on('searchStart', buttons.clear);
+    list.on('filterStart', buttons.clear);
 
     // Helpers
     list.helpers.classes = classes;
