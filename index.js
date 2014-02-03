@@ -18,43 +18,46 @@ var List = function(id, options, values) {
         addAsync = require('./src/add-async')(self),
         parse = require('./src/parse')(self);
 
-    this.listClass      = "list";
-    this.searchClass    = "search";
-    this.sortClass      = "sort";
-    this.page           = 200;
-    this.i              = 1;
-    this.items          = [];
-    this.visibleItems   = [];
-    this.matchingItems  = [];
-    this.searched       = false;
-    this.filtered       = false;
-    this.handlers       = { 'updated': [] };
-    this.plugins        = {};
-    this.helpers        = {
-        getByClass: getByClass,
-        extend: extend,
-        indexOf: indexOf
-    };
-
-    extend(this, options);
-
-    this.listContainer = (typeof(id) === 'string') ? document.getElementById(id) : id;
-    if (!this.listContainer) { return; }
-    this.list           = getByClass(this.listContainer, this.listClass, true);
-
-    this.templater      = require('./src/templater')(self);
-    this.sort           = require('./src/sort')(self);
-    this.search         = require('./src/search')(self);
-    this.filter         = require('./src/filter')(self);
-
     init = {
-        start: function(values) {
+        start: function() {
+            self.listClass      = "list";
+            self.searchClass    = "search";
+            self.sortClass      = "sort";
+            self.page           = 200;
+            self.i              = 1;
+            self.items          = [];
+            self.visibleItems   = [];
+            self.matchingItems  = [];
+            self.searched       = false;
+            self.filtered       = false;
+            self.handlers       = { 'updated': [] };
+            self.plugins        = {};
+            self.helpers        = {
+                getByClass: getByClass,
+                extend: extend,
+                indexOf: indexOf
+            };
+
+            extend(self, options);
+
+            self.listContainer = (typeof(id) === 'string') ? document.getElementById(id) : id;
+            if (!self.listContainer) { return; }
+            self.list           = getByClass(self.listContainer, self.listClass, true);
+
+            self.templater      = require('./src/templater')(self);
+            self.search         = require('./src/search')(self);
+            self.sort           = require('./src/sort')(self);
+            self.filter         = require('./src/filter')(self);
+
+            this.items();
+            self.update();
+            this.plugins();
+        },
+        items: function() {
             parse(self.list);
             if (values !== undefined) {
                 self.add(values);
             }
-            self.update();
-            this.plugins();
         },
         plugins: function() {
             for (var i = 0; i < self.plugins.length; i++) {
@@ -215,7 +218,7 @@ var List = function(id, options, values) {
         return self;
     };
 
-    init.start(values);
+    init.start();
 };
 
 module.exports = List;

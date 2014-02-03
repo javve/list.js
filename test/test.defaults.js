@@ -14,14 +14,13 @@ describe('Defaults', function() {
         expect(list.visibleItems).to.be.an('array');
         expect(list.matchingItems).to.be.an('array');
 
-        expect(list.handlers).to.eql({ updated: [],
-            searchStart: [],
-            filterStart: [],
-            sortStart: [],
-            searchComplete: [],
-            filterComplete: [],
-            sortComplete: []
-        });
+        expect(list.handlers.updated).to.be.an('array');
+        expect(list.handlers.searchStart).to.be.an('array');
+        expect(list.handlers.searchComplete).to.be.an('array');
+        expect(list.handlers.sortStart).to.be.an('array');
+        expect(list.handlers.sortComplete).to.be.an('array');
+        expect(list.handlers.filterStart).to.be.an('array');
+        expect(list.handlers.filterComplete).to.be.an('array');
 
         expect(list.searched).to.be(false);
         expect(list.filtered).to.be(false);
