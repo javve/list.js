@@ -33,9 +33,9 @@ describe('Button', function() {
     beforeEach(function() {
         $('body').append($('<div id="parse-list">\
             <input class="search" />\
-            <span class="sort" id="sort1" data-sort="name">Sort name</span>\
-            <span class="sort" id="sort2" data-sort="name" data-order="asc">Sort name asc</span>\
-            <span class="sort" id="sort3" data-sort="name" data-order="desc">Sort name desc</span>\
+            <span class="sort" id="sort-name" data-sort="name">Sort name</span>\
+            <span class="sort" id="sort-name-asc" data-sort="name" data-order="asc">Sort name asc</span>\
+            <span class="sort" id="sort-name-desc" data-sort="name" data-order="desc">Sort name desc</span>\
             <div class="list">\
                 <div><span class="name">Jonny</span><span class="born">1986</span></div>\
                 <div><span class="name">Jocke</span><span class="born">1985</span></div>\
@@ -56,13 +56,13 @@ describe('Button', function() {
             list.on('sortComplete', function() {
                 done();
             });
-            fireClick($('#sort1')[0]);
+            fireClick($('#sort-name')[0]);
         });
         it('should trigger sortComplete', function(done) {
             list.on('sortComplete', function() {
                 done();
             });
-            fireClick($('#sort1')[0]);
+            fireClick($('#sort-name')[0]);
         });
 
         it('should switch sorting order when clicking multiple times', function(done) {
@@ -71,26 +71,26 @@ describe('Button', function() {
             list.on('sortComplete', function() {
                 sortRun++;
                 if (sortRun == 1) {
-                    expect($('#sort1').hasClass('asc')).to.be(true);
-                    expect($('#sort1').hasClass('desc')).to.be(false);
+                    expect($('#sort-name').hasClass('asc')).to.be(true);
+                    expect($('#sort-name').hasClass('desc')).to.be(false);
                     setTimeout(function() {
-                        fireClick($('#sort1')[0]);
+                        fireClick($('#sort-name')[0]);
                     }, 50);
                 } else if (sortRun == 2) {
-                    expect($('#sort1').hasClass('asc')).to.be(false);
-                    expect($('#sort1').hasClass('desc')).to.be(true);
+                    expect($('#sort-name').hasClass('asc')).to.be(false);
+                    expect($('#sort-name').hasClass('desc')).to.be(true);
                     setTimeout(function() {
-                        fireClick($('#sort1')[0]);
+                        fireClick($('#sort-name')[0]);
                     }, 50);
                 } else if (sortRun == 3) {
-                    expect($('#sort1').hasClass('asc')).to.be(true);
-                    expect($('#sort1').hasClass('desc')).to.be(false);
+                    expect($('#sort-name').hasClass('asc')).to.be(true);
+                    expect($('#sort-name').hasClass('desc')).to.be(false);
                     done();
                 }
             });
-            expect($('#sort1').hasClass('asc')).to.be(false);
-            expect($('#sort1').hasClass('desc')).to.be(false);
-            fireClick($('#sort1')[0]);
+            expect($('#sort-name').hasClass('asc')).to.be(false);
+            expect($('#sort-name').hasClass('desc')).to.be(false);
+            fireClick($('#sort-name')[0]);
         });
 
         it('should sort with predefined order', function(done) {
@@ -99,72 +99,72 @@ describe('Button', function() {
             list.on('sortComplete', function() {
                 sortRun++;
                 if (sortRun == 1) {
-                    expect($('#sort1').hasClass('asc')).to.be(false);
-                    expect($('#sort1').hasClass('desc')).to.be(false);
-                    expect($('#sort2').hasClass('asc')).to.be(true);
-                    expect($('#sort2').hasClass('desc')).to.be(false);
-                    expect($('#sort3').hasClass('asc')).to.be(false);
-                    expect($('#sort3').hasClass('desc')).to.be(false);
+                    expect($('#sort-name').hasClass('asc')).to.be(true);
+                    expect($('#sort-name').hasClass('desc')).to.be(false);
+                    expect($('#sort-name-asc').hasClass('asc')).to.be(true);
+                    expect($('#sort-name-asc').hasClass('desc')).to.be(false);
+                    expect($('#sort-name-desc').hasClass('asc')).to.be(false);
+                    expect($('#sort-name-desc').hasClass('desc')).to.be(false);
                     setTimeout(function() {
-                        fireClick($('#sort2')[0]);
+                        fireClick($('#sort-name-asc')[0]);
                     }, 50);
                 } else if (sortRun == 2) {
-                    expect($('#sort1').hasClass('asc')).to.be(false);
-                    expect($('#sort1').hasClass('desc')).to.be(false);
-                    expect($('#sort2').hasClass('asc')).to.be(true);
-                    expect($('#sort2').hasClass('desc')).to.be(false);
-                    expect($('#sort3').hasClass('asc')).to.be(false);
-                    expect($('#sort3').hasClass('desc')).to.be(false);
+                    expect($('#sort-name').hasClass('asc')).to.be(true);
+                    expect($('#sort-name').hasClass('desc')).to.be(false);
+                    expect($('#sort-name-asc').hasClass('asc')).to.be(true);
+                    expect($('#sort-name-asc').hasClass('desc')).to.be(false);
+                    expect($('#sort-name-desc').hasClass('asc')).to.be(false);
+                    expect($('#sort-name-desc').hasClass('desc')).to.be(false);
                     setTimeout(function() {
-                        fireClick($('#sort2')[0]);
+                        fireClick($('#sort-name-asc')[0]);
                     }, 50);
                 } else if (sortRun == 3) {
-                    expect($('#sort1').hasClass('asc')).to.be(false);
-                    expect($('#sort1').hasClass('desc')).to.be(false);
-                    expect($('#sort2').hasClass('asc')).to.be(true);
-                    expect($('#sort2').hasClass('desc')).to.be(false);
-                    expect($('#sort3').hasClass('asc')).to.be(false);
-                    expect($('#sort3').hasClass('desc')).to.be(false);
+                    expect($('#sort-name').hasClass('asc')).to.be(true);
+                    expect($('#sort-name').hasClass('desc')).to.be(false);
+                    expect($('#sort-name-asc').hasClass('asc')).to.be(true);
+                    expect($('#sort-name-asc').hasClass('desc')).to.be(false);
+                    expect($('#sort-name-desc').hasClass('asc')).to.be(false);
+                    expect($('#sort-name-desc').hasClass('desc')).to.be(false);
                     setTimeout(function() {
-                        fireClick($('#sort3')[0]);
+                        fireClick($('#sort-name-desc')[0]);
                     }, 50);
                 } else if (sortRun == 4) {
-                    expect($('#sort1').hasClass('asc')).to.be(false);
-                    expect($('#sort1').hasClass('desc')).to.be(false);
-                    expect($('#sort2').hasClass('asc')).to.be(false);
-                    expect($('#sort2').hasClass('desc')).to.be(false);
-                    expect($('#sort3').hasClass('asc')).to.be(false);
-                    expect($('#sort3').hasClass('desc')).to.be(true);
+                    expect($('#sort-name').hasClass('asc')).to.be(false);
+                    expect($('#sort-name').hasClass('desc')).to.be(true);
+                    expect($('#sort-name-asc').hasClass('asc')).to.be(false);
+                    expect($('#sort-name-asc').hasClass('desc')).to.be(false);
+                    expect($('#sort-name-desc').hasClass('asc')).to.be(false);
+                    expect($('#sort-name-desc').hasClass('desc')).to.be(true);
                     setTimeout(function() {
-                        fireClick($('#sort3')[0]);
+                        fireClick($('#sort-name-desc')[0]);
                     }, 50);
                 } else if (sortRun == 5) {
-                    expect($('#sort1').hasClass('asc')).to.be(false);
-                    expect($('#sort1').hasClass('desc')).to.be(false);
-                    expect($('#sort2').hasClass('asc')).to.be(false);
-                    expect($('#sort2').hasClass('desc')).to.be(false);
-                    expect($('#sort3').hasClass('asc')).to.be(false);
-                    expect($('#sort3').hasClass('desc')).to.be(true);
+                    expect($('#sort-name').hasClass('asc')).to.be(false);
+                    expect($('#sort-name').hasClass('desc')).to.be(true);
+                    expect($('#sort-name-asc').hasClass('asc')).to.be(false);
+                    expect($('#sort-name-asc').hasClass('desc')).to.be(false);
+                    expect($('#sort-name-desc').hasClass('asc')).to.be(false);
+                    expect($('#sort-name-desc').hasClass('desc')).to.be(true);
                     done();
                 }
             });
-            expect($('#sort1').hasClass('asc')).to.be(false);
-            expect($('#sort1').hasClass('desc')).to.be(false);
-            expect($('#sort2').hasClass('asc')).to.be(false);
-            expect($('#sort2').hasClass('desc')).to.be(false);
-            expect($('#sort3').hasClass('asc')).to.be(false);
-            expect($('#sort3').hasClass('desc')).to.be(false);
-            fireClick($('#sort2')[0]);
+            expect($('#sort-name').hasClass('asc')).to.be(false);
+            expect($('#sort-name').hasClass('desc')).to.be(false);
+            expect($('#sort-name-asc').hasClass('asc')).to.be(false);
+            expect($('#sort-name-asc').hasClass('desc')).to.be(false);
+            expect($('#sort-name-desc').hasClass('asc')).to.be(false);
+            expect($('#sort-name-desc').hasClass('desc')).to.be(false);
+            fireClick($('#sort-name-asc')[0]);
         });
 
         it('buttons should change class when sorting programmatically', function(done) {
             list.on('sortComplete', function() {
-                expect($('#sort1').hasClass('asc')).to.be(true);
-                expect($('#sort1').hasClass('desc')).to.be(false);
-                expect($('#sort2').hasClass('asc')).to.be(true);
-                expect($('#sort2').hasClass('desc')).to.be(false);
-                expect($('#sort3').hasClass('asc')).to.be(false);
-                expect($('#sort3').hasClass('desc')).to.be(false);
+                expect($('#sort-name').hasClass('asc')).to.be(true);
+                expect($('#sort-name').hasClass('desc')).to.be(false);
+                expect($('#sort-name-asc').hasClass('asc')).to.be(true);
+                expect($('#sort-name-asc').hasClass('desc')).to.be(false);
+                expect($('#sort-name-desc').hasClass('asc')).to.be(false);
+                expect($('#sort-name-desc').hasClass('desc')).to.be(false);
                 done();
             });
             list.sort('name', { order: "asc" });

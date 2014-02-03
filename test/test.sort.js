@@ -267,7 +267,8 @@ describe('Sort', function() {
             i6.values({ val: "<input value='y' />" });
             list.sort('val', {
                 sortFunction: function(itemA, itemB, options) {
-                    return list.helpers.naturalSort($(itemA.values().val).val(), $(itemB.values().val).val(), options);
+                    options.desc = false;
+                    return list.helpers.naturalSort($(itemA.values()[options.valueName]).val(), $(itemB.values()[options.valueName]).val(), options);
                 }
             });
             expect(list.items[0].values().val).to.be.equal("<input value='a' />");
@@ -279,7 +280,8 @@ describe('Sort', function() {
         });
         it('should use default custom sort function', function() {
             list.sortFunction = function(itemA, itemB, options) {
-                return list.helpers.naturalSort($(itemA.values().val).val(), $(itemB.values().val).val(), options);
+                options.desc = false;
+                return list.helpers.naturalSort($(itemA.values()[options.valueName]).val(), $(itemB.values()[options.valueName]).val(), options);
             };
             i1.values({ val: "<input value='b' />" });
             i2.values({ val: "<input value='a' />" });
@@ -297,7 +299,8 @@ describe('Sort', function() {
         });
         it('should use default custom sort function with options', function() {
             list.sortFunction = function(itemA, itemB, options) {
-                return list.helpers.naturalSort($(itemA.values().val).val(), $(itemB.values().val).val(), options);
+                options.desc = true;
+                return list.helpers.naturalSort($(itemA.values()[options.valueName]).val(), $(itemB.values()[options.valueName]).val(), options);
             };
             i1.values({ val: "<input value='b' />" });
             i2.values({ val: "<input value='a' />" });
