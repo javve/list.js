@@ -723,43 +723,46 @@ var List = function(id, options, values) {
         addAsync = require('./src/add-async')(self),
         parse = require('./src/parse')(self);
 
-    this.listClass      = "list";
-    this.searchClass    = "search";
-    this.sortClass      = "sort";
-    this.page           = 200;
-    this.i              = 1;
-    this.items          = [];
-    this.visibleItems   = [];
-    this.matchingItems  = [];
-    this.searched       = false;
-    this.filtered       = false;
-    this.handlers       = { 'updated': [] };
-    this.plugins        = {};
-    this.helpers        = {
-        getByClass: getByClass,
-        extend: extend,
-        indexOf: indexOf
-    };
-
-    extend(this, options);
-
-    this.listContainer = (typeof(id) === 'string') ? document.getElementById(id) : id;
-    if (!this.listContainer) { return; }
-    this.list           = getByClass(this.listContainer, this.listClass, true);
-
-    this.templater      = require('./src/templater')(self);
-    this.sort           = require('./src/sort')(self);
-    this.search         = require('./src/search')(self);
-    this.filter         = require('./src/filter')(self);
-
     init = {
-        start: function(values) {
+        start: function() {
+            self.listClass      = "list";
+            self.searchClass    = "search";
+            self.sortClass      = "sort";
+            self.page           = 200;
+            self.i              = 1;
+            self.items          = [];
+            self.visibleItems   = [];
+            self.matchingItems  = [];
+            self.searched       = false;
+            self.filtered       = false;
+            self.handlers       = { 'updated': [] };
+            self.plugins        = {};
+            self.helpers        = {
+                getByClass: getByClass,
+                extend: extend,
+                indexOf: indexOf
+            };
+
+            extend(self, options);
+
+            self.listContainer = (typeof(id) === 'string') ? document.getElementById(id) : id;
+            if (!self.listContainer) { return; }
+            self.list           = getByClass(self.listContainer, self.listClass, true);
+
+            self.templater      = require('./src/templater')(self);
+            self.search         = require('./src/search')(self);
+            self.filter         = require('./src/filter')(self);
+            self.sort           = require('./src/sort')(self);
+
+            this.items();
+            self.update();
+            this.plugins();
+        },
+        items: function() {
             parse(self.list);
             if (values !== undefined) {
                 self.add(values);
             }
-            self.update();
-            this.plugins();
         },
         plugins: function() {
             for (var i = 0; i < self.plugins.length; i++) {
@@ -920,7 +923,7 @@ var List = function(id, options, values) {
         return self;
     };
 
-    init.start(values);
+    init.start();
 };
 
 module.exports = List;
@@ -1047,10 +1050,9 @@ var naturalSort = require('natural-sort'),
     getAttribute = require('get-attribute');
 
 module.exports = function(list) {
-    var sortButtons, options, valueName;
-
-    list.sortFunction = list.sortFunction || function(itemA, itemB) {
-        return naturalSort(itemA.values()[valueName], itemB.values()[valueName], options);
+    list.sortFunction = list.sortFunction || function(itemA, itemB, options) {
+        options.desc = options.order == "desc" ? true : false; // Natural sort uses this format
+        return naturalSort(itemA.values()[options.valueName], itemB.values()[options.valueName], options);
     };
 
     var buttons = {
@@ -1061,16 +1063,16 @@ module.exports = function(list) {
                 classes(buttons.els[i]).remove('desc');
             }
         },
-        getOrder: function(btn, options) {
+        getOrder: function(btn) {
             var predefinedOrder = getAttribute(btn, 'data-order');
             if (predefinedOrder == "asc" || predefinedOrder == "desc") {
-                options.order = predefinedOrder;
+                return predefinedOrder;
             } else if (classes(btn).has('desc')) {
-                options.order = "asc";
+                return "asc";
             } else if (classes(btn).has('asc')) {
-                options.order = "desc";
+                return "desc";
             } else {
-                options.order = "asc";
+                return "asc";
             }
         },
         getInSensitive: function(btn, options) {
@@ -1081,31 +1083,42 @@ module.exports = function(list) {
                 options.insensitive = false;
             }
         },
-        setOrder: function(btn, options) {
-            classes(btn).add(options.order);
+        setOrder: function(options) {
+            for (var i = 0, il = buttons.els.length; i < il; i++) {
+                var btn = buttons.els[i];
+                if (getAttribute(btn, 'data-sort') !== options.valueName) {
+                    continue;
+                }
+                var predefinedOrder = getAttribute(btn, 'data-order');
+                if (predefinedOrder == "asc" || predefinedOrder == "desc") {
+                    if (predefinedOrder == options.order) {
+                        classes(btn).add(options.order);
+                    }
+                } else {
+                    classes(btn).add(options.order);
+                }
+            }
         }
     };
     var sort = function() {
         list.trigger('sortStart');
-        options = {},
-        valueName = "";
+        options = {};
 
         var target = arguments[0].currentTarget || arguments[0].srcElement || undefined;
 
         if (target) {
-            valueName = getAttribute(target, 'data-sort');
+            options.valueName = getAttribute(target, 'data-sort');
             buttons.getInSensitive(target, options);
-            buttons.getOrder(target, options);
-            buttons.clear();
-            buttons.setOrder(target, options);
+            options.order = buttons.getOrder(target);
         } else {
-            valueName = arguments[0];
             options = arguments[1] || options;
+            options.valueName = arguments[0];
             options.order = options.order || "asc";
             options.insensitive = (typeof options.insensitive == "undefined") ? true : options.insensitive;
         }
+        buttons.clear();
+        buttons.setOrder(options);
 
-        options.desc = options.order == "desc" ? true : false;
         options.sortFunction = options.sortFunction || list.sortFunction;
         list.items.sort(function(a, b) {
             return options.sortFunction(a, b, options);
@@ -1120,6 +1133,8 @@ module.exports = function(list) {
 
     buttons.els = getByClass(list.listContainer, list.sortClass);
     events.bind(buttons.els, 'click', sort);
+    list.on('searchStart', buttons.clear);
+    list.on('filterStart', buttons.clear);
 
     // Helpers
     list.helpers.classes = classes;
