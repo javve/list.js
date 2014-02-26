@@ -98,7 +98,12 @@ module.exports = function(list) {
     list.handlers.searchStart = list.handlers.searchStart || [];
     list.handlers.searchComplete = list.handlers.searchComplete || [];
 
-    events.bind(getByClass(list.listContainer, list.searchClass), 'keyup', function(e) {
+    var eventSearch = 'input';
+    if ( document && !('oninput' in document.createElement('input')) ){
+        eventSearch = 'keyup';
+    }
+
+    events.bind(getByClass(list.listContainer, list.searchClass), eventSearch, function(e) {
         var target = e.target || e.srcElement; // IE have srcElement
         searchMethod(target.value);
     });
