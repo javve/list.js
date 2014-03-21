@@ -450,7 +450,7 @@ exports.unbind = function(el, type, fn, capture){
   return fn;
 };
 });
-require.register("javve-to-array/index.js", function(exports, require, module){
+require.register("timoxley-to-array/index.js", function(exports, require, module){
 /**
  * Convert an array-like object into an `Array`.
  * If `collection` is already an `Array`, then will return a clone of `collection`.
@@ -465,9 +465,9 @@ module.exports = function toArray(collection) {
   if (collection === null) return [null]
   if (collection === window) return [window]
   if (typeof collection === 'string') return [collection]
-  if (collection instanceof Array) return collection
+  if (isArray(collection)) return collection
   if (typeof collection.length != 'number') return [collection]
-  if (typeof collection === 'function') return [collection]
+  if (typeof collection === 'function' && collection instanceof Function) return [collection]
 
   var arr = []
   for (var i = 0; i < collection.length; i++) {
@@ -477,6 +477,10 @@ module.exports = function toArray(collection) {
   }
   if (!arr.length) return []
   return arr
+}
+
+function isArray(arr) {
+  return Object.prototype.toString.call(arr) === "[object Array]";
 }
 
 });
@@ -1033,8 +1037,19 @@ module.exports = function(list) {
     list.handlers.searchComplete = list.handlers.searchComplete || [];
 
     events.bind(getByClass(list.listContainer, list.searchClass), 'keyup', function(e) {
-        var target = e.target || e.srcElement; // IE have srcElement
-        searchMethod(target.value);
+        var target = e.target || e.srcElement, // IE have srcElement
+            alreadyCleared = (target.value === "" && !list.searched);
+        if (!alreadyCleared) { // If oninput already have resetted the list, do nothing
+            searchMethod(target.value);
+        }
+    });
+
+    // Used to detect click on HTML5 clear button
+    events.bind(getByClass(list.listContainer, list.searchClass), 'input', function(e) {
+        var target = e.target || e.srcElement;
+        if (target.value === "") {
+            searchMethod('');
+        }
     });
 
     list.helpers.toString = toString;
@@ -1433,7 +1448,7 @@ require.alias("javve-events/index.js", "list.js/deps/events/index.js");
 require.alias("javve-events/index.js", "events/index.js");
 require.alias("component-event/index.js", "javve-events/deps/event/index.js");
 
-require.alias("javve-to-array/index.js", "javve-events/deps/to-array/index.js");
+require.alias("timoxley-to-array/index.js", "javve-events/deps/to-array/index.js");
 
 require.alias("javve-get-by-class/index.js", "list.js/deps/get-by-class/index.js");
 require.alias("javve-get-by-class/index.js", "get-by-class/index.js");
