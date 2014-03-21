@@ -1,8 +1,9 @@
 # Changelog
 
 ### 2014-02-03: 1.1.1
-
-* *[Bugfix]* Update `javve/events` version which fixes critical bugs in Safari for PC and PhantomJS (which makes the command line tests work again).
+- *[Bugfix]* Update `javve/events` version which fixes critical bugs in Safari for PC and PhantomJS (which makes the command line tests work again).
+- *[Bugfix]* Clear search when clicking in the HTML5 clear button.
+- *[Misc]* Add History.md file for changelog instead of having it at Listjs.com.
 
 ### 2014-02-03: 1.1.0
 - *[Change]* The sorting API is update so it looks like this `listObj.sort('name', { order: "asc "})` and `listObj.sort('name', { order: "desc "})` instead or `listObj.sort('name', { desc: true/false })`.

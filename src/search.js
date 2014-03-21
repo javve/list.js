@@ -99,8 +99,19 @@ module.exports = function(list) {
     list.handlers.searchComplete = list.handlers.searchComplete || [];
 
     events.bind(getByClass(list.listContainer, list.searchClass), 'keyup', function(e) {
-        var target = e.target || e.srcElement; // IE have srcElement
-        searchMethod(target.value);
+        var target = e.target || e.srcElement, // IE have srcElement
+            alreadyCleared = (target.value === "" && !list.searched);
+        if (!alreadyCleared) { // If oninput already have resetted the list, do nothing
+            searchMethod(target.value);
+        }
+    });
+
+    // Used to detect click on HTML5 clear button
+    events.bind(getByClass(list.listContainer, list.searchClass), 'input', function(e) {
+        var target = e.target || e.srcElement;
+        if (target.value === "") {
+            searchMethod('');
+        }
     });
 
     list.helpers.toString = toString;
