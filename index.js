@@ -41,7 +41,7 @@ var List = function(id, options, values) {
             extend(self, options);
 
             self.listContainer = (typeof(id) === 'string') ? document.getElementById(id) : id;
-            if (!self.listContainer) { return; }
+            if (!self.listContainer) { console.warn("Required container not found"); return; }
             self.list           = getByClass(self.listContainer, self.listClass, true);
 
             self.templater      = require('./src/templater')(self);
