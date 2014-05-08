@@ -996,7 +996,13 @@ module.exports = function(list) {
         },
         values: function(values, column) {
             if (values.hasOwnProperty(column)) {
-                text = toString(values[column]).toLowerCase();
+                if(/^<[^>]+>/.test(values[column])){
+                    remplace = $(values[column]).clone();
+                    remplace.not(":visible").remove();
+                    text = toString(remplace.html()).toLowerCase();
+                } else {
+                    text = toString(values[column]).toLowerCase();
+                }
                 if ((searchString !== "") && (text.search(searchString) > -1)) {
                     return true;
                 }
