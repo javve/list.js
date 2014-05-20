@@ -25,5 +25,20 @@
   "main": "index",
   "engines": {
     "node": ">= 0.10.21"
-  }
+  },
+  "spm": {
+    "main": "index.js",
+    "dependencies": {
+      "classes": "1.2.1",
+      "extend": "1.0.0",
+      "indexof": "0.0.3",
+      "javve-events": "0.0.2",
+      "get-by-class": "0.0.2",
+      "get-attribute": "0.0.1",
+      "natural-sort": "1.0.0",
+      "to-string": "0.1.0",
+      "type": "1.0.0"
+    }
+  },
+  "homepage": "https://github.com/javve/list.js"
 }
