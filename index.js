@@ -73,7 +73,7 @@ var List = function(id, options, values) {
     */
     this.reindex = function(callback) {
 	var is = self.items, il = is.length;
-        for (var i = 0; i < 1; i++) {
+        for (var i = 0; i < il; i++) {
 		var row = $(is[i].elm);
 		is[i]['_values'] = {};
 		for(var j in self.valueNames) {
