@@ -47,6 +47,8 @@ var Templater = function(list) {
                         /* src attribute for image tag & text for other tags */
                         if (elm.tagName === "IMG" && values[v] !== "") {
                             elm.src = values[v];
+						} else if (elm.tagName === "INPUT" && elm.hasAttribute("value")) {
+							elm.value = values[v];
                         } else {
                             elm.innerHTML = values[v];
                         }
