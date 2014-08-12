@@ -71,7 +71,7 @@ module.exports = function(list) {
         }
     };
 
-    var searchMethod = function(str) {
+    list.searchMethod = function(str) {
         list.trigger('searchStart');
 
         prepare.resetList();
@@ -102,7 +102,7 @@ module.exports = function(list) {
         var target = e.target || e.srcElement, // IE have srcElement
             alreadyCleared = (target.value === "" && !list.searched);
         if (!alreadyCleared) { // If oninput already have resetted the list, do nothing
-            searchMethod(target.value);
+            list.searchMethod(target.value);
         }
     });
 
@@ -110,10 +110,10 @@ module.exports = function(list) {
     events.bind(getByClass(list.listContainer, list.searchClass), 'input', function(e) {
         var target = e.target || e.srcElement;
         if (target.value === "") {
-            searchMethod('');
+            list.searchMethod('');
         }
     });
 
     list.helpers.toString = toString;
-    return searchMethod;
+    return list.searchMethod;
 };
