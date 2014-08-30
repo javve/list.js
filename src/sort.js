@@ -57,7 +57,7 @@ module.exports = function(list) {
     };
     var sort = function() {
         list.trigger('sortStart');
-        options = {};
+        var options = {};
 
         var target = arguments[0].currentTarget || arguments[0].srcElement || undefined;
 
