@@ -772,7 +772,7 @@ var List = function(id, options, values) {
             for (var i = 0; i < self.plugins.length; i++) {
                 var plugin = self.plugins[i];
                 self[plugin.name] = plugin;
-                plugin.init(self);
+                plugin.init(self, List);
             }
         }
     };
