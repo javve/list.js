@@ -20,17 +20,19 @@ module.exports = function(list) {
         }
     };
     var parseAsync = function(itemElements, valueNames) {
-        var itemsToIndex = itemElements.splice(0, 100); // TODO: If < 100 items, what happens in IE etc?
+        var itemsToIndex = itemElements.splice(0, 50); // TODO: If < 100 items, what happens in IE etc?
         parse(itemsToIndex, valueNames);
         if (itemElements.length > 0) {
             setTimeout(function() {
-                init.items.indexAsync(itemElements, valueNames);
-            }, 10);
+                parseAsync(itemElements, valueNames);
+            }, 1);
         } else {
             list.update();
-            // TODO: Add indexed callback
+            list.trigger('parseComplete');
         }
     };
+
+    list.handlers.parseComplete = list.handlers.parseComplete || [];
 
     return function() {
         var itemsToIndex = getChildren(list.list),

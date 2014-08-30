@@ -13,10 +13,9 @@ var document = window.document,
 var List = function(id, options, values) {
 
     var self = this,
-		init,
+        init,
         Item = require('./src/item')(self),
-        addAsync = require('./src/add-async')(self),
-        parse = require('./src/parse')(self);
+        addAsync = require('./src/add-async')(self);
 
     init = {
         start: function() {
@@ -44,17 +43,26 @@ var List = function(id, options, values) {
             if (!self.listContainer) { return; }
             self.list           = getByClass(self.listContainer, self.listClass, true);
 
+            self.parse          = require('./src/parse')(self);
             self.templater      = require('./src/templater')(self);
             self.search         = require('./src/search')(self);
             self.filter         = require('./src/filter')(self);
             self.sort           = require('./src/sort')(self);
 
+            this.handlers();
             this.items();
             self.update();
             this.plugins();
         },
+        handlers: function() {
+            for (var handler in self.handlers) {
+                if (self[handler]) {
+                    self.on(handler, self[handler]);
+                }
+            }
+        },
         items: function() {
-            parse(self.list);
+            self.parse(self.list);
             if (values !== undefined) {
                 self.add(values);
             }
@@ -207,12 +215,12 @@ var List = function(id, options, values) {
                 is[i].show();
                 self.visibleItems.push(is[i]);
                 self.matchingItems.push(is[i]);
-			} else if (is[i].matching()) {
+            } else if (is[i].matching()) {
                 self.matchingItems.push(is[i]);
                 is[i].hide();
-			} else {
+            } else {
                 is[i].hide();
-			}
+            }
         }
         self.trigger('updated');
         return self;
