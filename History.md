@@ -5,6 +5,7 @@
 - *[Bugfix]* Include reference to List when initializing plugins. Fix for require.js which don't have a global reference to List.
 - *[Bugfix]* Fix index async
   - https://github.com/javve/list.js/issues/268
+- *[Bugfix]* Fix add async
 
 ### 2014-02-03: 1.1.1
 - *[Bugfix]* Update `javve/events` version which fixes critical bugs in Safari for PC and PhantomJS (which makes the command line tests work again).

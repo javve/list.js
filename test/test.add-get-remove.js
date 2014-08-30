@@ -29,9 +29,23 @@ describe('Add, get, remove', function() {
         });
         it('should add async items', function(done) {
             list.add([
-                { name: 'Sven' }
+{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},
+{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},
+{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},
+{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},
+{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},
+{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},
+{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},
+{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},
+{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},
+{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},
+{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},
+{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},
+{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},
+{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},
+{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'},{name:'Sven'}
             ], function() {
-                expect(list.items.length).to.equal(2);
+                expect(list.items.length).to.equal(91);
                 done();
             });
         });
