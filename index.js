@@ -68,6 +68,20 @@ var List = function(id, options, values) {
         }
     };
 
+    /*
+    * Reindex list
+    */
+    this.reindex = function(callback) {
+	var is = self.items, il = is.length;
+        for (var i = 0; i < il; i++) {
+		var row = $(is[i].elm);
+		is[i]['_values'] = {};
+		for(var j in self.valueNames) {
+			is[i]['_values'][self.valueNames[j]] = row.find('.'+self.valueNames[j]).html();
+		}
+	}
+	self.update();
+    };
 
     /*
     * Add object to list
