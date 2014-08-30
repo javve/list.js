@@ -25,5 +25,12 @@
   "main": "index",
   "engines": {
     "node": ">= 0.10.21"
-  }
+  },
+  "npmName": "list.js",
+  "npmFileMap": [{
+    "basePath": "/dist/",
+    "files": [
+      "*.js"
+    ]
+  }]
 }
