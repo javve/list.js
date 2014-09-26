@@ -66,7 +66,7 @@
 ### 2011-11-16: 0.1.2 release
 - Sorting is now indicated by class `asc` or `desc` at sorting buttons
 - Added three new small helper functions `hasClass(element, class)`, `addClass(element, class)</
-    and `removeClass(element, class)`</li>
+  and `removeClass(element, class)`</li>
 
 ### 2011-10-20: 0.1.1 release
 - Added possibility to reverse sort the list
