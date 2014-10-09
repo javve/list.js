@@ -31,7 +31,15 @@ var Templater = function(list) {
     var values = {};
     for(var i = 0, il = valueNames.length; i < il; i++) {
       var elm = getByClass(item.elm, valueNames[i], true);
-      values[valueNames[i]] = elm ? elm.innerHTML : "";
+      if (!elm) {
+        values[valueNames[i]] = "";
+      } else if (elm.type === 'checkbox') {
+        values[valueNames[i]] = elm.checked ? 1 : 0;
+      } else if (elm.tagName === 'INPUT') {
+        values[valueNames[i]] = elm.value;
+      } else {
+        values[valueNames[i]] = elm.innerHTML;
+      }
     }
     return values;
   };

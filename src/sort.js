@@ -22,8 +22,6 @@ module.exports = function(list) {
       var predefinedOrder = getAttribute(btn, 'data-order');
       if (predefinedOrder == "asc" || predefinedOrder == "desc") {
         return predefinedOrder;
-      } else if (classes(btn).has('desc')) {
-        return "asc";
       } else if (classes(btn).has('asc')) {
         return "desc";
       } else {
