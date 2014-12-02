@@ -43,11 +43,13 @@ var Templater = function(list) {
         if (values.hasOwnProperty(v)) {
           // TODO speed up if possible
           var elm = getByClass(item.elm, v, true);
-          if (elm) {
+          if (elm && values[v] !== "") {
             /* src attribute for image tag & text for other tags */
-            if (elm.tagName === "IMG" && values[v] !== "") {
+            if (elm.tagName === "IMG" ) {
               elm.src = values[v];
-            } else {
+            } else if(elm.tagName === "A"){
+              elm.setAttribute("href", values[v]);
+            }else {
               elm.innerHTML = values[v];
             }
           }
