@@ -43,10 +43,15 @@ Really simple and easy to use!
 - [Fuzzy search](http://listjs.com/docs/plugins/fuzzysearch)
 - [Build your own](http://listjs.com/docs/plugins/build)
 
+### TODO
+Features/problems I'll implement/fix in the future. (issues about 'em will be closed)
+- Tables row items can't be created with the `{ item: '<html>' }`-method.
+- Make it possible to re-index items and the entire list.
+- Support for data attributes
+- Support for templating images, links, inputs, more (?)
+
 ### Known issues
 - Sorting fails with some UTF8 characters. Example: `åä`, thinking that `ä` is before `å`.
-- Tables row items can't be created with the `{ item: '<html>' }`-method.
-
 
 ## Contributors
 * [javve](https://github.com/javve) / [Jonny Strömberg](http://jonnystromberg.com)
