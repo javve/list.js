@@ -5,37 +5,37 @@ module.exports = function(grunt) {
   pkg: require("./package.json"),
   watch: {
     scripts: {
-    files: ['{,*/}*.js', '*.js', 'test/*.html', 'test/*.js'],
-    tasks: ['default'],
-    options: {
-      spawn: false,
-    },
+      files: ['{,*/}*.js', '*.js', 'test/*.html', 'test/*.js'],
+      tasks: ['default'],
+      options: {
+        spawn: false,
+      },
     },
   },
   shell: {
     install: {
-    command: 'component install --dev',
-    options: {
-      stderr: true
-    }
+      command: 'component install --dev',
+      options: {
+        stderr: true
+      }
     },
     build: {
-    command: 'component build --dev',
-    options: {
-      stderr: true
-    }
+      command: 'component build --dev',
+      options: {
+        stderr: true
+      }
     },
     standalone: {
-    command: 'component build --standalone List -n list.standalone'
+      command: 'component build --standalone List -n list.standalone'
     },
     mkdir: {
-    command: 'mkdir -p dist'
+      command: 'mkdir -p dist'
     },
     move: {
-    command: 'mv build/list.standalone.js dist/list.js'
+      command: 'mv build/list.standalone.js dist/list.js'
     },
     remove: {
-    command: 'rm -fr build components dist'
+      command: 'rm -fr build components dist'
     }
   },
   jshint: {
@@ -45,9 +45,9 @@ module.exports = function(grunt) {
       expr: true,
       multistr: false,
       globals: {
-      module: true
+        module: true
+        }
       }
-    }
     },
     tests: {
     src: ['test/(*|!mocha).js'],
@@ -55,17 +55,17 @@ module.exports = function(grunt) {
       expr: true,
       multistr: true,
       globals: {
-      jQuery: true,
-      module: true
+        jQuery: true,
+        module: true
+        }
       }
-    }
     }
   },
   uglify: {
     target: {
-    files: {
-      'dist/list.min.js': ['dist/list.js']
-    }
+      files: {
+        'dist/list.min.js': ['dist/list.js']
+      }
     }
   },
   mocha: {
@@ -78,9 +78,9 @@ module.exports = function(grunt) {
       log: true,
       reporter: 'Nyan',
       mocha: {
-      ignoreLeaks: false
+        ignoreLeaks: false
+        }
       }
-    }
     }
   }
   });
