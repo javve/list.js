@@ -36,8 +36,7 @@
   },
   "development": {
     "visionmedia/mocha": "*",
-    "techjacker/expect.js": "*",
-    "component/jquery": "1.9.1"
+    "components/jquery": "1.11.2"
   },
   "twitter": "javve",
   "remotes": []

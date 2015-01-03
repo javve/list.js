@@ -15,7 +15,9 @@
   "repository": "git://github.com/javve/list.js.git",
   "dependencies": {},
   "devDependencies": {
+    "component": "^1.0.1",
     "grunt": "~0.4.1",
+    "grunt-cli": "^0.1.13",
     "grunt-contrib-jshint": "~0.7.1",
     "grunt-contrib-uglify": "~0.2.7",
     "grunt-contrib-watch": "~0.5.3",
