@@ -26,7 +26,7 @@ module.exports = function(list) {
       }
     },
     setColumns: function() {
-      columns = (columns === undefined) ? prepare.toArray(list.items[0].values()) : columns;
+      columns = (columns === undefined) ? list.valueNames : columns;
     },
     setSearchString: function(s) {
       s = toString(s).toLowerCase();
