@@ -1,5 +1,5 @@
 /*
-ListJS with beta 1.0.0
+List.js 1.1.1
 By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
 */
 (function( window, undefined ) {
@@ -19,19 +19,19 @@ var List = function(id, options, values) {
 
   init = {
     start: function() {
-      self.listClass    = "list";
-      self.searchClass  = "search";
-      self.sortClass    = "sort";
-      self.page       = 200;
-      self.i        = 1;
-      self.items      = [];
+      self.listClass      = "list";
+      self.searchClass    = "search";
+      self.sortClass      = "sort";
+      self.page           = 200;
+      self.i              = 1;
+      self.items          = [];
       self.visibleItems   = [];
       self.matchingItems  = [];
-      self.searched     = false;
-      self.filtered     = false;
-      self.handlers     = { 'updated': [] };
-      self.plugins    = {};
-      self.helpers    = {
+      self.searched       = false;
+      self.filtered       = false;
+      self.handlers       = { 'updated': [] };
+      self.plugins        = {};
+      self.helpers        = {
         getByClass: getByClass,
         extend: extend,
         indexOf: indexOf
@@ -44,7 +44,7 @@ var List = function(id, options, values) {
       self.list       = getByClass(self.listContainer, self.listClass, true);
 
       self.parse      = require('./src/parse')(self);
-      self.templater    = require('./src/templater')(self);
+      self.templater  = require('./src/templater')(self);
       self.search     = require('./src/search')(self);
       self.filter     = require('./src/filter')(self);
       self.sort       = require('./src/sort')(self);
