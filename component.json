@@ -35,7 +35,7 @@
     "component/type": "*"
   },
   "development": {
-    "visionmedia/mocha": "*",
+    "mochajs/mocha": "*",
     "components/jquery": "1.11.2"
   },
   "twitter": "javve",
