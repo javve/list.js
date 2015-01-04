@@ -3,7 +3,7 @@ describe('Show', function() {
   var list, a, b, c, d, e, f;
 
   before(function() {
-    list = fixture.list(['id'], [
+    list = fixture.list(['id', 'id2'], [
       { id: "1", id2: "a" },
       { id: "2", id2: "a" },
       { id: "3", id2: "b" },
