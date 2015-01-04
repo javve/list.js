@@ -92,6 +92,14 @@ describe('Add, get, remove', function() {
       expect(list.items.length).to.equal(1);
     });
 
+    it('should avoid node not found error', function() {
+      var item = list.get('name', 'Jonny')[0];
+      list.list.removeChild(item.elm);
+      var count = list.remove('name', 'Jonny');
+      expect(count).to.be.equal(1);
+      expect(list.items.length).to.equal(0);
+    });
+
     it('should remove eight items', function() {
       list.add({ name: 'Jonny' });
       list.add({ name: 'Jonny' });

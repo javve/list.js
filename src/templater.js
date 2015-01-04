@@ -69,7 +69,9 @@ var Templater = function(list) {
     return true;
   };
   this.remove = function(item) {
-    list.list.removeChild(item.elm);
+    if (item.elm.parentNode === list.list) {
+      list.list.removeChild(item.elm);
+    }
   };
   this.show = function(item) {
     templater.create(item);
