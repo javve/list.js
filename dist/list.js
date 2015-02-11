@@ -639,7 +639,7 @@ module.exports = function(a, b, options) {
     oFxNcL = !(xN[cLoc] || '').match(ore) && parseFloat(xN[cLoc]) || xN[cLoc] || 0;
     oFyNcL = !(yN[cLoc] || '').match(ore) && parseFloat(yN[cLoc]) || yN[cLoc] || 0;
     // handle numeric vs string comparison - number < string - (Kyle Adams)
-    if (isNaN(oFxNcL) !== isNaN(oFyNcL)) { return (isNaN(oFxNcL)) ? 1 : -1; }
+    if (isNaN(oFxNcL) !== isNaN(oFyNcL)) { return mult * (isNaN(oFxNcL) ? 1 : -1); }
     // rely on string comparison if different types - i.e. '02' < 2 != '02' < '2'
     else if (typeof oFxNcL !== typeof oFyNcL) {
       oFxNcL += '';
