@@ -69,6 +69,22 @@ describe('Search', function() {
     });
   });
 
+
+  describe('Default search columns', function() {
+    it('should find in the default match column', function() {
+      list.searchColumns = ['name'];
+      var result = list.search('jonny');
+      expect(result.length).to.equal(1);
+      expect(result[0]).to.eql(jonny);
+    });
+    it('should not find in the default match column', function() {
+      list.searchColumns = ['born'];
+      var result = list.search('jonny');
+      expect(result.length).to.equal(0);
+    });
+  });
+
+
   describe('Specfic columns', function() {
     it('should find match in column', function() {
       var result = list.search('jonny', [ 'name' ]);
