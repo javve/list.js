@@ -87,7 +87,7 @@ Built with [Component](https://github.com/component/component) which is created 
 
 ## License (MIT)
 
-Copyright (c) 2012 Jonny Strömberg <[jonny.stromberg@gmail.com](jonny.stromberg@gmail.com)>
+Copyright (c) 2012 Jonny Strömberg <[jonny.stromberg@gmail.com](mailto:jonny.stromberg@gmail.com)>
 [http://jonnystromberg.com](http://jonnystromberg.com)
 
 [![Views in the last 24 hours](https://sourcegraph.com/api/repos/github.com/javve/list.js/counters/views-24h.png)](https://sourcegraph.com/github.com/javve/list.js)
