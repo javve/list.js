@@ -25,11 +25,10 @@ describe('Defaults', function() {
     expect(list.searched).to.be(false);
     expect(list.filtered).to.be(false);
     expect(list.i).to.equal(1);
-    expect(list.page).to.equal(200);
+    expect(list.page).to.equal(10000);
     expect(list.listClass).to.equal('list');
     expect(list.sortClass).to.equal('sort');
     expect(list.searchClass).to.equal('search');
-    expect(list.page).to.equal(200);
   });
 
   it('should have the right elements', function() {

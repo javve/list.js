@@ -3,6 +3,7 @@
 move form Component to Browserify
 add optional id to items
 support for data attributes
+set default page size to 10000 instead of 200 (because: page size is confusing for new users)
 
 ### 2014-07
 - *[Feature]* Make it possble to add event handlers on init `new List('listId', { searchComplete: function(list) {} })`.
