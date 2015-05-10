@@ -1,5 +1,3 @@
-var getByClass = require('./utils/get-by-class');
-
 var Templater = function(list) {
   var itemSource = getItemSource(list.item),
     templater = this;
@@ -30,7 +28,7 @@ var Templater = function(list) {
     templater.create(item);
     var values = {};
     for(var i = 0, il = valueNames.length; i < il; i++) {
-      var elm = getByClass(item.elm, valueNames[i], true);
+      var elm = list.utils.getByClass(item.elm, valueNames[i], true);
       values[valueNames[i]] = elm ? elm.innerHTML : "";
     }
     return values;
@@ -42,7 +40,7 @@ var Templater = function(list) {
       for(var v in values) {
         if (values.hasOwnProperty(v)) {
           // TODO speed up if possible
-          var elm = getByClass(item.elm, v, true);
+          var elm = list.utils.getByClass(item.elm, v, true);
           if (elm) {
             /* src attribute for image tag & text for other tags */
             if (elm.tagName === "IMG" && values[v] !== "") {

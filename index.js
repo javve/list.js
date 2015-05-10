@@ -8,7 +8,12 @@ By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
 var document = window.document,
   getByClass = require('./src/utils/get-by-class'),
   extend = require('./src/utils/extend'),
-  indexOf = require('./src/utils/index-of');
+  indexOf = require('./src/utils/index-of'),
+  events = require('./src/utils/events'),
+  toString = require('./src/utils/to-string'),
+  naturalSort = require('./src/utils/natural-sort'),
+  classes = require('./src/utils/classes'),
+  getAttribute = require('./src/utils/get-attribute');
 
 var List = function(id, options, values) {
 
@@ -31,10 +36,15 @@ var List = function(id, options, values) {
       self.filtered       = false;
       self.handlers       = { 'updated': [] };
       self.plugins        = {};
-      self.helpers        = {
+      self.utils        = {
         getByClass: getByClass,
         extend: extend,
-        indexOf: indexOf
+        indexOf: indexOf,
+        events: events,
+        toString: toString,
+        naturalSort: naturalSort,
+        classes: classes,
+        getAttribute: getAttribute
       };
 
       extend(self, options);
