@@ -86,6 +86,14 @@ var List = function(id, options, values) {
     }
   };
 
+  this.toJSON = function() {
+    var json = [];
+    for (var i = 0, il = self.items.length; i < il; i++) {
+      json.push(self.items[i].values());
+    }
+    return json;
+  };
+
 
   /*
   * Add object to list
