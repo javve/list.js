@@ -1,5 +1,6 @@
 # Changelog
 
+move form Component to Browserify
 add optional id to items
 support for data attributes
 
