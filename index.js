@@ -6,9 +6,9 @@ By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
 "use strict";
 
 var document = window.document,
-  getByClass = require('get-by-class'),
-  extend = require('extend'),
-  indexOf = require('indexof');
+  getByClass = require('./src/utils/get-by-class'),
+  extend = require('./src/utils/extend'),
+  indexOf = require('./src/utils/index-of');
 
 var List = function(id, options, values) {
 
@@ -230,5 +230,6 @@ var List = function(id, options, values) {
 };
 
 module.exports = List;
+window.List = List;
 
 })(window);

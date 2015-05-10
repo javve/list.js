@@ -1,6 +1,6 @@
-var events = require('events'),
-  getByClass = require('get-by-class'),
-  toString = require('to-string');
+var events = require('./utils/events'),
+  getByClass = require('./utils/get-by-class'),
+  toString = require('./utils/to-string');
 
 module.exports = function(list) {
   var item,

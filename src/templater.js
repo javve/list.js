@@ -1,4 +1,4 @@
-var getByClass = require('get-by-class');
+var getByClass = require('./utils/get-by-class');
 
 var Templater = function(list) {
   var itemSource = getItemSource(list.item),

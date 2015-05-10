@@ -1,5 +1,8 @@
 # Changelog
 
+add optional id to items
+support for data attributes
+
 ### 2014-07
 - *[Feature]* Make it possble to add event handlers on init `new List('listId', { searchComplete: function(list) {} })`.
 - *[Bugfix]* Include reference to List when initializing plugins. Fix for require.js which don't have a global reference to List.

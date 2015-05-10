@@ -1,8 +1,8 @@
-var naturalSort = require('natural-sort'),
-  classes = require('classes'),
-  events = require('events'),
-  getByClass = require('get-by-class'),
-  getAttribute = require('get-attribute');
+var naturalSort = require('./utils/natural-sort'),
+  classes = require('./utils/classes'),
+  events = require('./utils/events'),
+  getByClass = require('./utils/get-by-class'),
+  getAttribute = require('./utils/get-attribute');
 
 module.exports = function(list) {
   list.sortFunction = list.sortFunction || function(itemA, itemB, options) {
