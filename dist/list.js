@@ -1146,6 +1146,11 @@ var List = function(id, options, values) {
   init.start();
 };
 
+
+// AMD support
+if (typeof define === 'function' && define.amd) {
+  define(function () { return List; });
+} 
 module.exports = List;
 window.List = List;
 
