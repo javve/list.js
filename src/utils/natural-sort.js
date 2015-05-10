@@ -24,12 +24,11 @@ module.exports = function(a, b, opts) {
             // normalize spaces; find floats not starting with '0', string or 0 if not defined (Clint Priest)
             return (!s.match(ore) || l == 1) && parseFloat(s) || s.replace(snre, ' ').replace(sre, '') || 0;
         },
-        oFxNcL, oFyNcL,
-        mult = options.desc ? -1 : 1;
+        oFxNcL, oFyNcL;
     // first try and sort Hex codes or Dates
     if (yD) {
-        if ( xD < yD ) { return -1 * mult; }
-        else if ( xD > yD ) { return 1 * mult; }
+        if ( xD < yD ) { return -1; }
+        else if ( xD > yD ) { return 1; }
     }
     // natural sorting through split numeric strings and default strings
     for(var cLoc=0, xNl = xN.length, yNl = yN.length, numS=Math.max(xNl, yNl); cLoc < numS; cLoc++) {
@@ -42,8 +41,8 @@ module.exports = function(a, b, opts) {
             oFxNcL += '';
             oFyNcL += '';
         }
-        if (oFxNcL < oFyNcL) { return -1 * mult; }
-        if (oFxNcL > oFyNcL) { return 1 * mult; }
+        if (oFxNcL < oFyNcL) { return -1; }
+        if (oFxNcL > oFyNcL) { return 1; }
     }
     return 0;
 };

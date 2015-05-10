@@ -76,7 +76,8 @@ module.exports = function(list) {
 
     options.sortFunction = options.sortFunction || list.sortFunction;
     list.items.sort(function(a, b) {
-      return options.sortFunction(a, b, options);
+      var mult = (options.order === 'desc') ? -1 : 1;
+      return (options.sortFunction(a, b, options) * mult);
     });
     list.update();
     list.trigger('sortComplete');
