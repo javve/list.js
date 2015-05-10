@@ -7,6 +7,7 @@ set default page size to 10000 instead of 200 (because: page size is confusing f
 [Breaking] set sort order with List.js not sort function.
 [Minor breaking] Rename list.helpers to list.utils
 [Feature] Add toJSON method.
+[Feature] Add reIndex method that should be called if the html have been changed by something expect List.js.
 
 ### 2014-07
 - *[Feature]* Make it possble to add event handlers on init `new List('listId', { searchComplete: function(list) {} })`.

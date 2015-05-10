@@ -86,6 +86,18 @@ var List = function(id, options, values) {
     }
   };
 
+  /*
+  * Re-parse the List, use if html have changed
+  */
+  this.reIndex = function() {
+    self.items          = [];
+    self.visibleItems   = [];
+    self.matchingItems  = [];
+    self.searched       = false;
+    self.filtered       = false;
+    self.parse(self.list);
+  };
+
   this.toJSON = function() {
     var json = [];
     for (var i = 0, il = self.items.length; i < il; i++) {
