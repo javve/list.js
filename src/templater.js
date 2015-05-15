@@ -48,7 +48,6 @@ var Templater = function(list) {
             if (elm.tagName === "IMG" && values[v] !== "") {
               elm.src = values[v];
             } else if(elm.tagName === "INPUT" && values[v] !== "") {
-              console.log('INPUT -> ', values[v]);
               if(elm.type === 'checkbox') {
                 if(values[v] === true) {
                   elm.setAttribute('checked', true);
