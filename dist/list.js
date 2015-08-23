@@ -612,15 +612,15 @@ require.register("javve-natural-sort/index.js", function(exports, require, modul
 
 module.exports = function(a, b, options) {
   var re = /(^-?[0-9]+(\.?[0-9]*)[df]?e?[0-9]?$|^0x[0-9a-f]+$|[0-9]+)/gi,
-    sre = /(^[ ]*|[ ]*$)/g,
+    sre = /(^[\s]*|[\s]*$)/g,
     dre = /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[\/\-]\d{1,4}[\/\-]\d{1,4}|^\w+, \w+ \d+, \d{4})/,
     hre = /^0x[0-9a-f]+$/i,
     ore = /^0/,
     options = options || {},
     i = function(s) { return options.insensitive && (''+s).toLowerCase() || ''+s },
     // convert all to strings strip whitespace
-    x = i(a).replace(sre, '') || '',
-    y = i(b).replace(sre, '') || '',
+    x = i(a).replace(sre, '').toLowerCase() || '',
+    y = i(b).replace(sre, '').toLowerCase() || '',
     // chunk/tokenize
     xN = x.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
     yN = y.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
