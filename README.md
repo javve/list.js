@@ -73,6 +73,7 @@ Features/problems I'll implement/fix in the future. (issues about 'em will be cl
 * [jkeyes](https://github.com/jkeyes) / [John Keyes](http://keyes.ie/)
 * [samosad](https://github.com/samosad) / Alexey Tabakman
 * [Page-](https://github.com/Page-)
+* [urkle](https://github.com/urkle) / Edward Rudd
 
 Built with [Component](https://github.com/component/component) which is created by [TJ Holowaychuk](https://github.com/visionmedia).
 

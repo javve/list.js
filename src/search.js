@@ -22,7 +22,9 @@ module.exports = function(list) {
       }
     },
     setColumns: function() {
-      columns = (columns === undefined) ? list.valueNames : columns;
+      if (columns === undefined) {
+        columns = (list.searchColumns === undefined) ? prepare.toArray(list.items[0].values()) : list.searchColumns;
+      }
     },
     setSearchString: function(s) {
       s = list.utils.toString(s).toLowerCase();

@@ -34,6 +34,7 @@ var List = function(id, options, values) {
       self.matchingItems  = [];
       self.searched       = false;
       self.filtered       = false;
+      self.searchColumns  = undefined;
       self.handlers       = { 'updated': [] };
       self.plugins        = {};
       self.utils        = {
