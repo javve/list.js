@@ -23,7 +23,7 @@ module.exports = function(list) {
     this.values = function(newValues, notCreate) {
       if (newValues !== undefined) {
         for(var name in newValues) {
-          item._values[name] = newValues[name];
+          item._values[name] = newValues[name].trim();
         }
         if (notCreate !== true) {
           list.templater.set(item, item.values());
