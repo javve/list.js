@@ -1,7 +1,7 @@
 {
   "name": "list.js",
   "version": "1.1.1",
-  "description": "Component package manager consuming git repositories",
+  "description": "The perfect library for adding search, sort, filters and flexibility to tables, lists and various HTML elements. Built to be invisible and work on existing HTML",
   "keywords": [
     "list",
     "search",
