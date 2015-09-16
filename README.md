@@ -31,6 +31,7 @@ Really simple and easy to use!
 - [Pagination](http://listjs.com/examples/pagination)
 - [Search in specific column](http://codepen.io/javve/pen/GpZpow)
 - [Filter in range](http://codepen.io/javve/pen/wKGKWL)
+- [Show message filter/search results in 0 items](http://codepen.io/javve/pen/VvavzG)
 
 ## Documentation
 - [Getting started](http://listjs.com/docs)
