@@ -30,6 +30,7 @@ Really simple and easy to use!
 - [Fuzzy search](http://listjs.com/examples/fuzzy-search)
 - [Pagination](http://listjs.com/examples/pagination)
 - [Search in specific column](http://codepen.io/javve/pen/GpZpow)
+- [Filter in range](http://codepen.io/javve/pen/wKGKWL)
 
 ## Documentation
 - [Getting started](http://listjs.com/docs)
