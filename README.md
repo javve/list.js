@@ -29,6 +29,7 @@ Really simple and easy to use!
 - [Add, get, remove](http://listjs.com/examples/add-get-remove)
 - [Fuzzy search](http://listjs.com/examples/fuzzy-search)
 - [Pagination](http://listjs.com/examples/pagination)
+- [Search in specific column](http://codepen.io/javve/pen/GpZpow)
 
 ## Documentation
 - [Getting started](http://listjs.com/docs)
