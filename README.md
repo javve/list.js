@@ -32,6 +32,7 @@ Really simple and easy to use!
 - [Search in specific column](http://codepen.io/javve/pen/GpZpow)
 - [Filter in range](http://codepen.io/javve/pen/wKGKWL)
 - [Show message filter/search results in 0 items](http://codepen.io/javve/pen/VvavzG)
+- [Only show list after search/filter](http://codepen.io/javve/pen/YyqyRg)
 
 ## Documentation
 - [Getting started](http://listjs.com/docs)
