@@ -31,7 +31,7 @@ var Templater = function(list) {
     var values = {};
     for(var i = 0, il = valueNames.length; i < il; i++) {
       var elm = getByClass(item.elm, valueNames[i], true);
-      values[valueNames[i]] = elm ? elm.innerHTML : "";
+      values[valueNames[i]] = elm ? elm.textContent : "";
     }
     return values;
   };
