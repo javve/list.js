@@ -22,6 +22,23 @@ Really simple and easy to use!
 - Plugins [Read more ›](http://listjs.com/docs/plugins)
 - Support for Chrome, Safari, Firefox, IE6+
 
+### Download / Install
+##### Via Bower
+```
+bower install list.js
+```
+##### Via Component
+```
+component install javve/list.js
+```
+##### Via CDNJS
+```
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
+```
+##### Via Direct Download
+- [Compressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.1.1/dist/list.min.js)
+- [Uncompressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.1.1/dist/list.js)
+
 ### Demo / Examples
 - [Existing list](http://listjs.com/examples/existing-list)
 - [Existing list + add](http://listjs.com/examples/existing-list-add)
