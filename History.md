@@ -1,13 +1,14 @@
 # Changelog
 
-move form Component to Browserify
-add optional id to items
-support for data attributes
-set default page size to 10000 instead of 200 (because: page size is confusing for new users)
+[TODO] support for data attributes
+[TODO] add optional id to items
+
+[Misc] Move form Component to Browserify
 [Breaking] set sort order with List.js not sort function.
+[Minor breaking] set default page size to 10000 instead of 200 (because: page size is confusing for new users)
 [Minor breaking] Rename list.helpers to list.utils
 [Feature] Add toJSON method.
-[Feature] Add reIndex method that should be called if the html have been changed by something expect List.js.
+[Feature] Add reIndex method that should be called if the html have been changed by something except List.js.
 [Feature] Add option searchColumns to defined default columns to search in.
 
 ### 2014-07
@@ -23,7 +24,7 @@ set default page size to 10000 instead of 200 (because: page size is confusing f
 - *[Misc]* Add History.md file for changelog instead of having it at Listjs.com.
 
 ### 2014-02-03: 1.1.0
-- *[Change]* The sorting API is update so it looks like this `listObj.sort('name', { order: "asc "})` and `listObj.sort('name', { order: "desc "})` instead or `listObj.sort('name', { desc: true/false })`.
+- *[Breaking]* The sorting API is update so it looks like this `listObj.sort('name', { order: "asc "})` and `listObj.sort('name', { order: "desc "})` instead or `listObj.sort('name', { desc: true/false })`.
 - *[Feature]* Added support for default sort function `new List('id', { sortFunction: function(itemA, itemB) { .. }})</
 - *[Feature]* Adding `data-order="asc/desc"` to a sort button makes that button only sort `asc` or `desc`, ie no to
 - *[Bugfix]* Fix `grunt watch` bug.
