@@ -1,12 +1,12 @@
 # Changelog
 
-[TODO] support for data attributes
 [TODO] add optional id to items
 
 [Misc] Move form Component to Browserify
 [Breaking] set sort order with List.js not sort function.
 [Minor breaking] set default page size to 10000 instead of 200 (because: page size is confusing for new users)
 [Minor breaking] Rename list.helpers to list.utils
+[Feature] Add support for data attributes and custom attributes ex. links and images. [See docs](http://listjs.com/).
 [Feature] Add toJSON method.
 [Feature] Add reIndex method that should be called if the html have been changed by something except List.js.
 [Feature] Add option searchColumns to defined default columns to search in.

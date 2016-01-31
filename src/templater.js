@@ -28,27 +28,65 @@ var Templater = function(list) {
     templater.create(item);
     var values = {};
     for(var i = 0, il = valueNames.length; i < il; i++) {
-      var elm = list.utils.getByClass(item.elm, valueNames[i], true);
-      values[valueNames[i]] = elm ? elm.innerHTML : "";
+      var elm;
+      if (valueNames[i].data) {
+        for (var j = 0, jl = valueNames[i].data.length; j < jl; j++) {
+          values[valueNames[i].data[j]] = list.utils.getAttribute(item.elm, 'data-'+valueNames[i].data[j]);
+        }
+      } else if (valueNames[i].attr && valueNames[i].name) {
+        elm = list.utils.getByClass(item.elm, valueNames[i].name, true);
+        values[valueNames[i].name] = elm ? list.utils.getAttribute(elm, valueNames[i].attr) : "";
+      } else {
+        elm = list.utils.getByClass(item.elm, valueNames[i], true);
+        values[valueNames[i]] = elm ? elm.innerHTML : "";
+      }
+      elm = undefined;
     }
     return values;
   };
 
   /* Sets values at element */
   this.set = function(item, values) {
+    var getValueName = function(name) {
+      for (var i = 0, il = list.valueNames.length; i < il; i++) {
+        if (list.valueNames[i].data) {
+          var data = list.valueNames[i].data;
+          for (var j = 0, jl = data.length; j < jl; j++) {
+            if (data[j] === name) {
+              return { data: name };
+            }
+          }
+        } else if (list.valueNames[i].attr && list.valueNames[i].name && list.valueNames[i].name == name) {
+          return list.valueNames[i];
+        } else if (list.valueNames[i] === name) {
+          return name;
+        }
+      }
+    };
+    var setValue = function(name, value) {
+      var elm;
+      var valueName = getValueName(name);
+      if (!valueName)
+        return;
+      if (valueName.data) {
+        item.elm.setAttribute('data-'+valueName.data, value);
+      } else if (valueName.attr && valueName.name) {
+        elm = list.utils.getByClass(item.elm, valueName.name, true);
+        if (elm) {
+          elm.setAttribute(valueName.attr, value);
+        }
+      } else {
+        elm = list.utils.getByClass(item.elm, valueName, true);
+        if (elm) {
+          elm.innerHTML = value;
+        }
+      }
+      elm = undefined;
+    };
     if (!templater.create(item)) {
       for(var v in values) {
         if (values.hasOwnProperty(v)) {
-          // TODO speed up if possible
-          var elm = list.utils.getByClass(item.elm, v, true);
-          if (elm) {
-            /* src attribute for image tag & text for other tags */
-            if (elm.tagName === "IMG" && values[v] !== "") {
-              elm.src = values[v];
-            } else {
-              elm.innerHTML = values[v];
-            }
-          }
+          setValue(v, values[v]);
         }
       }
     }

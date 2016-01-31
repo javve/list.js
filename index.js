@@ -37,7 +37,7 @@ var List = function(id, options, values) {
       self.searchColumns  = undefined;
       self.handlers       = { 'updated': [] };
       self.plugins        = {};
-      self.utils        = {
+      self.utils          = {
         getByClass: getByClass,
         extend: extend,
         indexOf: indexOf,
