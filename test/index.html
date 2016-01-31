@@ -16,18 +16,10 @@
   <div id="mocha"></div>
   <script src="../node_modules/jquery/dist/jquery.js"></script>
   <script src="../dist/list.js"></script>
-  <script src="expect.js"></script> <!-- couldn't find a Component shim -->
-  <script src="mocha.js"></script> <!-- this specific version is needed for grunt-mocha (wtf...) -->
+  <script src="../node_modules/expect.js/index.js"></script>
+  <script src="../node_modules/grunt-mocha/node_modules/mocha/mocha.js"></script>
 
   <script>
-    // List = require('list.js');
-    // $ = require('jquery');
-
-    if (navigator.userAgent.indexOf('PhantomJS') < 0) {
-      // This version is needed to not get "Out of stack space" error in IE
-      //require('mocha');
-    }
-
     mocha.setup('bdd');
   </script>
 
