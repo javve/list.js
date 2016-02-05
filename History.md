@@ -2,14 +2,16 @@
 
 [TODO] add optional id to items
 
-[Misc] Move form Component to Browserify
-[Breaking] set sort order with List.js not sort function.
-[Minor breaking] set default page size to 10000 instead of 200 (because: page size is confusing for new users)
-[Minor breaking] Rename list.helpers to list.utils
-[Feature] Add support for data attributes and custom attributes ex. links and images. [See docs](http://listjs.com/).
-[Feature] Add toJSON method.
-[Feature] Add reIndex method that should be called if the html have been changed by something except List.js.
-[Feature] Add option searchColumns to defined default columns to search in.
+- *[Misc]* Move form Component to Browserify
+- *[Breaking]* set sort order with List.js not sort function.
+- *[Minor breaking]* set default page size to 10000 instead of 200 (because: page size is confusing for new users)
+- *[Minor breaking]* Rename list.helpers to list.utils
+- *[Feature]* Add support for data attributes and custom attributes ex. links and images. [See docs](http://listjs.com/).
+- *[Feature]* Add toJSON method.
+- *[Feature]* Add reIndex method that should be called if the html have been changed by something except List.js.
+- *[Feature]* Add option searchColumns to defined default columns to search in.
+- *[Feature]* Support <tr> in options.item 9700858168811b6559983d2cb792014213b817a6
+- *[Bugfix]* Don't throw error if searching in a empty list. d805494732922024bb99090fb6521021189861e9
 
 ### 2014-07
 - *[Feature]* Make it possble to add event handlers on init `new List('listId', { searchComplete: function(list) {} })`.
@@ -25,7 +27,7 @@
 
 ### 2014-02-03: 1.1.0
 - *[Breaking]* The sorting API is update so it looks like this `listObj.sort('name', { order: "asc "})` and `listObj.sort('name', { order: "desc "})` instead or `listObj.sort('name', { desc: true/false })`.
-- *[Feature]* Added support for default sort function `new List('id', { sortFunction: function(itemA, itemB) { .. }})</
+- *[Feature]* Added support for default sort function `new List('id', { sortFunction: function(itemA, itemB) { .. }})`
 - *[Feature]* Adding `data-order="asc/desc"` to a sort button makes that button only sort `asc` or `desc`, ie no to
 - *[Bugfix]* Fix `grunt watch` bug.
 - *[Bugfix]* Remove sorting when searching and filtering.
