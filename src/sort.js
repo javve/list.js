@@ -27,7 +27,12 @@ module.exports = function(list) {
       } else if (classes(btn).has('asc')) {
         return "desc";
       } else {
-        return "asc";
+        var defaultOrder = getAttribute(btn, 'data-default-order');
+        if (defaultOrder == "asc" || defaultOrder == "desc") {
+          return defaultOrder;
+        } else {
+          return "asc";
+        }
       }
     },
     getInSensitive: function(btn, options) {
