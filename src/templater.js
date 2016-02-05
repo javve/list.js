@@ -14,6 +14,10 @@ var Templater = function(list) {
         }
       }
       return null;
+    } else if (/^tr[\s>]/.exec(item)) { 
+      var table = document.createElement('table');
+      table.innerHTML = item;
+      return table.firstChild;
     } else if (item.indexOf("<") !== -1) { // Try create html element of list, do not work for tables!!
       var div = document.createElement('div');
       div.innerHTML = item;
