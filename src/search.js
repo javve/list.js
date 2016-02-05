@@ -22,6 +22,7 @@ module.exports = function(list) {
       }
     },
     setColumns: function() {
+      if (list.items.length === 0) return;
       if (columns === undefined) {
         columns = (list.searchColumns === undefined) ? prepare.toArray(list.items[0].values()) : list.searchColumns;
       }
