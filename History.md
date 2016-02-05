@@ -5,39 +5,39 @@
 
 ### 2016-02-05: 1.2.0
 - **[Misc]** Move form Component to Browserify
-  [Commit](https://github.com/javve/list.js/commit/58695c93849b78787d9cf78cbf9be20b01cdcc8a)
+  [See commit →](https://github.com/javve/list.js/commit/58695c93849b78787d9cf78cbf9be20b01cdcc8a)
 - **[Misc]** Add tests to make sure List.js works with require.js
-  [Commit](https://github.com/javve/list.js/commit/360098a04b87e18afd1b09e293a01a8dc113a01e)
+  [See commit →](https://github.com/javve/list.js/commit/360098a04b87e18afd1b09e293a01a8dc113a01e)
 - **[Misc]** Update all dependencies to latest version
-  [Commit](https://github.com/javve/list.js/commit/881991cd204a19af5ed3c62c1239c1206fa51e6c)
+  [See commit →](https://github.com/javve/list.js/commit/881991cd204a19af5ed3c62c1239c1206fa51e6c)
 - **[Breaking]** set sort order with List.js not sort function.
-  [Commit](https://github.com/javve/list.js/commit/81d1148489c99b8503e725805c2a6ce2bde47b11)
+  [See commit →](https://github.com/javve/list.js/commit/81d1148489c99b8503e725805c2a6ce2bde47b11)
 - **[Breaking]** set default page size to 10000 instead of 200 (because: page size is confusing for new users)
-  [Commit](https://github.com/javve/list.js/commit/618565b203b61c34b868a9cb86eea899e75ea4b6)
+  [See commit →](https://github.com/javve/list.js/commit/618565b203b61c34b868a9cb86eea899e75ea4b6)
 - **[Breaking]** Rename list.helpers to list.utils
-  [Commit](https://github.com/javve/list.js/commit/58695c93849b78787d9cf78cbf9be20b01cdcc8a)
+  [See commit →](https://github.com/javve/list.js/commit/58695c93849b78787d9cf78cbf9be20b01cdcc8a)
 - **[Feature]** Add support for data attributes and custom attributes ex. links and images. [See docs](http://listjs.com/).
-  [Commit](https://github.com/javve/list.js/commit/a8e083dc0f642e90b7a3f3cc11b12f9bb353d3a0)
+  [See commit →](https://github.com/javve/list.js/commit/a8e083dc0f642e90b7a3f3cc11b12f9bb353d3a0)
 - **[Feature]** Add toJSON method.
-  [Commit](https://github.com/javve/list.js/commit/570fd10e65fcf2e0d3d959ca42137625d9fd3b7c)
+  [See commit →](https://github.com/javve/list.js/commit/570fd10e65fcf2e0d3d959ca42137625d9fd3b7c)
 - **[Feature]** Add reIndex method that should be called if the html have been changed by something except List.js.
-  [Commit](https://github.com/javve/list.js/commit/825b2b55d339de2bb78eb41145d56a8b27d3d888)
+  [See commit →](https://github.com/javve/list.js/commit/825b2b55d339de2bb78eb41145d56a8b27d3d888)
 - **[Feature]** Add option searchColumns to defined default columns to search in.
-  [Commit](https://github.com/javve/list.js/commit/b8b74f21f78c17f1c1842480084ffdb58edc26cd)
+  [See commit →](https://github.com/javve/list.js/commit/b8b74f21f78c17f1c1842480084ffdb58edc26cd)
 - **[Feature]** Support <tr> in options.item
-  [Commit](https://github.com/javve/list.js/commit/9700858168811b6559983d2cb792014213b817a6)
+  [See commit →](https://github.com/javve/list.js/commit/9700858168811b6559983d2cb792014213b817a6)
 - **[Feature]** Make it possble to add event handlers on init `new List('listId', { searchComplete: function(list) {} })`.
-  [Commit](https://github.com/javve/list.js/commit/b8b74f21f78c17f1c1842480084ffdb58edc26cd)
+  [See commit →](https://github.com/javve/list.js/commit/b8b74f21f78c17f1c1842480084ffdb58edc26cd)
 - **[Bugfix]** Don't throw error if searching in a empty list.
-  [Commit](https://github.com/javve/list.js/commit/d805494732922024bb99090fb6521021189861e9)
+  [See commit →](https://github.com/javve/list.js/commit/d805494732922024bb99090fb6521021189861e9)
 - **[Bugfix]** Make it possible to use item.visible() on items not yet templated.
-  [Commit](https://github.com/javve/list.js/commit/8e898b0e55a7d47a77ee27f109602bdb63183fda)
+  [See commit →](https://github.com/javve/list.js/commit/8e898b0e55a7d47a77ee27f109602bdb63183fda)
 - **[Bugfix]** Include reference to List when initializing plugins. Fix for require.js which don't have a global reference to List.
-  [Commit](https://github.com/javve/list.js/commit/40d3c5e5f98cf3bcb9624a5717d4435a0b6f49f6)
+  [See commit →](https://github.com/javve/list.js/commit/40d3c5e5f98cf3bcb9624a5717d4435a0b6f49f6)
 - **[Bugfix]** Fix index async. Fix #268
-  [Commit](https://github.com/javve/list.js/commit/27e2d6fdeee7090eb1342a108013db898fc29b96)
+  [See commit →](https://github.com/javve/list.js/commit/27e2d6fdeee7090eb1342a108013db898fc29b96)
 - **[Bugfix]** Fix add async
-  [Commit](https://github.com/javve/list.js/commit/237f926d3ea0036ffb8b255dd0da42387b6a653a)
+  [See commit →](https://github.com/javve/list.js/commit/237f926d3ea0036ffb8b255dd0da42387b6a653a)
 
 ### 2014-02-03: 1.1.1
 - **[Bugfix]** Update `javve/events` version which fixes critical bugs in Safari
