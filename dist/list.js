@@ -1,4 +1,280 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/*
+List.js 1.1.1
+By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
+*/
+(function( window, undefined ) {
+"use strict";
+
+var document = window.document,
+  getByClass = require('./src/utils/get-by-class'),
+  extend = require('./src/utils/extend'),
+  indexOf = require('./src/utils/index-of'),
+  events = require('./src/utils/events'),
+  toString = require('./src/utils/to-string'),
+  naturalSort = require('./src/utils/natural-sort'),
+  classes = require('./src/utils/classes'),
+  getAttribute = require('./src/utils/get-attribute');
+
+var List = function(id, options, values) {
+
+  var self = this,
+    init,
+    Item = require('./src/item')(self),
+    addAsync = require('./src/add-async')(self);
+
+  init = {
+    start: function() {
+      self.listClass      = "list";
+      self.searchClass    = "search";
+      self.sortClass      = "sort";
+      self.page           = 10000;
+      self.i              = 1;
+      self.items          = [];
+      self.visibleItems   = [];
+      self.matchingItems  = [];
+      self.searched       = false;
+      self.filtered       = false;
+      self.searchColumns  = undefined;
+      self.handlers       = { 'updated': [] };
+      self.plugins        = {};
+      self.utils          = {
+        getByClass: getByClass,
+        extend: extend,
+        indexOf: indexOf,
+        events: events,
+        toString: toString,
+        naturalSort: naturalSort,
+        classes: classes,
+        getAttribute: getAttribute
+      };
+
+      extend(self, options);
+
+      self.listContainer = (typeof(id) === 'string') ? document.getElementById(id) : id;
+      if (!self.listContainer) { return; }
+      self.list       = getByClass(self.listContainer, self.listClass, true);
+
+      self.parse      = require('./src/parse')(self);
+      self.templater  = require('./src/templater')(self);
+      self.search     = require('./src/search')(self);
+      self.filter     = require('./src/filter')(self);
+      self.sort       = require('./src/sort')(self);
+
+      this.handlers();
+      this.items();
+      self.update();
+      this.plugins();
+    },
+    handlers: function() {
+      for (var handler in self.handlers) {
+        if (self[handler]) {
+          self.on(handler, self[handler]);
+        }
+      }
+    },
+    items: function() {
+      self.parse(self.list);
+      if (values !== undefined) {
+        self.add(values);
+      }
+    },
+    plugins: function() {
+      for (var i = 0; i < self.plugins.length; i++) {
+        var plugin = self.plugins[i];
+        self[plugin.name] = plugin;
+        plugin.init(self, List);
+      }
+    }
+  };
+
+  /*
+  * Re-parse the List, use if html have changed
+  */
+  this.reIndex = function() {
+    self.items          = [];
+    self.visibleItems   = [];
+    self.matchingItems  = [];
+    self.searched       = false;
+    self.filtered       = false;
+    self.parse(self.list);
+  };
+
+  this.toJSON = function() {
+    var json = [];
+    for (var i = 0, il = self.items.length; i < il; i++) {
+      json.push(self.items[i].values());
+    }
+    return json;
+  };
+
+
+  /*
+  * Add object to list
+  */
+  this.add = function(values, callback) {
+    if (values.length === 0) {
+      return;
+    }
+    if (callback) {
+      addAsync(values, callback);
+      return;
+    }
+    var added = [],
+      notCreate = false;
+    if (values[0] === undefined){
+      values = [values];
+    }
+    for (var i = 0, il = values.length; i < il; i++) {
+      var item = null;
+      if (values[i] instanceof Item) {
+        item = values[i];
+        item.reload();
+      } else {
+        notCreate = (self.items.length > self.page) ? true : false;
+        item = new Item(values[i], undefined, notCreate);
+      }
+      self.items.push(item);
+      added.push(item);
+    }
+    self.update();
+    return added;
+  };
+
+	this.show = function(i, page) {
+		this.i = i;
+		this.page = page;
+		self.update();
+    return self;
+	};
+
+  /* Removes object from list.
+  * Loops through the list and removes objects where
+  * property "valuename" === value
+  */
+  this.remove = function(valueName, value, options) {
+    var found = 0;
+    for (var i = 0, il = self.items.length; i < il; i++) {
+      if (self.items[i].values()[valueName] == value) {
+        self.templater.remove(self.items[i], options);
+        self.items.splice(i,1);
+        il--;
+        i--;
+        found++;
+      }
+    }
+    self.update();
+    return found;
+  };
+
+  /* Gets the objects in the list which
+  * property "valueName" === value
+  */
+  this.get = function(valueName, value) {
+    var matchedItems = [];
+    for (var i = 0, il = self.items.length; i < il; i++) {
+      var item = self.items[i];
+      if (item.values()[valueName] == value) {
+        matchedItems.push(item);
+      }
+    }
+    return matchedItems;
+  };
+
+  /*
+  * Get size of the list
+  */
+  this.size = function() {
+    return self.items.length;
+  };
+
+  /*
+  * Removes all items from the list
+  */
+  this.clear = function() {
+    self.templater.clear();
+    self.items = [];
+    return self;
+  };
+
+  this.on = function(event, callback) {
+    self.handlers[event].push(callback);
+    return self;
+  };
+
+  this.off = function(event, callback) {
+    var e = self.handlers[event];
+    var index = indexOf(e, callback);
+    if (index > -1) {
+      e.splice(index, 1);
+    }
+    return self;
+  };
+
+  this.trigger = function(event) {
+    var i = self.handlers[event].length;
+    while(i--) {
+      self.handlers[event][i](self);
+    }
+    return self;
+  };
+
+  this.reset = {
+    filter: function() {
+      var is = self.items,
+        il = is.length;
+      while (il--) {
+        is[il].filtered = false;
+      }
+      return self;
+    },
+    search: function() {
+      var is = self.items,
+        il = is.length;
+      while (il--) {
+        is[il].found = false;
+      }
+      return self;
+    }
+  };
+
+  this.update = function() {
+    var is = self.items,
+			il = is.length;
+
+    self.visibleItems = [];
+    self.matchingItems = [];
+    self.templater.clear();
+    for (var i = 0; i < il; i++) {
+      if (is[i].matching() && ((self.matchingItems.length+1) >= self.i && self.visibleItems.length < self.page)) {
+        is[i].show();
+        self.visibleItems.push(is[i]);
+        self.matchingItems.push(is[i]);
+      } else if (is[i].matching()) {
+        self.matchingItems.push(is[i]);
+        is[i].hide();
+      } else {
+        is[i].hide();
+      }
+    }
+    self.trigger('updated');
+    return self;
+  };
+
+  init.start();
+};
+
+
+// AMD support
+if (typeof define === 'function' && define.amd) {
+  define(function () { return List; });
+}
+module.exports = List;
+window.List = List;
+
+})(window);
+
+},{"./src/add-async":2,"./src/filter":3,"./src/item":4,"./src/parse":5,"./src/search":6,"./src/sort":7,"./src/templater":8,"./src/utils/classes":9,"./src/utils/events":10,"./src/utils/extend":11,"./src/utils/get-attribute":12,"./src/utils/get-by-class":13,"./src/utils/index-of":14,"./src/utils/natural-sort":15,"./src/utils/to-string":17}],2:[function(require,module,exports){
 module.exports = function(list) {
   var addAsync = function(values, callback, items) {
     var valuesToAdd = values.splice(0, 50);
@@ -16,7 +292,7 @@ module.exports = function(list) {
   return addAsync;
 };
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 module.exports = function(list) {
 
   // Add handlers
@@ -47,7 +323,7 @@ module.exports = function(list) {
   };
 };
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 module.exports = function(list) {
   return function(initValues, element, notCreate) {
     var item = this;
@@ -97,13 +373,13 @@ module.exports = function(list) {
       );
     };
     this.visible = function() {
-      return (item.elm.parentNode == list.list) ? true : false;
+      return (item.elm && (item.elm.parentNode == list.list)) ? true : false;
     };
     init(initValues, element, notCreate);
   };
 };
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 module.exports = function(list) {
 
   var Item = require('./item')(list);
@@ -152,11 +428,7 @@ module.exports = function(list) {
   };
 };
 
-},{"./item":3}],5:[function(require,module,exports){
-var events = require('./utils/events'),
-  getByClass = require('./utils/get-by-class'),
-  toString = require('./utils/to-string');
-
+},{"./item":4}],6:[function(require,module,exports){
 module.exports = function(list) {
   var item,
     text,
@@ -181,10 +453,13 @@ module.exports = function(list) {
       }
     },
     setColumns: function() {
-      columns = (columns === undefined) ? list.valueNames : columns;
+      if (list.items.length === 0) return;
+      if (columns === undefined) {
+        columns = (list.searchColumns === undefined) ? prepare.toArray(list.items[0].values()) : list.searchColumns;
+      }
     },
     setSearchString: function(s) {
-      s = toString(s).toLowerCase();
+      s = list.utils.toString(s).toLowerCase();
       s = s.replace(/[-[\]{}()*+?.,\\^$|#]/g, "\\$&"); // Escape regular expression characters
       searchString = s;
     },
@@ -213,7 +488,7 @@ module.exports = function(list) {
     },
     values: function(values, column) {
       if (values.hasOwnProperty(column)) {
-        text = toString(values[column]).toLowerCase();
+        text = list.utils.toString(values[column]).toLowerCase();
         if ((searchString !== "") && (text.search(searchString) > -1)) {
           return true;
         }
@@ -253,7 +528,7 @@ module.exports = function(list) {
   list.handlers.searchStart = list.handlers.searchStart || [];
   list.handlers.searchComplete = list.handlers.searchComplete || [];
 
-  events.bind(getByClass(list.listContainer, list.searchClass), 'keyup', function(e) {
+  list.utils.events.bind(list.utils.getByClass(list.listContainer, list.searchClass), 'keyup', function(e) {
     var target = e.target || e.srcElement, // IE have srcElement
       alreadyCleared = (target.value === "" && !list.searched);
     if (!alreadyCleared) { // If oninput already have resetted the list, do nothing
@@ -262,52 +537,45 @@ module.exports = function(list) {
   });
 
   // Used to detect click on HTML5 clear button
-  events.bind(getByClass(list.listContainer, list.searchClass), 'input', function(e) {
+  list.utils.events.bind(list.utils.getByClass(list.listContainer, list.searchClass), 'input', function(e) {
     var target = e.target || e.srcElement;
     if (target.value === "") {
       searchMethod('');
     }
   });
 
-  list.helpers.toString = toString;
   return searchMethod;
 };
 
-},{"./utils/events":9,"./utils/get-by-class":12,"./utils/to-string":16}],6:[function(require,module,exports){
-var naturalSort = require('./utils/natural-sort'),
-  classes = require('./utils/classes'),
-  events = require('./utils/events'),
-  getByClass = require('./utils/get-by-class'),
-  getAttribute = require('./utils/get-attribute');
-
+},{}],7:[function(require,module,exports){
 module.exports = function(list) {
   list.sortFunction = list.sortFunction || function(itemA, itemB, options) {
     options.desc = options.order == "desc" ? true : false; // Natural sort uses this format
-    return naturalSort(itemA.values()[options.valueName], itemB.values()[options.valueName], options);
+    return list.utils.naturalSort(itemA.values()[options.valueName], itemB.values()[options.valueName], options);
   };
 
   var buttons = {
     els: undefined,
     clear: function() {
       for (var i = 0, il = buttons.els.length; i < il; i++) {
-        classes(buttons.els[i]).remove('asc');
-        classes(buttons.els[i]).remove('desc');
+        list.utils.classes(buttons.els[i]).remove('asc');
+        list.utils.classes(buttons.els[i]).remove('desc');
       }
     },
     getOrder: function(btn) {
-      var predefinedOrder = getAttribute(btn, 'data-order');
+      var predefinedOrder = list.utils.getAttribute(btn, 'data-order');
       if (predefinedOrder == "asc" || predefinedOrder == "desc") {
         return predefinedOrder;
-      } else if (classes(btn).has('desc')) {
+      } else if (list.utils.classes(btn).has('desc')) {
         return "asc";
-      } else if (classes(btn).has('asc')) {
+      } else if (list.utils.classes(btn).has('asc')) {
         return "desc";
       } else {
         return "asc";
       }
     },
     getInSensitive: function(btn, options) {
-      var insensitive = getAttribute(btn, 'data-insensitive');
+      var insensitive = list.utils.getAttribute(btn, 'data-insensitive');
       if (insensitive === "true") {
         options.insensitive = true;
       } else {
@@ -317,16 +585,16 @@ module.exports = function(list) {
     setOrder: function(options) {
       for (var i = 0, il = buttons.els.length; i < il; i++) {
         var btn = buttons.els[i];
-        if (getAttribute(btn, 'data-sort') !== options.valueName) {
+        if (list.utils.getAttribute(btn, 'data-sort') !== options.valueName) {
           continue;
         }
-        var predefinedOrder = getAttribute(btn, 'data-order');
+        var predefinedOrder = list.utils.getAttribute(btn, 'data-order');
         if (predefinedOrder == "asc" || predefinedOrder == "desc") {
           if (predefinedOrder == options.order) {
-            classes(btn).add(options.order);
+            list.utils.classes(btn).add(options.order);
           }
         } else {
-          classes(btn).add(options.order);
+          list.utils.classes(btn).add(options.order);
         }
       }
     }
@@ -338,7 +606,7 @@ module.exports = function(list) {
     var target = arguments[0].currentTarget || arguments[0].srcElement || undefined;
 
     if (target) {
-      options.valueName = getAttribute(target, 'data-sort');
+      options.valueName = list.utils.getAttribute(target, 'data-sort');
       buttons.getInSensitive(target, options);
       options.order = buttons.getOrder(target);
     } else {
@@ -352,7 +620,8 @@ module.exports = function(list) {
 
     options.sortFunction = options.sortFunction || list.sortFunction;
     list.items.sort(function(a, b) {
-      return options.sortFunction(a, b, options);
+      var mult = (options.order === 'desc') ? -1 : 1;
+      return (options.sortFunction(a, b, options) * mult);
     });
     list.update();
     list.trigger('sortComplete');
@@ -362,23 +631,15 @@ module.exports = function(list) {
   list.handlers.sortStart = list.handlers.sortStart || [];
   list.handlers.sortComplete = list.handlers.sortComplete || [];
 
-  buttons.els = getByClass(list.listContainer, list.sortClass);
-  events.bind(buttons.els, 'click', sort);
+  buttons.els = list.utils.getByClass(list.listContainer, list.sortClass);
+  list.utils.events.bind(buttons.els, 'click', sort);
   list.on('searchStart', buttons.clear);
   list.on('filterStart', buttons.clear);
-
-  // Helpers
-  list.helpers.classes = classes;
-  list.helpers.naturalSort = naturalSort;
-  list.helpers.events = events;
-  list.helpers.getAttribute = getAttribute;
 
   return sort;
 };
 
-},{"./utils/classes":8,"./utils/events":9,"./utils/get-attribute":11,"./utils/get-by-class":12,"./utils/natural-sort":14}],7:[function(require,module,exports){
-var getByClass = require('./utils/get-by-class');
-
+},{}],8:[function(require,module,exports){
 var Templater = function(list) {
   var itemSource = getItemSource(list.item),
     templater = this;
@@ -395,6 +656,10 @@ var Templater = function(list) {
         }
       }
       return null;
+    } else if (/^tr[\s>]/.exec(item)) { 
+      var table = document.createElement('table');
+      table.innerHTML = item;
+      return table.firstChild;
     } else if (item.indexOf("<") !== -1) { // Try create html element of list, do not work for tables!!
       var div = document.createElement('div');
       div.innerHTML = item;
@@ -409,27 +674,65 @@ var Templater = function(list) {
     templater.create(item);
     var values = {};
     for(var i = 0, il = valueNames.length; i < il; i++) {
-      var elm = getByClass(item.elm, valueNames[i], true);
-      values[valueNames[i]] = elm ? elm.innerHTML : "";
+      var elm;
+      if (valueNames[i].data) {
+        for (var j = 0, jl = valueNames[i].data.length; j < jl; j++) {
+          values[valueNames[i].data[j]] = list.utils.getAttribute(item.elm, 'data-'+valueNames[i].data[j]);
+        }
+      } else if (valueNames[i].attr && valueNames[i].name) {
+        elm = list.utils.getByClass(item.elm, valueNames[i].name, true);
+        values[valueNames[i].name] = elm ? list.utils.getAttribute(elm, valueNames[i].attr) : "";
+      } else {
+        elm = list.utils.getByClass(item.elm, valueNames[i], true);
+        values[valueNames[i]] = elm ? elm.innerHTML : "";
+      }
+      elm = undefined;
     }
     return values;
   };
 
   /* Sets values at element */
   this.set = function(item, values) {
+    var getValueName = function(name) {
+      for (var i = 0, il = list.valueNames.length; i < il; i++) {
+        if (list.valueNames[i].data) {
+          var data = list.valueNames[i].data;
+          for (var j = 0, jl = data.length; j < jl; j++) {
+            if (data[j] === name) {
+              return { data: name };
+            }
+          }
+        } else if (list.valueNames[i].attr && list.valueNames[i].name && list.valueNames[i].name == name) {
+          return list.valueNames[i];
+        } else if (list.valueNames[i] === name) {
+          return name;
+        }
+      }
+    };
+    var setValue = function(name, value) {
+      var elm;
+      var valueName = getValueName(name);
+      if (!valueName)
+        return;
+      if (valueName.data) {
+        item.elm.setAttribute('data-'+valueName.data, value);
+      } else if (valueName.attr && valueName.name) {
+        elm = list.utils.getByClass(item.elm, valueName.name, true);
+        if (elm) {
+          elm.setAttribute(valueName.attr, value);
+        }
+      } else {
+        elm = list.utils.getByClass(item.elm, valueName, true);
+        if (elm) {
+          elm.innerHTML = value;
+        }
+      }
+      elm = undefined;
+    };
     if (!templater.create(item)) {
       for(var v in values) {
         if (values.hasOwnProperty(v)) {
-          // TODO speed up if possible
-          var elm = getByClass(item.elm, v, true);
-          if (elm) {
-            /* src attribute for image tag & text for other tags */
-            if (elm.tagName === "IMG" && values[v] !== "") {
-              elm.src = values[v];
-            } else {
-              elm.innerHTML = values[v];
-            }
-          }
+          setValue(v, values[v]);
         }
       }
     }
@@ -476,7 +779,7 @@ module.exports = function(list) {
   return new Templater(list);
 };
 
-},{"./utils/get-by-class":12}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -663,7 +966,7 @@ ClassList.prototype.contains = function(name){
   return this.list ? this.list.contains(name) : !! ~index(this.array(), name);
 };
 
-},{"./index-of":13}],9:[function(require,module,exports){
+},{"./index-of":14}],10:[function(require,module,exports){
 var bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
     unbind = window.removeEventListener ? 'removeEventListener' : 'detachEvent',
     prefix = bind !== 'addEventListener' ? 'on' : '',
@@ -703,7 +1006,7 @@ exports.unbind = function(el, type, fn, capture){
   }
 };
 
-},{"./to-array":15}],10:[function(require,module,exports){
+},{"./to-array":16}],11:[function(require,module,exports){
 /*
  * Source: https://github.com/segmentio/extend
  */
@@ -723,7 +1026,7 @@ module.exports = function extend (object) {
     return object;
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /**
  * A cross-browser implementation of getAttribute.
  * Source found here: http://stackoverflow.com/a/3755343/361337 written by Vivin Paliath
@@ -751,7 +1054,7 @@ module.exports = function(el, attr) {
   return result;
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * A cross-browser implementation of getElementsByClass.
  * Heavily based on Dustin Diaz's function: http://dustindiaz.com/getelementsbyclass.
@@ -809,7 +1112,7 @@ module.exports = (function() {
   }
 })();
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 var indexOf = [].indexOf;
 
 module.exports = function(arr, obj){
@@ -820,7 +1123,7 @@ module.exports = function(arr, obj){
   return -1;
 };
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /*
  * Natural Sort algorithm for Javascript - Version 0.8 - Released under MIT license
  * Author: Jim Palmer (based on chunking idea from Dave Koelle)
@@ -847,12 +1150,11 @@ module.exports = function(a, b, opts) {
             // normalize spaces; find floats not starting with '0', string or 0 if not defined (Clint Priest)
             return (!s.match(ore) || l == 1) && parseFloat(s) || s.replace(snre, ' ').replace(sre, '') || 0;
         },
-        oFxNcL, oFyNcL,
-        mult = options.desc ? -1 : 1;
+        oFxNcL, oFyNcL;
     // first try and sort Hex codes or Dates
     if (yD) {
-        if ( xD < yD ) { return -1 * mult; }
-        else if ( xD > yD ) { return 1 * mult; }
+        if ( xD < yD ) { return -1; }
+        else if ( xD > yD ) { return 1; }
     }
     // natural sorting through split numeric strings and default strings
     for(var cLoc=0, xNl = xN.length, yNl = yN.length, numS=Math.max(xNl, yNl); cLoc < numS; cLoc++) {
@@ -865,13 +1167,13 @@ module.exports = function(a, b, opts) {
             oFxNcL += '';
             oFyNcL += '';
         }
-        if (oFxNcL < oFyNcL) { return -1 * mult; }
-        if (oFxNcL > oFyNcL) { return 1 * mult; }
+        if (oFxNcL < oFyNcL) { return -1; }
+        if (oFxNcL > oFyNcL) { return 1; }
     }
     return 0;
 };
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * Source: https://github.com/timoxley/to-array
  *
@@ -906,7 +1208,7 @@ function isArray(arr) {
   return Object.prototype.toString.call(arr) === "[object Array]";
 }
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = function(s) {
   s = (s === undefined) ? "" : s;
   s = (s === null) ? "" : s;
@@ -914,246 +1216,4 @@ module.exports = function(s) {
   return s;
 };
 
-},{}],17:[function(require,module,exports){
-/*
-List.js 1.1.1
-By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
-*/
-(function( window, undefined ) {
-"use strict";
-
-var document = window.document,
-  getByClass = require('./src/utils/get-by-class'),
-  extend = require('./src/utils/extend'),
-  indexOf = require('./src/utils/index-of');
-
-var List = function(id, options, values) {
-
-  var self = this,
-    init,
-    Item = require('./src/item')(self),
-    addAsync = require('./src/add-async')(self);
-
-  init = {
-    start: function() {
-      self.listClass      = "list";
-      self.searchClass    = "search";
-      self.sortClass      = "sort";
-      self.page           = 200;
-      self.i              = 1;
-      self.items          = [];
-      self.visibleItems   = [];
-      self.matchingItems  = [];
-      self.searched       = false;
-      self.filtered       = false;
-      self.handlers       = { 'updated': [] };
-      self.plugins        = {};
-      self.helpers        = {
-        getByClass: getByClass,
-        extend: extend,
-        indexOf: indexOf
-      };
-
-      extend(self, options);
-
-      self.listContainer = (typeof(id) === 'string') ? document.getElementById(id) : id;
-      if (!self.listContainer) { return; }
-      self.list       = getByClass(self.listContainer, self.listClass, true);
-
-      self.parse      = require('./src/parse')(self);
-      self.templater  = require('./src/templater')(self);
-      self.search     = require('./src/search')(self);
-      self.filter     = require('./src/filter')(self);
-      self.sort       = require('./src/sort')(self);
-
-      this.handlers();
-      this.items();
-      self.update();
-      this.plugins();
-    },
-    handlers: function() {
-      for (var handler in self.handlers) {
-        if (self[handler]) {
-          self.on(handler, self[handler]);
-        }
-      }
-    },
-    items: function() {
-      self.parse(self.list);
-      if (values !== undefined) {
-        self.add(values);
-      }
-    },
-    plugins: function() {
-      for (var i = 0; i < self.plugins.length; i++) {
-        var plugin = self.plugins[i];
-        self[plugin.name] = plugin;
-        plugin.init(self, List);
-      }
-    }
-  };
-
-
-  /*
-  * Add object to list
-  */
-  this.add = function(values, callback) {
-    if (callback) {
-      addAsync(values, callback);
-      return;
-    }
-    var added = [],
-      notCreate = false;
-    if (values[0] === undefined){
-      values = [values];
-    }
-    for (var i = 0, il = values.length; i < il; i++) {
-      var item = null;
-      if (values[i] instanceof Item) {
-        item = values[i];
-        item.reload();
-      } else {
-        notCreate = (self.items.length > self.page) ? true : false;
-        item = new Item(values[i], undefined, notCreate);
-      }
-      self.items.push(item);
-      added.push(item);
-    }
-    self.update();
-    return added;
-  };
-
-	this.show = function(i, page) {
-		this.i = i;
-		this.page = page;
-		self.update();
-    return self;
-	};
-
-  /* Removes object from list.
-  * Loops through the list and removes objects where
-  * property "valuename" === value
-  */
-  this.remove = function(valueName, value, options) {
-    var found = 0;
-    for (var i = 0, il = self.items.length; i < il; i++) {
-      if (self.items[i].values()[valueName] == value) {
-        self.templater.remove(self.items[i], options);
-        self.items.splice(i,1);
-        il--;
-        i--;
-        found++;
-      }
-    }
-    self.update();
-    return found;
-  };
-
-  /* Gets the objects in the list which
-  * property "valueName" === value
-  */
-  this.get = function(valueName, value) {
-    var matchedItems = [];
-    for (var i = 0, il = self.items.length; i < il; i++) {
-      var item = self.items[i];
-      if (item.values()[valueName] == value) {
-        matchedItems.push(item);
-      }
-    }
-    return matchedItems;
-  };
-
-  /*
-  * Get size of the list
-  */
-  this.size = function() {
-    return self.items.length;
-  };
-
-  /*
-  * Removes all items from the list
-  */
-  this.clear = function() {
-    self.templater.clear();
-    self.items = [];
-    return self;
-  };
-
-  this.on = function(event, callback) {
-    self.handlers[event].push(callback);
-    return self;
-  };
-
-  this.off = function(event, callback) {
-    var e = self.handlers[event];
-    var index = indexOf(e, callback);
-    if (index > -1) {
-      e.splice(index, 1);
-    }
-    return self;
-  };
-
-  this.trigger = function(event) {
-    var i = self.handlers[event].length;
-    while(i--) {
-      self.handlers[event][i](self);
-    }
-    return self;
-  };
-
-  this.reset = {
-    filter: function() {
-      var is = self.items,
-        il = is.length;
-      while (il--) {
-        is[il].filtered = false;
-      }
-      return self;
-    },
-    search: function() {
-      var is = self.items,
-        il = is.length;
-      while (il--) {
-        is[il].found = false;
-      }
-      return self;
-    }
-  };
-
-  this.update = function() {
-    var is = self.items,
-			il = is.length;
-
-    self.visibleItems = [];
-    self.matchingItems = [];
-    self.templater.clear();
-    for (var i = 0; i < il; i++) {
-      if (is[i].matching() && ((self.matchingItems.length+1) >= self.i && self.visibleItems.length < self.page)) {
-        is[i].show();
-        self.visibleItems.push(is[i]);
-        self.matchingItems.push(is[i]);
-      } else if (is[i].matching()) {
-        self.matchingItems.push(is[i]);
-        is[i].hide();
-      } else {
-        is[i].hide();
-      }
-    }
-    self.trigger('updated');
-    return self;
-  };
-
-  init.start();
-};
-
-
-// AMD support
-if (typeof define === 'function' && define.amd) {
-  define(function () { return List; });
-} 
-module.exports = List;
-window.List = List;
-
-})(window);
-
-},{"./src/add-async":1,"./src/filter":2,"./src/item":3,"./src/parse":4,"./src/search":5,"./src/sort":6,"./src/templater":7,"./src/utils/extend":10,"./src/utils/get-by-class":12,"./src/utils/index-of":13}]},{},[17]);
+},{}]},{},[1]);
