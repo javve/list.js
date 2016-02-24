@@ -2,6 +2,8 @@
 
 ### TODO
 - Add tests for custom event handlers. 27e2d6fdeee7090eb1342a108013db898fc29b96
+- Regex in search https://github.com/javve/list.js/issues/371
+- Keep original order?
 
 ### 2016-02-05: 1.2.0
 - **[Misc]** Move form Component to Browserify
