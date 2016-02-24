@@ -1,7 +1,6 @@
 {
   "name": "list.js",
   "main": "dist/list.js",
-  "version": "1.1.1",
   "homepage": "http://listjs.com",
   "authors": [
     "Jonny Strömberg <jonny.stromberg@gmail.com>"
