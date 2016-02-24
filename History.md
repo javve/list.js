@@ -38,6 +38,9 @@
   [See commit →](https://github.com/javve/list.js/commit/27e2d6fdeee7090eb1342a108013db898fc29b96)
 - **[Bugfix]** Fix add async
   [See commit →](https://github.com/javve/list.js/commit/237f926d3ea0036ffb8b255dd0da42387b6a653a)
+- **[Bugfix]** Don't add empty item if empty list is initated with empty array.
+  [See commit →](https://github.com/javve/list.js/commit/607a176c12b2219fb5204a789cd44ef367a0025f)
+
 
 ### 2014-02-03: 1.1.1
 - **[Bugfix]** Update `javve/events` version which fixes critical bugs in Safari

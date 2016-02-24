@@ -112,6 +112,9 @@ var List = function(id, options, values) {
   * Add object to list
   */
   this.add = function(values, callback) {
+    if (values.length === 0) {
+      return;
+    }
     if (callback) {
       addAsync(values, callback);
       return;
