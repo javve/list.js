@@ -42,6 +42,8 @@
   [See commit →](https://github.com/javve/list.js/commit/237f926d3ea0036ffb8b255dd0da42387b6a653a)
 - **[Bugfix]** Don't add empty item if empty list is initated with empty array.
   [See commit →](https://github.com/javve/list.js/commit/607a176c12b2219fb5204a789cd44ef367a0025f)
+- **[Bugfix]** Make sort case insensitive by default for the automatic buttons
+  [See commit →](https://github.com/javve/list.js/commit/44260b862f74dccd248d08ca1f7df2b422c8f439)
 
 
 ### 2014-02-03: 1.1.1

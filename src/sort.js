@@ -26,10 +26,10 @@ module.exports = function(list) {
     },
     getInSensitive: function(btn, options) {
       var insensitive = list.utils.getAttribute(btn, 'data-insensitive');
-      if (insensitive === "true") {
-        options.insensitive = true;
-      } else {
+      if (insensitive === "false") {
         options.insensitive = false;
+      } else {
+        options.insensitive = true;
       }
     },
     setOrder: function(options) {
