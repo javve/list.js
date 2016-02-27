@@ -82,7 +82,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['jshint:code', 'jshint:tests', 'shell:mkdir', 'shell:build']);
   grunt.registerTask('dist', ['default', 'shell:mkdir', 'shell:build', 'uglify']);
   grunt.registerTask('clean', ['shell:remove']);
-  grunt.registerTask('test', ['default', 'mocha']);
+  grunt.registerTask('test', ['dist', 'mocha']);
 
   return grunt;
 };

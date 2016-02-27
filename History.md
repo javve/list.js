@@ -4,8 +4,16 @@
 - Add tests for custom event handlers. 27e2d6fdeee7090eb1342a108013db898fc29b96
 - Regex in search https://github.com/javve/list.js/issues/371
 - Keep original order?
+- Automatically add item in the right place if sort is active
+- How to handle arrays?
+- Implement debouncing in search?
+- Better search https://github.com/javve/list.js/pull/312/files ?
+- Investigate sort button defaults:
+  - https://github.com/javve/list.js/issues/316
+  - https://github.com/javve/list.js/pull/301
+- Improve testability by decoupling things and make it possible to use require('') in tests
 
-### 2016-02-05: 1.2.0
+### 2016-02-27: 1.2.0
 - **[Misc]** Move form Component to Browserify
   [See commit →](https://github.com/javve/list.js/commit/58695c93849b78787d9cf78cbf9be20b01cdcc8a)
 - **[Misc]** Add tests to make sure List.js works with require.js
@@ -42,6 +50,11 @@
   [See commit →](https://github.com/javve/list.js/commit/237f926d3ea0036ffb8b255dd0da42387b6a653a)
 - **[Bugfix]** Don't add empty item if empty list is initated with empty array.
   [See commit →](https://github.com/javve/list.js/commit/607a176c12b2219fb5204a789cd44ef367a0025f)
+- **[Bugfix]** Make sort case insensitive by default for the automatic buttons
+  [See commit →](https://github.com/javve/list.js/commit/44260b862f74dccd248d08ca1f7df2b422c8f439)
+- **[Bugfix]** Clear all values from source item. Case: list.add({}) should not
+  get same values as first item in list
+  [See commit →](https://github.com/javve/list.js/commit/3a4733d52cff25ef99ee8a1326c0b54be81d64ca)
 
 
 ### 2014-02-03: 1.1.1

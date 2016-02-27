@@ -1,8 +1,36 @@
 var Templater = function(list) {
-  var itemSource = getItemSource(list.item),
+  var itemSource,
     templater = this;
 
-  function getItemSource(item) {
+  var init = function() {
+    itemSource = templater.getItemSource(list.item);
+    itemSource = templater.clearSourceItem(itemSource, list.valueNames);
+  };
+
+  this.clearSourceItem = function(el, valueNames) {
+    for(var i = 0, il = valueNames.length; i < il; i++) {
+      var elm;
+      if (valueNames[i].data) {
+        for (var j = 0, jl = valueNames[i].data.length; j < jl; j++) {
+          el.setAttribute('data-'+valueNames[i].data[j], '');
+        }
+      } else if (valueNames[i].attr && valueNames[i].name) {
+        elm = list.utils.getByClass(el, valueNames[i].name, true);
+        if (elm) {
+          elm.setAttribute(valueNames[i].attr, "");
+        }
+      } else {
+        elm = list.utils.getByClass(el, valueNames[i], true);
+        if (elm) {
+          elm.innerHTML = "";
+        }
+      }
+      elm = undefined;
+    }
+    return el;
+  };
+
+  this.getItemSource = function(item) {
     if (item === undefined) {
       var nodes = list.list.childNodes,
         items = [];
@@ -10,24 +38,26 @@ var Templater = function(list) {
       for (var i = 0, il = nodes.length; i < il; i++) {
         // Only textnodes have a data attribute
         if (nodes[i].data === undefined) {
-          return nodes[i];
+          return nodes[i].cloneNode(true);
         }
       }
-      return null;
-    } else if (/^tr[\s>]/.exec(item)) { 
+    } else if (/^tr[\s>]/.exec(item)) {
       var table = document.createElement('table');
       table.innerHTML = item;
       return table.firstChild;
-    } else if (item.indexOf("<") !== -1) { // Try create html element of list, do not work for tables!!
+    } else if (item.indexOf("<") !== -1) {
       var div = document.createElement('div');
       div.innerHTML = item;
       return div.firstChild;
     } else {
-      return document.getElementById(list.item);
+      var source = document.getElementById(list.item);
+      if (source) {
+        return source;
+      }
     }
-  }
+    throw new Error("The list need to have at list one item on init otherwise you'll have to add a template.");
+  };
 
-  /* Get values from element */
   this.get = function(item, valueNames) {
     templater.create(item);
     var values = {};
@@ -49,7 +79,6 @@ var Templater = function(list) {
     return values;
   };
 
-  /* Sets values at element */
   this.set = function(item, values) {
     var getValueName = function(name) {
       for (var i = 0, il = list.valueNames.length; i < il; i++) {
@@ -131,6 +160,8 @@ var Templater = function(list) {
       }
     }
   };
+
+  init();
 };
 
 module.exports = function(list) {

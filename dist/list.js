@@ -14,7 +14,8 @@ var document = window.document,
   toString = require('./src/utils/to-string'),
   naturalSort = require('./src/utils/natural-sort'),
   classes = require('./src/utils/classes'),
-  getAttribute = require('./src/utils/get-attribute');
+  getAttribute = require('./src/utils/get-attribute'),
+  toArray = require('./src/utils/to-array');
 
 var List = function(id, options, values) {
 
@@ -38,6 +39,7 @@ var List = function(id, options, values) {
       self.searchColumns  = undefined;
       self.handlers       = { 'updated': [] };
       self.plugins        = {};
+      self.valueNames     = [];
       self.utils          = {
         getByClass: getByClass,
         extend: extend,
@@ -46,10 +48,11 @@ var List = function(id, options, values) {
         toString: toString,
         naturalSort: naturalSort,
         classes: classes,
-        getAttribute: getAttribute
+        getAttribute: getAttribute,
+        toArray: toArray
       };
 
-      extend(self, options);
+      self.utils.extend(self, options);
 
       self.listContainer = (typeof(id) === 'string') ? document.getElementById(id) : id;
       if (!self.listContainer) { return; }
@@ -127,13 +130,8 @@ var List = function(id, options, values) {
     }
     for (var i = 0, il = values.length; i < il; i++) {
       var item = null;
-      if (values[i] instanceof Item) {
-        item = values[i];
-        item.reload();
-      } else {
-        notCreate = (self.items.length > self.page) ? true : false;
-        item = new Item(values[i], undefined, notCreate);
-      }
+      notCreate = (self.items.length > self.page) ? true : false;
+      item = new Item(values[i], undefined, notCreate);
       self.items.push(item);
       added.push(item);
     }
@@ -274,7 +272,7 @@ window.List = List;
 
 })(window);
 
-},{"./src/add-async":2,"./src/filter":3,"./src/item":4,"./src/parse":5,"./src/search":6,"./src/sort":7,"./src/templater":8,"./src/utils/classes":9,"./src/utils/events":10,"./src/utils/extend":11,"./src/utils/get-attribute":12,"./src/utils/get-by-class":13,"./src/utils/index-of":14,"./src/utils/natural-sort":15,"./src/utils/to-string":17}],2:[function(require,module,exports){
+},{"./src/add-async":2,"./src/filter":3,"./src/item":4,"./src/parse":5,"./src/search":6,"./src/sort":7,"./src/templater":8,"./src/utils/classes":9,"./src/utils/events":10,"./src/utils/extend":11,"./src/utils/get-attribute":12,"./src/utils/get-by-class":13,"./src/utils/index-of":14,"./src/utils/natural-sort":15,"./src/utils/to-array":16,"./src/utils/to-string":17}],2:[function(require,module,exports){
 module.exports = function(list) {
   var addAsync = function(values, callback, items) {
     var valuesToAdd = values.splice(0, 50);
@@ -346,6 +344,7 @@ module.exports = function(list) {
         item.values(values);
       }
     };
+
     this.values = function(newValues, notCreate) {
       if (newValues !== undefined) {
         for(var name in newValues) {
@@ -358,12 +357,15 @@ module.exports = function(list) {
         return item._values;
       }
     };
+
     this.show = function() {
       list.templater.show(item);
     };
+
     this.hide = function() {
       list.templater.hide(item);
     };
+
     this.matching = function() {
       return (
         (list.filtered && list.searched && item.found && item.filtered) ||
@@ -372,9 +374,11 @@ module.exports = function(list) {
         (!list.filtered && !list.searched)
       );
     };
+
     this.visible = function() {
       return (item.elm && (item.elm.parentNode == list.list)) ? true : false;
     };
+
     init(initValues, element, notCreate);
   };
 };
@@ -576,10 +580,10 @@ module.exports = function(list) {
     },
     getInSensitive: function(btn, options) {
       var insensitive = list.utils.getAttribute(btn, 'data-insensitive');
-      if (insensitive === "true") {
-        options.insensitive = true;
-      } else {
+      if (insensitive === "false") {
         options.insensitive = false;
+      } else {
+        options.insensitive = true;
       }
     },
     setOrder: function(options) {
@@ -641,10 +645,38 @@ module.exports = function(list) {
 
 },{}],8:[function(require,module,exports){
 var Templater = function(list) {
-  var itemSource = getItemSource(list.item),
+  var itemSource,
     templater = this;
 
-  function getItemSource(item) {
+  var init = function() {
+    itemSource = templater.getItemSource(list.item);
+    itemSource = templater.clearSourceItem(itemSource, list.valueNames);
+  };
+
+  this.clearSourceItem = function(el, valueNames) {
+    for(var i = 0, il = valueNames.length; i < il; i++) {
+      var elm;
+      if (valueNames[i].data) {
+        for (var j = 0, jl = valueNames[i].data.length; j < jl; j++) {
+          el.setAttribute('data-'+valueNames[i].data[j], '');
+        }
+      } else if (valueNames[i].attr && valueNames[i].name) {
+        elm = list.utils.getByClass(el, valueNames[i].name, true);
+        if (elm) {
+          elm.setAttribute(valueNames[i].attr, "");
+        }
+      } else {
+        elm = list.utils.getByClass(el, valueNames[i], true);
+        if (elm) {
+          elm.innerHTML = "";
+        }
+      }
+      elm = undefined;
+    }
+    return el;
+  };
+
+  this.getItemSource = function(item) {
     if (item === undefined) {
       var nodes = list.list.childNodes,
         items = [];
@@ -652,24 +684,26 @@ var Templater = function(list) {
       for (var i = 0, il = nodes.length; i < il; i++) {
         // Only textnodes have a data attribute
         if (nodes[i].data === undefined) {
-          return nodes[i];
+          return nodes[i].cloneNode(true);
         }
       }
-      return null;
-    } else if (/^tr[\s>]/.exec(item)) { 
+    } else if (/^tr[\s>]/.exec(item)) {
       var table = document.createElement('table');
       table.innerHTML = item;
       return table.firstChild;
-    } else if (item.indexOf("<") !== -1) { // Try create html element of list, do not work for tables!!
+    } else if (item.indexOf("<") !== -1) {
       var div = document.createElement('div');
       div.innerHTML = item;
       return div.firstChild;
     } else {
-      return document.getElementById(list.item);
+      var source = document.getElementById(list.item);
+      if (source) {
+        return source;
+      }
     }
-  }
+    throw new Error("The list need to have at list one item on init otherwise you'll have to add a template.");
+  };
 
-  /* Get values from element */
   this.get = function(item, valueNames) {
     templater.create(item);
     var values = {};
@@ -691,7 +725,6 @@ var Templater = function(list) {
     return values;
   };
 
-  /* Sets values at element */
   this.set = function(item, values) {
     var getValueName = function(name) {
       for (var i = 0, il = list.valueNames.length; i < il; i++) {
@@ -773,6 +806,8 @@ var Templater = function(list) {
       }
     }
   };
+
+  init();
 };
 
 module.exports = function(list) {

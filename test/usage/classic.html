@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="../../dist/list.min.js"></script>
+  <script src="../../dist/list.js"></script>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -12,30 +12,42 @@
       Sort by name
     </button>
     <ul class="list">
-      <li>
-        <h3 class="name">Jonny Stromberg</h3>
-        <p class="born">1986</p>
+      <li data-id="1">
+        <a href="https://twitter.com/javve" class="link name">Jonny Stromberg</a>
+        <p class="born timestamp" data-timestamp="12345">1986</p>
+        <img class="image" src="luke.jpeg">
       </li>
-      <li>
-        <h3 class="name">Jonas Arnklint</h3>
-        <p class="born">1985</p>
+      <li data-id="2">
+        <a href="https://twitter.com/arnklint" class="link name">Jonas Arnklint</a>
+        <p class="born timestamp" data-timestamp="23456">1985</p>
+        <img class="image" src="darth.jpeg">
       </li>
-      <li>
-        <h3 class="name">Martina Elm</h3>
-        <p class="born">1986</p>
+      <li data-id="3">
+        <a href="https://twitter.com/martinaelm" class="link name">Martina Elm</a>
+        <p class="born timestamp" data-timestamp="34567">1986</p>
+        <img class="image" src="rey.jpeg">
       </li>
-      <li>
-        <h3 class="name">Gustaf Lindqvist</h3>
-        <p class="born">1983</p>
+      <li data-id="4">
+        <a href="https://twitter.com/GLindqvist" class="link name">Gustaf Lindqvist</a>
+        <p class="born timestamp" data-timestamp="45678">1983</p>
+        <img class="image" src="boba.jpeg">
       </li>
     </ul>
   </div>
 
   <script>
     var options = {
-      valueNames: [ 'name', 'born' ]
+      valueNames: [
+        'name',
+        'born',
+        { data: ['id'] },
+        { attr: 'src', name: 'image' },
+        { attr: 'href', name: 'link' },
+        { attr: 'data-timestamp', name: 'timestamp' }
+      ]
     };
     var userList = new List('users', options);
+    userList.add({ name: 'Leia', born: '1954', image: 'leia.jpeg', id: 5, timestamp: '67893' });
   </script>
 </body>
 </html>

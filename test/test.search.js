@@ -127,4 +127,22 @@ describe('Search', function() {
       expect(result.length).to.equal(4);
     });
   });
+  //
+  // describe('Special characters', function() {
+  //   it('should escape and handle special characters', function() {
+  //     list.add([
+  //       { name: 'Jonny&Jabba' },
+  //       { name: '<Leia' },
+  //       { name: '>Luke' },
+  //       { name: '"Chewie"' },
+  //       { name: "'Ewok'" }
+  //     ]);
+  //     var result = list.search('Leia');
+  //     console.log(result);
+  //     expect(result.length).to.equal(1);
+  //     var result = list.search('<');
+  //     console.log(result);
+  //     expect(result.length).to.equal(1);
+  //   });
+  // });
 });

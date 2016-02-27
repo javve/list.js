@@ -13,7 +13,8 @@ var document = window.document,
   toString = require('./src/utils/to-string'),
   naturalSort = require('./src/utils/natural-sort'),
   classes = require('./src/utils/classes'),
-  getAttribute = require('./src/utils/get-attribute');
+  getAttribute = require('./src/utils/get-attribute'),
+  toArray = require('./src/utils/to-array');
 
 var List = function(id, options, values) {
 
@@ -37,6 +38,7 @@ var List = function(id, options, values) {
       self.searchColumns  = undefined;
       self.handlers       = { 'updated': [] };
       self.plugins        = {};
+      self.valueNames     = [];
       self.utils          = {
         getByClass: getByClass,
         extend: extend,
@@ -45,10 +47,11 @@ var List = function(id, options, values) {
         toString: toString,
         naturalSort: naturalSort,
         classes: classes,
-        getAttribute: getAttribute
+        getAttribute: getAttribute,
+        toArray: toArray
       };
 
-      extend(self, options);
+      self.utils.extend(self, options);
 
       self.listContainer = (typeof(id) === 'string') ? document.getElementById(id) : id;
       if (!self.listContainer) { return; }
@@ -126,13 +129,8 @@ var List = function(id, options, values) {
     }
     for (var i = 0, il = values.length; i < il; i++) {
       var item = null;
-      if (values[i] instanceof Item) {
-        item = values[i];
-        item.reload();
-      } else {
-        notCreate = (self.items.length > self.page) ? true : false;
-        item = new Item(values[i], undefined, notCreate);
-      }
+      notCreate = (self.items.length > self.page) ? true : false;
+      item = new Item(values[i], undefined, notCreate);
       self.items.push(item);
       added.push(item);
     }
