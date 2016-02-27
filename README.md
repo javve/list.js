@@ -27,10 +27,6 @@ Really simple and easy to use!
 ```
 bower install list.js
 ```
-##### Via Component
-```
-component install javve/list.js
-```
 ##### Via CDNJS
 ```
 <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
@@ -88,8 +84,6 @@ component install javve/list.js
 * [samosad](https://github.com/samosad) / Alexey Tabakman
 * [Page-](https://github.com/Page-)
 * [urkle](https://github.com/urkle) / Edward Rudd
-
-Built with [Component](https://github.com/component/component) which is created by [TJ Holowaychuk](https://github.com/visionmedia).
 
 ### Want to contribute?
 - Read more at [listjs.com/overview/contribute](http://listjs.com/overview/contribute)
