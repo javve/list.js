@@ -1,6 +1,5 @@
-# Changelog
+# TODO
 
-### TODO
 - Add tests for custom event handlers. 27e2d6fdeee7090eb1342a108013db898fc29b96
 - Regex in search https://github.com/javve/list.js/issues/371
 - Keep original order?
@@ -13,7 +12,22 @@
   - https://github.com/javve/list.js/pull/301
 - Improve testability by decoupling things and make it possible to use require('') in tests
 
-### 2016-02-27: 1.2.0
+
+# Changelog
+
+### 2016-02-27: v1.2.0
+It's been two years since the last update of List.js. That is absolutely not ok
+and I'm very sorry that it has taken so long. I promise I'll do better in the future!
+
+Anyways, this release introduces a bunch of bug fixes and improvements, but most
+importantly: List.js now has support for data attributes PLUS all other attributes.
+[See an example]() and [read the docs](http://www.listjs.com/docs#example-6).
+
+Another noteworthy update is that I've left Component and moved back all utils
+to the core lib. Instead I'm using Browserify as module handler.
+
+I hope you'll like this update!
+
 - **[Misc]** Move form Component to Browserify
   [See commit →](https://github.com/javve/list.js/commit/58695c93849b78787d9cf78cbf9be20b01cdcc8a)
 - **[Misc]** Add tests to make sure List.js works with require.js
