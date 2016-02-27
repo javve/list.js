@@ -29,11 +29,11 @@ bower install list.js
 ```
 ##### Via CDNJS
 ```
-<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.2.0/list.min.js"></script>
 ```
 ##### Via Direct Download
-- [Compressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.1.1/dist/list.min.js)
-- [Uncompressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.1.1/dist/list.js)
+- [Compressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.2.0/dist/list.min.js)
+- [Uncompressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.2.0/dist/list.js)
 
 ### Demo / Examples
 - [Existing list](http://listjs.com/examples/existing-list)
@@ -96,5 +96,5 @@ bower install list.js
 
 ## License (MIT)
 
-Copyright (c) 2012 Jonny Strömberg <[jonny.stromberg@gmail.com](mailto:jonny.stromberg@gmail.com)>
+Copyright (c) 2012-2016 Jonny Strömberg <[jonny.stromberg@gmail.com](mailto:jonny.stromberg@gmail.com)>
 [http://jonnystromberg.com](http://jonnystromberg.com)
