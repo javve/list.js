@@ -13,7 +13,7 @@
   - https://github.com/javve/list.js/pull/301
 - Improve testability by decoupling things and make it possible to use require('') in tests
 
-### 2016-02-05: 1.2.0
+### 2016-02-27: 1.2.0
 - **[Misc]** Move form Component to Browserify
   [See commit →](https://github.com/javve/list.js/commit/58695c93849b78787d9cf78cbf9be20b01cdcc8a)
 - **[Misc]** Add tests to make sure List.js works with require.js
