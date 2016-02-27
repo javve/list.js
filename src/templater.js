@@ -1,8 +1,36 @@
 var Templater = function(list) {
-  var itemSource = getItemSource(list.item),
+  var itemSource,
     templater = this;
 
-  function getItemSource(item) {
+  var init = function() {
+    itemSource = templater.getItemSource(list.item);
+    itemSource = templater.clearSourceItem(itemSource, list.valueNames);
+  };
+
+  this.clearSourceItem = function(el, valueNames) {
+    for(var i = 0, il = valueNames.length; i < il; i++) {
+      var elm;
+      if (valueNames[i].data) {
+        for (var j = 0, jl = valueNames[i].data.length; j < jl; j++) {
+          el.setAttribute('data-'+valueNames[i].data[j], '');
+        }
+      } else if (valueNames[i].attr && valueNames[i].name) {
+        elm = list.utils.getByClass(el, valueNames[i].name, true);
+        if (elm) {
+          elm.setAttribute(valueNames[i].attr, "");
+        }
+      } else {
+        elm = list.utils.getByClass(el, valueNames[i], true);
+        if (elm) {
+          elm.innerHTML = "";
+        }
+      }
+      elm = undefined;
+    }
+    return el;
+  };
+
+  this.getItemSource = function(item) {
     if (item === undefined) {
       var nodes = list.list.childNodes,
         items = [];
@@ -28,7 +56,7 @@ var Templater = function(list) {
       }
     }
     throw new Error("The list need to have at list one item on init otherwise you'll have to add a template.");
-  }
+  };
 
   this.get = function(item, valueNames) {
     templater.create(item);
@@ -132,6 +160,8 @@ var Templater = function(list) {
       }
     }
   };
+
+  init();
 };
 
 module.exports = function(list) {

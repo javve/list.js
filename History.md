@@ -11,6 +11,7 @@
 - Investigate sort button defaults:
   - https://github.com/javve/list.js/issues/316
   - https://github.com/javve/list.js/pull/301
+- Improve testability by decoupling things and make it possible to use require('') in tests
 
 ### 2016-02-05: 1.2.0
 - **[Misc]** Move form Component to Browserify
@@ -51,6 +52,9 @@
   [See commit →](https://github.com/javve/list.js/commit/607a176c12b2219fb5204a789cd44ef367a0025f)
 - **[Bugfix]** Make sort case insensitive by default for the automatic buttons
   [See commit →](https://github.com/javve/list.js/commit/44260b862f74dccd248d08ca1f7df2b422c8f439)
+- **[Bugfix]** Clear all values from source item. Case: list.add({}) should not
+  get same values as first item in list
+  [See commit →](https://github.com/javve/list.js/commit/3a4733d52cff25ef99ee8a1326c0b54be81d64ca)
 
 
 ### 2014-02-03: 1.1.1
