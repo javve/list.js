@@ -10,24 +10,26 @@ var Templater = function(list) {
       for (var i = 0, il = nodes.length; i < il; i++) {
         // Only textnodes have a data attribute
         if (nodes[i].data === undefined) {
-          return nodes[i];
+          return nodes[i].cloneNode(true);
         }
       }
-      return null;
-    } else if (/^tr[\s>]/.exec(item)) { 
+    } else if (/^tr[\s>]/.exec(item)) {
       var table = document.createElement('table');
       table.innerHTML = item;
       return table.firstChild;
-    } else if (item.indexOf("<") !== -1) { // Try create html element of list, do not work for tables!!
+    } else if (item.indexOf("<") !== -1) {
       var div = document.createElement('div');
       div.innerHTML = item;
       return div.firstChild;
     } else {
-      return document.getElementById(list.item);
+      var source = document.getElementById(list.item);
+      if (source) {
+        return source;
+      }
     }
+    throw new Error("The list need to have at list one item on init otherwise you'll have to add a template.");
   }
 
-  /* Get values from element */
   this.get = function(item, valueNames) {
     templater.create(item);
     var values = {};
@@ -49,7 +51,6 @@ var Templater = function(list) {
     return values;
   };
 
-  /* Sets values at element */
   this.set = function(item, values) {
     var getValueName = function(name) {
       for (var i = 0, il = list.valueNames.length; i < il; i++) {
