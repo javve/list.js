@@ -20,6 +20,7 @@ module.exports = function(list) {
         item.values(values);
       }
     };
+
     this.values = function(newValues, notCreate) {
       if (newValues !== undefined) {
         for(var name in newValues) {
@@ -32,12 +33,15 @@ module.exports = function(list) {
         return item._values;
       }
     };
+
     this.show = function() {
       list.templater.show(item);
     };
+
     this.hide = function() {
       list.templater.hide(item);
     };
+
     this.matching = function() {
       return (
         (list.filtered && list.searched && item.found && item.filtered) ||
@@ -46,9 +50,11 @@ module.exports = function(list) {
         (!list.filtered && !list.searched)
       );
     };
+
     this.visible = function() {
       return (item.elm && (item.elm.parentNode == list.list)) ? true : false;
     };
+
     init(initValues, element, notCreate);
   };
 };
