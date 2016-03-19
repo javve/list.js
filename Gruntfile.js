@@ -13,9 +13,6 @@ module.exports = function(grunt) {
     },
   },
   shell: {
-    mkdir: {
-      command: 'mkdir -p dist'
-    },
     build: {
       command: 'browserify index.js > dist/list.js',
       options: {
@@ -79,8 +76,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-mocha');
 
-  grunt.registerTask('default', ['jshint:code', 'jshint:tests', 'shell:mkdir', 'shell:build']);
-  grunt.registerTask('dist', ['default', 'shell:mkdir', 'shell:build', 'uglify']);
+  grunt.registerTask('mkdir', function() { grunt.file.mkdir("dist"); });
+  grunt.registerTask('default', ['jshint:code', 'jshint:tests', 'mkdir', 'shell:build']);
+  grunt.registerTask('dist', ['default', 'mkdir', 'shell:build', 'uglify']);
   grunt.registerTask('clean', ['shell:remove']);
   grunt.registerTask('test', ['dist', 'mocha']);
 
