@@ -41,10 +41,10 @@ var Templater = function(list) {
           return nodes[i].cloneNode(true);
         }
       }
-    } else if (/^tr[\s>]/.exec(item)) {
-      var table = document.createElement('table');
-      table.innerHTML = item;
-      return table.firstChild;
+    } else if (/<tr[\s>]/g.exec(item)) {
+      var tbody = document.createElement('tbody');
+      tbody.innerHTML = item;
+      return tbody.firstChild;
     } else if (item.indexOf("<") !== -1) {
       var div = document.createElement('div');
       div.innerHTML = item;
