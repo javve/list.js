@@ -83,7 +83,11 @@ module.exports = function(list) {
     } else {
       list.searched = true;
       if (customSearch) {
-        customSearch(searchString, columns);
+        if(list.minLength === undefined){
+          customSearch(searchString, columns);
+        }else if(searchString.length >= list.minLength){
+          customSearch(searchString, columns);
+        }
       } else {
         search.list();
       }
