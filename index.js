@@ -1,5 +1,5 @@
 /*
-List.js 1.1.1
+List.js 1.2
 By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
 */
 (function( window, undefined ) {
