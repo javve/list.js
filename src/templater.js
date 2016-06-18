@@ -44,11 +44,11 @@ var Templater = function(list) {
     } else if (/^tr[\s>]/.exec(item)) {
       var table = document.createElement('table');
       table.innerHTML = item;
-      return table.firstChild;
+      return table.firstElementChild;
     } else if (item.indexOf("<") !== -1) {
       var div = document.createElement('div');
       div.innerHTML = item;
-      return div.firstChild;
+      return div.firstElementChild;
     } else {
       var source = document.getElementById(list.item);
       if (source) {
