@@ -11,9 +11,17 @@
   - https://github.com/javve/list.js/issues/316
   - https://github.com/javve/list.js/pull/301
 - Improve testability by decoupling things and make it possible to use require('') in tests
-
+- Add .remove() method to remove all listeners etc.
 
 # Changelog
+
+### v1.2.1
+- **[Bugfix]** Update NaturalSort to 0.8.1
+  [See commit →](https://github.com/javve/list.js/commit/42d3db491801677c63238d5db3e0e9257087999a)
+- **[Bugfix]** Make mkdir in build script OS agnostic
+  [See commit →](https://github.com/javve/list.js/commit/ba387125efddd7f5f4f8360bce516ae740cb5ae5)
+- **[Misc]** Use local Browserify
+  [See commit →](https://github.com/javve/list.js/commit/83f6502dcea428fa2de2513d19ac71f82905ecb8)
 
 ### 2016-02-27: v1.2.0
 It's been two years since the last update of List.js. That is absolutely not ok
