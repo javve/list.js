@@ -1,0 +1,38 @@
+---
+layout: default
+title: Using Plugins
+---
+
+    <h2>Using plugins</h2>
+
+    <h3>Getting started</h3>
+    <p>To use a plugin you need two things:</p>
+    <ol>
+      <li>Include the plugins .js-file at the page.</li>
+      <li>
+        <p>Include it when you instantiate List.js</p>
+<pre><code>new List('list-id', {
+  plugins: [ ListPagination(), NameOfOtherPlugin(options) ]
+});</code></pre>
+    </ol>
+
+
+    <h3>Naming and accessing plugins</h3>
+    <p>It is also possible to add options and load multiple instances of the same plugins (if the plugin itself allows it).</p>
+    <p>
+      If the property <code>name</code> is added in the plugin <code>option</code> parameter does the plugin become
+      accessible through listObj.namePropertyValue.This is useful when having multiple instances of the same plugin.
+    </p>
+<pre><code>var myList = new List('list-id', {
+  plugins: [
+    ListPagination({ name: "topPagination", paginationClass: "top-pagination" }),
+    ListPagination({ name: "bottomPagination", paginationClass: "bottom-pagination" })
+  ]
+});
+console.log(myList.topPagination);
+console.log(myList.bottomPagination);</code></pre>
+
+    <h3>Build your own plugin</h3>
+    <p>Go to: <a href="/docs/plugins/build">/docs/plugins/build</a></p>
+
+    <div class="continue">Next topic: <a href="/docs/plugins/pagination">Pagination plugin ›</a></div>

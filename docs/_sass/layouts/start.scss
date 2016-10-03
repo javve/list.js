@@ -1,0 +1,16 @@
+.start-cover {
+  @extend .game-cover;
+  height:80vh;
+  .start-cover-image {
+    @extend .game-cover-image;
+  }
+}
+
+
+.start {
+  .content-container {
+    position: relative;
+    z-index: $z-game-content;
+  }
+  .content {}
+}

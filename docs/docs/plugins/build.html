@@ -1,0 +1,50 @@
+---
+layout: default
+title: Build your own plugin
+---
+
+    <h2>Build your own plugin</h2>
+
+    <p>A List.js plugin is basically a function/class which returns a object on initialization.</p>
+
+    <h3>A basic example plugin</h3>
+    <h4>The plugin code <code>list.awesomething.js</code></h4>
+<pre><code>function ListAwesomething() {
+  options = options || {};
+  return {
+    init: function(list) {
+      // This method is called on initialization
+    },
+    name: options.name || "awesomething",
+    customMethod: function() {
+      return "cowabunga";
+    }
+  };
+};
+</code></pre>
+
+    <h4>Using the plugin</h4>
+<pre><code>&lt;script src="list.js">&lt;/script>
+&lt;script src="list.awesomething.js">&lt;/script>
+&lt;script>
+  var myList = new List('my-list', {
+    plugins: ListAwesomething()
+  });
+
+  myList.awesomething.customMethod(); // cowabunga
+&lt;/script>
+</code></pre>
+    <h3>Requirements / Specifications</h3>
+    <ul>
+      <li>
+        A plugin namned Awesome Thing have to be in a JavaScript file namned <code>list.awesomething.js</code> <em>(no dash, camelcase or anything)</em>
+        and the function/class have to be namned <code>ListAwesomeThing</code> <em>(camelcase but no dash anything else)</em>.
+      </li>
+      <li>The plugin object must contain an <code>init</code> method.</li>
+      <li>The plugin object must contain an <code>name</code> attribute that defaults to the plugin name.</li>
+    </ul>
+
+    <h3>Live example</h3>
+    <p><a href="/examples/plugin">Check this out!</a></p>
+
+    <% locals.mediaTempleTerm = "plugin" %>

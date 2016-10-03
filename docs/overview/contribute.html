@@ -1,0 +1,35 @@
+---
+layout: default
+title: Contribute
+---
+
+    <h2>Setup environment</h2>
+    <h4>1. Install Node.js</h4>
+    <p>Go to <a href="http://nodejs.org/">Nodejs.org</a></p>
+
+    <h4>2. Install dependencies</h4>
+    <pre><code>npm install</code></pre>
+
+    <h2>Compile and test</h2>
+    <h4>Compile the script <code>(build/build.js)</code></h4>
+    <pre><code>grunt</code></pre>
+
+    <h4>Watch and recompile when files change</h4>
+    <pre><code>grunt watch</code></pre>
+
+    <h4>Create standalone List.js <code>(dist/list.js)</code></h4>
+    <pre><code>grunt dist</code></pre>
+
+    <h4>Run the test suite</h4>
+    <pre><code>grunt test</code></pre>
+    <p>Or open this file your browser</p>
+    <pre><code>/test/index.html</code></pre>
+
+    <h2>Guidelines for making pull requests</h2>
+    <ul>
+      <li>Add tests if applicable.</li>
+      <li>Make sure all tests run. <em>Preferably in IE7+</em></li>
+      <li>Do <b>not</b> include <code>dist/list.js</code> or <code>dist/list.min.js</code>. That file is only update for each release.</li>
+      <li>ONE feature per pull request</li>
+      <li><i>List.js is used in a lot of different ways on a lot of places, so please have understanding if your new special feature is not accepted :)</i></li>
+    </ul>

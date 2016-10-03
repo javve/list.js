@@ -1,0 +1,33 @@
+<div class="docs-menu">
+
+  <h4>Overview</h4>
+  <ul>
+    <li {% if page.path == "/overview/download" %}class="active"{% endif %}><a href="/overview/download">Download</a></li>
+    <li {% if page.path == "/overview" %}class="active"{% endif %}><a href="/overview">TLDR / Features</a></li>
+    <li {% if page.path == "/overview/changelog" %}class="active"{% endif %}><a href="/overview/changelog">Changelog</a></li>
+    <li {% if page.path == "/overview/contribute" %}class="active"{% endif %}><a href="/overview/contribute">Contribute</a></li>
+    <li><a href="https://github.com/javve/list.js" target="_blank">GitHub</a></li>
+  </ul>
+
+  <h4>Documentation</h4>
+  <ul>
+    <li {% if page.path == "/docs" %}class="active"{% endif %}><a href="/docs">Getting started</a></li>
+    <li {% if page.path == "/docs/options" %}class="active"{% endif %}><a href="/docs/options">Options</a></li>
+    <li {% if page.path == "/docs/list-api" %}class="active"{% endif %}><a href="/docs/list-api">List API</a></li>
+    <li {% if page.path == "/docs/item-api" %}class="active"{% endif %}><a href="/docs/item-api">Item API</a></li>
+  </ul>
+
+  <h4>Plugins</h4>
+  <ul>
+    <li {% if page.path == "/docs/plugins" %}class="active"{% endif %}><a href="/docs/plugins">Introduction</a></li>
+    <li {% if page.path == "/docs/plugins/pagination" %}class="active"{% endif %}><a href="/docs/plugins/pagination">Pagination</a></li>
+    <li {% if page.path == "/docs/plugins/fuzzysearch" %}class="active"{% endif %}><a href="/docs/plugins/fuzzysearch">Fuzzy search</a></li>
+  </ul>
+
+  <h4>Examples</h4>
+  <ul>
+    {% for example in site.examples %}
+    <li><a href="{{example.url}}">{{example.name}}</a></li>
+    {% endfor %}
+  </ul>
+</div>

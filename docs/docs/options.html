@@ -1,0 +1,92 @@
+---
+layout: default
+title: Options
+---
+
+<h2>
+    <a name="parameters" class="anchor" href="#parameters"><span class="octicon octicon-link"></span></a>
+    Options
+</h2>
+<p>Using List.js is pretty much plug and play, but you can change some options if you feel like it.</p>
+<pre><code>new List(id/element, options, values);</code></pre>
+
+<ul>
+<li>
+    <strong><a name="id" href="#id" class="anchor"></a>id</strong> or <strong><a name="element" href="#element" class="anchor"></a>element</strong> <em class="docs-parameter-description">*required</em>
+    Id the element in which the list area should be initialized. OR the actual element itself.
+</li>
+<li>
+<p><strong><a name="options" href="#options" class="anchor"></a>options</strong>
+Some of the option parameters are required at some times</p>
+
+<ul>
+<li>
+<p><strong><a name="valueNames" href="#valueNames" class="anchor"></a>valueNames</strong> <em class="docs-parameter-description">Array, default: null. *required</em><br>
+If the list contains items on initialization, then this array
+has to contain the value names (class names) for the different values of
+each list item.</p>
+
+<pre><code>&lt;ul class="list"&gt;
+    &lt;li&gt;
+        &lt;span class="name"&gt;Jonny&lt;/span&gt;
+        &lt;span class="city"&gt;Sundsvall&lt;/span&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+
+var valueNames = ['name', 'city'];
+</code></pre>
+
+<pre><code>&lt;ul class="list">
+ &lt;li data-id="1">
+   &lt;a href="http://javve.com" class="link name">Jonny&lt;/a>
+   &lt;p class="born timestamp" data-timestamp="1234">1986&lt;/p>
+   &lt;img class="image" src="javve.jpg" />
+ &lt;/li>
+&lt;/ul>
+
+var valueNames =  [
+  'name',
+  'born',
+  { data: ['id'] },
+  { name: 'timestamp', attr: 'data-timestamp' },
+  { name: 'link', attr: 'href' },
+  { name: 'image', attr: 'src' }
+];</code></pre>
+
+</li>
+<li>
+<p><strong><a name="item" href="#item" class="anchor"></a>item</strong> <em class="docs-parameter-description">String, default: undefined</em><br>
+ID to item template element or a string of HTML.</p>
+
+<pre><code class="javascript">var options = {
+    item: "&lt;li&gt;&lt;span class='name'&gt;&lt;/span&gt;&lt;span class='city'&gt;&lt;/span&gt;&lt;/li&gt;"
+}
+// or
+var options = {
+    item: 'cool-item-id'
+};
+</code></pre>
+</li>
+<li><p><strong><a name="listClass" href="#listClass" class="anchor"></a>listClass</strong> <em class="docs-parameter-description">String, default: "list"</em><br>
+What is the class of the list-container?</p></li>
+<li><p><strong><a name="searchClass" href="#searchClass" class="anchor"></a>searchClass</strong> <em class="docs-parameter-description">String, default: "search"</em><br>
+What is the class of the search field?</p></li>
+<li><p><strong><a name="sortClass" href="#sortClass" class="anchor"></a>sortClass</strong> <em class="docs-parameter-description">String, default: "sort"</em><br>
+What is the class of the sort buttons?</p></li>
+<li><p><strong><a name="indexAsync" href="#indexAsync" class="anchor"></a>indexAsync</strong> <em class="docs-parameter-description">Boolean, default: false</em><br>
+If there are already items in the list to which the
+List.js-script is added, then should the indexing be done
+in a asynchronous way? Good for large lists (&gt; 500 items).</p></li>
+<li><p><strong><a name="page" href="#page" class="anchor"></a>page</strong> <em class="docs-parameter-description">Int, default: 200</em><br>
+Defines how many items that should be visible at the same time. This affects
+performance.</p></li>
+<li><p><strong><a name="i" href="#i" class="anchor"></a>i</strong>  <em class="docs-parameter-description">Int, default: 1</em><br>
+Which item should be shown as the first one.</p></li>
+<li><p><strong><a name="plugins" href="#plugins" class="anchor"></a>plugins</strong> <em class="docs-parameter-description">Array, default: undefined</em><br><a href="http://jonnystromberg.com/listjs-plugins-guide/">Read more about plugins here</a></p></li>
+</ul>
+</li>
+<li><p><strong><a name="values" href="#values" class="anchor"></a>values</strong> <em class="docs-parameter-description">Array of objects) (*optional</em>
+Values to add to the list on initialization.</p></li>
+</ul>
+
+    <div class="continue">Next topic: <a href="/docs/list-api">List API ›</a></div>

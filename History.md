@@ -12,6 +12,7 @@
   - https://github.com/javve/list.js/pull/301
 - Improve testability by decoupling things and make it possible to use require('') in tests
 - Add .remove() method to remove all listeners etc.
+- Either include version in minified file or name file list-1.2.1.js
 
 # Changelog
 

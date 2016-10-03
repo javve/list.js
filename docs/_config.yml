@@ -1,0 +1,19 @@
+title: List.js
+email: jonny.stromberg@gmail.com
+description: > # this means to ignore newlines until "baseurl:"
+  Perfect library for adding search, sort, filters and flexibility to tables,
+  lists and various HTML elements. Built to be invisible and work on existing HTML.
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "http://listjs.com" # the base hostname & protocol for your site
+twitter_username: javve
+github_username:  javve
+
+permalink: pretty
+markdown: kramdown
+gems:
+ - jekyll-coffeescript
+ - jekyll-redirect-from
+
+collections:
+  examples:
+    output: true

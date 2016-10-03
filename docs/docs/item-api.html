@@ -1,0 +1,77 @@
+---
+layout: default
+title: Item API
+---
+
+<h2>
+<a name="item-api" class="anchor" href="#item-api"><span class="octicon octicon-link"></span></a>Item API</h2>
+
+<p>These methods are available for all Items that are returned by
+the list.</p>
+
+<h3>
+<a name="properties-1" class="anchor" href="#properties-1"><span class="octicon octicon-link"></span></a>Properties</h3>
+
+<ul>
+  <li>
+    <strong><a name="elm" href="#elm" class="anchor"></a>elm</strong>  <em class="docs-parameter-description">Element</em><br />
+    The actual item DOM element
+  </li>
+  <li>
+    <strong><a name="_values" href="#_values" class="anchor"></a>_values</strong> <em class="docs-parameter-description">Array</em><br />
+    Direct access to the item's values. Simplifies debugging. <em><b>Note:</b> Always use item.values() when interacting with the values.</em>
+  </li>
+</ul>
+
+<h3><a name="methods-1" class="anchor" href="#methods-1"><span class="octicon octicon-link"></span></a>Methods</h3>
+
+<ul>
+  <li>
+    <p><strong><a name="values" href="#values" class="anchor"></a>values(newValues)</strong></p>
+    <ul>
+      <li>
+        <p>
+          <strong><a name="newValues" href="#newValues" class="anchor"></a>newValues</strong> <em class="docs-parameter-description">optional</em><br />
+          If variable newValues are present the new values replaces the current item values
+          and updates the list.
+          If newValues are not present, the function returns the current values.
+        </p>
+  <pre><code>item.values() // { name: "Jonny", age: 24, city: "Umeå" }
+  item.values({
+      age: 25,
+      city: "Stockholm"
+  });
+  item.values() // { name: "Jonny", age: 25, city: "Stockholm" }
+  </code></pre>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>
+      <strong><a name="show" href="#show" class="anchor"></a>show()</strong><br>
+      Shows the item
+    </p>
+  </li>
+  <li>
+    <p>
+      <strong><a name="hide" href="#hide" class="anchor"></a>hide()</strong><br>
+      Hides the item (removes the element from the list, and then when its shown it's appended again. The element will thereby change position in the list. A bug, but a good solution is yet to be found.)
+    </p>
+  </li>
+  <li>
+    <p>
+      <strong><a name="matching" href="#matching" class="anchor"></a>matching()</strong> <em class="docs-parameter-description">Boolean</em><br>
+      Returns boolean. True if the item matches the current filter and search. Visible items
+      always matches, but matching items are not always visible.
+  </p>
+</li>
+  <li>
+    <p>
+      <strong><a name="visible" href="#visible" class="anchor"></a>visible()</strong> <em class="docs-parameter-description">Boolean</em><br>
+      Returns boolean. True if the item is visible. Visible items
+    always matches, but matching items are not always visible.
+    </p>
+  </li>
+</ul>
+
+    <div class="continue">Next topic: <a href="/docs/plugins">Plugins introduction ›</a></div>

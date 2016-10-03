@@ -1,0 +1,168 @@
+---
+layout: default
+title: Really simple example
+---
+
+<h2>Really simple examples</h2>
+<p>You can use List.js on either exising HTML or create new with super simple templating.</p>
+
+
+<h3>Example 1: Using existing list</h3>
+<h5>HTML</h5>
+
+<pre><code>&lt;div id="hacker-list">
+  &lt;ul class="list">
+    &lt;li>
+       &lt;h3 class="name">Jonny&lt;/h3>
+       &lt;p class="city">Stockholm&lt;/p>
+    &lt;/li>
+    &lt;li>
+      &lt;h3 class="name">Jonas&lt;/h3>
+      &lt;p class="city">Berlin&lt;/p>
+    &lt;/li>
+  &lt;/ul>
+&lt;/div></code></pre>
+
+    <h5>JavaScript</h5>
+<pre><code>var options = {
+    valueNames: [ 'name', 'city' ]
+};
+
+var hackerList = new List('hacker-list', options);</code></pre>
+
+
+    <br /><br /><h3>Example 2: Create list on initialization: Version 1</h3>
+
+    <h5>HTML</h5>
+<pre><code>&lt;div id="hacker-list">
+    &lt;ul class="list">&lt;/ul>
+&lt;/div></code></pre>
+
+<h5>JavaScript</h5>
+<pre><code class="javascript">var options = {
+  item: '&lt;li>&lt;h3 class="name">&lt;/h3>&lt;p class="city">&lt;/p>&lt;/li>'
+};
+
+var values = [
+  { name: 'Jonny', city:'Stockholm' }
+  , { name: 'Jonas', city:'Berlin' }
+];
+
+var hackerList = new List('hacker-list', options, values);</code></pre>
+
+    <br /><br /><h3>Example 3: Create list on initialization: Version 2</h3>
+
+    <h5>HTML</h5>
+<pre><code>&lt;div id="hacker-list">
+  &lt;ul class="list">&lt;/ul>
+&lt;/div>
+
+&lt;div style="display:none;">
+  &lt;!-- A template element is needed when list is empty, TODO: needs a better solution -->
+  &lt;li id="hacker-item">
+   &lt;h3 class="name">&lt;/h3>
+   &lt;p class="city">&lt;/p>
+  &lt;/li>
+&lt;/div></code></pre>
+
+    <h5>JavaScript</h5>
+<pre><code>var options = {
+    item: 'hacker-item'
+};
+
+var values = [
+    { name: 'Jonny', city:'Stockholm' }
+    , { name: 'Jonas', city:'Berlin' }
+];
+
+var hackerList = new List('hacker-list', options, values);</code></pre>
+
+    <br /><br /><h3>Example 4: Index existing list and then add</h3>
+
+    <h5>HTML</h5>
+<pre><code>&lt;div id="hacker-list">
+  &lt;ul class="list">
+   &lt;li>
+     &lt;h3 class="name">Jonny&lt;/h3>
+     &lt;p class="city">Stockholm&lt;/p>
+   &lt;/li>
+  &lt;/ul>
+&lt;/div></code></pre>
+
+    <h5>JavaScript</h5>
+<pre><code>var options = {
+  valueNames: ['name', 'city']
+};
+
+var hackerList = new List('hacker-list', options);
+
+hackerList.add( { name: 'Jonas', city:'Berlin' } );</code></pre>
+
+    <br /><br /><h3>Example 5: Add automagic search and sort inputs and buttons</h5>
+
+    <h5>HTML</h5>
+<pre><code>&lt;div id="hacker-list">
+
+  &lt;input class="search" />
+  &lt;span class="sort" data-sort="name">Sort by name&lt;/span>
+  &lt;span class="sort" data-sort="city">Sort by city&lt;/span>
+
+  &lt;ul class="list">
+   &lt;li>
+     &lt;h3 class="name">Jonny&lt;/h3>
+     &lt;p class="city">Stockholm&lt;/p>
+   &lt;/li>
+   &lt;li>
+     &lt;h3 class="name">Jonas&lt;/h3>
+     &lt;p class="city">Berlin&lt;/p>
+   &lt;/li>
+  &lt;/ul>
+&lt;/div></code></pre>
+
+    <h5>JavaScript (nothing special)</h5>
+<pre><code>var options = {
+  valueNames: [ 'name', 'city' ]
+};
+
+var hackerList = new List('hacker-list', options);</code></pre>
+
+
+
+
+    <br /><br /><h3>Example 6: Using data attributes and other custom attributes (introduced in v1.2.0)<a name="example-6" class="anchor" href="#example-6"></a></h3>
+
+    <h5>HTML</h5>
+<pre><code>&lt;div id="hacker-list">
+  &lt;ul class="list">
+   &lt;li data-id="1">
+     &lt;a href="http://javve.com" class="link name">Jonny&lt;/a>
+     &lt;p class="born timestamp" data-timestamp="1234">1986&lt;/p>
+     &lt;img class="image" src="javve.jpg" />
+   &lt;/li>
+  &lt;/ul>
+&lt;/div></code></pre>
+
+    <h5>JavaScript</h5>
+<pre><code>var options = {
+  valueNames: [
+    'name',
+    'born',
+    { data: ['id'] },
+    { name: 'timestamp', attr: 'data-timestamp' },
+    { name: 'link', attr: 'href' },
+    { name: 'image', attr: 'src' }
+  ]
+};
+
+var hackerList = new List('hacker-list', options);
+
+hackerList.add({
+  name: 'Jonas',
+  born: '1985',
+  id: 2,
+  timestamp: '1337',
+  link: 'http://arnklint.com'
+  image: 'jonas.gif'
+});</code></pre>
+
+    <div class="continue">Next topic: <a href="/docs/options">Options ›</a></div>

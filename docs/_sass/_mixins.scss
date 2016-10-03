@@ -1,0 +1,19 @@
+%clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin media-query($device) {
+  @media screen and (min-width: $device) {
+    @content;
+  }
+}
+
+
+@mixin transition($value){
+  -webkit-transition: $value;
+  transition: $value;
+}
