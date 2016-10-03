@@ -1,0 +1,26 @@
+var options = {
+  valueNames: [ 'name', 'born' ],
+  item: '&lt;li>&lt;h3 class="name">&lt;/h3>&lt;p class="born">&lt;/p>&lt;/li>'
+};
+
+var values = [
+  {
+    name: 'Jonny Strömberg',
+    born: 1986
+  },
+  {
+    name: 'Jonas Arnklint',
+    born: 1985
+  },
+  {
+    name: 'Martina Elm',
+    born: 1986
+  }
+];
+
+var userList = new List('example-list', options, values);
+
+userList.add({
+  name: 'Gustaf Lindqvist',
+  born: 1983
+});
