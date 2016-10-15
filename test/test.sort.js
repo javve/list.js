@@ -63,11 +63,11 @@ describe('Sort', function() {
       i6.values({ val: "s" });
       list.sort('val');
       expect(list.items[0].values().val).to.be.equal("a");
-      expect(list.items[1].values().val).to.be.equal("o");
-      expect(list.items[2].values().val).to.be.equal("s");
-      expect(list.items[3].values().val).to.be.equal("ä");
-      expect(list.items[4].values().val).to.be.equal("å");
-      expect(list.items[5].values().val).to.be.equal("ö");
+      expect(list.items[1].values().val).to.be.equal("å");
+      expect(list.items[2].values().val).to.be.equal("ä");
+      expect(list.items[3].values().val).to.be.equal("o");
+      expect(list.items[4].values().val).to.be.equal("ö");
+      expect(list.items[5].values().val).to.be.equal("s");
     });
     it('should fail to sort åäö asc (becomes öåä)', function() {
       i1.values({ val: "a" });
@@ -77,11 +77,11 @@ describe('Sort', function() {
       i5.values({ val: "o" });
       i6.values({ val: "s" });
       list.sort('val', { order: "desc" });
-      expect(list.items[0].values().val).to.be.equal("ö");
-      expect(list.items[1].values().val).to.be.equal("å");
-      expect(list.items[2].values().val).to.be.equal("ä");
-      expect(list.items[3].values().val).to.be.equal("s");
-      expect(list.items[4].values().val).to.be.equal("o");
+      expect(list.items[0].values().val).to.be.equal("s");
+      expect(list.items[1].values().val).to.be.equal("ö");
+      expect(list.items[2].values().val).to.be.equal("o");
+      expect(list.items[3].values().val).to.be.equal("ä");
+      expect(list.items[4].values().val).to.be.equal("å");
       expect(list.items[5].values().val).to.be.equal("a");
     });
     it('should handle case-insensitive by default', function() {
