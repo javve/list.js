@@ -13,6 +13,7 @@
   ],
   "author": "Jonny Strömberg <jonny.stromberg@gmail.com>",
   "repository": "git://github.com/javve/list.js.git",
+  "license": "MIT",
   "dependencies": {},
   "devDependencies": {
     "browserify": "^13.0.0",
