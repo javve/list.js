@@ -15,10 +15,13 @@ module.exports = function(list) {
       if (args.length == 2 && args[1] instanceof Array) {
         columns = args[1];
       } else if (args.length == 2 && typeof(args[1]) == "function") {
+        columns = undefined;
         customSearch = args[1];
       } else if (args.length == 3) {
         columns = args[1];
         customSearch = args[2];
+      } else {
+        columns = undefined;
       }
     },
     setColumns: function() {

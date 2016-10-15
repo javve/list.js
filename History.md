@@ -21,6 +21,8 @@
   [See commit →](https://github.com/javve/list.js/commit/42d3db491801677c63238d5db3e0e9257087999a)
 - **[Bugfix]** Make mkdir in build script OS agnostic
   [See commit →](https://github.com/javve/list.js/commit/ba387125efddd7f5f4f8360bce516ae740cb5ae5)
+- **[Bugfix]** Make it possible to reset search columns
+  [See commit →](https://github.com/javve/list.js/commit/293b185e7b6277fba98bfd0a7b3bc7da04c708e7)
 - **[Misc]** Use local Browserify
   [See commit →](https://github.com/javve/list.js/commit/83f6502dcea428fa2de2513d19ac71f82905ecb8)
 
