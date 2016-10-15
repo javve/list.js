@@ -4,7 +4,9 @@ var Templater = function(list) {
 
   var init = function() {
     itemSource = templater.getItemSource(list.item);
-    itemSource = templater.clearSourceItem(itemSource, list.valueNames);
+    if (itemSource) {
+      itemSource = templater.clearSourceItem(itemSource, list.valueNames);
+    }
   };
 
   this.clearSourceItem = function(el, valueNames) {
@@ -55,7 +57,7 @@ var Templater = function(list) {
         return source;
       }
     }
-    throw new Error("The list need to have at list one item on init otherwise you'll have to add a template.");
+    return undefined;
   };
 
   this.get = function(item, valueNames) {
@@ -128,6 +130,9 @@ var Templater = function(list) {
   this.create = function(item) {
     if (item.elm !== undefined) {
       return false;
+    }
+    if (itemSource === undefined) {
+      throw new Error("The list need to have at list one item on init otherwise you'll have to add a template.");
     }
     /* If item source does not exists, use the first item in list as
     source for new items */

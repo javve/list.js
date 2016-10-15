@@ -53,6 +53,35 @@ describe('Create', function() {
     listEl.remove();
   });
 
+  describe('without items and or template', function() {
+
+    it('should not throw error on init', function() {
+      var listEl = $('<div id="list">\
+        <ul class="list"></ul>\
+      </div>');
+      $(document.body).append(listEl);
+
+      var list = new List('list', {
+        valueNames: ['name']
+      });
+
+      listEl.remove();
+    });
+
+    it('should throw error when created items', function() {
+      var listEl = $('<div id="list">\
+        <ul class="list"></ul>\
+      </div>');
+      $(document.body).append(listEl);
+
+      var list = new List('list', {
+        valueNames: ['name']
+      });
+      expect(list.add).withArgs(({ name: 'Jonas' })).to.throwException();
+      listEl.remove();
+    });
+  });
+
   describe('Without items and with HTML template', function() {
     var listEl = $('<div id="list">\
       <ul class="list"></ul>\
