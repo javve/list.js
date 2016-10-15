@@ -54,17 +54,15 @@ module.exports = function(grunt) {
     }
   },
   mocha: {
-    cool: {
-    src: [ 'test/index.html' ],
-    options: {
-      run: true,
-      timeout: 10000,
-      bail: false,
-      log: true,
-      reporter: 'Nyan',
-      mocha: {
-        ignoreLeaks: false
-        }
+    test: {
+      src: [ 'test/index.html' ],
+      options: {
+        run: true,
+        timeout: 10000,
+        bail: false,
+        log: true,
+        logErrors: true,
+        reporter: 'Nyan'
       }
     }
   }
