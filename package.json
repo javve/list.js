@@ -1,7 +1,7 @@
 {
   "name": "list.js",
   "version": "1.2.0",
-  "description": "The perfect library for adding search, sort, filters and flexibility to tables, lists and various HTML elements. Built to be invisible and work on existing HTML",
+  "description": "The perfect library for lists. Supports search, sort, filters and flexibility. Built to be invisible and work on existing HTML",
   "keywords": [
     "list",
     "search",
