@@ -19,6 +19,12 @@ module.exports = function(grunt) {
         stderr: true
       }
     },
+    duplicate_package: {
+      command: 'cp package.json docs/_data/package.json'
+    },
+    duplicate_list_min: {
+      command: 'cp dist/list.min.js docs/assets/javascripts/list.min.js'
+    },
     remove: {
       command: 'rm -fr node_modules dist'
     }
@@ -91,7 +97,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('mkdir', function() { grunt.file.mkdir("dist"); });
   grunt.registerTask('default', ['jshint:code', 'jshint:tests', 'mkdir', 'shell:build']);
-  grunt.registerTask('dist', ['default', 'mkdir', 'shell:build', 'uglify', 'file_append']);
+  grunt.registerTask('dist', ['default', 'mkdir', 'shell:build', 'uglify', 'file_append', 'shell:duplicate_package', 'shell:duplicate_list_min']);
   grunt.registerTask('clean', ['shell:remove']);
   grunt.registerTask('test', ['dist', 'mocha']);
 
