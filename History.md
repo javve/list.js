@@ -29,6 +29,8 @@
   [See commit →](https://github.com/javve/list.js/commit/42d3db491801677c63238d5db3e0e9257087999a)
 - **[Misc]** Use local Browserify
   [See commit →](https://github.com/javve/list.js/commit/83f6502dcea428fa2de2513d19ac71f82905ecb8)
+- **[Misc]** Rename dist files to list-<version>.js and add version to start of minified file
+  [See commit →](https://github.com/javve/list.js/commit/9cc48f6b2f429b591ee5eb82e2b2b48a00444638)
 
 ### 2016-02-27: v1.2.0
 It's been two years since the last update of List.js. That is absolutely not ok

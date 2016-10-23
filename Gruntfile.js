@@ -14,7 +14,7 @@ module.exports = function(grunt) {
   },
   shell: {
     build: {
-      command: 'node_modules/browserify/bin/cmd.js index.js > dist/list.js',
+      command: 'node_modules/browserify/bin/cmd.js index.js > dist/list-<%= pkg.version %>.js',
       options: {
         stderr: true
       }
@@ -49,8 +49,18 @@ module.exports = function(grunt) {
   uglify: {
     target: {
       files: {
-        'dist/list.min.js': ['dist/list.js']
+        'dist/list-<%= pkg.version %>.min.js': ['dist/list-<%= pkg.version %>.js']
       }
+    }
+  },
+  file_append: {
+    default_options: {
+      files: [
+        {
+          prepend: "// List.js v<%= pkg.version %> \n",
+          input: 'dist/list-<%= pkg.version %>.min.js'
+        }
+      ]
     }
   },
   mocha: {
@@ -73,10 +83,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-mocha');
+  grunt.loadNpmTasks('grunt-file-append');
 
   grunt.registerTask('mkdir', function() { grunt.file.mkdir("dist"); });
   grunt.registerTask('default', ['jshint:code', 'jshint:tests', 'mkdir', 'shell:build']);
-  grunt.registerTask('dist', ['default', 'mkdir', 'shell:build', 'uglify']);
+  grunt.registerTask('dist', ['default', 'mkdir', 'shell:build', 'uglify', 'file_append']);
   grunt.registerTask('clean', ['shell:remove']);
   grunt.registerTask('test', ['dist', 'mocha']);
 
