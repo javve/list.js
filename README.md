@@ -91,7 +91,7 @@ bower install list.js
 ### Creator
 |               | Jonny Strömberg [@javve](http://twitter.com/javve)            |
 | ------------- | ------------- |
-| ![Image of Jonny](http://listjs.com/images/graphics/javve.jpg) | I hope you like the lib. I’ve put a lot of hours into it! Feel free to follow me on [Twitter](http://twitter.com/javve) for news and [donate a coffee](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M7ZGHV75VSD2E) for good karma ;)  
+| ![Image of Jonny](http://listjs.com/assets/images/graphics/javve.jpg) | I hope you like the lib. I’ve put a lot of hours into it! Feel free to follow me on [Twitter](http://twitter.com/javve) for news and [donate a coffee](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M7ZGHV75VSD2E) for good karma ;)  
 
 
 ## License (MIT)
