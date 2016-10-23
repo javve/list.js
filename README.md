@@ -29,11 +29,11 @@ bower install list.js
 ```
 ##### Via CDNJS
 ```html
-<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.2.0/list.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.3.0/list.min.js"></script>
 ```
 ##### Via Direct Download
-- [Compressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.2.0/dist/list.min.js)
-- [Uncompressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.2.0/dist/list.js)
+- [Compressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.3.0/dist/list.min.js)
+- [Uncompressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.3.0/dist/list.js)
 
 ### Demo / Examples
 - [Existing list](http://listjs.com/examples/existing-list)
