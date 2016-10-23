@@ -1,8 +1,5 @@
+// List.js v1.3.0 (http://www.listjs.com) by Jonny Strömberg (http://javve.com)
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-/*
-List.js 1.1.1
-By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
-*/
 (function( window, undefined ) {
 "use strict";
 
@@ -450,10 +447,13 @@ module.exports = function(list) {
       if (args.length == 2 && args[1] instanceof Array) {
         columns = args[1];
       } else if (args.length == 2 && typeof(args[1]) == "function") {
+        columns = undefined;
         customSearch = args[1];
       } else if (args.length == 3) {
         columns = args[1];
         customSearch = args[2];
+      } else {
+        columns = undefined;
       }
     },
     setColumns: function() {
@@ -650,7 +650,9 @@ var Templater = function(list) {
 
   var init = function() {
     itemSource = templater.getItemSource(list.item);
-    itemSource = templater.clearSourceItem(itemSource, list.valueNames);
+    if (itemSource) {
+      itemSource = templater.clearSourceItem(itemSource, list.valueNames);
+    }
   };
 
   this.clearSourceItem = function(el, valueNames) {
@@ -687,10 +689,10 @@ var Templater = function(list) {
           return nodes[i].cloneNode(true);
         }
       }
-    } else if (/^tr[\s>]/.exec(item)) {
-      var table = document.createElement('table');
-      table.innerHTML = item;
-      return table.firstChild;
+    } else if (/<tr[\s>]/g.exec(item)) {
+      var tbody = document.createElement('tbody');
+      tbody.innerHTML = item;
+      return tbody.firstChild;
     } else if (item.indexOf("<") !== -1) {
       var div = document.createElement('div');
       div.innerHTML = item;
@@ -701,7 +703,7 @@ var Templater = function(list) {
         return source;
       }
     }
-    throw new Error("The list need to have at list one item on init otherwise you'll have to add a template.");
+    return undefined;
   };
 
   this.get = function(item, valueNames) {
@@ -774,6 +776,9 @@ var Templater = function(list) {
   this.create = function(item) {
     if (item.elm !== undefined) {
       return false;
+    }
+    if (itemSource === undefined) {
+      throw new Error("The list need to have at list one item on init otherwise you'll have to add a template.");
     }
     /* If item source does not exists, use the first item in list as
     source for new items */
