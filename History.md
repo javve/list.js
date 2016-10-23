@@ -12,11 +12,14 @@
   - https://github.com/javve/list.js/pull/301
 - Improve testability by decoupling things and make it possible to use require('') in tests
 - Add .remove() method to remove all listeners etc.
-- Either include version in minified file or name file list-1.2.1.js
+- Example of more advanced filtering
+- Fix test suite
+- Example with multiple lists
+- Test simple natural sort: https://github.com/litejs/natural-compare-lite
 
 # Changelog
 
-### v1.2.1
+### 2016-10-23 v1.3.0
 - **[Bugfix]** Make mkdir in build script OS agnostic
   [See commit →](https://github.com/javve/list.js/commit/ba387125efddd7f5f4f8360bce516ae740cb5ae5)
 - **[Bugfix]** Make it possible to reset search columns
