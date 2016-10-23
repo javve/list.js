@@ -106,7 +106,7 @@ var valueNames =  [
 </li>
 <li>
 <p><strong><a name="item" href="#item" class="anchor"></a>item</strong> <em class="docs-parameter-description">String, default: undefined</em><br>
-ID to item template element or a string of HTML.</p>
+ID to item template element or a string of HTML. Can also be a function which receives a <code>values</code> object and which must return the complete item's HTML as a string.</p>
 
 <pre><code class="javascript">var options = {
     item: "&lt;li&gt;&lt;span class='name'&gt;&lt;/span&gt;&lt;span class='city'&gt;&lt;/span&gt;&lt;/li&gt;"
@@ -114,6 +114,12 @@ ID to item template element or a string of HTML.</p>
 // or
 var options = {
     item: 'cool-item-id'
+};
+// or
+var options = {
+    item: function(values) {
+      return `&lt;li&gt;&lt;span class='name'&gt;${values.name}&lt;/span&gt;&lt;span class='city'&gt;${values.city}&lt;/span&gt;&lt;/li&gt;`;
+    }
 };
 </code></pre>
 </li>

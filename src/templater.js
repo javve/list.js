@@ -3,6 +3,7 @@ var Templater = function(list) {
     templater = this;
 
   var init = function() {
+    if (typeof list.item === 'function') return;
     itemSource = templater.getItemSource(list.item);
     if (itemSource) {
       itemSource = templater.clearSourceItem(itemSource, list.valueNames);
@@ -131,14 +132,19 @@ var Templater = function(list) {
     if (item.elm !== undefined) {
       return false;
     }
-    if (itemSource === undefined) {
-      throw new Error("The list need to have at list one item on init otherwise you'll have to add a template.");
+    if (typeof list.item === 'function') {
+      var src = templater.getItemSource(list.item(item.values()));
+      item.elm = templater.clearSourceItem(src, list.valueNames);
+    } else {
+      if (itemSource === undefined) {
+        throw new Error("The list need to have at list one item on init otherwise you'll have to add a template.");
+      }
+      /* If item source does not exists, use the first item in list as
+      source for new items */
+      var newItem = itemSource.cloneNode(true);
+      newItem.removeAttribute('id');
+      item.elm = newItem;
     }
-    /* If item source does not exists, use the first item in list as
-    source for new items */
-    var newItem = itemSource.cloneNode(true);
-    newItem.removeAttribute('id');
-    item.elm = newItem;
     templater.set(item, item.values());
     return true;
   };
