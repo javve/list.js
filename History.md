@@ -17,14 +17,16 @@
 # Changelog
 
 ### v1.2.1
-- **[Bugfix]** Update NaturalSort to 0.8.1
-  [See commit →](https://github.com/javve/list.js/commit/42d3db491801677c63238d5db3e0e9257087999a)
 - **[Bugfix]** Make mkdir in build script OS agnostic
   [See commit →](https://github.com/javve/list.js/commit/ba387125efddd7f5f4f8360bce516ae740cb5ae5)
 - **[Bugfix]** Make it possible to reset search columns
   [See commit →](https://github.com/javve/list.js/commit/293b185e7b6277fba98bfd0a7b3bc7da04c708e7)
 - **[Bugfix]** Allow empty list without template.
   [See commit →](https://github.com/javve/list.js/commit/f84f0dd1fc5bb12e0f8abad49139a40cbf69a5c2)
+  - **[Bugfix]** Make it possible to use <tr> as string template
+  [See commit →](https://github.com/javve/list.js/commit/38583e097cb75e369779b46c6129e1b8b8324f24)
+- **[Misc]** Update NaturalSort to 0.8.1
+  [See commit →](https://github.com/javve/list.js/commit/42d3db491801677c63238d5db3e0e9257087999a)
 - **[Misc]** Use local Browserify
   [See commit →](https://github.com/javve/list.js/commit/83f6502dcea428fa2de2513d19ac71f82905ecb8)
 

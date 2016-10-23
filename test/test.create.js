@@ -53,6 +53,34 @@ describe('Create', function() {
     listEl.remove();
   });
 
+  describe('Without items and with string template for table', function() {
+    var listEl = $('<div id="list">\
+      <table class="list"></table>\
+    </div>');
+
+    $(document.body).append(listEl);
+
+    var list = new List('list', {
+      valueNames: ['name'],
+      item: '<tr><span class="name"></span></tr>'
+    }, [
+      { name: 'Jonny' }
+    ]);
+
+    it('should contain one item', function() {
+      expect(list.items.length).to.equal(1);
+      expect(listEl.find('tr').size()).to.equal(1);
+    });
+
+    it('should contain two items', function() {
+      list.add({ name: 'Jonas' });
+      expect(list.items.length).to.equal(2);
+      expect(listEl.find('tr').size()).to.equal(2);
+    });
+
+    listEl.remove();
+  });
+
   describe('without items and or template', function() {
 
     it('should not throw error on init', function() {
