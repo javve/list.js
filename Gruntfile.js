@@ -57,8 +57,12 @@ module.exports = function(grunt) {
     default_options: {
       files: [
         {
-          prepend: "// List.js v<%= pkg.version %> \n",
+          prepend: "// List.js v<%= pkg.version %> (<%= pkg.homepage %>) by <%= pkg.author.name %> (<%= pkg.author.url %>)\n",
           input: 'dist/list.min.js'
+        },
+        {
+          prepend: "// List.js v<%= pkg.version %> (<%= pkg.homepage %>) by <%= pkg.author.name %> (<%= pkg.author.url %>)\n",
+          input: 'dist/list.js'
         }
       ]
     }

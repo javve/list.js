@@ -11,9 +11,17 @@
     "html",
     "ui"
   ],
-  "author": "Jonny Strömberg <jonny.stromberg@gmail.com>",
+  "author": {
+    "name": "Jonny Strömberg",
+    "email": "jonny.stromberg@gmail.com>",
+    "url": "http://javve.com"
+  },
+  "homepage": "http://www.listjs.com",
   "repository": "git://github.com/javve/list.js.git",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/javve/list.js/issues"
+  },
   "dependencies": {},
   "devDependencies": {
     "browserify": "^13.0.0",
