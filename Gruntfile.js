@@ -14,7 +14,7 @@ module.exports = function(grunt) {
   },
   shell: {
     build: {
-      command: 'node_modules/browserify/bin/cmd.js index.js > dist/list-<%= pkg.version %>.js',
+      command: 'node_modules/browserify/bin/cmd.js index.js > dist/list.js',
       options: {
         stderr: true
       }
@@ -49,7 +49,7 @@ module.exports = function(grunt) {
   uglify: {
     target: {
       files: {
-        'dist/list-<%= pkg.version %>.min.js': ['dist/list-<%= pkg.version %>.js']
+        'dist/list.min.js': ['dist/list.js']
       }
     }
   },
@@ -58,7 +58,7 @@ module.exports = function(grunt) {
       files: [
         {
           prepend: "// List.js v<%= pkg.version %> \n",
-          input: 'dist/list-<%= pkg.version %>.min.js'
+          input: 'dist/list.min.js'
         }
       ]
     }
