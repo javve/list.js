@@ -23,17 +23,19 @@
 - **[Bugfix]** Make mkdir in build script OS agnostic
   [See commit →](https://github.com/javve/list.js/commit/ba387125efddd7f5f4f8360bce516ae740cb5ae5)
 - **[Bugfix]** Make it possible to reset search columns
-  [See commit →](https://github.com/javve/list.js/commit/293b185e7b6277fba98bfd0a7b3bc7da04c708e7)
+  [See commit →](https://github.com/javve/list.js/commit/37edc1b98bf63a684d633f29e2f52106c21eaf7d)
 - **[Bugfix]** Allow empty list without template.
-  [See commit →](https://github.com/javve/list.js/commit/f84f0dd1fc5bb12e0f8abad49139a40cbf69a5c2)
-  - **[Bugfix]** Make it possible to use <tr> as string template
+  [See commit →](https://github.com/javve/list.js/commit/95329b945c64c0ad0693df120ef00547eac9b029)
+- **[Bugfix]** Make it possible to use <tr> as string template
   [See commit →](https://github.com/javve/list.js/commit/38583e097cb75e369779b46c6129e1b8b8324f24)
 - **[Misc]** Update NaturalSort to 0.8.1
   [See commit →](https://github.com/javve/list.js/commit/42d3db491801677c63238d5db3e0e9257087999a)
 - **[Misc]** Use local Browserify
   [See commit →](https://github.com/javve/list.js/commit/83f6502dcea428fa2de2513d19ac71f82905ecb8)
 - **[Misc]** Add version to start of minified file
-  [See commit →](https://github.com/javve/list.js/commit/9cc48f6b2f429b591ee5eb82e2b2b48a00444638)
+  [See commit →](https://github.com/javve/list.js/commit/79daff8da51aa047aae5d31e0af12cb30b395048)
+- **[Misc]** Switch to GitHub pages for listjs.com
+  [See commit →](https://github.com/javve/list.js/commit/1af94012de89fd6bcf8446c31305ad517507c44b)
 
 ### 2016-02-27: v1.2.0
 It's been two years since the last update of List.js. That is absolutely not ok
