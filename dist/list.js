@@ -465,6 +465,21 @@ module.exports = function(list) {
     setSearchString: function(s) {
       s = list.utils.toString(s).toLowerCase();
       s = s.replace(/[-[\]{}()*+?.,\\^$|#]/g, "\\$&"); // Escape regular expression characters
+    
+      /*==============================================================
+      ESP_MOD : ADDED MORE REPLACE FOR ACCENTUATED CHARACTERS
+      ==============================================================*/
+      s = s.replace(/[áàãâä]/gi,"a")
+      s = s.replace(/[éè¨ê]/gi,"e")
+      s = s.replace(/[íìïî]/gi,"i")
+      s = s.replace(/[óòöôõ]/gi,"o")
+      s = s.replace(/[úùüû]/gi, "u")
+      s = s.replace(/[ç]/gi, "c")
+      s = s.replace(/[ñ]/gi, "n");
+      /*==============================================================
+      END -> ESP_MOD : ADDED MORE REPLACE FOR ACCENTUATED CHARACTERS
+      ==============================================================*/
+
       searchString = s;
     },
     toArray: function(values) {
@@ -493,6 +508,19 @@ module.exports = function(list) {
     values: function(values, column) {
       if (values.hasOwnProperty(column)) {
         text = list.utils.toString(values[column]).toLowerCase();
+        /*==============================================================
+        ESP_MOD : ADDED MORE REPLACE FOR ACCENTUATED CHARACTERS
+        ==============================================================*/
+        text = text.replace(/[áàãâä]/gi,"a")
+        text = text.replace(/[éè¨ê]/gi,"e")
+        text = text.replace(/[íìïî]/gi,"i")
+        text = text.replace(/[óòöôõ]/gi,"o")
+        text = text.replace(/[úùüû]/gi, "u")
+        text = text.replace(/[ç]/gi, "c")
+        text = text.replace(/[ñ]/gi, "n");
+        /*==============================================================
+        END -> ESP_MOD : ADDED MORE REPLACE FOR ACCENTUATED CHARACTERS
+        ==============================================================*/
         if ((searchString !== "") && (text.search(searchString) > -1)) {
           return true;
         }
@@ -532,6 +560,43 @@ module.exports = function(list) {
   list.handlers.searchStart = list.handlers.searchStart || [];
   list.handlers.searchComplete = list.handlers.searchComplete || [];
 
+  /*========================================================================
+    ESP_MOD : Monitor and delay for modification of the search text input
+  --------------------------------------------------------------------------
+    This add a throttle to the KeyUp event to give let the user finish
+    typing before launching the searchMethod
+  --------------------------------------------------------------------------
+    @TODO : Add this as a possible options when declaring the options table
+  ========================================================================*/
+  var timeout;
+  var delay = 400;   // 0.4 seconds
+  list.utils.events.bind(list.utils.getByClass(list.listContainer, list.searchClass), 'keyup', function(e) {
+    var event = e;
+    if(timeout) {
+      clearTimeout(timeout);
+    }
+    // If both delay and timeout exists, activate throttle
+    if(delay){
+      timeout = setTimeout(function() {
+        keyUpLaunchSearch(event);
+      }, delay);
+    }
+    // if no delay or timeout set, launch search
+    else{
+      keyUpLaunchSearch(event);
+    }
+  });
+
+  function keyUpLaunchSearch(e) {
+    var target = e.target || e.srcElement, // IE have srcElement
+    alreadyCleared = (target.value === "" && !list.searched);
+    if (!alreadyCleared) { // If oninput already have resetted the list, do nothing
+      searchMethod(target.value);
+    }
+  }
+  /*========================================================================
+    ORIGINAL FUNCTION
+  --------------------------------------------------------------------------
   list.utils.events.bind(list.utils.getByClass(list.listContainer, list.searchClass), 'keyup', function(e) {
     var target = e.target || e.srcElement, // IE have srcElement
       alreadyCleared = (target.value === "" && !list.searched);
@@ -539,6 +604,7 @@ module.exports = function(list) {
       searchMethod(target.value);
     }
   });
+  ========================================================================*/
 
   // Used to detect click on HTML5 clear button
   list.utils.events.bind(list.utils.getByClass(list.listContainer, list.searchClass), 'input', function(e) {
