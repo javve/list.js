@@ -4,7 +4,6 @@
 
 @import "normalize";
 @import "mixins";
-@import "vendor/bootstrap/tooltip";
 @import "vendor/highlight/xcode";
 @import "carbonads";
 
@@ -285,9 +284,10 @@ td {
 
 .intro {
   @extend %clearfix;
-  margin:50px auto;
+  margin:0 auto 50px;
   max-width: 900px;
-  padding:30px;
+  padding:80px;
+  border-bottom:solid 1px $lightGrey;
   box-sizing: border-box;
   .intro-logo {
     text-align: center;
@@ -387,7 +387,6 @@ td {
 }
 .startpage-more-examples {
   clear:both;
-  border-top:solid 1px #eee;
   ul {
     padding:0 !important;
     margin:0;
@@ -407,65 +406,37 @@ td {
     }
   }
 }
-.docs-content .startpage-example pre {
-  margin:0;
-  padding:30px;
-}
+
 .annotated-examples {
-  @extend %clearfix;
-  background-color: $black;
-  margin:-30px -30px 0;
-  & > h2 {
-    max-width: none !important;
-    text-align: center;
+  h3 {
+    margin-top:50px;
   }
 }
-.annotated-code {
-  float:left;
-  width:65%;
-  .startpage-example-html {
-    position: relative;
-    border-bottom:solid 1px #fff;
-  }
-  .nav-pills {
-    @extend %clearfix;
-    border-bottom: solid 1px #fff;
+.columns {
+  overflow: hidden;
+  padding:0;
+  margin:0 -30px 5px;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+
+  .column {
+    padding:20px 30px;
+    flex: 1;
     background-color: $lightGrey;
-    padding:0;
-    margin:0;
-    list-style-type: none;
-    & > li {
-      width:33%;
-      float:left;
-      text-align: center;
+    &:last-child {
+      background-color: darken($lightGrey, 2%);
+    }
+    pre {
+      background-color: transparent;
       margin:0;
-      border-right: solid 1px #fff;
-      &:last-child {
-        border-right:none;
-      }
-      &.active {
-        background-color: rgba(0,0,0,.05);
-        & > a {
-          color:$black;
-        }
-      }
-      & > a {
-        display: block;
-        transition: all .2s ease-in-out;
-        padding:10px 0;
-        text-decoration: none;
-        &:hover {
-          background-color: rgba(0,0,0,.04);
-        }
-      }
+      padding:0;
     }
   }
 }
 
 .annotated-list {
-  float:left;
-  width:35%;
-  padding: 15px 30px;
   box-sizing: border-box;
   @extend %clearfix;
   .list {
@@ -486,21 +457,21 @@ td {
     font-size: 1.6rem;
     margin:0 0 3px;
     font-weight: bold;
-    color:#fff;
+    //color:#fff;
   }
   p {
     margin:0;
-    color:#eee;
+    //color:#eee;
   }
 
   input {
     border-radius: 25px;
     padding:7px 14px;
     background-color: transparent;
-    border:solid 1px rgba(255,255,255,.2);
-    width:100%;
+    border:solid 1px rgba(0,0,0,.2);
+    width:200px;
     box-sizing: border-box;
-    color:#fff;
+    color:$black;
     margin-bottom:5px;
   }
   input:focus {
@@ -514,14 +485,14 @@ td {
     border-radius: 25px;
     border:none;
     display:inline-block;
-    color:#fff;
+    color:$black;
     text-decoration: none;
-    background-color: rgba(255,255,255,.05);
+    background-color: rgba(0,0,0,.05);
     margin:2px 0;
   }
   .sort:hover {
     text-decoration: none;
-    background-color: rgba(255,255,255,.1);
+    background-color: rgba(0,0,0,.1);
   }
   .sort:focus {
     outline:none;
@@ -542,7 +513,7 @@ td {
     height: 0;
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
-    border-top: 4px solid #fff;
+    border-top: 4px solid $black;
     content:"";
     position: relative;
     top:11px;
@@ -553,7 +524,7 @@ td {
     height: 0;
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
-    border-bottom: 4px solid #fff;
+    border-bottom: 4px solid $black;
     content:"";
     position: relative;
     top:-9px;
