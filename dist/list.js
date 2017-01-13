@@ -436,7 +436,7 @@ module.exports = function(list) {
   var item,
     text,
     columns,
-    searchString,
+    searchPattern,
     customSearch;
 
   var prepare = {
@@ -464,10 +464,14 @@ module.exports = function(list) {
         columns = (list.searchColumns === undefined) ? prepare.toArray(list.items[0].values()) : list.searchColumns;
       }
     },
-    setSearchString: function(s) {
+    setSearchPattern: function(s) {
       s = list.utils.toString(s).toLowerCase();
+      if (s === "") {
+        searchPattern = undefined;
+        return;
+      }
       s = s.replace(REGEX_CHARACTERS_PATTERN, "\\$&"); // Escape regular expression characters
-      searchString = s;
+      searchPattern = new RegExp(s);
     },
     toArray: function(values) {
       var tmpColumn = [];
@@ -495,7 +499,7 @@ module.exports = function(list) {
     values: function(values, column) {
       if (values.hasOwnProperty(column)) {
         text = list.utils.toString(values[column]).toLowerCase();
-        if ((searchString !== "") && (text.search(searchString) > -1)) {
+        if (searchPattern && (text.search(searchPattern) > -1)) {
           return true;
         }
       }
@@ -511,16 +515,16 @@ module.exports = function(list) {
     list.trigger('searchStart');
 
     prepare.resetList();
-    prepare.setSearchString(str);
+    prepare.setSearchPattern(str);
     prepare.setOptions(arguments); // str, cols|searchFunction, searchFunction
     prepare.setColumns();
 
-    if (searchString === "" ) {
+    if (!searchPattern ) {
       search.reset();
     } else {
       list.searched = true;
       if (customSearch) {
-        customSearch(searchString, columns);
+        customSearch(searchPattern, columns);
       } else {
         search.list();
       }
