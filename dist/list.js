@@ -471,7 +471,7 @@ module.exports = function(list) {
         return;
       }
       s = s.replace(REGEX_CHARACTERS_PATTERN, "\\$&"); // Escape regular expression characters
-      searchPattern = new RegExp(s);
+      searchPattern = new RegExp(s, 'i');
     },
     toArray: function(values) {
       var tmpColumn = [];
@@ -498,7 +498,7 @@ module.exports = function(list) {
     },
     values: function(values, column) {
       if (values.hasOwnProperty(column)) {
-        text = list.utils.toString(values[column]).toLowerCase();
+        text = list.utils.toString(values[column]);
         if (searchPattern && (text.search(searchPattern) > -1)) {
           return true;
         }
