@@ -67,7 +67,7 @@ module.exports = function(list) {
     values: function(values, column) {
       if (values.hasOwnProperty(column)) {
         text = list.utils.toString(values[column]);
-        if (searchPattern && (text.search(searchPattern) > -1)) {
+        if (searchPattern && searchPattern.test(text)) {
           return true;
         }
       }
