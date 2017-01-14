@@ -132,7 +132,7 @@ var Templater = function(list) {
       return false;
     }
     if (itemSource === undefined) {
-      throw new Error("The list need to have at list one item on init otherwise you'll have to add a template.");
+      throw new Error("The list needs to have at least one item on init otherwise you'll have to add a template.");
     }
     /* If item source does not exists, use the first item in list as
     source for new items */
@@ -157,6 +157,13 @@ var Templater = function(list) {
     }
   };
   this.clear = function() {
+    if (typeof document.createRange === 'function') {
+      // Slightly faster, but not supported in IE<9
+      var range = document.createRange();
+      range.selectNodeContents(list.list);
+      range.deleteContents();
+      return;
+    }
     /* .innerHTML = ''; fucks up IE */
     if (list.list.hasChildNodes()) {
       while (list.list.childNodes.length >= 1)

@@ -235,23 +235,23 @@ var List = function(id, options, values) {
 
   this.update = function() {
     var is = self.items,
-			il = is.length;
+        il = is.length,
+        frag = document.createDocumentFragment();
 
     self.visibleItems = [];
     self.matchingItems = [];
     self.templater.clear();
     for (var i = 0; i < il; i++) {
       if (is[i].matching() && ((self.matchingItems.length+1) >= self.i && self.visibleItems.length < self.page)) {
-        is[i].show();
+        self.templater.create(is[i]);
+        frag.appendChild(is[i].elm);
         self.visibleItems.push(is[i]);
         self.matchingItems.push(is[i]);
       } else if (is[i].matching()) {
         self.matchingItems.push(is[i]);
-        is[i].hide();
-      } else {
-        is[i].hide();
       }
     }
+    self.list.appendChild(frag);
     self.trigger('updated');
     return self;
   };
@@ -430,11 +430,13 @@ module.exports = function(list) {
 };
 
 },{"./item":4}],6:[function(require,module,exports){
+var REGEX_CHARACTERS_PATTERN = /[-[\]{}()*+?.,\\^$|#]/g;
+
 module.exports = function(list) {
   var item,
     text,
     columns,
-    searchString,
+    searchPattern,
     customSearch;
 
   var prepare = {
@@ -462,10 +464,14 @@ module.exports = function(list) {
         columns = (list.searchColumns === undefined) ? prepare.toArray(list.items[0].values()) : list.searchColumns;
       }
     },
-    setSearchString: function(s) {
+    setSearchPattern: function(s) {
       s = list.utils.toString(s).toLowerCase();
-      s = s.replace(/[-[\]{}()*+?.,\\^$|#]/g, "\\$&"); // Escape regular expression characters
-      searchString = s;
+      if (s === "") {
+        searchPattern = undefined;
+        return;
+      }
+      s = s.replace(REGEX_CHARACTERS_PATTERN, "\\$&"); // Escape regular expression characters
+      searchPattern = new RegExp(s, 'i');
     },
     toArray: function(values) {
       var tmpColumn = [];
@@ -492,8 +498,8 @@ module.exports = function(list) {
     },
     values: function(values, column) {
       if (values.hasOwnProperty(column)) {
-        text = list.utils.toString(values[column]).toLowerCase();
-        if ((searchString !== "") && (text.search(searchString) > -1)) {
+        text = list.utils.toString(values[column]);
+        if (searchPattern && searchPattern.test(text)) {
           return true;
         }
       }
@@ -509,16 +515,16 @@ module.exports = function(list) {
     list.trigger('searchStart');
 
     prepare.resetList();
-    prepare.setSearchString(str);
+    prepare.setSearchPattern(str);
     prepare.setOptions(arguments); // str, cols|searchFunction, searchFunction
     prepare.setColumns();
 
-    if (searchString === "" ) {
+    if (!searchPattern) {
       search.reset();
     } else {
       list.searched = true;
       if (customSearch) {
-        customSearch(searchString, columns);
+        customSearch(searchPattern, columns);
       } else {
         search.list();
       }
@@ -778,7 +784,7 @@ var Templater = function(list) {
       return false;
     }
     if (itemSource === undefined) {
-      throw new Error("The list need to have at list one item on init otherwise you'll have to add a template.");
+      throw new Error("The list needs to have at least one item on init otherwise you'll have to add a template.");
     }
     /* If item source does not exists, use the first item in list as
     source for new items */
@@ -803,6 +809,13 @@ var Templater = function(list) {
     }
   };
   this.clear = function() {
+    if (typeof document.createRange === 'function') {
+      // Slightly faster, but not supported in IE<9
+      var range = document.createRange();
+      range.selectNodeContents(list.list);
+      range.deleteContents();
+      return;
+    }
     /* .innerHTML = ''; fucks up IE */
     if (list.list.hasChildNodes()) {
       while (list.list.childNodes.length >= 1)
