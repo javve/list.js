@@ -235,23 +235,23 @@ var List = function(id, options, values) {
 
   this.update = function() {
     var is = self.items,
-			il = is.length;
+        il = is.length,
+        frag = document.createDocumentFragment();
 
     self.visibleItems = [];
     self.matchingItems = [];
     self.templater.clear();
     for (var i = 0; i < il; i++) {
       if (is[i].matching() && ((self.matchingItems.length+1) >= self.i && self.visibleItems.length < self.page)) {
-        is[i].show();
+        self.templater.create(is[i]);
+        frag.appendChild(is[i].elm);
         self.visibleItems.push(is[i]);
         self.matchingItems.push(is[i]);
       } else if (is[i].matching()) {
         self.matchingItems.push(is[i]);
-        is[i].hide();
-      } else {
-        is[i].hide();
       }
     }
+    self.list.appendChild(frag);
     self.trigger('updated');
     return self;
   };
@@ -784,7 +784,7 @@ var Templater = function(list) {
       return false;
     }
     if (itemSource === undefined) {
-      throw new Error("The list need to have at list one item on init otherwise you'll have to add a template.");
+      throw new Error("The list needs to have at least one item on init otherwise you'll have to add a template.");
     }
     /* If item source does not exists, use the first item in list as
     source for new items */
