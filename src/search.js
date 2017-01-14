@@ -87,7 +87,7 @@ module.exports = function(list) {
     prepare.setOptions(arguments); // str, cols|searchFunction, searchFunction
     prepare.setColumns();
 
-    if (!searchPattern ) {
+    if (!searchPattern) {
       search.reset();
     } else {
       list.searched = true;

@@ -157,6 +157,13 @@ var Templater = function(list) {
     }
   };
   this.clear = function() {
+    if (typeof document.createRange === 'function') {
+      // Slightly faster, but not supported in IE<9
+      var range = document.createRange();
+      range.selectNodeContents(list.list);
+      range.deleteContents();
+      return;
+    }
     /* .innerHTML = ''; fucks up IE */
     if (list.list.hasChildNodes()) {
       while (list.list.childNodes.length >= 1)
