@@ -118,16 +118,32 @@ listObj.remove("id", 1); // return 1</code></pre>
 listObj.get("id", 2); // return { id: 2, name "Gustaf" }</code></pre>
       </li>
       <li>
-        <p><strong><a name="sort" class="achor" href="#sort"></a>sort(valueName, options)</strong><br>
-        Sorts the list based on values the in the column named <code>valueName</code>. The options
-        parameter can contain two properties <code>options.sortFunction</code> and <code>options.order</code>.
-        <code>options.sortFunction</code> is used if you want to make your own sort function.
-        The default sort function is found here <a href="https://github.com/javve/natural-sort">https://github.com/javve/natural-sort</a>
-        <code>options.order = "asc"</code> means that you want to sort the list in ascending order. Set
-        <code>false</code> for descending.</p>
+        <p><strong><a name="sort" class="achor" href="#sort"></a>sort(valueName, {<br/>
+          &nbsp;&nbsp;order: 'desc',<br/>
+          &nbsp;&nbsp;alphabet: undefined,<br/>
+          &nbsp;&nbsp;insensitive: true,<br/>
+          &nbsp;&nbsp;sortFunction: undefined<br/>
+        })</strong><br>
+        Sorts the list based on values the in the column named <code>valueName</code>.
+        The <code>alphabet</code> option is used when you have non-english alphabet
+        where which JavaScript don't know how to sort some characters by default.</p>
+        <p>The default sort function is found here
+        <a href="https://github.com/nwoltman/string-natural-compare">https://github.com/nwoltman/string-natural-compare</a>,
+        if you want to use your own, <a href="https://github.com/javve/list.js/blob/master/src/sort.js">read the code</a> and
+        <a href="https://github.com/javve/list.js/blob/master/test/test.sort.js">check out the tests</a>.</p>
 
 <pre><code class="javascript">listObj.sort('name', { order: "asc" }); // Sorts the list in abc-order based on names
-listObj.sort('name', { order: "desc" }); // Sorts the list in zxy-order based on names</code></pre>
+listObj.sort('name', { order: "desc" }); // Sorts the list in zxy-order based on names
+
+// Sort swedish characters correcly, case-insensitive.
+listObj.sort('name', { alphabet: "ABCDEFGHIJKLMNOPQRSTUVXYZÅÄÖabcdefghijklmnopqrstuvxyzåäö" });
+
+// Sort swedish characters correcly, case-sensitive.
+listObj.sort('name', { alphabet: "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzÅåÄäÖö" });
+
+// Alphabet could also be on the actual listObj via
+listObj.alphabet = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzÅåÄäÖö";
+</code></pre>
 
       </li>
       <li>
