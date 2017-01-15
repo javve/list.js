@@ -1,15 +1,15 @@
-// List.js v1.3.0 (http://www.listjs.com) by Jonny Strömberg (http://javve.com)
+// List.js v1.4.0 (http://www.listjs.com) by Jonny Strömberg (http://javve.com)
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function( window, undefined ) {
 "use strict";
 
 var document = window.document,
+  naturalSort = require('string-natural-compare'),
   getByClass = require('./src/utils/get-by-class'),
   extend = require('./src/utils/extend'),
   indexOf = require('./src/utils/index-of'),
   events = require('./src/utils/events'),
   toString = require('./src/utils/to-string'),
-  naturalSort = require('./src/utils/natural-sort'),
   classes = require('./src/utils/classes'),
   getAttribute = require('./src/utils/get-attribute'),
   toArray = require('./src/utils/to-array');
@@ -269,7 +269,120 @@ window.List = List;
 
 })(window);
 
-},{"./src/add-async":2,"./src/filter":3,"./src/item":4,"./src/parse":5,"./src/search":6,"./src/sort":7,"./src/templater":8,"./src/utils/classes":9,"./src/utils/events":10,"./src/utils/extend":11,"./src/utils/get-attribute":12,"./src/utils/get-by-class":13,"./src/utils/index-of":14,"./src/utils/natural-sort":15,"./src/utils/to-array":16,"./src/utils/to-string":17}],2:[function(require,module,exports){
+},{"./src/add-async":3,"./src/filter":4,"./src/item":5,"./src/parse":6,"./src/search":7,"./src/sort":8,"./src/templater":9,"./src/utils/classes":10,"./src/utils/events":11,"./src/utils/extend":12,"./src/utils/get-attribute":13,"./src/utils/get-by-class":14,"./src/utils/index-of":15,"./src/utils/to-array":16,"./src/utils/to-string":17,"string-natural-compare":2}],2:[function(require,module,exports){
+'use strict';
+
+var alphabet;
+var alphabetIndexMap;
+var alphabetIndexMapLength = 0;
+
+function isNumberCode(code) {
+  return code >= 48 && code <= 57;
+}
+
+function naturalCompare(a, b) {
+  var lengthA = (a += '').length;
+  var lengthB = (b += '').length;
+  var aIndex = 0;
+  var bIndex = 0;
+
+  while (aIndex < lengthA && bIndex < lengthB) {
+    var charCodeA = a.charCodeAt(aIndex);
+    var charCodeB = b.charCodeAt(bIndex);
+
+    if (isNumberCode(charCodeA)) {
+      if (!isNumberCode(charCodeB)) {
+        return charCodeA - charCodeB;
+      }
+
+      var numStartA = aIndex;
+      var numStartB = bIndex;
+
+      while (charCodeA === 48 && ++numStartA < lengthA) {
+        charCodeA = a.charCodeAt(numStartA);
+      }
+      while (charCodeB === 48 && ++numStartB < lengthB) {
+        charCodeB = b.charCodeAt(numStartB);
+      }
+
+      var numEndA = numStartA;
+      var numEndB = numStartB;
+
+      while (numEndA < lengthA && isNumberCode(a.charCodeAt(numEndA))) {
+        ++numEndA;
+      }
+      while (numEndB < lengthB && isNumberCode(b.charCodeAt(numEndB))) {
+        ++numEndB;
+      }
+
+      var difference = numEndA - numStartA - numEndB + numStartB; // numA length - numB length
+      if (difference) {
+        return difference;
+      }
+
+      while (numStartA < numEndA) {
+        difference = a.charCodeAt(numStartA++) - b.charCodeAt(numStartB++);
+        if (difference) {
+          return difference;
+        }
+      }
+
+      aIndex = numEndA;
+      bIndex = numEndB;
+      continue;
+    }
+
+    if (charCodeA !== charCodeB) {
+      if (
+        charCodeA < alphabetIndexMapLength &&
+        charCodeB < alphabetIndexMapLength &&
+        alphabetIndexMap[charCodeA] !== -1 &&
+        alphabetIndexMap[charCodeB] !== -1
+      ) {
+        return alphabetIndexMap[charCodeA] - alphabetIndexMap[charCodeB];
+      }
+
+      return charCodeA - charCodeB;
+    }
+
+    ++aIndex;
+    ++bIndex;
+  }
+
+  return lengthA - lengthB;
+}
+
+naturalCompare.caseInsensitive = naturalCompare.i = function(a, b) {
+  return naturalCompare(('' + a).toLowerCase(), ('' + b).toLowerCase());
+};
+
+Object.defineProperties(naturalCompare, {
+  alphabet: {
+    get: function() {
+      return alphabet;
+    },
+    set: function(value) {
+      alphabet = value;
+      alphabetIndexMap = [];
+      var i = 0;
+      if (alphabet) {
+        for (; i < alphabet.length; i++) {
+          alphabetIndexMap[alphabet.charCodeAt(i)] = i;
+        }
+      }
+      alphabetIndexMapLength = alphabetIndexMap.length;
+      for (i = 0; i < alphabetIndexMapLength; i++) {
+        if (alphabetIndexMap[i] === undefined) {
+          alphabetIndexMap[i] = -1;
+        }
+      }
+    },
+  },
+});
+
+module.exports = naturalCompare;
+
+},{}],3:[function(require,module,exports){
 module.exports = function(list) {
   var addAsync = function(values, callback, items) {
     var valuesToAdd = values.splice(0, 50);
@@ -287,7 +400,7 @@ module.exports = function(list) {
   return addAsync;
 };
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 module.exports = function(list) {
 
   // Add handlers
@@ -318,7 +431,7 @@ module.exports = function(list) {
   };
 };
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 module.exports = function(list) {
   return function(initValues, element, notCreate) {
     var item = this;
@@ -380,7 +493,7 @@ module.exports = function(list) {
   };
 };
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports = function(list) {
 
   var Item = require('./item')(list);
@@ -429,7 +542,7 @@ module.exports = function(list) {
   };
 };
 
-},{"./item":4}],6:[function(require,module,exports){
+},{"./item":5}],7:[function(require,module,exports){
 module.exports = function(list) {
   var item,
     text,
@@ -551,12 +664,8 @@ module.exports = function(list) {
   return searchMethod;
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 module.exports = function(list) {
-  list.sortFunction = list.sortFunction || function(itemA, itemB, options) {
-    options.desc = options.order == "desc" ? true : false; // Natural sort uses this format
-    return list.utils.naturalSort(itemA.values()[options.valueName], itemB.values()[options.valueName], options);
-  };
 
   var buttons = {
     els: undefined,
@@ -603,6 +712,7 @@ module.exports = function(list) {
       }
     }
   };
+
   var sort = function() {
     list.trigger('sortStart');
     var options = {};
@@ -619,14 +729,33 @@ module.exports = function(list) {
       options.order = options.order || "asc";
       options.insensitive = (typeof options.insensitive == "undefined") ? true : options.insensitive;
     }
+
     buttons.clear();
     buttons.setOrder(options);
 
-    options.sortFunction = options.sortFunction || list.sortFunction;
-    list.items.sort(function(a, b) {
-      var mult = (options.order === 'desc') ? -1 : 1;
-      return (options.sortFunction(a, b, options) * mult);
-    });
+
+    // caseInsensitive
+    // alphabet
+    var customSortFunction = (options.sortFunction || list.sortFunction || null),
+        multi = ((options.order === 'desc') ? -1 : 1),
+        sortFunction;
+
+    if (customSortFunction) {
+      sortFunction = function(itemA, itemB) {
+        return customSortFunction(itemA, itemB, options) * multi;
+      };
+    } else {
+      sortFunction = function(itemA, itemB) {
+        var sort = list.utils.naturalSort;
+        sort.alphabet = list.alphabet || options.alphabet || undefined;
+        if (!sort.alphabet && options.insensitive) {
+          sort = list.utils.naturalSort.caseInsensitive;
+        }
+        return sort(itemA.values()[options.valueName], itemB.values()[options.valueName]) * multi;
+      };
+    }
+
+    list.items.sort(sortFunction);
     list.update();
     list.trigger('sortComplete');
   };
@@ -643,7 +772,7 @@ module.exports = function(list) {
   return sort;
 };
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 var Templater = function(list) {
   var itemSource,
     templater = this;
@@ -819,7 +948,7 @@ module.exports = function(list) {
   return new Templater(list);
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -1006,7 +1135,7 @@ ClassList.prototype.contains = function(name){
   return this.list ? this.list.contains(name) : !! ~index(this.array(), name);
 };
 
-},{"./index-of":14}],10:[function(require,module,exports){
+},{"./index-of":15}],11:[function(require,module,exports){
 var bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
     unbind = window.removeEventListener ? 'removeEventListener' : 'detachEvent',
     prefix = bind !== 'addEventListener' ? 'on' : '',
@@ -1046,7 +1175,7 @@ exports.unbind = function(el, type, fn, capture){
   }
 };
 
-},{"./to-array":16}],11:[function(require,module,exports){
+},{"./to-array":16}],12:[function(require,module,exports){
 /*
  * Source: https://github.com/segmentio/extend
  */
@@ -1066,7 +1195,7 @@ module.exports = function extend (object) {
     return object;
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * A cross-browser implementation of getAttribute.
  * Source found here: http://stackoverflow.com/a/3755343/361337 written by Vivin Paliath
@@ -1094,7 +1223,7 @@ module.exports = function(el, attr) {
   return result;
 };
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * A cross-browser implementation of getElementsByClass.
  * Heavily based on Dustin Diaz's function: http://dustindiaz.com/getelementsbyclass.
@@ -1152,7 +1281,7 @@ module.exports = (function() {
   }
 })();
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 var indexOf = [].indexOf;
 
 module.exports = function(arr, obj){
@@ -1161,60 +1290,6 @@ module.exports = function(arr, obj){
     if (arr[i] === obj) return i;
   }
   return -1;
-};
-
-},{}],15:[function(require,module,exports){
-/*
- * Natural Sort algorithm for Javascript - Version 0.8.1 - Released under MIT license
- * Author: Jim Palmer (based on chunking idea from Dave Koelle)
- */
-module.exports = function(a, b, opts) {
-    var re = /(^([+\-]?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?(?=\D|\s|$))|^0x[\da-fA-F]+$|\d+)/g,
-        sre = /^\s+|\s+$/g,   // trim pre-post whitespace
-        snre = /\s+/g,        // normalize all whitespace to single ' ' character
-        dre = /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[\/\-]\d{1,4}[\/\-]\d{1,4}|^\w+, \w+ \d+, \d{4})/,
-        hre = /^0x[0-9a-f]+$/i,
-        ore = /^0/,
-        options = opts || {},
-        i = function(s) {
-            return (options.insensitive && ('' + s).toLowerCase() || '' + s).replace(sre, '');
-        },
-        // convert all to strings strip whitespace
-        x = i(a),
-        y = i(b),
-        // chunk/tokenize
-        xN = x.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
-        yN = y.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
-        // numeric, hex or date detection
-        xD = parseInt(x.match(hre), 16) || (xN.length !== 1 && Date.parse(x)),
-        yD = parseInt(y.match(hre), 16) || xD && y.match(dre) && Date.parse(y) || null,
-        normChunk = function(s, l) {
-           // normalize spaces; find floats not starting with '0', string or 0 if not defined (Clint Priest)
-           return (!s.match(ore) || l == 1) && parseFloat(s) || s.replace(snre, ' ').replace(sre, '') || 0;
-        },
-        oFxNcL, oFyNcL;
-   // first try and sort Hex codes or Dates
-   if (yD) {
-       if (xD < yD) { return -1; }
-       else if (xD > yD) { return 1; }
-   }
-   // natural sorting through split numeric strings and default strings
-   for(var cLoc = 0, xNl = xN.length, yNl = yN.length, numS = Math.max(xNl, yNl); cLoc < numS; cLoc++) {
-       oFxNcL = normChunk(xN[cLoc] || '', xNl);
-       oFyNcL = normChunk(yN[cLoc] || '', yNl);
-       // handle numeric vs string comparison - number < string - (Kyle Adams)
-       if (isNaN(oFxNcL) !== isNaN(oFyNcL)) {
-           return isNaN(oFxNcL) ? 1 : -1;
-       }
-       // if unicode use locale comparison
-       if (/[^\x00-\x80]/.test(oFxNcL + oFyNcL) && oFxNcL.localeCompare) {
-           var comp = oFxNcL.localeCompare(oFyNcL);
-           return comp / Math.abs(comp);
-       }
-       if (oFxNcL < oFyNcL) { return -1; }
-       else if (oFxNcL > oFyNcL) { return 1; }
-   }
-    return 0;
 };
 
 },{}],16:[function(require,module,exports){

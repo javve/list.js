@@ -33,11 +33,11 @@ npm install list.js
 ```
 ##### Via CDNJS
 ```html
-<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.3.0/list.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.4.0/list.min.js"></script>
 ```
 ##### Via Direct Download
-- [Compressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.3.0/dist/list.min.js)
-- [Uncompressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.3.0/dist/list.js)
+- [Compressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.4.0/dist/list.min.js)
+- [Uncompressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.4.0/dist/list.js)
 
 ### Demo / Examples
 - [Existing list](http://listjs.com/examples/existing-list)
@@ -100,5 +100,5 @@ npm install list.js
 
 ## License (MIT)
 
-Copyright (c) 2012-2016 Jonny Strömberg <[jonny.stromberg@gmail.com](mailto:jonny.stromberg@gmail.com)>
-[http://jonnystromberg.com](http://jonnystromberg.com)
+Copyright (c) 2012-2017 Jonny Strömberg <[jonny.stromberg@gmail.com](mailto:jonny.stromberg@gmail.com)>
+[http://javve.com](http://javve.com)
