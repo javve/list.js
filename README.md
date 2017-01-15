@@ -64,8 +64,6 @@ npm install list.js
 - [Fuzzy search](http://listjs.com/docs/plugins/fuzzysearch)
 - [Build your own](http://listjs.com/docs/plugins/build)
 
-### Known issues
-- Sorting fails with some UTF8 characters. Example: `åä`, thinking that `ä` is before `å`.
 
 ## Contributors
 * [javve](https://github.com/javve) / [Jonny Strömberg](http://jonnystromberg.com)
