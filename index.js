@@ -2,12 +2,12 @@
 "use strict";
 
 var document = window.document,
+  naturalSort = require('string-natural-compare'),
   getByClass = require('./src/utils/get-by-class'),
   extend = require('./src/utils/extend'),
   indexOf = require('./src/utils/index-of'),
   events = require('./src/utils/events'),
   toString = require('./src/utils/to-string'),
-  naturalSort = require('./src/utils/natural-sort'),
   classes = require('./src/utils/classes'),
   getAttribute = require('./src/utils/get-attribute'),
   toArray = require('./src/utils/to-array');

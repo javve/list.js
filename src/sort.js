@@ -1,8 +1,4 @@
 module.exports = function(list) {
-  list.sortFunction = list.sortFunction || function(itemA, itemB, options) {
-    options.desc = options.order == "desc" ? true : false; // Natural sort uses this format
-    return list.utils.naturalSort(itemA.values()[options.valueName], itemB.values()[options.valueName], options);
-  };
 
   var buttons = {
     els: undefined,
@@ -49,6 +45,7 @@ module.exports = function(list) {
       }
     }
   };
+
   var sort = function() {
     list.trigger('sortStart');
     var options = {};
@@ -65,14 +62,33 @@ module.exports = function(list) {
       options.order = options.order || "asc";
       options.insensitive = (typeof options.insensitive == "undefined") ? true : options.insensitive;
     }
+
     buttons.clear();
     buttons.setOrder(options);
 
-    options.sortFunction = options.sortFunction || list.sortFunction;
-    list.items.sort(function(a, b) {
-      var mult = (options.order === 'desc') ? -1 : 1;
-      return (options.sortFunction(a, b, options) * mult);
-    });
+
+    // caseInsensitive
+    // alphabet
+    var customSortFunction = (options.sortFunction || list.sortFunction || null),
+        multi = ((options.order === 'desc') ? -1 : 1),
+        sortFunction;
+
+    if (customSortFunction) {
+      sortFunction = function(itemA, itemB) {
+        return customSortFunction(itemA, itemB, options) * multi;
+      };
+    } else {
+      sortFunction = function(itemA, itemB) {
+        var sort = list.utils.naturalSort;
+        sort.alphabet = list.alphabet || options.alphabet || undefined;
+        if (!sort.alphabet && options.insensitive) {
+          sort = list.utils.naturalSort.caseInsensitive;
+        }
+        return sort(itemA.values()[options.valueName], itemB.values()[options.valueName]) * multi;
+      };
+    }
+
+    list.items.sort(sortFunction);
     list.update();
     list.trigger('sortComplete');
   };
