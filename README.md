@@ -64,30 +64,7 @@ npm install list.js
 - [Fuzzy search](http://listjs.com/docs/plugins/fuzzysearch)
 - [Build your own](http://listjs.com/docs/plugins/build)
 
-
-## Contributors
-* [javve](https://github.com/javve) / [Jonny Strömberg](http://jonnystromberg.com)
-* [lusentis](https://github.com/lusentis) / [Simone Lusenti](http://www.plasticpanda.com)
-* [dancrew32](https://github.com/dancrew32) / [Dan Masquelier](http://danmasq.com)
-* [himynameisjonas](https://github.com/himynameisjonas) / [Jonas Forsberg](http://jonasforsberg.se)
-* [LuukvE](https://github.com/LuukvE) [Luuk van Egeraat](http://luukvanegeraat.com/)
-* [endorama](https://github.com/endorama) / Edoardo Tenani
-* [sprynmr](https://github.com/sprynmr) / Bob Spryn
-* [francescolaffi](https://github.com/francescolaffi)
-* [ryantanner](https://github.com/ryantanner)
-* [idlefella](https://github.com/idlefella)
-* [julienbechade](https://github.com/julienbechade) / [Julien Béchade/](http://julienbechade.com/)
-* [matthewheston](https://github.com/matthewheston)
-* [gvido](https://github.com/gvido) / Gvido Glazers
-* [karlwestin](https://github.com/karlwestin) / [Karl Westin](http://karlwestin.com)
-* [joakin](https://github.com/joakin) / [Joaquin](http://chimeces.com/)
-* [dancrew32](https://github.com/dancrew32) / [Dan Masquelier](http://danmasq.com/)
-* [jkeyes](https://github.com/jkeyes) / [John Keyes](http://keyes.ie/)
-* [samosad](https://github.com/samosad) / Alexey Tabakman
-* [Page-](https://github.com/Page-)
-* [urkle](https://github.com/urkle) / Edward Rudd
-
-### Want to contribute?
+### Thanks to [https://github.com/javve/list.js/graphs/contributors](all lovely contributors)! Want to join them?
 - Read more at [listjs.com/overview/contribute](http://listjs.com/overview/contribute)
 
 ### Creator
