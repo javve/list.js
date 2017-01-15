@@ -3,21 +3,21 @@
 
 var document = window.document,
   naturalSort = require('string-natural-compare'),
-  getByClass = require('./src/utils/get-by-class'),
-  extend = require('./src/utils/extend'),
-  indexOf = require('./src/utils/index-of'),
-  events = require('./src/utils/events'),
-  toString = require('./src/utils/to-string'),
-  classes = require('./src/utils/classes'),
-  getAttribute = require('./src/utils/get-attribute'),
-  toArray = require('./src/utils/to-array');
+  getByClass = require('./utils/get-by-class'),
+  extend = require('./utils/extend'),
+  indexOf = require('./utils/index-of'),
+  events = require('./utils/events'),
+  toString = require('./utils/to-string'),
+  classes = require('./utils/classes'),
+  getAttribute = require('./utils/get-attribute'),
+  toArray = require('./utils/to-array');
 
 var List = function(id, options, values) {
 
   var self = this,
     init,
-    Item = require('./src/item')(self),
-    addAsync = require('./src/add-async')(self);
+    Item = require('./item')(self),
+    addAsync = require('./add-async')(self);
 
   init = {
     start: function() {
@@ -53,11 +53,11 @@ var List = function(id, options, values) {
       if (!self.listContainer) { return; }
       self.list       = getByClass(self.listContainer, self.listClass, true);
 
-      self.parse      = require('./src/parse')(self);
-      self.templater  = require('./src/templater')(self);
-      self.search     = require('./src/search')(self);
-      self.filter     = require('./src/filter')(self);
-      self.sort       = require('./src/sort')(self);
+      self.parse      = require('./parse')(self);
+      self.templater  = require('./templater')(self);
+      self.search     = require('./search')(self);
+      self.filter     = require('./filter')(self);
+      self.sort       = require('./sort')(self);
 
       this.handlers();
       this.items();

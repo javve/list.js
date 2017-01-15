@@ -14,7 +14,7 @@ module.exports = function(grunt) {
   },
   shell: {
     build: {
-      command: 'node_modules/browserify/bin/cmd.js index.js > dist/list.js',
+      command: 'node_modules/browserify/bin/cmd.js src/index.js > dist/list.js',
       options: {
         stderr: true
       }
