@@ -15,9 +15,13 @@
 - Example of more advanced filtering
 - Fix test suite
 - Example with multiple lists
-- Test simple natural sort: https://github.com/litejs/natural-compare-lite
 
 # Changelog
+
+### 2017-01-15 v1.4.0
+- **[Bugfix/Feature]** Change natural-sort library to support custom alphabets
+and thereby handle JavaScripts unicode bugs like sorting ÅÄÖ in Swedish wrong.
+  [See commit →](https://github.com/javve/list.js/commit/81e1386bed88d1f932e729feca2b3649e489bdfe)
 
 ### 2016-10-23 v1.3.0
 - **[Bugfix]** Make mkdir in build script OS agnostic
