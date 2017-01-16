@@ -64,13 +64,13 @@ npm install list.js
 - [Fuzzy search](http://listjs.com/docs/plugins/fuzzysearch)
 - [Build your own](http://listjs.com/docs/plugins/build)
 
-### Thanks to [https://github.com/javve/list.js/graphs/contributors](all lovely contributors)! Want to join them?
+### Thanks to [all lovely contributors](https://github.com/javve/list.js/graphs/contributors)! Want to join them?
 - Read more at [listjs.com/overview/contribute](http://listjs.com/overview/contribute)
 
 ### Creator
 |               | Jonny Strömberg [@javve](http://twitter.com/javve)            |
 | ------------- | ------------- |
-| ![Image of Jonny](http://listjs.com/assets/images/graphics/javve.jpg) | I hope you like the lib. I’ve put a lot of hours into it! Feel free to follow me on [Twitter](http://twitter.com/javve) for news and [donate a coffee](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M7ZGHV75VSD2E) for good karma ;)  
+| ![Image of Jonny](http://1.gravatar.com/avatar/9f8130715cb4c452f1294eafa1b36290?size=80) | I hope you like the lib. I’ve put a lot of hours into it! Feel free to follow me on [Twitter](http://twitter.com/javve) for news and [donate a coffee](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M7ZGHV75VSD2E) for good karma ;)  
 
 
 ## License (MIT)
