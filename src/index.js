@@ -17,7 +17,8 @@ var List = function(id, options, values) {
   var self = this,
     init,
     Item = require('./item')(self),
-    addAsync = require('./add-async')(self);
+    addAsync = require('./add-async')(self),
+    initPagination = require('./pagination')(self);
 
   init = {
     start: function() {
@@ -33,7 +34,6 @@ var List = function(id, options, values) {
       self.filtered       = false;
       self.searchColumns  = undefined;
       self.handlers       = { 'updated': [] };
-      self.plugins        = {};
       self.valueNames     = [];
       self.utils          = {
         getByClass: getByClass,
@@ -53,16 +53,18 @@ var List = function(id, options, values) {
       if (!self.listContainer) { return; }
       self.list       = getByClass(self.listContainer, self.listClass, true);
 
-      self.parse      = require('./parse')(self);
-      self.templater  = require('./templater')(self);
-      self.search     = require('./search')(self);
-      self.filter     = require('./filter')(self);
-      self.sort       = require('./sort')(self);
+      self.parse        = require('./parse')(self);
+      self.templater    = require('./templater')(self);
+      self.search       = require('./search')(self);
+      self.filter       = require('./filter')(self);
+      self.sort         = require('./sort')(self);
+      self.fuzzySearch  = require('./fuzzy-search')(self, options.fuzzySearch);
 
       this.handlers();
       this.items();
+      this.pagination();
+
       self.update();
-      this.plugins();
     },
     handlers: function() {
       for (var handler in self.handlers) {
@@ -77,11 +79,17 @@ var List = function(id, options, values) {
         self.add(values);
       }
     },
-    plugins: function() {
-      for (var i = 0; i < self.plugins.length; i++) {
-        var plugin = self.plugins[i];
-        self[plugin.name] = plugin;
-        plugin.init(self, List);
+    pagination: function() {
+      if (options.pagination !== undefined) {
+        if (options.pagination === true) {
+          options.pagination = [{}];
+        }
+        if (options.pagination[0] === undefined){
+          options.pagination = [options.pagination];
+        }
+        for (var i = 0, il = options.pagination.length; i < il; i++) {
+          initPagination(options.pagination[i]);
+        }
       }
     }
   };
