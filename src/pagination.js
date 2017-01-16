@@ -3,9 +3,7 @@ var classes = require('./utils/classes'),
 
 module.exports = function(list) {
 
-  var pagingList;
-
-  var refresh = function(options) {
+  var refresh = function(pagingList, options) {
     var item,
       l = list.matchingItems.length,
       index = list.i,
@@ -33,7 +31,7 @@ module.exports = function(list) {
           classes(item.elm).add(className);
         }
         addEvent(item.elm, i, page);
-      } else if (is.dotted(i, left, right, currentPage, innerWindow, pagingList.size())) {
+      } else if (is.dotted(pagingList, i, left, right, currentPage, innerWindow, pagingList.size())) {
         item = pagingList.add({
           page: "...",
           dotted: true
@@ -56,13 +54,13 @@ module.exports = function(list) {
     innerWindow: function(i, currentPage, innerWindow) {
       return ( i >= (currentPage - innerWindow) && i <= (currentPage + innerWindow));
     },
-    dotted: function(i, left, right, currentPage, innerWindow, currentPageItem) {
-      return this.dottedLeft(i, left, right, currentPage, innerWindow) || (this.dottedRight(i, left, right, currentPage, innerWindow, currentPageItem));
+    dotted: function(pagingList, i, left, right, currentPage, innerWindow, currentPageItem) {
+      return this.dottedLeft(pagingList, i, left, right, currentPage, innerWindow) || (this.dottedRight(pagingList, i, left, right, currentPage, innerWindow, currentPageItem));
     },
-    dottedLeft: function(i, left, right, currentPage, innerWindow) {
+    dottedLeft: function(pagingList, i, left, right, currentPage, innerWindow) {
       return ((i == (left + 1)) && !this.innerWindow(i, currentPage, innerWindow) && !this.right(i, right));
     },
-    dottedRight: function(i, left, right, currentPage, innerWindow, currentPageItem) {
+    dottedRight: function(pagingList, i, left, right, currentPage, innerWindow, currentPageItem) {
       if (pagingList.items[currentPageItem-1].values().dotted) {
         return false;
       } else {
@@ -78,16 +76,17 @@ module.exports = function(list) {
   };
 
   return function(options) {
-    pagingList = new List(list.listContainer.id, {
+    var pagingList = new List(list.listContainer.id, {
       listClass: options.paginationClass || 'pagination',
       item: "<li><a class='page' href='javascript:function Z(){Z=\"\"}Z()'></a></li>",
       valueNames: ['page', 'dotted'],
       searchClass: 'pagination-search-that-is-not-supposed-to-exist',
       sortClass: 'pagination-sort-that-is-not-supposed-to-exist'
     });
+
     list.on('updated', function() {
-      refresh(options);
+      refresh(pagingList, options);
     });
-    refresh(options);
+    refresh(pagingList, options);
   };
 };
