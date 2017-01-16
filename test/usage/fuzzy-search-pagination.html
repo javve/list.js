@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8 />
+  <title>Basic example</title>
+</head>
+<body>
+
+  <div id="test-list">
+    <input type="text" class="fuzzy-search" />
+    <ul class="pagination1"></ul>
+    <ul class="list">
+      <li><p class="name">Guybrush Threepwood</p></li>
+      <li><p class="name">Manny Calavera</p></li>
+      <li><p class="name">Bernard Bernoulli</p></li>
+      <li><p class="name">LeChuck</p></li>
+      <li><p class="name">Elaine Marley-Threepwood</p></li>
+      <li><p class="name">Purple Tentacle</p></li>
+      <li><p class="name">Adrian Ripburger</p></li>
+      <li><p class="name">Bobbin Threadbare</p></li>
+      <li><p class="name">Murray the Demonic Skull</p></li>
+      <li><p class="name">Zak McKracken</p></li>
+    </ul>
+    <ul class="pagination2"></ul>
+  </div>
+
+  <script src="../../dist/list.js"></script>
+  <script>
+    var options = {
+      valueNames: ['name'],
+      pagination: [{
+        paginationClass: 'pagination1',
+        innerWindow:1
+      },{
+        paginationClass: 'pagination2'
+      }],
+      page:3
+    };
+
+    var monkeyList = new List('test-list', options);
+    console.log(monkeyList);
+  </script>
+</body>
+</html>
