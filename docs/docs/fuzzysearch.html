@@ -1,0 +1,90 @@
+---
+layout: default
+title: Fuzzy search plugin
+---
+
+<h2>Fuzzy search</h2>
+
+<p><i>
+  Note: The fuzzy search plugin is
+  deprecated since v1.5.0, it's now bundled into List.js. Read the
+  <a href="/docs/plugins/fuzzysearch">old docs here</a>.
+</i></p>
+
+<h3>The difference between Fuzzy Search and List.js default search</h3>
+
+<p>The default search will conduct a time efficient search for an exact match in the content searched, while the fuzzy search will render results depending on if they are included anywhere in the content.</p>
+
+<h3>Basic example</h3>
+<pre><code>var items = [
+    { character: "Guybrush Threepwood", game: "The Secret of Monkey Island" },
+    { character: "Manny Calavera", game: "Grim Fandango" },
+    { character: "Bernard Bernoulli", game: "Maniac Mansion" }
+];
+
+list.search('gu thre'); // return none
+list.fuzzySearch('gu thre') // return 1 item
+</code></pre>
+
+
+<h3>Options</h3>
+<p>All options are optional. Simplest implementation is:</p>
+<pre><code class="javascript">new List(id, { fuzzySearch: options });</code></pre>
+<ul>
+  <li>
+    <strong>searchClass</strong> <em class="docs-parameter-description">String, default: fuzzy-search</em><br/>
+    What is the class of the search field?
+  </li>
+  <li>
+    <strong>location</strong> <em class="docs-parameter-description">Int, default: 0</em><br/>
+    Approximately where in the text is the pattern expected to be found?
+  </li>
+  <li>
+    <strong>distance</strong> <em class="docs-parameter-description">Int, default: 100</em><br/>
+    Determines how close the match must be to the fuzzy location (specified above). An exact letter match which is ‘distance’ characters away from the fuzzy location would score as a complete mismatch. A distance of 0 requires the match be at the exact location specified, a threshold of 1000 would require a perfect match to be within 800 characters of the fuzzy location to be found using a 0.8 threshold.
+  </li>
+  <li>
+    <strong>threshold</strong> <em class="docs-parameter-description">Int, default: 0.4</em><br/>
+    At what point does the match algorithm give up. A threshold of <code>0.0</code> requires a perfect match (of both letters and location), a threshold of <code>1.0</code> would match anything.
+  </li>
+  <li>
+    <strong>multiSearch</strong> <em class="docs-parameter-description">Boolean, default: true</em><br/>
+    Subtract arguments from the <code>searchString</code> or put <code>searchString</code> as only argument
+  </li>
+</ul>
+
+<h3>Implementation</h3>
+<pre><code>&lt;div id="list-id">
+  &lt;input class="fuzzy-search" />
+  &lt;ul class="list">
+    / A bunch of items /
+  &lt;/ul>
+&lt;/div>
+
+&lt;script>
+
+var options = {
+  valueNames: [ 'name', 'category' ],
+  fuzzySearch: {
+    searchClass: "fuzzy-search",
+    location: 0,
+    distance: 100,
+    threshold: 0.4,
+    multiSearch: true
+  }
+};
+
+var listObj = new List('list-id', options);
+
+// Search manually
+listObj.fuzzySearch.search('my search');
+
+// Search manually on specific columns
+listObj.fuzzySearch.search('my search', [ 'name' ]);
+
+&lt;/script>
+</code></pre>
+
+<p>A big thanks to <a href="https://github.com/LuukvE">LuukvE</a> who made a <a href="https://github.com/LuukvE/list/commit/a75b6ef5649c5fb4232a40ef2f5191d0b57e1ede">commit</a> from which I could create this Fuzzy Search plugin.</p>
+
+<div class="continue">Next topic: <a href="/docs/plugins/build">Build your own plugin ›</a></div>

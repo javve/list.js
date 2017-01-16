@@ -1,0 +1,116 @@
+---
+layout: default
+title: Pagination
+---
+
+<h2>Pagination</h2>
+
+<p><i>
+  Note: The pagination plugin is
+  deprecated since v1.5.0, it's now bundled into List.js. Read the
+  <a href="/docs/plugins/pagination">old docs here</a>.
+</i></p>
+
+<h3>Basic example</h3>
+<pre><code>&lt;div id="listId">
+  &lt;ul class="list">
+      // A bunch of items
+  &lt;/ul>
+  &lt;ul class="pagination">&lt;/ul>
+&lt;/div>
+
+&lt;script>
+  var options = {
+    valueNames: [ 'name', 'category' ],
+    page: 3,
+    pagination: true
+  };
+
+  var listObj = new List('listId', options);
+&lt;/script>
+</code></pre>
+
+
+
+<h3>Options</h3>
+<ul>
+  <li>
+    <strong>paginationClass</strong> <em class="docs-parameter-description">String, default: &ldquo;pagination&rdquo;</em><br/>
+    The class that defines which <code>ul</code> that should contain the pagination (must be inside the list container)
+  </li>
+  <li>
+    <strong>innerWindow</strong> <em class="docs-parameter-description">Int, default: 2</em><br/>
+    How many pages should be visible on each side of the current page.<br/>
+    <code>innerWindow: 2 &hellip; 3 4 <strong>5</strong> 6 7 &hellip;</code><br/>
+    <code>innerWindow: 1 &hellip; 4 <strong>5</strong> 6 &hellip;</code>
+  </li>
+  <li>
+    <strong>outerWindow</strong> <em class="docs-parameter-description">Int, default: 0</em><br/>
+    How many pages should be visible on from the beginning and from the end of the pagination.<br/>
+    <code>outerWindow: 0 &hellip; 3 4 <strong>5</strong> 6 7&hellip;</code><br/>
+    <code>outerWindow: 2 1 2 &hellip; 4 5 <strong>6</strong> 7 8 &hellip; 11 12</code>
+  </li>
+  <li>
+    <strong>left</strong> <em class="docs-parameter-description">Int, default: 0</em><br/>
+    Same as <code>outerWindow</code> but only from left.
+    <code>outerWindow: 2</code> and <code>left: 1</code> <code>1 &hellip; 4 5 <strong>6</strong> 7 8 &hellip; 11 12</code>
+  </li>
+  <li>
+    <strong>right</strong> <em class="docs-parameter-description">Int, default: 0</em><br/>
+    Same as <code>left</code> but from right.
+  </li>
+</ul>
+
+<h4>Notice</h4>
+<p>The number of items at each page are decided by the List.js own property <code>page</code>. To set this just add page: Number to the option object sent into the List.js constructor (as been done in both of the examples at this page).</p>
+
+<h3>Generated output</h3>
+
+<pre><code>&lt;div id="listId">
+  &lt;ul class="list">
+      / A bunch of items /
+  &lt;/ul>
+  &lt;ul class="pagination">
+    &lt;li>
+      &lt;a class="page active" href="javascript:function Z(){Z=&quot;&quot;}Z()">1&lt;/a>
+    &lt;/li>
+    &lt;li>
+      &lt;a class="page" href="javascript:function Z(){Z=&quot;&quot;}Z()">2&lt;/a>
+    &lt;/li>
+    &lt;li>
+      …
+    &lt;/li>
+  &lt;/ul>
+&lt;/div>
+</code></pre>
+
+<h3>Double pagination</h3>
+
+<pre><code>&lt;div id="listId">
+  &lt;ul class="paginationTop">&lt;/ul>
+  &lt;ul class="list">
+    // A bunch of items
+  &lt;/ul>
+  &lt;ul class="paginationBottom">&lt;/ul>
+&lt;/div>
+
+&lt;script>
+  var listOptions = {
+    valueNames: [ 'name', 'category' ],
+    page: 3,
+    pagination: [{
+      name: "paginationTop",
+      paginationClass: "paginationTop",
+      outerWindow: 2
+    }, {
+      paginationClass: "paginationBottom",
+      innerWindow: 3,
+      left: 2,
+      right: 4
+    }]
+  };
+
+  var listObj = new List('listId', listOptions);
+&lt;/script></code></pre>
+
+<div class="continue">Next topic: <a href="/docs/plugins/fuzzysearch">Fuzzy search plugin ›</a></div>
