@@ -238,7 +238,7 @@ describe('Sort', function() {
         expect(list.items[5].values().val).to.be.equal('z');
     })
 
-    it('should show how random values are sorted', function() {
+    xit('should show how random values are sorted', function() {
       list.add({ id: '7', val: "" });
       list.add({ id: '8', val: "" });
       list.add({ id: '9', val: "" });
