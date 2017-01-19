@@ -18,6 +18,11 @@
 
 # Changelog
 
+### 2017-01-19 v1.4.1
+- **[Bugfix]** Move string-natural-compare to dependencies instead of devDependencies
+  [See commit →](https://github.com/javve/list.js/commit/c17162b26fd5093d3ddde01e11a3f748310d993c)
+
+
 ### 2017-01-15 v1.4.0
 - **[Bugfix/Feature]** Change natural-sort library to support custom alphabets
 and thereby handle JavaScripts unicode bugs like sorting ÅÄÖ in Swedish wrong.
