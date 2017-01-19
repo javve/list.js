@@ -1,25 +1,187 @@
-// List.js v1.4.0 (http://www.listjs.com) by Jonny Strömberg (http://javve.com)
+// List.js v1.4.1 (http://www.listjs.com) by Jonny Strömberg (http://javve.com)
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+var alphabet;
+var alphabetIndexMap;
+var alphabetIndexMapLength = 0;
+
+function isNumberCode(code) {
+  return code >= 48 && code <= 57;
+}
+
+function naturalCompare(a, b) {
+  var lengthA = (a += '').length;
+  var lengthB = (b += '').length;
+  var aIndex = 0;
+  var bIndex = 0;
+
+  while (aIndex < lengthA && bIndex < lengthB) {
+    var charCodeA = a.charCodeAt(aIndex);
+    var charCodeB = b.charCodeAt(bIndex);
+
+    if (isNumberCode(charCodeA)) {
+      if (!isNumberCode(charCodeB)) {
+        return charCodeA - charCodeB;
+      }
+
+      var numStartA = aIndex;
+      var numStartB = bIndex;
+
+      while (charCodeA === 48 && ++numStartA < lengthA) {
+        charCodeA = a.charCodeAt(numStartA);
+      }
+      while (charCodeB === 48 && ++numStartB < lengthB) {
+        charCodeB = b.charCodeAt(numStartB);
+      }
+
+      var numEndA = numStartA;
+      var numEndB = numStartB;
+
+      while (numEndA < lengthA && isNumberCode(a.charCodeAt(numEndA))) {
+        ++numEndA;
+      }
+      while (numEndB < lengthB && isNumberCode(b.charCodeAt(numEndB))) {
+        ++numEndB;
+      }
+
+      var difference = numEndA - numStartA - numEndB + numStartB; // numA length - numB length
+      if (difference) {
+        return difference;
+      }
+
+      while (numStartA < numEndA) {
+        difference = a.charCodeAt(numStartA++) - b.charCodeAt(numStartB++);
+        if (difference) {
+          return difference;
+        }
+      }
+
+      aIndex = numEndA;
+      bIndex = numEndB;
+      continue;
+    }
+
+    if (charCodeA !== charCodeB) {
+      if (
+        charCodeA < alphabetIndexMapLength &&
+        charCodeB < alphabetIndexMapLength &&
+        alphabetIndexMap[charCodeA] !== -1 &&
+        alphabetIndexMap[charCodeB] !== -1
+      ) {
+        return alphabetIndexMap[charCodeA] - alphabetIndexMap[charCodeB];
+      }
+
+      return charCodeA - charCodeB;
+    }
+
+    ++aIndex;
+    ++bIndex;
+  }
+
+  return lengthA - lengthB;
+}
+
+naturalCompare.caseInsensitive = naturalCompare.i = function(a, b) {
+  return naturalCompare(('' + a).toLowerCase(), ('' + b).toLowerCase());
+};
+
+Object.defineProperties(naturalCompare, {
+  alphabet: {
+    get: function() {
+      return alphabet;
+    },
+    set: function(value) {
+      alphabet = value;
+      alphabetIndexMap = [];
+      var i = 0;
+      if (alphabet) {
+        for (; i < alphabet.length; i++) {
+          alphabetIndexMap[alphabet.charCodeAt(i)] = i;
+        }
+      }
+      alphabetIndexMapLength = alphabetIndexMap.length;
+      for (i = 0; i < alphabetIndexMapLength; i++) {
+        if (alphabetIndexMap[i] === undefined) {
+          alphabetIndexMap[i] = -1;
+        }
+      }
+    },
+  },
+});
+
+module.exports = naturalCompare;
+
+},{}],2:[function(require,module,exports){
+module.exports = function(list) {
+  var addAsync = function(values, callback, items) {
+    var valuesToAdd = values.splice(0, 50);
+    items = items || [];
+    items = items.concat(list.add(valuesToAdd));
+    if (values.length > 0) {
+      setTimeout(function() {
+        addAsync(values, callback, items);
+      }, 1);
+    } else {
+      list.update();
+      callback(items);
+    }
+  };
+  return addAsync;
+};
+
+},{}],3:[function(require,module,exports){
+module.exports = function(list) {
+
+  // Add handlers
+  list.handlers.filterStart = list.handlers.filterStart || [];
+  list.handlers.filterComplete = list.handlers.filterComplete || [];
+
+  return function(filterFunction) {
+    list.trigger('filterStart');
+    list.i = 1; // Reset paging
+    list.reset.filter();
+    if (filterFunction === undefined) {
+      list.filtered = false;
+    } else {
+      list.filtered = true;
+      var is = list.items;
+      for (var i = 0, il = is.length; i < il; i++) {
+        var item = is[i];
+        if (filterFunction(item)) {
+          item.filtered = true;
+        } else {
+          item.filtered = false;
+        }
+      }
+    }
+    list.update();
+    list.trigger('filterComplete');
+    return list.visibleItems;
+  };
+};
+
+},{}],4:[function(require,module,exports){
 (function( window, undefined ) {
 "use strict";
 
 var document = window.document,
   naturalSort = require('string-natural-compare'),
-  getByClass = require('./src/utils/get-by-class'),
-  extend = require('./src/utils/extend'),
-  indexOf = require('./src/utils/index-of'),
-  events = require('./src/utils/events'),
-  toString = require('./src/utils/to-string'),
-  classes = require('./src/utils/classes'),
-  getAttribute = require('./src/utils/get-attribute'),
-  toArray = require('./src/utils/to-array');
+  getByClass = require('./utils/get-by-class'),
+  extend = require('./utils/extend'),
+  indexOf = require('./utils/index-of'),
+  events = require('./utils/events'),
+  toString = require('./utils/to-string'),
+  classes = require('./utils/classes'),
+  getAttribute = require('./utils/get-attribute'),
+  toArray = require('./utils/to-array');
 
 var List = function(id, options, values) {
 
   var self = this,
     init,
-    Item = require('./src/item')(self),
-    addAsync = require('./src/add-async')(self);
+    Item = require('./item')(self),
+    addAsync = require('./add-async')(self);
 
   init = {
     start: function() {
@@ -55,11 +217,11 @@ var List = function(id, options, values) {
       if (!self.listContainer) { return; }
       self.list       = getByClass(self.listContainer, self.listClass, true);
 
-      self.parse      = require('./src/parse')(self);
-      self.templater  = require('./src/templater')(self);
-      self.search     = require('./src/search')(self);
-      self.filter     = require('./src/filter')(self);
-      self.sort       = require('./src/sort')(self);
+      self.parse      = require('./parse')(self);
+      self.templater  = require('./templater')(self);
+      self.search     = require('./search')(self);
+      self.filter     = require('./filter')(self);
+      self.sort       = require('./sort')(self);
 
       this.handlers();
       this.items();
@@ -269,169 +431,7 @@ window.List = List;
 
 })(window);
 
-},{"./src/add-async":3,"./src/filter":4,"./src/item":5,"./src/parse":6,"./src/search":7,"./src/sort":8,"./src/templater":9,"./src/utils/classes":10,"./src/utils/events":11,"./src/utils/extend":12,"./src/utils/get-attribute":13,"./src/utils/get-by-class":14,"./src/utils/index-of":15,"./src/utils/to-array":16,"./src/utils/to-string":17,"string-natural-compare":2}],2:[function(require,module,exports){
-'use strict';
-
-var alphabet;
-var alphabetIndexMap;
-var alphabetIndexMapLength = 0;
-
-function isNumberCode(code) {
-  return code >= 48 && code <= 57;
-}
-
-function naturalCompare(a, b) {
-  var lengthA = (a += '').length;
-  var lengthB = (b += '').length;
-  var aIndex = 0;
-  var bIndex = 0;
-
-  while (aIndex < lengthA && bIndex < lengthB) {
-    var charCodeA = a.charCodeAt(aIndex);
-    var charCodeB = b.charCodeAt(bIndex);
-
-    if (isNumberCode(charCodeA)) {
-      if (!isNumberCode(charCodeB)) {
-        return charCodeA - charCodeB;
-      }
-
-      var numStartA = aIndex;
-      var numStartB = bIndex;
-
-      while (charCodeA === 48 && ++numStartA < lengthA) {
-        charCodeA = a.charCodeAt(numStartA);
-      }
-      while (charCodeB === 48 && ++numStartB < lengthB) {
-        charCodeB = b.charCodeAt(numStartB);
-      }
-
-      var numEndA = numStartA;
-      var numEndB = numStartB;
-
-      while (numEndA < lengthA && isNumberCode(a.charCodeAt(numEndA))) {
-        ++numEndA;
-      }
-      while (numEndB < lengthB && isNumberCode(b.charCodeAt(numEndB))) {
-        ++numEndB;
-      }
-
-      var difference = numEndA - numStartA - numEndB + numStartB; // numA length - numB length
-      if (difference) {
-        return difference;
-      }
-
-      while (numStartA < numEndA) {
-        difference = a.charCodeAt(numStartA++) - b.charCodeAt(numStartB++);
-        if (difference) {
-          return difference;
-        }
-      }
-
-      aIndex = numEndA;
-      bIndex = numEndB;
-      continue;
-    }
-
-    if (charCodeA !== charCodeB) {
-      if (
-        charCodeA < alphabetIndexMapLength &&
-        charCodeB < alphabetIndexMapLength &&
-        alphabetIndexMap[charCodeA] !== -1 &&
-        alphabetIndexMap[charCodeB] !== -1
-      ) {
-        return alphabetIndexMap[charCodeA] - alphabetIndexMap[charCodeB];
-      }
-
-      return charCodeA - charCodeB;
-    }
-
-    ++aIndex;
-    ++bIndex;
-  }
-
-  return lengthA - lengthB;
-}
-
-naturalCompare.caseInsensitive = naturalCompare.i = function(a, b) {
-  return naturalCompare(('' + a).toLowerCase(), ('' + b).toLowerCase());
-};
-
-Object.defineProperties(naturalCompare, {
-  alphabet: {
-    get: function() {
-      return alphabet;
-    },
-    set: function(value) {
-      alphabet = value;
-      alphabetIndexMap = [];
-      var i = 0;
-      if (alphabet) {
-        for (; i < alphabet.length; i++) {
-          alphabetIndexMap[alphabet.charCodeAt(i)] = i;
-        }
-      }
-      alphabetIndexMapLength = alphabetIndexMap.length;
-      for (i = 0; i < alphabetIndexMapLength; i++) {
-        if (alphabetIndexMap[i] === undefined) {
-          alphabetIndexMap[i] = -1;
-        }
-      }
-    },
-  },
-});
-
-module.exports = naturalCompare;
-
-},{}],3:[function(require,module,exports){
-module.exports = function(list) {
-  var addAsync = function(values, callback, items) {
-    var valuesToAdd = values.splice(0, 50);
-    items = items || [];
-    items = items.concat(list.add(valuesToAdd));
-    if (values.length > 0) {
-      setTimeout(function() {
-        addAsync(values, callback, items);
-      }, 1);
-    } else {
-      list.update();
-      callback(items);
-    }
-  };
-  return addAsync;
-};
-
-},{}],4:[function(require,module,exports){
-module.exports = function(list) {
-
-  // Add handlers
-  list.handlers.filterStart = list.handlers.filterStart || [];
-  list.handlers.filterComplete = list.handlers.filterComplete || [];
-
-  return function(filterFunction) {
-    list.trigger('filterStart');
-    list.i = 1; // Reset paging
-    list.reset.filter();
-    if (filterFunction === undefined) {
-      list.filtered = false;
-    } else {
-      list.filtered = true;
-      var is = list.items;
-      for (var i = 0, il = is.length; i < il; i++) {
-        var item = is[i];
-        if (filterFunction(item)) {
-          item.filtered = true;
-        } else {
-          item.filtered = false;
-        }
-      }
-    }
-    list.update();
-    list.trigger('filterComplete');
-    return list.visibleItems;
-  };
-};
-
-},{}],5:[function(require,module,exports){
+},{"./add-async":2,"./filter":3,"./item":5,"./parse":6,"./search":7,"./sort":8,"./templater":9,"./utils/classes":10,"./utils/events":11,"./utils/extend":12,"./utils/get-attribute":13,"./utils/get-by-class":14,"./utils/index-of":15,"./utils/to-array":16,"./utils/to-string":17,"string-natural-compare":1}],5:[function(require,module,exports){
 module.exports = function(list) {
   return function(initValues, element, notCreate) {
     var item = this;
@@ -1335,4 +1335,4 @@ module.exports = function(s) {
   return s;
 };
 
-},{}]},{},[1]);
+},{}]},{},[4]);
