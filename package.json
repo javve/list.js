@@ -42,6 +42,9 @@
   "engines": {
     "node": ">= 0.10.21"
   },
+  "scripts": {
+    "test": "grunt test"
+  },
   "npmName": "list.js",
   "npmFileMap": [
     {
