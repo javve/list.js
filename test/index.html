@@ -17,15 +17,14 @@
   <script src="../node_modules/jquery/dist/jquery.js"></script>
   <script src="../node_modules/expect.js/index.js"></script>
   <script src="../node_modules/mocha/mocha.js"></script>
+
+  <script>
+    mocha.setup('bdd');
+  </script>
+  
   <script src="../node_modules/blanket/dist/mocha/blanket_mocha.js"></script>
   <script src="../dist/list.js" data-cover></script>
 
-  <script>
-    console.log('2########################################################');
-    console.log(mocha);
-    console.log('2########################################################');
-    mocha.setup('bdd');
-  </script>
   <script src="fixtures.js"></script>
   <script src="test.defaults.js"></script>
   <script src="test.create.js"></script>
