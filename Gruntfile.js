@@ -31,23 +31,23 @@ module.exports = function(grunt) {
   },
   jshint: {
     code: {
-    src: ['Gruntfile.js', '*.js', 'src/*.js', 'src/utils/*.js'],
-    options: {
-      expr: true,
-      multistr: false,
-      globals: {
-        module: true
+      src: ['Gruntfile.js', '*.js', 'src/*.js', 'src/utils/*.js'],
+      options: {
+        expr: true,
+        multistr: false,
+        globals: {
+          module: true
         }
       }
     },
     tests: {
-    src: ['test/(*|!mocha).js'],
-    options: {
-      expr: true,
-      multistr: true,
-      globals: {
-        jQuery: true,
-        module: true
+      src: ['test/*.js'],
+      options: {
+        expr: true,
+        multistr: true,
+        globals: {
+          jQuery: true,
+          module: true
         }
       }
     }

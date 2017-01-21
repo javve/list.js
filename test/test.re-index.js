@@ -23,7 +23,7 @@ describe('ReIndex', function() {
       { name: "Hasse Strömberg", born: '1955' }
     ]);
     var newHtml = '<li><span class="name">Sven</span><span class="born">2013</span>';
-    newHtml = newHtml + '<li><span class="name">Anna</span><span class="born">3043</span>'
+    newHtml = newHtml + '<li><span class="name">Anna</span><span class="born">3043</span>';
     $(list.list).html(newHtml);
     list.reIndex();
     expect(list.toJSON()).to.eql([

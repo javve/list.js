@@ -55,7 +55,7 @@ describe('Sort', function() {
       expect(list.items[5].values().val).to.be.equal("a");
     });
     it('should sort åäö desc', function() {
-      list.alphabet = 'ABCDEFGHIJKLMNOPQRSTUVXYZÅÄÖabcdefghijklmnopqrstuvxyzåäö'
+      list.alphabet = 'ABCDEFGHIJKLMNOPQRSTUVXYZÅÄÖabcdefghijklmnopqrstuvxyzåäö';
       i1.values({ val: "a" });
       i2.values({ val: "å" });
       i3.values({ val: "ä" });
@@ -71,7 +71,7 @@ describe('Sort', function() {
       expect(list.items[5].values().val).to.be.equal("a");
     });
     it('should sort åäö asc', function() {
-      list.alphabet = 'ABCDEFGHIJKLMNOPQRSTUVXYZÅÄÖabcdefghijklmnopqrstuvxyzåäö'
+      list.alphabet = 'ABCDEFGHIJKLMNOPQRSTUVXYZÅÄÖabcdefghijklmnopqrstuvxyzåäö';
       i1.values({ val: "a" });
       i2.values({ val: "å" });
       i3.values({ val: "ä" });
@@ -87,7 +87,7 @@ describe('Sort', function() {
       expect(list.items[5].values().val).to.be.equal("ö");
     });
     it('should sort åäö desc case insensitive', function() {
-      list.alphabet = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzÅåÄäÖö'
+      list.alphabet = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzÅåÄäÖö';
       i1.values({ val: "a" });
       i2.values({ val: "Å" });
       i3.values({ val: "ä" });
@@ -103,7 +103,7 @@ describe('Sort', function() {
       expect(list.items[5].values().val).to.be.equal("a");
     });
     it('should sort åäö asc case insensitive', function() {
-      list.alphabet = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzÅåÄäÖö'
+      list.alphabet = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzÅåÄäÖö';
       i1.values({ val: "A" });
       i2.values({ val: "å" });
       i3.values({ val: "Ä" });
@@ -236,7 +236,7 @@ describe('Sort', function() {
         expect(list.items[3].values().val).to.be.equal('Test1Test2');
         expect(list.items[4].values().val).to.be.equal('y');
         expect(list.items[5].values().val).to.be.equal('z');
-    })
+    });
 
     xit('should show how random values are sorted', function() {
       list.add({ id: '7', val: "" });

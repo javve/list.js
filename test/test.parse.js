@@ -87,7 +87,7 @@ describe('Parse', function() {
 
     it('should get values from class, data, src, value and child els data-attribute', function() {
       expect(list.items.length).to.equal(2);
-      var jonny = list.items[0].values()
+      var jonny = list.items[0].values();
       expect(jonny.name).to.equal("Jonny");
       expect(jonny.born).to.equal("1986");
       expect(jonny.id).to.equal("1");

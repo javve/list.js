@@ -168,7 +168,7 @@ describe('Button', function() {
         done();
       });
       list.sort('name', { order: "asc" });
-    })
+    });
   });
 
 

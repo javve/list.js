@@ -111,7 +111,7 @@ describe('Search', function() {
     it('should remove columnm option', function() {
       var result = list.search('jonny', [ 'born' ]);
       expect(result.length).to.equal(0);
-      var result = list.search('jonny');
+      result = list.search('jonny');
       expect(result.length).to.equal(1);
     });
   });
