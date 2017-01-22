@@ -1,3 +1,5 @@
+const fixture = require('./fixtures');
+
 describe('On', function() {
 
   var list;

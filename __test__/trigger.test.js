@@ -1,12 +1,14 @@
+const fixture = require('./fixtures');
+
 describe('Trigger', function() {
 
   var list;
 
-  before(function() {
+  beforeAll(function() {
     list = fixture.list(['name', 'born'], fixture.all);
   });
 
-  after(function() {
+  afterAll(function() {
     fixture.removeList();
   });
 

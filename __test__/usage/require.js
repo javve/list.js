@@ -1905,7 +1905,7 @@ var requirejs, require, define;
             //to a reference to this node, but clear after the DOM insertion.
             currentlyAddingScript = node;
             if (baseElement) {
-                head.insertBefore(node, baseElement);
+                head.insertbeforeAll(node, baseElement);
             } else {
                 head.appendChild(node);
             }

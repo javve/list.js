@@ -1,3 +1,6 @@
+const $ = require('jquery'),
+  List = require('../src/index');
+
 var fixture = {
   list: function(valueNames, items) {
     var listHtml = $('<div id="list"><ul class="list"></ul></div>'),
@@ -54,3 +57,5 @@ fixture.all = [
   fixture.imma,
   fixture.hasse
 ];
+
+module.exports = fixture;

@@ -1,3 +1,6 @@
+const $ = require('jquery'),
+  List = require('../src/index');
+
 describe('Create', function() {
 
   describe('With HTML items', function() {
@@ -12,14 +15,14 @@ describe('Create', function() {
     var list = new List('list', { valueNames: ['name'] });
 
     it('should contain one item', function() {
-      expect(list.items.length).to.equal(1);
-      expect(listEl.find('li').size()).to.equal(1);
+      expect(list.items.length).toEqual(1);
+      expect(listEl.find('li').size()).toEqual(1);
     });
 
     it('should contain two items', function() {
       list.add({ name: 'Jonas' });
-      expect(list.items.length).to.equal(2);
-      expect(listEl.find('li').size()).to.equal(2);
+      expect(list.items.length).toEqual(2);
+      expect(listEl.find('li').size()).toEqual(2);
     });
 
     listEl.remove();
@@ -40,14 +43,14 @@ describe('Create', function() {
     ]);
 
     it('should contain one item', function() {
-      expect(list.items.length).to.equal(1);
-      expect(listEl.find('li').size()).to.equal(1);
+      expect(list.items.length).toEqual(1);
+      expect(listEl.find('li').size()).toEqual(1);
     });
 
     it('should contain two items', function() {
       list.add({ name: 'Jonas' });
-      expect(list.items.length).to.equal(2);
-      expect(listEl.find('li').size()).to.equal(2);
+      expect(list.items.length).toEqual(2);
+      expect(listEl.find('li').size()).toEqual(2);
     });
 
     listEl.remove();
@@ -68,14 +71,14 @@ describe('Create', function() {
     ]);
 
     it('should contain one item', function() {
-      expect(list.items.length).to.equal(1);
-      expect(listEl.find('tr').size()).to.equal(1);
+      expect(list.items.length).toEqual(1);
+      expect(listEl.find('tr').size()).toEqual(1);
     });
 
     it('should contain two items', function() {
       list.add({ name: 'Jonas' });
-      expect(list.items.length).to.equal(2);
-      expect(listEl.find('tr').size()).to.equal(2);
+      expect(list.items.length).toEqual(2);
+      expect(listEl.find('tr').size()).toEqual(2);
     });
 
     listEl.remove();
@@ -105,7 +108,9 @@ describe('Create', function() {
       var list = new List('list', {
         valueNames: ['name']
       });
-      expect(list.add).withArgs(({ name: 'Jonas' })).to.throwException();
+      expect(function() {
+        list.add({ name: 'Jonas' });
+      }).toThrow();
       listEl.remove();
     });
   });
@@ -128,14 +133,14 @@ describe('Create', function() {
     ]);
 
     it('should contain one item', function() {
-      expect(list.items.length).to.equal(1);
-      expect(listEl.find('li').size()).to.equal(1);
+      expect(list.items.length).toEqual(1);
+      expect(listEl.find('li').size()).toEqual(1);
     });
 
     it('should contain two items', function() {
       list.add({ name: 'Jonas' });
-      expect(list.items.length).to.equal(2);
-      expect(listEl.find('li').size()).to.equal(2);
+      expect(list.items.length).toEqual(2);
+      expect(listEl.find('li').size()).toEqual(2);
     });
 
     listEl.remove();
@@ -235,7 +240,7 @@ describe('Create', function() {
         valueNames: ['name'],
         indexAsync: true,
         parseComplete: function(list) {
-          expect(listEl.find('li').size()).to.equal(162);
+          expect(listEl.find('li').size()).toEqual(162);
           listEl.remove();
           done();
         }
