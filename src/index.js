@@ -1,8 +1,4 @@
-(function( window, undefined ) {
-"use strict";
-
-var document = window.document,
-  naturalSort = require('string-natural-compare'),
+var naturalSort = require('string-natural-compare'),
   getByClass = require('./utils/get-by-class'),
   extend = require('./utils/extend'),
   indexOf = require('./utils/index-of'),
@@ -12,7 +8,7 @@ var document = window.document,
   getAttribute = require('./utils/get-attribute'),
   toArray = require('./utils/to-array');
 
-var List = function(id, options, values) {
+module.exports = function(id, options, values) {
 
   var self = this,
     init,
@@ -264,13 +260,3 @@ var List = function(id, options, values) {
 
   init.start();
 };
-
-
-// AMD support
-if (typeof define === 'function' && define.amd) {
-  define(function () { return List; });
-}
-module.exports = List;
-window.List = List;
-
-})(window);

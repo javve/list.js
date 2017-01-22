@@ -1,3 +1,6 @@
+const $ = require('jquery'),
+  List = require('../src/index');
+
 describe('Parse', function() {
 
   describe('Parse class', function() {
@@ -20,29 +23,29 @@ describe('Parse', function() {
     });
 
     it('should have two items', function() {
-      expect(list.items.length).to.equal(2);
-      expect(list.items[0].values().name).to.equal("Jonny");
-      expect(list.items[1].values().name).to.equal("Jocke");
+      expect(list.items.length).toEqual(2);
+      expect(list.items[0].values().name).toEqual("Jonny");
+      expect(list.items[1].values().name).toEqual("Jocke");
     });
     it('should add item to parsed list', function() {
       list.add({ name: "Sven", born: 1950 });
-      expect(list.items.length).to.equal(3);
-      expect(list.items[0].values().name).to.equal("Jonny");
-      expect(list.items[1].values().name).to.equal("Jocke");
-      expect(list.items[2].values().name).to.equal("Sven");
-      expect(list.items[0].values().born).to.equal("1986");
-      expect(list.items[2].values().born).to.equal(1950);
+      expect(list.items.length).toEqual(3);
+      expect(list.items[0].values().name).toEqual("Jonny");
+      expect(list.items[1].values().name).toEqual("Jocke");
+      expect(list.items[2].values().name).toEqual("Sven");
+      expect(list.items[0].values().born).toEqual("1986");
+      expect(list.items[2].values().born).toEqual(1950);
       var el = $($('#parse-list').find('.list div')[2]);
-      expect(el.find('span').size()).to.equal(2);
-      expect(el.find('span.name').text()).to.equal('Sven');
-      expect(el.find('span.born').text()).to.equal('1950');
+      expect(el.find('span').size()).toEqual(2);
+      expect(el.find('span.name').text()).toEqual('Sven');
+      expect(el.find('span.born').text()).toEqual('1950');
     });
     it('should parsed value always be string while added could be number', function() {
       list.add({ name: "Sven", born: 1950 });
-      expect(list.items[0].values().born).to.equal("1986");
-      expect(list.items[0].values().born).not.to.equal(1986);
-      expect(list.items[2].values().born).not.to.equal("1950");
-      expect(list.items[2].values().born).to.equal(1950);
+      expect(list.items[0].values().born).toEqual("1986");
+      expect(list.items[0].values().born).not.toEqual(1986);
+      expect(list.items[2].values().born).not.toEqual("1950");
+      expect(list.items[2].values().born).toEqual(1950);
     });
   });
 
@@ -86,34 +89,34 @@ describe('Parse', function() {
     });
 
     it('should get values from class, data, src, value and child els data-attribute', function() {
-      expect(list.items.length).to.equal(2);
-      var jonny = list.items[0].values()
-      expect(jonny.name).to.equal("Jonny");
-      expect(jonny.born).to.equal("1986");
-      expect(jonny.id).to.equal("1");
-      expect(jonny.image).to.equal("usage/boba.jpeg");
-      expect(jonny.timestamp).to.equal("54321");
-      expect(jonny.foo).to.equal("Bar");
+      expect(list.items.length).toEqual(2);
+      var jonny = list.items[0].values();
+      expect(jonny.name).toEqual("Jonny");
+      expect(jonny.born).toEqual("1986");
+      expect(jonny.id).toEqual("1");
+      expect(jonny.image).toEqual("usage/boba.jpeg");
+      expect(jonny.timestamp).toEqual("54321");
+      expect(jonny.foo).toEqual("Bar");
     });
     it('should add item to list with class, data and src', function() {
       list.add({ name: "Sven", born: 1950, id: 4, image: 'usage/rey.jpeg', link: 'localhost', timestamp: '1337', foo: 'hej' });
-      expect(list.items.length).to.equal(3);
+      expect(list.items.length).toEqual(3);
       var sven = list.items[2].values();
-      expect(sven.name).to.equal("Sven");
-      expect(sven.born).to.equal(1950);
-      expect(sven.id).to.equal(4);
-      expect(sven.image).to.equal("usage/rey.jpeg");
-      expect(sven.link).to.equal("localhost");
-      expect(sven.timestamp).to.equal("1337");
-      expect(sven.foo).to.equal("hej");
+      expect(sven.name).toEqual("Sven");
+      expect(sven.born).toEqual(1950);
+      expect(sven.id).toEqual(4);
+      expect(sven.image).toEqual("usage/rey.jpeg");
+      expect(sven.link).toEqual("localhost");
+      expect(sven.timestamp).toEqual("1337");
+      expect(sven.foo).toEqual("hej");
       var el = $($('#parse-list').find('.list div')[2]);
-      expect(el.data('id')).to.equal(4);
-      expect(el.find('.name').text()).to.equal('Sven');
-      expect(el.find('.born').text()).to.equal('1950');
-      expect(el.find('.image').attr('src')).to.equal('usage/rey.jpeg');
-      expect(el.find('.link').attr('href')).to.equal('localhost');
-      expect(el.find('.timestamp').data('timestamp')).to.equal(1337);
-      expect(el.find('.foo').val()).to.equal('hej');
+      expect(el.data('id')).toEqual(4);
+      expect(el.find('.name').text()).toEqual('Sven');
+      expect(el.find('.born').text()).toEqual('1950');
+      expect(el.find('.image').attr('src')).toEqual('usage/rey.jpeg');
+      expect(el.find('.link').attr('href')).toEqual('localhost');
+      expect(el.find('.timestamp').data('timestamp')).toEqual(1337);
+      expect(el.find('.foo').val()).toEqual('hej');
     });
   });
 });

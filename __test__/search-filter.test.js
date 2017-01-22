@@ -1,8 +1,10 @@
+const fixture = require('./fixtures');
+
 describe('Search and filter', function() {
 
   var list, jonny, martina, angelica, sebastian, imma, hasse;
 
-  before(function() {
+  beforeAll(function() {
     list = fixture.list(['name', 'born'], fixture.all);
 
     jonny = list.get('name', 'Jonny Strömberg')[0];
@@ -13,7 +15,7 @@ describe('Search and filter', function() {
     hasse = list.get('name', 'Hasse Strömberg')[0];
   });
 
-  after(function() {
+  afterAll(function() {
     fixture.removeList();
   });
 
@@ -27,26 +29,26 @@ describe('Search and filter', function() {
       list.filter(function(item) {
         return (item.values().born == '1986');
       });
-      expect(list.matchingItems.length).to.equal(3);
-      expect(jonny.matching()).to.be(true);
-      expect(martina.matching()).to.be(true);
-      expect(angelica.matching()).to.be(true);
-      expect(sebastian.matching()).to.be(false);
-      expect(imma.matching()).to.be(false);
-      expect(hasse.matching()).to.be(false);
+      expect(list.matchingItems.length).toEqual(3);
+      expect(jonny.matching()).toBe(true);
+      expect(martina.matching()).toBe(true);
+      expect(angelica.matching()).toBe(true);
+      expect(sebastian.matching()).toBe(false);
+      expect(imma.matching()).toBe(false);
+      expect(hasse.matching()).toBe(false);
     });
     it('should find everyone born 1986 and containes "ö"', function() {
       list.filter(function(item) {
         return (item.values().born == '1986');
       });
       list.search('ö');
-      expect(list.matchingItems.length).to.equal(1);
-      expect(jonny.matching()).to.be(true);
-      expect(martina.matching()).to.be(false);
-      expect(angelica.matching()).to.be(false);
-      expect(sebastian.matching()).to.be(false);
-      expect(imma.matching()).to.be(false);
-      expect(hasse.matching()).to.be(false);
+      expect(list.matchingItems.length).toEqual(1);
+      expect(jonny.matching()).toBe(true);
+      expect(martina.matching()).toBe(false);
+      expect(angelica.matching()).toBe(false);
+      expect(sebastian.matching()).toBe(false);
+      expect(imma.matching()).toBe(false);
+      expect(hasse.matching()).toBe(false);
     });
     it('should find everyone with a "ö"', function() {
       list.filter(function(item) {
@@ -54,13 +56,13 @@ describe('Search and filter', function() {
       });
       list.search('ö');
       list.filter();
-      expect(list.matchingItems.length).to.equal(4);
-      expect(jonny.matching()).to.be(true);
-      expect(martina.matching()).to.be(false);
-      expect(angelica.matching()).to.be(false);
-      expect(sebastian.matching()).to.be(true);
-      expect(imma.matching()).to.be(true);
-      expect(hasse.matching()).to.be(true);
+      expect(list.matchingItems.length).toEqual(4);
+      expect(jonny.matching()).toBe(true);
+      expect(martina.matching()).toBe(false);
+      expect(angelica.matching()).toBe(false);
+      expect(sebastian.matching()).toBe(true);
+      expect(imma.matching()).toBe(true);
+      expect(hasse.matching()).toBe(true);
     });
   });
 });

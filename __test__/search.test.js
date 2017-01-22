@@ -1,3 +1,5 @@
+const fixture = require('./fixtures');
+
 describe('Search', function() {
 
   var list, jonny, martina, angelica, sebastian, imma, hasse;
@@ -20,38 +22,48 @@ describe('Search', function() {
   describe('Case-sensitive', function() {
     it('should not be case-sensitive', function() {
       var result = list.search('jonny');
-      expect(result.length).to.equal(1);
-      expect(result[0]).to.eql(jonny);
+      expect(result.length).toEqual(1);
+      expect(result[0]).toEqual(jonny);
     });
   });
 
   describe('Number of results', function() {
     it('should find jonny, martina, angelice', function() {
       var result = list.search('1986');
-      expect(result.length).to.equal(3); // 3!!
-      expect(jonny.matching()).to.be(true);
-      expect(martina.matching()).to.be(true);
-      expect(angelica.matching()).to.be(true);
-      expect(sebastian.matching()).to.be(false);
-      expect(imma.matching()).to.be(false);
-      expect(hasse.matching()).to.be(false);
+      expect(result.length).toEqual(3); // 3!!
+      expect(jonny.matching()).toBe(true);
+      expect(martina.matching()).toBe(true);
+      expect(angelica.matching()).toBe(true);
+      expect(sebastian.matching()).toBe(false);
+      expect(imma.matching()).toBe(false);
+      expect(hasse.matching()).toBe(false);
     });
     it('should find all with utf-8 char ö', function() {
       var result = list.search('ö');
-      expect(result.length).to.equal(4); // 4!!
-      expect(jonny.matching()).to.be(true);
-      expect(martina.matching()).to.be(false);
-      expect(angelica.matching()).to.be(false);
-      expect(sebastian.matching()).to.be(true);
-      expect(imma.matching()).to.be(true);
-      expect(hasse.matching()).to.be(true);
+      expect(result.length).toEqual(4); // 4!!
+      expect(jonny.matching()).toBe(true);
+      expect(martina.matching()).toBe(false);
+      expect(angelica.matching()).toBe(false);
+      expect(sebastian.matching()).toBe(true);
+      expect(imma.matching()).toBe(true);
+      expect(hasse.matching()).toBe(true);
     });
     it('should not break with weird searches', function() {
-      expect(list.search).withArgs(undefined).to.not.throwException();
-      expect(list.search).withArgs(null).to.not.throwException();
-      expect(list.search).withArgs(0).to.not.throwException();
-      expect(list.search).withArgs(function() {}).to.not.throwException();
-      expect(list.search).withArgs({ foo: "bar" }).to.not.throwException();
+      expect(function() {
+        list.search(undefined);
+      }).not.toThrow();
+      expect(function() {
+        list.search(null);
+      }).not.toThrow();
+      expect(function() {
+        list.search(0);
+      }).not.toThrow();
+      expect(function() {
+        list.search(function() {});
+      }).not.toThrow();
+      expect(function() {
+        list.search({ foo: "bar" });
+      }).not.toThrow();
     });
     it('should not break with weird values', function() {
       jonny.values({ name: undefined });
@@ -60,12 +72,24 @@ describe('Search', function() {
       sebastian.values({ name: function() {} });
       imma.values({ name: { foo: "bar" } });
 
-      expect(list.search).withArgs("jonny").to.not.throwException();
-      expect(list.search).withArgs(undefined).to.not.throwException();
-      expect(list.search).withArgs(null).to.not.throwException();
-      expect(list.search).withArgs(0).to.not.throwException();
-      expect(list.search).withArgs(function() {}).to.not.throwException();
-      expect(list.search).withArgs({ foo: "bar" }).to.not.throwException();
+      expect(function() {
+        list.search("jonny");
+      }).not.toThrow();
+      expect(function() {
+        list.search(undefined);
+      }).not.toThrow();
+      expect(function() {
+        list.search(null);
+      }).not.toThrow();
+      expect(function() {
+        list.search(0);
+      }).not.toThrow();
+      expect(function() {
+        list.search(function() {});
+      }).not.toThrow();
+      expect(function() {
+        list.search({ foo: "bar" });
+      }).not.toThrow();
     });
   });
 
@@ -74,13 +98,13 @@ describe('Search', function() {
     it('should find in the default match column', function() {
       list.searchColumns = ['name'];
       var result = list.search('jonny');
-      expect(result.length).to.equal(1);
-      expect(result[0]).to.eql(jonny);
+      expect(result.length).toEqual(1);
+      expect(result[0]).toEqual(jonny);
     });
     it('should not find in the default match column', function() {
       list.searchColumns = ['born'];
       var result = list.search('jonny');
-      expect(result.length).to.equal(0);
+      expect(result.length).toEqual(0);
     });
   });
 
@@ -88,31 +112,31 @@ describe('Search', function() {
   describe('Specfic columns', function() {
     it('should find match in column', function() {
       var result = list.search('jonny', [ 'name' ]);
-      expect(result.length).to.equal(1);
-      expect(result[0]).to.eql(jonny);
+      expect(result.length).toEqual(1);
+      expect(result[0]).toEqual(jonny);
     });
     it('should not find match in column', function() {
       var result = list.search('jonny', [ 'born' ]);
-      expect(result.length).to.equal(0);
+      expect(result.length).toEqual(0);
     });
     it('should find match in column', function() {
       var result = list.search('jonny', [ 'name' ]);
-      expect(result.length).to.equal(1);
-      expect(result[0]).to.eql(jonny);
+      expect(result.length).toEqual(1);
+      expect(result[0]).toEqual(jonny);
     });
     it('should not find match in column', function() {
       var result = list.search('jonny', [ 'born' ]);
-      expect(result.length).to.equal(0);
+      expect(result.length).toEqual(0);
     });
     it('should work with columns that does not exist', function() {
       var result = list.search('jonny', [ 'pet' ]);
-      expect(result.length).to.equal(0);
+      expect(result.length).toEqual(0);
     });
     it('should remove columnm option', function() {
       var result = list.search('jonny', [ 'born' ]);
-      expect(result.length).to.equal(0);
-      var result = list.search('jonny');
-      expect(result.length).to.equal(1);
+      expect(result.length).toEqual(0);
+      result = list.search('jonny');
+      expect(result.length).toEqual(1);
     });
   });
 
@@ -126,11 +150,11 @@ describe('Search', function() {
     };
     it('should use custom function in third argument', function() {
       var result = list.search('jonny', [ 'name' ], customSearchFunction);
-      expect(result.length).to.equal(4);
+      expect(result.length).toEqual(4);
     });
     it('should use custom function in second argument', function() {
       var result = list.search('jonny', customSearchFunction);
-      expect(result.length).to.equal(4);
+      expect(result.length).toEqual(4);
     });
   });
   //
@@ -145,10 +169,10 @@ describe('Search', function() {
   //     ]);
   //     var result = list.search('Leia');
   //     console.log(result);
-  //     expect(result.length).to.equal(1);
+  //     expect(result.length).toEqual(1);
   //     var result = list.search('<');
   //     console.log(result);
-  //     expect(result.length).to.equal(1);
+  //     expect(result.length).toEqual(1);
   //   });
   // });
 });

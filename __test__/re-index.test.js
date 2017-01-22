@@ -1,12 +1,15 @@
+const $ = require('jquery'),
+  fixture = require('./fixtures');
+
 describe('ReIndex', function() {
 
   var list, jonny, martina, angelica, sebastian, imma, hasse;
 
-  before(function() {
+  beforeAll(function() {
     list = fixture.list(['name', 'born'], fixture.all);
   });
 
-  after(function() {
+  afterAll(function() {
     fixture.removeList();
   });
 
@@ -14,7 +17,7 @@ describe('ReIndex', function() {
     list.show(1, 200);
   });
   it('should return everyone born after 1988', function() {
-    expect(list.toJSON()).to.eql([
+    expect(list.toJSON()).toEqual([
       { name: "Jonny Strömberg", born: '1986' },
       { name: "Martina Elm", born: '1986' },
       { name: "Angelica Abraham", born: '1986' },
@@ -23,10 +26,10 @@ describe('ReIndex', function() {
       { name: "Hasse Strömberg", born: '1955' }
     ]);
     var newHtml = '<li><span class="name">Sven</span><span class="born">2013</span>';
-    newHtml = newHtml + '<li><span class="name">Anna</span><span class="born">3043</span>'
+    newHtml = newHtml + '<li><span class="name">Anna</span><span class="born">3043</span>';
     $(list.list).html(newHtml);
     list.reIndex();
-    expect(list.toJSON()).to.eql([
+    expect(list.toJSON()).toEqual([
       { name: "Sven", born: '2013' },
       { name: "Anna", born: '3043' }
     ]);

@@ -1,6 +1,6 @@
 {
   "name": "list.js",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "The perfect library for lists. Supports search, sort, filters and flexibility. Built to be invisible and work on existing HTML",
   "keywords": [
     "list",
@@ -22,7 +22,9 @@
   "bugs": {
     "url": "https://github.com/javve/list.js/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+    "string-natural-compare": "^2.0.2"
+  },
   "devDependencies": {
     "browserify": "^13.0.0",
     "expect.js": "^0.3.1",
@@ -35,11 +37,14 @@
     "grunt-mocha": "1.0.1",
     "grunt-shell": "^1.1.2",
     "jquery": "^1.12.0",
-    "string-natural-compare": "^2.0.2"
+    "poncho": "^0.1.1"
   },
-  "main": "index",
+  "main": "src/index",
   "engines": {
     "node": ">= 0.10.21"
+  },
+  "scripts": {
+    "test": "grunt test"
   },
   "npmName": "list.js",
   "npmFileMap": [

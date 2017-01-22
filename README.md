@@ -4,6 +4,8 @@ Perfect library for adding **search**, **sort**, **filters** and **flexibility**
 Really simple and easy to use!
 
 [![Donate](https://s3.amazonaws.com/listjs/donate-coffee.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M7ZGHV75VSD2E)
+[![CircleCI](https://circleci.com/gh/javve/list.js/tree/master.svg?style=shield)](https://circleci.com/gh/javve/list.js/tree/master)
+[![codecov](https://codecov.io/gh/javve/list.js/branch/master/graph/badge.svg)](https://codecov.io/gh/javve/list.js)
 
 ### Core idea
 - Simple and invisible
@@ -33,11 +35,11 @@ npm install list.js
 ```
 ##### Via CDNJS
 ```html
-<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.4.0/list.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.4.1/list.min.js"></script>
 ```
 ##### Via Direct Download
-- [Compressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.4.0/dist/list.min.js)
-- [Uncompressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.4.0/dist/list.js)
+- [Compressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.4.1/dist/list.min.js)
+- [Uncompressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.4.1/dist/list.js)
 
 ### Demo / Examples
 - [Existing list](http://listjs.com/examples/existing-list)
