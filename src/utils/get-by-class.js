@@ -32,7 +32,7 @@ var querySelector = function(container, className, single) {
 var polyfill = function(container, className, single) {
   var classElements = [],
     tag = '*';
-    
+
   var els = container.getElementsByTagName(tag);
   var elsLen = els.length;
   var pattern = new RegExp("(^|\\s)"+className+"(\\s|$)");
@@ -59,5 +59,5 @@ module.exports = (function() {
     } else {
       return polyfill(container, className, single);
     }
-  }
+  };
 })();
