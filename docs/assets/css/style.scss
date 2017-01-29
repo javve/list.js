@@ -2,11 +2,6 @@
 # Only the main Sass file needs front matter (the dashes are enough)
 ---
 
-@import "normalize";
-@import "mixins";
-@import "vendor/highlight/xcode";
-@import "carbonads";
-
 $blue: #28a8e0;
 $green: #6cd25e;
 $grey: #555;
@@ -15,6 +10,14 @@ $lightGrey: #edf4f4;
 $black: #2e2e2e;
 
 $menuWidth: 250px;
+
+
+@import "normalize";
+@import "mixins";
+@import "vendor/highlight/xcode";
+@import "carbonads";
+@import "menu";
+@import "docs";
 
 /* * * * * * * * * * * * * * * * * * * * *
 * General
@@ -171,63 +174,6 @@ td {
 }
 
 
-/* * * * * * * * * * * * * * * * * * * * *
-* Meny
-* * * * * * * * * * * * * * * * * * * * */
-.menu {
-  padding:0 20px;
-  z-index: 100;
-  //margin-top:-80px;
-  //margin-bottom:40px;
-  margin:0;
-  background-color: $black;
-
-  ul {
-    display:inline-block;
-    margin:0;
-    padding:0;
-  }
-  li {
-    display:inline-block;
-    margin:0 30px 0 0;
-  }
-  a {
-    line-height:60px;
-    display: inline-block;
-    text-decoration: none;
-    color:#fff;
-    &:hover,
-    &.active {
-      color:#eee;
-    }
-    &.active {
-      font-weight: 500;
-      color:$black;
-    }
-  }
-}
-
-.menu-sub {
-  margin:-40px 0 20px;
-  color: #ccc;
-  background-color:$lightGrey;
-  font-size:14px;
-  font-size:1.4rem;
-  @extend %clearfix;
-  ul {
-    padding: 15px 0 13px;
-    margin:0;
-  }
-  li {
-    display: inline-block;
-    margin-right:20px;
-    &.active {
-      a {
-        color:#222;
-      }
-    }
-  }
-}
 .example-header {
   margin-bottom:15px;
   h1 {
@@ -284,10 +230,9 @@ td {
 
 .intro {
   @extend %clearfix;
-  margin:0 auto 50px;
+  margin:0 auto;
   max-width: 900px;
   padding:80px;
-  border-bottom:solid 1px $lightGrey;
   box-sizing: border-box;
   .intro-logo {
     text-align: center;
@@ -334,7 +279,7 @@ td {
   clear:both;
   background-color:$lightGrey;
   padding:30px;
-  margin:0 -30px -30px;
+  margin:30px -30px;
   color:#333;
   h3 {
     margin:0 0 5px;
@@ -542,32 +487,6 @@ td {
 }
 
 
-/* * * * * * * * * * * * * * * * * * * * *
-* Performance
-* * * * * * * * * * * * * * * * * * * * */
-
-#size {
-  margin-left:100px;
-  width:590px;
-}
-#time-table {
-  margin-bottom:40px;
-}
-#performance-list .scroll-container {
-  height:300px;
-  overflow:scroll;
-  margin-bottom:10px;
-}
-#performance-share {
-  padding:13px 20px 5px;
-  clear:both;
-  border-radius: 10px;
-  margin:0 0 50px 80px;
-  width:520px;
-  border-bottom:solid 1px #666;
-  background-color: rgba(255,255,255,0.1);
-}
-
 
 /* * * * * * * * * * * * * * * * * * * * *
 * Paging
@@ -599,114 +518,6 @@ td {
   color:#eee;
 }
 
-/* * * * * * * * * * * * * * * * * * * * *
-* Documentation
-* * * * * * * * * * * * * * * * * * * * */
-.docs {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-}
-.docs-menu {
-  background-color:$blue;
-  max-width: $menuWidth;
-  position: relative;
-  padding: 0 20px;
-  box-sizing: border-box;
-  flex: 1;
-
-  a {
-    color:#fff;
-    text-decoration: none;
-  }
-  ul {
-    padding-left:20px;
-    color:rgba(255,255,255,0.3);
-  }
-  li {
-    margin-bottom:4px;
-    &.active {
-      font-weight: 700;
-      color:#fff;
-    }
-  }
-}
-
-.docs-content {
-  position: relative;
-  color:#555;
-  padding:30px;
-  box-sizing: border-box;
-
-  flex: 1;
-
-  h2:first-child {
-    margin-top: 0;
-  }
-  p, h1, h2, h3, h4, h5 {
-    max-width: 500px;
-  }
-  p {
-    line-height: 1.5;
-  }
-  ul {
-    padding-left:30px;
-    pre {
-      margin-left:-60px;
-      padding-left:60px;
-    }
-    ul pre {
-      margin-left:-90px;
-      padding-left:90px;
-    }
-  }
-  strong, b {
-    color:#222;
-    font-weight: bold;
-  }
-  pre {
-    background-color: $lightGrey;
-    padding:20px 30px;
-    margin:0 -30px 5px;
-    code {
-      background-color: transparent;
-    }
-  }
-  li {
-    margin-bottom:5px;
-  }
-}
-.docs-parameter-description {
-  color:#999;
-  font-size:80%;
-}
-
-.docs-top {
-  display:none;
-  border-bottom:solid 1px $lightGrey;
-  padding:20px;
-  .docs-top-title {
-    font-size: 50px;
-    font-size: 5rem;
-    color:$orange;
-    font-weight:700;
-    margin:0;
-  }
-}
-
-
-/* * * * * * * * * * * * * * * * * * * * *
-* Changelog
-* * * * * * * * * * * * * * * * * * * * */
-
-
-/* * * * * * * * * * * * * * * * * * * * *
-* Syntax coloring
-* * * * * * * * * * * * * * * * * * * * */
 code {
   background-color: $lightGrey;
   border: solid 1px darken($lightGrey, 5%);

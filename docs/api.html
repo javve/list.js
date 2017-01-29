@@ -1,0 +1,368 @@
+---
+layout: default
+title: List API
+redirect_from:
+  - /docs/list-api
+  - /docs/options
+---
+
+<h2>
+    <a name="parameters" class="anchor" href="#API"><span class="octicon octicon-link"></span></a>
+    List API
+</h2>
+
+<h4>Options</h4>
+<ul class="api-index">
+  <li><a href="#i">i</a></li>
+  <li><a href="#indexAsync">indexAsync</a></li>
+  <li><a href="#item">item</a></li>
+  <li><a href="#listClass">listClass</a></li>
+  <li><a href="#page">page</a></li>
+  <li><a href="#pagination">pagination</a></li>
+  <li><a href="#searchClass">searchClass</a></li>
+  <li><a href="#sortClass">sortClass</a></li>
+  <li><a href="#valueNames">valueNames</a></li>
+</ul>
+
+<h4>Properties</h4>
+
+<ul class="api-index">
+  <li><a href="#filtered">filtered</a></li>
+  <li><a href="#items">items</a></li>
+  <li><a href="#list">list</a></li>
+  <li><a href="#listContainer">listContainer</a></li>
+  <li><a href="#matchingItems">matchingItems</a></li>
+  <li><a href="#searched">searched</a></li>
+  <li><a href="#visibleItems">visibleItems</a></li>
+</ul>
+
+<h4>Methods</h4>
+<ul class="api-index">
+  <li><a href="#add">add</a></li>
+  <li><a href="#clear">clear</a></li>
+  <li><a href="#filter">filter</a></li>
+  <li><a href="#fuzzysearch">fuzzySearch</a></li>
+  <li><a href="#get">get</a></li>
+  <li><a href="#on">on</a></li>
+  <li><a href="#reindex">reindex</a></li>
+  <li><a href="#remove">remove</a></li>
+  <li><a href="#search">search</a></li>
+  <li><a href="#size">size</a></li>
+  <li><a href="#show">show</a></li>
+  <li><a href="#sort">sort</a></li>
+  <li><a href="#update">update</a></li>
+</ul>
+
+<h3>
+    <a name="parameters" class="anchor" href="#parameters"><span class="octicon octicon-link"></span></a>
+    Options
+</h3>
+<p>Using List.js is pretty much plug and play, but you can change some options if you feel like it.</p>
+<pre><code>new List(id/element, options, values);</code></pre>
+
+<ul>
+<li>
+    <strong><a name="id" href="#id" class="anchor"></a>id</strong> or <strong><a name="element" href="#element" class="anchor"></a>element</strong> <em class="docs-parameter-description">*required</em>
+    Id the element in which the list area should be initialized. OR the actual element itself.
+</li>
+<li>
+<p><strong><a name="options" href="#options" class="anchor"></a>options</strong>
+Some of the option parameters are required at some times</p>
+
+<ul>
+<li>
+<p><strong><a name="valueNames" href="#valueNames" class="anchor"></a>valueNames</strong> <em class="docs-parameter-description">Array, default: null. *required</em><br>
+If the list contains items on initialization, then this array
+has to contain the value names (class names) for the different values of
+each list item.</p>
+
+<pre><code>&lt;ul class="list"&gt;
+    &lt;li&gt;
+        &lt;span class="name"&gt;Jonny&lt;/span&gt;
+        &lt;span class="city"&gt;Sundsvall&lt;/span&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+
+var valueNames = ['name', 'city'];
+</code></pre>
+
+<pre><code>&lt;ul class="list">
+ &lt;li data-id="1">
+   &lt;a href="http://javve.com" class="link name">Jonny&lt;/a>
+   &lt;p class="born timestamp" data-timestamp="1234">1986&lt;/p>
+   &lt;img class="image" src="javve.jpg" />
+ &lt;/li>
+&lt;/ul>
+
+var valueNames =  [
+  'name',
+  'born',
+  { data: ['id'] },
+  { name: 'timestamp', attr: 'data-timestamp' },
+  { name: 'link', attr: 'href' },
+  { name: 'image', attr: 'src' }
+];</code></pre>
+
+</li>
+<li>
+<p><strong><a name="item" href="#item" class="anchor"></a>item</strong> <em class="docs-parameter-description">String, default: undefined</em><br>
+ID to item template element or a string of HTML.</p>
+
+<pre><code class="javascript">var options = {
+    item: "&lt;li&gt;&lt;span class='name'&gt;&lt;/span&gt;&lt;span class='city'&gt;&lt;/span&gt;&lt;/li&gt;"
+}
+// or
+var options = {
+    item: 'cool-item-id'
+};
+</code></pre>
+</li>
+<li><p><strong><a name="listClass" href="#listClass" class="anchor"></a>listClass</strong> <em class="docs-parameter-description">String, default: "list"</em><br>
+What is the class of the list-container?</p></li>
+<li><p><strong><a name="searchClass" href="#searchClass" class="anchor"></a>searchClass</strong> <em class="docs-parameter-description">String, default: "search"</em><br>
+What is the class of the search field?</p></li>
+<li><p><strong><a name="sortClass" href="#sortClass" class="anchor"></a>sortClass</strong> <em class="docs-parameter-description">String, default: "sort"</em><br>
+What is the class of the sort buttons?</p></li>
+<li><p><strong><a name="indexAsync" href="#indexAsync" class="anchor"></a>indexAsync</strong> <em class="docs-parameter-description">Boolean, default: false</em><br>
+If there are already items in the list to which the
+List.js-script is added, then should the indexing be done
+in a asynchronous way? Good for large lists (&gt; 500 items).</p></li>
+<li><p><strong><a name="page" href="#page" class="anchor"></a>page</strong> <em class="docs-parameter-description">Int, default: 200</em><br>
+Defines how many items that should be visible at the same time. This affects
+performance.</p></li>
+<li><p><strong><a name="i" href="#i" class="anchor"></a>i</strong>  <em class="docs-parameter-description">Int, default: 1</em><br>
+Which item should be shown as the first one.</p></li>
+<li><p><strong><a name="pagination" href="#pagination" class="anchor"></a>pagination</strong>  <em class="docs-parameter-description">Boolean, default: false</em><br>
+Read more <a href="/docs/pagination">here</a>.</p></li>
+</ul>
+</li>
+<li><p><strong><a name="values" href="#values" class="anchor"></a>values</strong> <em class="docs-parameter-description">Array of objects) (*optional</em>
+Values to add to the list on initialization.</p></li>
+</ul>
+
+
+<h3><a name="properties" class="anchor" href="#properties"></a>Properties</h3>
+
+<ul>
+  <li>
+    <p>
+      <strong>listContainer <a name="listContainer" class="anchor" href="#listContainer"></a></strong>
+      <em class="docs-parameter-description">Element</em><br>
+      The element node that contains the entire list area.
+    </p>
+  </li>
+  <li>
+    <p>
+      <strong>list <a name="list" class="anchor" href="#list"></a></strong>
+      <em class="docs-parameter-description">Element</em><br>
+      The element containing all items.
+    </p>
+  </li>
+  <li>
+    <p>
+      <strong>items <a name="items" class="anchor" href="#items"></a></strong>
+      <em class="docs-parameter-description">Array</em><br>
+      An Array of all Item-objects in the list.
+    </p>
+  </li>
+  <li>
+    <p>
+      <strong>visibleItems <a name="visibleItems" class="anchor" href="#visibleItems"></a></strong>
+      <em class="docs-parameter-description">Array</em><br>
+      The currently visible items in the list
+    </p>
+  </li>
+  <li>
+    <p>
+      <strong>matchingItems <a name="matchingItems" class="anchor" href="#matchingItems"></a></strong>
+      <em class="docs-parameter-description">Array</em><br>
+      The items matching the currently active filter and search.
+    </p>
+  </li>
+  <li>
+    <p>
+      <strong>searched <a name="searched" class="anchor" href="#searched"></a></strong>
+      <em class="docs-parameter-description">Boolean</em><br>
+      Returns true if the list is searched.
+    </p>
+  </li>
+  <li>
+    <p>
+      <strong>filtered <a name="filtered" class="anchor" href="#filtered"></a></strong>
+      <em class="docs-parameter-description">Boolean</em><br>
+      Returns true if there is an active filter.
+    </p>
+  </li>
+  <li>
+    <p>
+      <strong>list <a name="list" class="anchor" href="#list"></a></strong>
+      <em class="docs-parameter-description">Element</em><br>
+      The element containing all items.
+    </p>
+  </li>
+</ul>
+
+<h3><a name="methods" class="anchor" href="#methods"></a>Methods</h3>
+
+<ul>
+  <li>
+    <p><strong><a name="add" class="achor" href="#add"></a>add(values, callback)</strong><br>
+    Adds one or more items to the list.</p>
+
+<pre><code class="javascript">listObj.add({ name: "Jonny", city: "Stockholm" });
+
+listObj.add([
+{ name: "Gustaf", city: "Sundsvall" }
+, { name: "Jonas", city: "Berlin" }
+]);</code></pre>
+
+    <p>If <code>callback</code> is set then items are added to the list in a asynchronous way, and the
+    callback is called when all items are added. This is especially useful
+    when adding very many items (200+ or something), or if you just like the
+    asynchronous coding style.</p>
+
+<pre><code class="javascript">listObj.add(arrayWithManyManyItems, function(items) {
+console.log('All ' + items.length + ' were added!');
+});</code></pre>
+  </li>
+  <li>
+    <p><strong><a name="remove" class="achor" href="#remove"></a>remove(valueName, value)</strong><br>
+    Removes items from the list where the value named <code>valueName</code> has value <code>value</code>.
+    Returns the number of items that where removed.</p>
+
+<pre><code class="javascript">itemsInList = [
+{ id: 1, name: "Jonny" }
+, { id: 2, name "Gustaf" }
+];
+listObj.remove("id", 1); // return 1</code></pre>
+  </li>
+  <li>
+    <p><strong><a name="get" class="achor" href="#get"></a>get(valueName, value)</strong><br>
+    Returns values from the list where the value named <code>valueName</code> has value <code>value</code>.</p>
+
+<pre><code class="javascript">itemsInList = [
+{ id: 1, name: "Jonny" }
+, { id: 2, name "Gustaf" }
+];
+listObj.get("id", 2); // return { id: 2, name "Gustaf" }</code></pre>
+  </li>
+  <li>
+    <p><strong><a name="sort" class="achor" href="#sort"></a>sort(valueName, {<br/>
+      &nbsp;&nbsp;order: 'desc',<br/>
+      &nbsp;&nbsp;alphabet: undefined,<br/>
+      &nbsp;&nbsp;insensitive: true,<br/>
+      &nbsp;&nbsp;sortFunction: undefined<br/>
+    })</strong><br>
+    Sorts the list based on values the in the column named <code>valueName</code>.
+    The <code>alphabet</code> option is used when you have non-english alphabet
+    where which JavaScript don't know how to sort some characters by default.</p>
+    <p>The default sort function is found here
+    <a href="https://github.com/nwoltman/string-natural-compare">https://github.com/nwoltman/string-natural-compare</a>,
+    if you want to use your own, <a href="https://github.com/javve/list.js/blob/master/src/sort.js">read the code</a> and
+    <a href="https://github.com/javve/list.js/blob/master/test/test.sort.js">check out the tests</a>.</p>
+
+<pre><code class="javascript">listObj.sort('name', { order: "asc" }); // Sorts the list in abc-order based on names
+listObj.sort('name', { order: "desc" }); // Sorts the list in zxy-order based on names
+
+// Sort swedish characters correcly, case-insensitive.
+listObj.sort('name', { alphabet: "ABCDEFGHIJKLMNOPQRSTUVXYZÅÄÖabcdefghijklmnopqrstuvxyzåäö" });
+
+// Sort swedish characters correcly, case-sensitive.
+listObj.sort('name', { alphabet: "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzÅåÄäÖö" });
+
+// Alphabet could also be on the actual listObj via
+listObj.alphabet = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzÅåÄäÖö";
+</code></pre>
+
+  </li>
+  <li>
+    <p><strong><a name="search" class="achor" href="#search"></a>search(searchString, columns)</strong><br>
+      Searches the list</p>
+
+<pre><code class="javascript">itemsInList = [
+{ id: 1, name: "Jonny" }
+, { id: 2, name "Gustaf" }
+, { id: 3, name "Jonas" }
+];
+
+listObj.search('Jonny'); // Only item with name Jonny is shown (also returns this item)
+
+listObj.search(); // Show all items in list
+
+listObj.search('Jonny', ['name']); // Only search in the 'name' column</code></pre>
+
+  </li>
+  <li>
+    <p><strong><a name="clear" class="achor" href="#clear"></a>clear()</strong><br>
+    Removes all items from the list</p>
+  </li>
+  <li>
+    <p><strong><a name="filter" class="achor" href="#filter"></a>filter(filterFunction)</strong></p>
+
+<pre><code class="javascript">itemsInList = [
+{ id: 1, name: "Jonny" }
+, { id: 2, name "Gustaf" }
+, { id: 3, name "Jonas" }
+];
+
+listObj.filter(function(item) {
+if (item.values().id > 1) {
+   return true;
+} else {
+   return false;
+}
+}); // Only items with id > 1 are shown in list
+
+listObj.filter(); // Remove all filters</code></pre>
+
+  </li>
+  <li>
+    <p><strong><a name="size" class="achor" href="#size"></a>size()</strong><br>
+    Returns the size of the list.</p>
+  </li>
+  <li>
+    <p><strong><a name="show" class="achor" href="#show"></a>show(i, page)</strong><br>
+    Shows <code>page</code> number of items from <code>i</code>. Use for paging etc.</p>
+
+<pre><code class="javascript">itemsInList = [
+{ id: 1, name: "Jonny" }
+, { id: 2, name "Gustaf" }
+, { id: 3, name "Jonas" }
+, { id: 4, name "Egon" }
+, { id: 5, name "Frank" }
+, { id: 6, name "Ester" }
+];
+
+listObj.show(4, 3); // Display item 4,5,6 </code></pre>
+
+  </li>
+  <li>
+    <p><strong><a name="update" class="achor" href="#update"></a>update()</strong><br>
+    Updates the current state of the list. Meaning that if you for instance
+    hides some items with the <code>itemObj.hide()</code> method then you have to call <code>listObj.update()</code>
+    if you want the paging to update.</p>
+  </li>
+  <li>
+    <p><strong><a name="reindex" class="achor" href="#reindex"></a>reIndex()</strong><br>
+    Re-index list from HTML. Good to use if the HTML has been changed by something
+    else than List.js.</p>
+  </li>
+  <li>
+    <p><strong><a name="fuzzySearch" class="achor" href="#fuzzySearch"></a>fuzzySearch()</strong><br>
+    Read more <a href="/docs/fuzzysearch">here</a></p>
+  </li>
+  <li>
+    <p><strong><aname="on" class="achor" href="#on"></a>on(event, callback)</strong><br>
+    Execute <code>callback</code> when list have been updated (triggered by <code>update()</code>, which is used by a lot of methods). Use <code>updated</code> as the event.</p>
+    <h4>Avaliable events</h4>
+    <ul>
+      <li>updated</li>
+      <li>searchStart</li>
+      <li>searchComplete</li>
+      <li>filterStart</li>
+      <li>filterComplete</li>
+      <li>sortStart</li>
+      <li>sortComplete</li>
+    </ul>
+  </li>
+</ul>
