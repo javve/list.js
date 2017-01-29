@@ -77,10 +77,6 @@ ClassList.prototype.add = function(name){
  */
 
 ClassList.prototype.remove = function(name){
-  if ('[object RegExp]' == toString.call(name)) {
-    return this.removeMatching(name);
-  }
-
   // classList
   if (this.list) {
     this.list.remove(name);
@@ -95,23 +91,6 @@ ClassList.prototype.remove = function(name){
   return this;
 };
 
-/**
- * Remove all classes matching `re`.
- *
- * @param {RegExp} re
- * @return {ClassList}
- * @api private
- */
-
-ClassList.prototype.removeMatching = function(re){
-  var arr = this.array();
-  for (var i = 0; i < arr.length; i++) {
-    if (re.test(arr[i])) {
-      this.remove(arr[i]);
-    }
-  }
-  return this;
-};
 
 /**
  * Toggle class `name`, can force state via `force`.
