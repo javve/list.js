@@ -1,3 +1,5 @@
+const $ = require('jquery');
+
 var fixturePagination = {
     list: function(valueNames) {
         var listHtml = $('<div id="list-pagination"><ul class="list"></ul><ul class="pagination"></ul></div>'),
@@ -109,3 +111,5 @@ fixturePagination.all = [
     fixturePagination.asa,
     fixturePagination.gun
 ];
+
+module.exports = fixturePagination;

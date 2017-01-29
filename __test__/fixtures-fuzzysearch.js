@@ -1,3 +1,5 @@
+const $ = require('jquery');
+
 var fixtureFuzzysearch = {
     list: function(valueNames) {
         var listHtml = $('<div id="list-fuzzy-search"><input class="fuzzy-search" /><ul class="list"></ul></div>'),
@@ -39,3 +41,5 @@ fixtureFuzzysearch.all = [
     fixtureFuzzysearch.i9,
     fixtureFuzzysearch.i10
 ];
+
+module.exports = fixtureFuzzysearch;
