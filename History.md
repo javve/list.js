@@ -18,6 +18,12 @@
 
 # Changelog
 
+### 2017-01-29 v1.5.0
+- **[Feature]** Bundle fuzzySearch and pagination plugins into List.js  
+  [See commit →](https://github.com/javve/list.js/commit/2f5322fd139ee6f30cef3bb5e15d382ff29f9489)
+- **[Misc]** Switch from Grunt to Webpack and from Mocha to Jest  
+  [See commit →](https://github.com/javve/list.js/commit/8376ef01b1da4b6e60a7457d628d97a803a82e14)
+
 ### 2017-01-19 v1.4.1
 - **[Bugfix]** Move string-natural-compare to dependencies instead of devDependencies
   [See commit →](https://github.com/javve/list.js/commit/c17162b26fd5093d3ddde01e11a3f748310d993c)
