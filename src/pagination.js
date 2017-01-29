@@ -1,5 +1,6 @@
 var classes = require('./utils/classes'),
-  events = require('./utils/events');
+  events = require('./utils/events'),
+  List = require('./index');
 
 module.exports = function(list) {
 
