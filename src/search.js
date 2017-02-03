@@ -44,6 +44,9 @@ module.exports = function(list) {
     }
   };
   var search = {
+    accentFold: function(inStr) {
+      return inStr.replace(/([àáâãäå])|([ç])|([èéêë])|([ìíîï])|([ñ])|([òóôõöø])|([ß])|([ùúûü])|([ÿ])|([æ])/g, function(str,a,c,e,i,n,o,s,u,y,ae) { if(a) return 'a'; else if(c) return 'c'; else if(e) return 'e'; else if(i) return 'i'; else if(n) return 'n'; else if(o) return 'o'; else if(s) return 's'; else if(u) return 'u'; else if(y) return 'y'; else if(ae) return 'ae'; });
+    },
     list: function() {
       for (var k = 0, kl = list.items.length; k < kl; k++) {
         search.item(list.items[k]);
@@ -62,6 +65,9 @@ module.exports = function(list) {
       if (values.hasOwnProperty(column)) {
         text = list.utils.toString(values[column]).toLowerCase();
         if ((searchString !== "") && (text.search(searchString) > -1)) {
+          return true;
+        }
+        if ((searchString !== "") && list.shouldAccentFold && (search.accentFold(text).search(search.accentFold(searchString)) > -1)) {
           return true;
         }
       }
