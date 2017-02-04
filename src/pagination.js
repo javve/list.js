@@ -3,8 +3,17 @@ var classes = require('./utils/classes'),
   List = require('./index');
 
 module.exports = function(list) {
+  var isHidden = false;
 
   var refresh = function(pagingList, options) {
+    if (list.page < 1) {
+      list.listContainer.style.display = 'none';
+      isHidden = true
+      return;
+    } else if (isHidden){
+      list.listContainer.style.display = 'block';
+    }
+
     var item,
       l = list.matchingItems.length,
       index = list.i,
@@ -16,7 +25,6 @@ module.exports = function(list) {
       right = options.right || options.outerWindow || 0;
 
     right = pages - right;
-
     pagingList.clear();
     for (var i = 1; i <= pages; i++) {
       var className = (currentPage === i) ? "active" : "";

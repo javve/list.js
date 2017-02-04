@@ -92,6 +92,14 @@ describe('Pagination', function() {
       expect($(pagination.find('li').get(2)).hasClass('active')).toEqual(false);
       expect($(pagination.find('li').get(3)).hasClass('active')).toEqual(true);
     });
+
+    it('should handle page = 0', function() {
+      expect(pagination.is(':visible')).toBe(true);
+      list.show(0, 0);
+      expect(pagination.is(':visible')).toBe(false);
+      list.show(1, 1);
+      expect(pagination.is(':visible')).toBe(true);
+    });
   });
 
 
