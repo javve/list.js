@@ -8,7 +8,7 @@ module.exports = function(list) {
   var refresh = function(pagingList, options) {
     if (list.page < 1) {
       list.listContainer.style.display = 'none';
-      isHidden = true
+      isHidden = true;
       return;
     } else if (isHidden){
       list.listContainer.style.display = 'block';
@@ -39,7 +39,8 @@ module.exports = function(list) {
         if (className) {
           classes(item.elm).add(className);
         }
-        addEvent(item.elm, i, page);
+        item.elm.firstChild.setAttribute('data-i', i);
+        item.elm.firstChild.setAttribute('data-page', page);
       } else if (is.dotted(pagingList, i, left, right, currentPage, innerWindow, pagingList.size())) {
         item = pagingList.add({
           page: "...",
@@ -78,12 +79,6 @@ module.exports = function(list) {
     }
   };
 
-  var addEvent = function(elm, i, page) {
-     events.bind(elm, 'click', function() {
-       list.show((i-1)*page + 1, page);
-     });
-  };
-
   return function(options) {
     var pagingList = new List(list.listContainer.id, {
       listClass: options.paginationClass || 'pagination',
@@ -91,6 +86,13 @@ module.exports = function(list) {
       valueNames: ['page', 'dotted'],
       searchClass: 'pagination-search-that-is-not-supposed-to-exist',
       sortClass: 'pagination-sort-that-is-not-supposed-to-exist'
+    });
+
+    events.bind(pagingList.listContainer, 'click', function(e) {
+      var target = e.target || e.srcElement
+        , page = list.utils.getAttribute(target, 'data-page')
+        , i = list.utils.getAttribute(target, 'data-i');
+      list.show((i-1)*page + 1, page);
     });
 
     list.on('updated', function() {
