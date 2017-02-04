@@ -4,6 +4,7 @@ Perfect library for adding **search**, **sort**, **filters** and **flexibility**
 Really simple and easy to use!
 
 [![Donate](https://s3.amazonaws.com/listjs/donate-coffee.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M7ZGHV75VSD2E)
+[![npm version](https://badge.fury.io/js/list.js.svg)](https://badge.fury.io/js/list.js)
 [![CircleCI](https://circleci.com/gh/javve/list.js/tree/master.svg?style=shield)](https://circleci.com/gh/javve/list.js/tree/master)
 [![codecov](https://codecov.io/gh/javve/list.js/branch/master/graph/badge.svg)](https://codecov.io/gh/javve/list.js)
 
