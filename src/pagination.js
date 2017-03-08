@@ -92,7 +92,9 @@ module.exports = function(list) {
       var target = e.target || e.srcElement
         , page = list.utils.getAttribute(target, 'data-page')
         , i = list.utils.getAttribute(target, 'data-i');
-      list.show((i-1)*page + 1, page);
+      if(i){      
+        list.show((i-1)*page + 1, page);
+      }
     });
 
     list.on('updated', function() {
