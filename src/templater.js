@@ -133,7 +133,7 @@ var Templater = function(list) {
       return false;
     }
     if (typeof list.item === 'function') {
-      var src = templater.getItemSource(list.item(item.values()));
+      var src = templater.getItemSource(list.item(item.values()).trim());
       item.elm = templater.clearSourceItem(src, list.valueNames);
     } else {
       if (itemSource === undefined) {
