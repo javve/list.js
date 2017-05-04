@@ -30,6 +30,7 @@ module.exports = function(id, options, values) {
       self.filtered       = false;
       self.searchColumns  = undefined;
       self.handlers       = { 'updated': [] };
+      self.sortHandlers   = {};
       self.valueNames     = [];
       self.utils          = {
         getByClass: getByClass,

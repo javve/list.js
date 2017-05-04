@@ -69,7 +69,7 @@ module.exports = function(list) {
 
     // caseInsensitive
     // alphabet
-    var customSortFunction = (options.sortFunction || list.sortFunction || null),
+    var customSortFunction = (options.sortFunction || list.sortHandlers[options.valueName] ||list.sortFunction || null),
         multi = ((options.order === 'desc') ? -1 : 1),
         sortFunction;
 
