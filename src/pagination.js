@@ -33,7 +33,7 @@ module.exports = function(list) {
 
       if (is.number(i, left, right, currentPage, innerWindow)) {
         item = pagingList.add({
-          page: i,
+          'page-link': i,
           dotted: false
         })[0];
         if (className) {
@@ -43,7 +43,7 @@ module.exports = function(list) {
         item.elm.firstChild.setAttribute('data-page', page);
       } else if (is.dotted(pagingList, i, left, right, currentPage, innerWindow, pagingList.size())) {
         item = pagingList.add({
-          page: "...",
+          'page-link': "...",
           dotted: true
         })[0];
         classes(item.elm).add("disabled");
@@ -82,8 +82,8 @@ module.exports = function(list) {
   return function(options) {
     var pagingList = new List(list.listContainer.id, {
       listClass: options.paginationClass || 'pagination',
-      item: "<li><a class='page' href='#'></a></li>",
-      valueNames: ['page', 'dotted'],
+      item: "<li class='page-item'><a class='page-link' href='#'></a></li>",
+      valueNames: ['page-link', 'dotted'],
       searchClass: 'pagination-search-that-is-not-supposed-to-exist',
       sortClass: 'pagination-sort-that-is-not-supposed-to-exist'
     });
