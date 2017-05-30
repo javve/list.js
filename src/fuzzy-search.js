@@ -56,7 +56,7 @@ module.exports = function(list, options) {
   };
 
 
-  events.bind(getByClass(list.listContainer, options.searchClass), 'keyup', function(e) {
+  list.utils.events.bind(list.utils.getByClass(list.listContainer, list.searchClass), 'keyup', function(e) {
     var target = e.target || e.srcElement; // IE have srcElement
     list.search(target.value, fuzzySearch.search);
   });
