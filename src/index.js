@@ -119,7 +119,7 @@ module.exports = function(id, options, values) {
       return;
     }
     if (callback) {
-      addAsync(values, callback);
+      addAsync(values.slice(0), callback);
       return;
     }
     var added = [],
