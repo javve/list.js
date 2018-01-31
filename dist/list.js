@@ -3,41 +3,41 @@ var List =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -48,7 +48,7 @@ var List =
 /******/ 			});
 /******/ 		}
 /******/ 	};
-
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -57,15 +57,15 @@ var List =
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-
+/******/
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -509,136 +509,6 @@ module.exports = function extend (object) {
 
 /***/ }),
 /* 8 */
-/***/ (function(module, exports) {
-
-module.exports = function(list) {
-  var addAsync = function(values, callback, items) {
-    var valuesToAdd = values.splice(0, 50);
-    items = items || [];
-    items = items.concat(list.add(valuesToAdd));
-    if (values.length > 0) {
-      setTimeout(function() {
-        addAsync(values, callback, items);
-      }, 1);
-    } else {
-      list.update();
-      callback(items);
-    }
-  };
-  return addAsync;
-};
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = function(list) {
-
-  // Add handlers
-  list.handlers.filterStart = list.handlers.filterStart || [];
-  list.handlers.filterComplete = list.handlers.filterComplete || [];
-
-  return function(filterFunction) {
-    list.trigger('filterStart');
-    list.i = 1; // Reset paging
-    list.reset.filter();
-    if (filterFunction === undefined) {
-      list.filtered = false;
-    } else {
-      list.filtered = true;
-      var is = list.items;
-      for (var i = 0, il = is.length; i < il; i++) {
-        var item = is[i];
-        if (filterFunction(item)) {
-          item.filtered = true;
-        } else {
-          item.filtered = false;
-        }
-      }
-    }
-    list.update();
-    list.trigger('filterComplete');
-    return list.visibleItems;
-  };
-};
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var classes = __webpack_require__(0),
-  events = __webpack_require__(1),
-  extend = __webpack_require__(7),
-  toString = __webpack_require__(6),
-  getByClass = __webpack_require__(3),
-  fuzzy = __webpack_require__(19);
-
-module.exports = function(list, options) {
-  options = options || {};
-
-  options = extend({
-    location: 0,
-    distance: 100,
-    threshold: 0.4,
-    multiSearch: true,
-    searchClass: 'fuzzy-search'
-  }, options);
-
-
-
-  var fuzzySearch = {
-    search: function(searchString, columns) {
-      // Substract arguments from the searchString or put searchString as only argument
-      var searchArguments = options.multiSearch ? searchString.replace(/ +$/, '').split(/ +/) : [searchString];
-
-      for (var k = 0, kl = list.items.length; k < kl; k++) {
-        fuzzySearch.item(list.items[k], columns, searchArguments);
-      }
-    },
-    item: function(item, columns, searchArguments) {
-      var found = true;
-      for(var i = 0; i < searchArguments.length; i++) {
-        var foundArgument = false;
-        for (var j = 0, jl = columns.length; j < jl; j++) {
-          if (fuzzySearch.values(item.values(), columns[j], searchArguments[i])) {
-            foundArgument = true;
-          }
-        }
-        if(!foundArgument) {
-          found = false;
-        }
-      }
-      item.found = found;
-    },
-    values: function(values, value, searchArgument) {
-      if (values.hasOwnProperty(value)) {
-        var text = toString(values[value]).toLowerCase();
-
-        if (fuzzy(text, searchArgument, options)) {
-          return true;
-        }
-      }
-      return false;
-    }
-  };
-
-
-  events.bind(getByClass(list.listContainer, options.searchClass), 'keyup', function(e) {
-    var target = e.target || e.srcElement; // IE have srcElement
-    list.search(target.value, fuzzySearch.search);
-  });
-
-  return function(str, columns) {
-    list.search(str, columns, fuzzySearch.search);
-  };
-};
-
-
-/***/ }),
-/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var naturalSort = __webpack_require__(18),
@@ -656,7 +526,7 @@ module.exports = function(id, options, values) {
   var self = this,
     init,
     Item = __webpack_require__(2)(self),
-    addAsync = __webpack_require__(8)(self),
+    addAsync = __webpack_require__(9)(self),
     initPagination = __webpack_require__(12)(self);
 
   init = {
@@ -695,9 +565,9 @@ module.exports = function(id, options, values) {
       self.parse        = __webpack_require__(13)(self);
       self.templater    = __webpack_require__(16)(self);
       self.search       = __webpack_require__(14)(self);
-      self.filter       = __webpack_require__(9)(self);
+      self.filter       = __webpack_require__(10)(self);
       self.sort         = __webpack_require__(15)(self);
-      self.fuzzySearch  = __webpack_require__(10)(self, options.fuzzySearch);
+      self.fuzzySearch  = __webpack_require__(11)(self, options.fuzzySearch);
 
       this.handlers();
       this.items();
@@ -906,16 +776,155 @@ module.exports = function(id, options, values) {
 
 
 /***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = function(list) {
+  var addAsync = function(values, callback, items) {
+    var valuesToAdd = values.splice(0, 50);
+    items = items || [];
+    items = items.concat(list.add(valuesToAdd));
+    if (values.length > 0) {
+      setTimeout(function() {
+        addAsync(values, callback, items);
+      }, 1);
+    } else {
+      list.update();
+      callback(items);
+    }
+  };
+  return addAsync;
+};
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = function(list) {
+
+  // Add handlers
+  list.handlers.filterStart = list.handlers.filterStart || [];
+  list.handlers.filterComplete = list.handlers.filterComplete || [];
+
+  return function(filterFunction) {
+    list.trigger('filterStart');
+    list.i = 1; // Reset paging
+    list.reset.filter();
+    if (filterFunction === undefined) {
+      list.filtered = false;
+    } else {
+      list.filtered = true;
+      var is = list.items;
+      for (var i = 0, il = is.length; i < il; i++) {
+        var item = is[i];
+        if (filterFunction(item)) {
+          item.filtered = true;
+        } else {
+          item.filtered = false;
+        }
+      }
+    }
+    list.update();
+    list.trigger('filterComplete');
+    return list.visibleItems;
+  };
+};
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var classes = __webpack_require__(0),
+  events = __webpack_require__(1),
+  extend = __webpack_require__(7),
+  toString = __webpack_require__(6),
+  getByClass = __webpack_require__(3),
+  fuzzy = __webpack_require__(19);
+
+module.exports = function(list, options) {
+  options = options || {};
+
+  options = extend({
+    location: 0,
+    distance: 100,
+    threshold: 0.4,
+    multiSearch: true,
+    searchClass: 'fuzzy-search'
+  }, options);
+
+
+
+  var fuzzySearch = {
+    search: function(searchString, columns) {
+      // Substract arguments from the searchString or put searchString as only argument
+      var searchArguments = options.multiSearch ? searchString.replace(/ +$/, '').split(/ +/) : [searchString];
+
+      for (var k = 0, kl = list.items.length; k < kl; k++) {
+        fuzzySearch.item(list.items[k], columns, searchArguments);
+      }
+    },
+    item: function(item, columns, searchArguments) {
+      var found = true;
+      for(var i = 0; i < searchArguments.length; i++) {
+        var foundArgument = false;
+        for (var j = 0, jl = columns.length; j < jl; j++) {
+          if (fuzzySearch.values(item.values(), columns[j], searchArguments[i])) {
+            foundArgument = true;
+          }
+        }
+        if(!foundArgument) {
+          found = false;
+        }
+      }
+      item.found = found;
+    },
+    values: function(values, value, searchArgument) {
+      if (values.hasOwnProperty(value)) {
+        var text = toString(values[value]).toLowerCase();
+
+        if (fuzzy(text, searchArgument, options)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  };
+
+
+  events.bind(getByClass(list.listContainer, options.searchClass), 'keyup', function(e) {
+    var target = e.target || e.srcElement; // IE have srcElement
+    list.search(target.value, fuzzySearch.search);
+  });
+
+  return function(str, columns) {
+    list.search(str, columns, fuzzySearch.search);
+  };
+};
+
+
+/***/ }),
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var classes = __webpack_require__(0),
   events = __webpack_require__(1),
-  List = __webpack_require__(11);
+  List = __webpack_require__(8);
 
 module.exports = function(list) {
+  var isHidden = false;
 
   var refresh = function(pagingList, options) {
+    if (list.page < 1) {
+      list.listContainer.style.display = 'none';
+      isHidden = true;
+      return;
+    } else if (isHidden){
+      list.listContainer.style.display = 'block';
+    }
+
     var item,
       l = list.matchingItems.length,
       index = list.i,
@@ -924,11 +933,22 @@ module.exports = function(list) {
       currentPage = Math.ceil((index / page)),
       innerWindow = options.innerWindow || 2,
       left = options.left || options.outerWindow || 0,
-      right = options.right || options.outerWindow || 0;
+      right = options.right || options.outerWindow || 0,
+      prev = options.prev || false,
+      next = options.next || false;
 
     right = pages - right;
-
     pagingList.clear();
+
+    if (prev && pages > 1 && currentPage > 1) {
+      item = pagingList.add({
+          page: "Prev",
+          dotted: false
+      })[0];
+      classes(item.elm.firstChild).add('prevBtn');
+      item.elm.firstChild.setAttribute('data-i', currentPage - 1);
+      item.elm.firstChild.setAttribute('data-page', page);
+    }
     for (var i = 1; i <= pages; i++) {
       var className = (currentPage === i) ? "active" : "";
 
@@ -942,7 +962,8 @@ module.exports = function(list) {
         if (className) {
           classes(item.elm).add(className);
         }
-        addEvent(item.elm, i, page);
+        item.elm.firstChild.setAttribute('data-i', i);
+        item.elm.firstChild.setAttribute('data-page', page);
       } else if (is.dotted(pagingList, i, left, right, currentPage, innerWindow, pagingList.size())) {
         item = pagingList.add({
           page: "...",
@@ -950,6 +971,15 @@ module.exports = function(list) {
         })[0];
         classes(item.elm).add("disabled");
       }
+    }
+    if (next && pages > 1 && currentPage < pages) {
+        item = pagingList.add({
+            page: "Next",
+            dotted: false
+        })[0];
+        classes(item.elm.firstChild).add('nextBtn');
+        item.elm.firstChild.setAttribute('data-i', currentPage + 1);
+        item.elm.firstChild.setAttribute('data-page', page);
     }
   };
 
@@ -981,19 +1011,23 @@ module.exports = function(list) {
     }
   };
 
-  var addEvent = function(elm, i, page) {
-     events.bind(elm, 'click', function() {
-       list.show((i-1)*page + 1, page);
-     });
-  };
-
   return function(options) {
     var pagingList = new List(list.listContainer.id, {
       listClass: options.paginationClass || 'pagination',
-      item: "<li><a class='page' href='javascript:function Z(){Z=\"\"}Z()'></a></li>",
+      item: "<li><a class='page' href='#'></a></li>",
       valueNames: ['page', 'dotted'],
       searchClass: 'pagination-search-that-is-not-supposed-to-exist',
       sortClass: 'pagination-sort-that-is-not-supposed-to-exist'
+    });
+
+    events.bind(pagingList.listContainer, 'click', function(e) {
+      e.preventDefault();
+      var target = e.target || e.srcElement
+        , page = list.utils.getAttribute(target, 'data-page')
+        , i = list.utils.getAttribute(target, 'data-i');
+      if(i){      
+        list.show((i-1)*page + 1, page);
+      }
     });
 
     list.on('updated', function() {

@@ -22,10 +22,22 @@ module.exports = function(list) {
       currentPage = Math.ceil((index / page)),
       innerWindow = options.innerWindow || 2,
       left = options.left || options.outerWindow || 0,
-      right = options.right || options.outerWindow || 0;
+      right = options.right || options.outerWindow || 0,
+      prev = options.prev || false,
+      next = options.next || false;
 
     right = pages - right;
     pagingList.clear();
+
+    if (prev && pages > 1 && currentPage > 1) {
+      item = pagingList.add({
+          page: "Prev",
+          dotted: false
+      })[0];
+      classes(item.elm.firstChild).add('prevBtn');
+      item.elm.firstChild.setAttribute('data-i', currentPage - 1);
+      item.elm.firstChild.setAttribute('data-page', page);
+    }
     for (var i = 1; i <= pages; i++) {
       var className = (currentPage === i) ? "active" : "";
 
@@ -48,6 +60,15 @@ module.exports = function(list) {
         })[0];
         classes(item.elm).add("disabled");
       }
+    }
+    if (next && pages > 1 && currentPage < pages) {
+        item = pagingList.add({
+            page: "Next",
+            dotted: false
+        })[0];
+        classes(item.elm.firstChild).add('nextBtn');
+        item.elm.firstChild.setAttribute('data-i', currentPage + 1);
+        item.elm.firstChild.setAttribute('data-page', page);
     }
   };
 
@@ -89,6 +110,7 @@ module.exports = function(list) {
     });
 
     events.bind(pagingList.listContainer, 'click', function(e) {
+      e.preventDefault();
       var target = e.target || e.srcElement
         , page = list.utils.getAttribute(target, 'data-page')
         , i = list.utils.getAttribute(target, 'data-i');
