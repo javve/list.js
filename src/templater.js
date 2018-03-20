@@ -91,6 +91,8 @@ var Templater = function(list) {
               return { data: name };
             }
           }
+        } else if (list.valueNames[i].root_id){
+          return { root_id: name };
         } else if (list.valueNames[i].attr && list.valueNames[i].name && list.valueNames[i].name == name) {
           return list.valueNames[i];
         } else if (list.valueNames[i] === name) {
@@ -105,6 +107,8 @@ var Templater = function(list) {
         return;
       if (valueName.data) {
         item.elm.setAttribute('data-'+valueName.data, value);
+      } else if(valueName.root_id){
+        item.elm.setAttribute('id', value);
       } else if (valueName.attr && valueName.name) {
         elm = list.utils.getByClass(item.elm, valueName.name, true);
         if (elm) {
