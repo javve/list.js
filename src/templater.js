@@ -55,7 +55,10 @@ var Templater = function(list) {
       var source = document.getElementById(list.item);
       if (source) {
         return source;
-      }
+      } else {
+        source =  document.querySelector(list.item);
+        if (source)
+          return source;
     }
     return undefined;
   };
