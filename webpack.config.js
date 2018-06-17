@@ -22,6 +22,7 @@ module.exports = {
   devServer: {
     inline: true
   },
+  devtool: 'cheap-module-source-map',
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
       include: /\.min\.js$/,
