@@ -15,7 +15,7 @@ var bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
 
 exports.bind = function(el, type, fn, capture){
   el = toArray(el);
-  for ( var i = 0; i < el.length; i++ ) {
+  for ( var i = 0, il = el.length; i < il; i++ ) {
     el[i][bind](prefix + type, fn, capture || false);
   }
 };
@@ -32,7 +32,7 @@ exports.bind = function(el, type, fn, capture){
 
 exports.unbind = function(el, type, fn, capture){
   el = toArray(el);
-  for ( var i = 0; i < el.length; i++ ) {
+  for ( var i = 0, il = el.length; i < il; i++ ) {
     el[i][unbind](prefix + type, fn, capture || false);
   }
 };

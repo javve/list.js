@@ -15,14 +15,15 @@ module.exports = function(text, pattern, options) {
     var loc = Match_Location,
         s = (function() {
             var q = {},
-                i;
+                i,
+                il;
 
-            for (i = 0; i < pattern.length; i++) {
+            for (i = 0, il = pattern.length; i < il; i++) {
                 q[pattern.charAt(i)] = 0;
             }
 
-            for (i = 0; i < pattern.length; i++) {
-                q[pattern.charAt(i)] |= 1 << (pattern.length - i - 1);
+            for (i = 0, il = pattern.length; i < il; i++) {
+                q[pattern.charAt(i)] |= 1 << (il - i - 1);
             }
 
             return q;
@@ -62,7 +63,7 @@ module.exports = function(text, pattern, options) {
     var bin_min, bin_mid;
     var bin_max = pattern.length + text.length;
     var last_rd;
-    for (var d = 0; d < pattern.length; d++) {
+    for (var d = 0, dl = pattern.length; d < dl; d++) {
         // Scan for the best match; each iteration allows for one more error.
         // Run a binary search to determine how far from 'loc' we can stray at this
         // error level.
@@ -79,7 +80,7 @@ module.exports = function(text, pattern, options) {
         // Use the result from this iteration as the maximum for the next.
         bin_max = bin_mid;
         var start = Math.max(1, loc - bin_mid + 1);
-        var finish = Math.min(loc + bin_mid, text.length) + pattern.length;
+        var finish = Math.min(loc + bin_mid, text.length) + dl;
 
         var rd = Array(finish + 2);
         rd[finish + 1] = (1 << d) - 1;
