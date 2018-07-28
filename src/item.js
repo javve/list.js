@@ -5,7 +5,7 @@ module.exports = function(list) {
     this._values = {};
 
     this.found = false; // Show if list.searched == true and this.found == true
-    this.filtered = false;// Show if list.filtered == true and this.filtered == true
+    this.filtered = false; // Show if list.filtered == true and this.filtered == true
 
     var init = function(initValues, element, notCreate) {
       if (element === undefined) {
@@ -23,7 +23,7 @@ module.exports = function(list) {
 
     this.values = function(newValues, notCreate) {
       if (newValues !== undefined) {
-        for(var name in newValues) {
+        for (var name in newValues) {
           item._values[name] = newValues[name];
         }
         if (notCreate !== true) {
@@ -52,7 +52,7 @@ module.exports = function(list) {
     };
 
     this.visible = function() {
-      return (item.elm && (item.elm.parentNode == list.list)) ? true : false;
+      return item.elm && item.elm.parentNode == list.list ? true : false;
     };
 
     init(initValues, element, notCreate);

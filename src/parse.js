@@ -1,6 +1,5 @@
 module.exports = function(list) {
-
-  var Item = require('./item')(list);
+  var Item = require("./item")(list);
 
   var getChildren = function(parent) {
     var nodes = parent.childNodes,
@@ -28,7 +27,7 @@ module.exports = function(list) {
       }, 1);
     } else {
       list.update();
-      list.trigger('parseComplete');
+      list.trigger("parseComplete");
     }
   };
 

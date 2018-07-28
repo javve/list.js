@@ -1,9 +1,5 @@
 module.exports = function(list) {
-  var item,
-    text,
-    columns,
-    searchString,
-    customSearch;
+  var item, text, columns, searchString, customSearch;
 
   var prepare = {
     resetList: function() {
@@ -14,7 +10,7 @@ module.exports = function(list) {
     setOptions: function(args) {
       if (args.length == 2 && args[1] instanceof Array) {
         columns = args[1];
-      } else if (args.length == 2 && typeof(args[1]) == "function") {
+      } else if (args.length == 2 && typeof args[1] == "function") {
         columns = undefined;
         customSearch = args[1];
       } else if (args.length == 3) {
@@ -27,7 +23,10 @@ module.exports = function(list) {
     setColumns: function() {
       if (list.items.length === 0) return;
       if (columns === undefined) {
-        columns = (list.searchColumns === undefined) ? prepare.toArray(list.items[0].values()) : list.searchColumns;
+        columns =
+          list.searchColumns === undefined
+            ? prepare.toArray(list.items[0].values())
+            : list.searchColumns;
       }
     },
     setSearchString: function(s) {
@@ -61,7 +60,7 @@ module.exports = function(list) {
     values: function(values, column) {
       if (values.hasOwnProperty(column)) {
         text = list.utils.toString(values[column]).toLowerCase();
-        if ((searchString !== "") && (text.search(searchString) > -1)) {
+        if (searchString !== "" && text.search(searchString) > -1) {
           return true;
         }
       }
@@ -74,14 +73,14 @@ module.exports = function(list) {
   };
 
   var searchMethod = function(str) {
-    list.trigger('searchStart');
+    list.trigger("searchStart");
 
     prepare.resetList();
     prepare.setSearchString(str);
     prepare.setOptions(arguments); // str, cols|searchFunction, searchFunction
     prepare.setColumns();
 
-    if (searchString === "" ) {
+    if (searchString === "") {
       search.reset();
     } else {
       list.searched = true;
@@ -93,28 +92,37 @@ module.exports = function(list) {
     }
 
     list.update();
-    list.trigger('searchComplete');
+    list.trigger("searchComplete");
     return list.visibleItems;
   };
 
   list.handlers.searchStart = list.handlers.searchStart || [];
   list.handlers.searchComplete = list.handlers.searchComplete || [];
 
-  list.utils.events.bind(list.utils.getByClass(list.listContainer, list.searchClass), 'keyup', function(e) {
-    var target = e.target || e.srcElement, // IE have srcElement
-      alreadyCleared = (target.value === "" && !list.searched);
-    if (!alreadyCleared) { // If oninput already have resetted the list, do nothing
-      searchMethod(target.value);
+  list.utils.events.bind(
+    list.utils.getByClass(list.listContainer, list.searchClass),
+    "keyup",
+    function(e) {
+      var target = e.target || e.srcElement, // IE have srcElement
+        alreadyCleared = target.value === "" && !list.searched;
+      if (!alreadyCleared) {
+        // If oninput already have resetted the list, do nothing
+        searchMethod(target.value);
+      }
     }
-  });
+  );
 
   // Used to detect click on HTML5 clear button
-  list.utils.events.bind(list.utils.getByClass(list.listContainer, list.searchClass), 'input', function(e) {
-    var target = e.target || e.srcElement;
-    if (target.value === "") {
-      searchMethod('');
+  list.utils.events.bind(
+    list.utils.getByClass(list.listContainer, list.searchClass),
+    "input",
+    function(e) {
+      var target = e.target || e.srcElement;
+      if (target.value === "") {
+        searchMethod("");
+      }
     }
-  });
+  );
 
   return searchMethod;
 };

@@ -1,11 +1,10 @@
 module.exports = function(list) {
-
   // Add handlers
   list.handlers.filterStart = list.handlers.filterStart || [];
   list.handlers.filterComplete = list.handlers.filterComplete || [];
 
   return function(filterFunction) {
-    list.trigger('filterStart');
+    list.trigger("filterStart");
     list.i = 1; // Reset paging
     list.reset.filter();
     if (filterFunction === undefined) {
@@ -23,7 +22,7 @@ module.exports = function(list) {
       }
     }
     list.update();
-    list.trigger('filterComplete');
+    list.trigger("filterComplete");
     return list.visibleItems;
   };
 };
