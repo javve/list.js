@@ -30,6 +30,7 @@
     "jquery": "^1.12.0",
     "jshint": "^2.9.4",
     "jshint-loader": "^0.8.3",
+    "prettier": "^1.13.7",
     "webpack": "^2.2.0"
   },
   "main": "src/index",
@@ -37,7 +38,8 @@
     "node": ">= 0.10.21"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "prettier": "prettier --write src/*.js"
   },
   "npmName": "list.js",
   "npmFileMap": [
@@ -51,6 +53,9 @@
   "jest": {
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
-    "collectCoverageFrom": ["src/*.js", "src/utils/*.js"]
+    "collectCoverageFrom": [
+      "src/*.js",
+      "src/utils/*.js"
+    ]
   }
 }
