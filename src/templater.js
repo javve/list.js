@@ -11,23 +11,23 @@ var Templater = function(list) {
 
   var clearSourceItem = function(el, valueNames) {
     for (var i = 0, il = valueNames.length; i < il; i++) {
-      var elm;
-      if (valueNames[i].data) {
-        for (var j = 0, jl = valueNames[i].data.length; j < jl; j++) {
-          el.setAttribute('data-'+valueNames[i].data[j], '');
+      var elm = undefined,
+        valueName = valueNames[i];
+      if (valueName.data) {
+        for (var j = 0, jl = valueName.data.length; j < jl; j++) {
+          el.setAttribute("data-" + valueName.data[j], "");
         }
-      } else if (valueNames[i].attr && valueNames[i].name) {
-        elm = list.utils.getByClass(el, valueNames[i].name, true);
+      } else if (valueName.attr && valueName.name) {
+        elm = list.utils.getByClass(el, valueName.name, true);
         if (elm) {
-          elm.setAttribute(valueNames[i].attr, "");
+          elm.setAttribute(valueName.attr, "");
         }
       } else {
-        elm = list.utils.getByClass(el, valueNames[i], true);
+        elm = list.utils.getByClass(el, valueName, true);
         if (elm) {
           elm.innerHTML = "";
         }
       }
-      elm = undefined;
     }
     return el;
   };
@@ -62,28 +62,29 @@ var Templater = function(list) {
 
   var getValueName = function(name) {
     for (var i = 0, il = list.valueNames.length; i < il; i++) {
-      if (list.valueNames[i].data) {
-        var data = list.valueNames[i].data;
+      var valueName = list.valueNames[i];
+      if (valueName.data) {
+        var data = valueName.data;
         for (var j = 0, jl = data.length; j < jl; j++) {
           if (data[j] === name) {
             return { data: name };
           }
         }
       } else if (
-        list.valueNames[i].attr &&
-        list.valueNames[i].name &&
-        list.valueNames[i].name == name
+        valueName.attr &&
+        valueName.name &&
+        valueName.name == name
       ) {
-        return list.valueNames[i];
-      } else if (list.valueNames[i] === name) {
+        return valueName;
+      } else if (valueName === name) {
         return name;
       }
     }
   };
 
   var setValue = function(item, name, value) {
-    var elm;
-    var valueName = getValueName(name);
+    var elm = undefined,
+      valueName = getValueName(name);
     if (!valueName) return;
     if (valueName.data) {
       item.elm.setAttribute("data-" + valueName.data, value);
@@ -98,26 +99,30 @@ var Templater = function(list) {
         elm.innerHTML = value;
       }
     }
-    elm = undefined;
   };
 
   this.get = function(item, valueNames) {
     templater.create(item);
     var values = {};
-    for(var i = 0, il = valueNames.length; i < il; i++) {
-      var elm;
-      if (valueNames[i].data) {
-        for (var j = 0, jl = valueNames[i].data.length; j < jl; j++) {
-          values[valueNames[i].data[j]] = list.utils.getAttribute(item.elm, 'data-'+valueNames[i].data[j]);
+    for (var i = 0, il = valueNames.length; i < il; i++) {
+      var elm = undefined,
+        valueName = valueNames[i];
+      if (valueName.data) {
+        for (var j = 0, jl = valueName.data.length; j < jl; j++) {
+          values[valueName.data[j]] = list.utils.getAttribute(
+            item.elm,
+            "data-" + valueName.data[j]
+          );
         }
-      } else if (valueNames[i].attr && valueNames[i].name) {
-        elm = list.utils.getByClass(item.elm, valueNames[i].name, true);
-        values[valueNames[i].name] = elm ? list.utils.getAttribute(elm, valueNames[i].attr) : "";
+      } else if (valueName.attr && valueName.name) {
+        elm = list.utils.getByClass(item.elm, valueName.name, true);
+        values[valueName.name] = elm
+          ? list.utils.getAttribute(elm, valueName.attr)
+          : "";
       } else {
-        elm = list.utils.getByClass(item.elm, valueNames[i], true);
-        values[valueNames[i]] = elm ? elm.innerHTML : "";
+        elm = list.utils.getByClass(item.elm, valueName, true);
+        values[valueName] = elm ? elm.innerHTML : "";
       }
-      elm = undefined;
     }
     return values;
   };
