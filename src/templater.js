@@ -52,7 +52,7 @@ var Templater = function(list) {
       div.innerHTML = item;
       return div.firstChild;
     } else {
-      var source = document.getElementById(list.item);
+      var source = document.getElementById(item);
       if (source) {
         return source;
       }
