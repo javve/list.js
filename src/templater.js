@@ -7,6 +7,12 @@ var Templater = function(list) {
     if (itemSource) {
       itemSource = clearSourceItem(itemSource, list.valueNames);
     }
+
+    if (itemSource === undefined) {
+      throw new Error(
+        "The list needs to have at least one item on init otherwise you'll have to add a template."
+      );
+    }
   };
 
   var clearSourceItem = function(el, valueNames) {
@@ -140,9 +146,6 @@ var Templater = function(list) {
   this.create = function(item) {
     if (item.elm !== undefined) {
       return false;
-    }
-    if (itemSource === undefined) {
-      throw new Error("The list needs to have at least one item on init otherwise you'll have to add a template.");
     }
     /* If item source does not exists, use the first item in list as
     source for new items */
