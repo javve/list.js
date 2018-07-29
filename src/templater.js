@@ -3,14 +3,14 @@ var Templater = function(list) {
     templater = this;
 
   var init = function() {
-    itemSource = templater.getItemSource(list.item);
+    itemSource = getItemSource(list.item);
     if (itemSource) {
-      itemSource = templater.clearSourceItem(itemSource, list.valueNames);
+      itemSource = clearSourceItem(itemSource, list.valueNames);
     }
   };
 
-  this.clearSourceItem = function(el, valueNames) {
-    for(var i = 0, il = valueNames.length; i < il; i++) {
+  var clearSourceItem = function(el, valueNames) {
+    for (var i = 0, il = valueNames.length; i < il; i++) {
       var elm;
       if (valueNames[i].data) {
         for (var j = 0, jl = valueNames[i].data.length; j < jl; j++) {
@@ -32,7 +32,7 @@ var Templater = function(list) {
     return el;
   };
 
-  this.getItemSource = function(item) {
+  var getItemSource = function(item) {
     if (item === undefined) {
       var nodes = list.list.childNodes,
         items = [];
@@ -98,7 +98,7 @@ var Templater = function(list) {
         }
       }
     };
-    var setValue = function(name, value) {
+    var setValue = function(item, name, value) {
       var elm;
       var valueName = getValueName(name);
       if (!valueName)
@@ -121,7 +121,7 @@ var Templater = function(list) {
     if (!templater.create(item)) {
       for(var v in values) {
         if (values.hasOwnProperty(v)) {
-          setValue(v, values[v]);
+          setValue(item, v, values[v]);
         }
       }
     }
