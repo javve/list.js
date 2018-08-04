@@ -1,8 +1,10 @@
 var Templater = function(list) {
-  var itemSource,
+  var createItem,
     templater = this;
 
   var init = function() {
+    var itemSource;
+
     if (list.item) {
       if (list.item.indexOf("<") === -1) {
         itemSource = document.getElementById(list.item);
@@ -23,6 +25,9 @@ var Templater = function(list) {
       throw new Error(
         "The list needs to have at least one item on init otherwise you'll have to add a template."
       );
+    }
+    createItem = function() {
+      return itemSource.cloneNode(true);
     }
   };
 
@@ -158,7 +163,7 @@ var Templater = function(list) {
     if (item.elm !== undefined) {
       return false;
     }
-    item.elm = itemSource.cloneNode(true);
+    item.elm = createItem(item.values());
     templater.set(item, item.values());
     return true;
   };
