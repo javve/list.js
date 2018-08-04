@@ -3,9 +3,20 @@ var Templater = function(list) {
     templater = this;
 
   var init = function() {
-    itemSource = getItemSource(list.item);
+    if (list.item) {
+      if (list.item.indexOf("<") === -1) {
+        itemSource = document.getElementById(list.item);
+      } else {
+        itemSource = getItemSource(list.item);
+      }
+    } else {
+      /* If item source does not exists, use the first item in list as
+      source for new items */
+      itemSource = getFirstListItem();
+    }
+
     if (itemSource) {
-      itemSource = clearSourceItem(itemSource, list.valueNames);
+      itemSource = createCleanTemplateItem(itemSource, list.valueNames);
     }
 
     if (itemSource === undefined) {
@@ -15,7 +26,10 @@ var Templater = function(list) {
     }
   };
 
-  var clearSourceItem = function(el, valueNames) {
+  var createCleanTemplateItem = function(templateNode, valueNames) {
+    var el = templateNode.cloneNode(true);
+    el.removeAttribute("id");
+
     for (var i = 0, il = valueNames.length; i < il; i++) {
       var elm = undefined,
         valueName = valueNames[i];
@@ -38,30 +52,27 @@ var Templater = function(list) {
     return el;
   };
 
-  var getItemSource = function(item) {
-    if (item === undefined) {
-      var nodes = list.list.childNodes,
-        items = [];
+  var getFirstListItem = function() {
+    var nodes = list.list.childNodes;
 
-      for (var i = 0, il = nodes.length; i < il; i++) {
-        // Only textnodes have a data attribute
-        if (nodes[i].data === undefined) {
-          return nodes[i].cloneNode(true);
-        }
+    for (var i = 0, il = nodes.length; i < il; i++) {
+      // Only textnodes have a data attribute
+      if (nodes[i].data === undefined) {
+        return nodes[i].cloneNode(true);
       }
-    } else if (/<tr[\s>]/g.exec(item)) {
-      var tbody = document.createElement('tbody');
-      tbody.innerHTML = item;
-      return tbody.firstChild;
-    } else if (item.indexOf("<") !== -1) {
-      var div = document.createElement('div');
-      div.innerHTML = item;
-      return div.firstChild;
-    } else {
-      var source = document.getElementById(item);
-      if (source) {
-        return source;
-      }
+    }
+    return undefined;
+  }
+
+  var getItemSource = function(itemHTML) {
+    if (/<tr[\s>]/g.exec(itemHTML)) {
+      var tbody = document.createElement("tbody");
+      tbody.innerHTML = itemHTML;
+      return tbody.firstElementChild;
+    } else if (itemHTML.indexOf("<") !== -1) {
+      var div = document.createElement("div");
+      div.innerHTML = itemHTML;
+      return div.firstElementChild;
     }
     return undefined;
   };
@@ -147,11 +158,7 @@ var Templater = function(list) {
     if (item.elm !== undefined) {
       return false;
     }
-    /* If item source does not exists, use the first item in list as
-    source for new items */
-    var newItem = itemSource.cloneNode(true);
-    newItem.removeAttribute('id');
-    item.elm = newItem;
+    item.elm = itemSource.cloneNode(true);
     templater.set(item, item.values());
     return true;
   };
