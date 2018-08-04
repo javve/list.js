@@ -25,7 +25,7 @@ describe('Pagination', function() {
     });
 
     it('should have default settings', function() {
-      expect(pagination.find('a').size()).toEqual(4);
+      expect(pagination.find('a').length).toEqual(4);
       expect(pagination.find('a').get(0).innerHTML).toEqual("1");
       expect(pagination.find('a').get(1).innerHTML).toEqual("2");
       expect(pagination.find('a').get(2).innerHTML).toEqual("3");
@@ -35,7 +35,7 @@ describe('Pagination', function() {
 
     it('should show same pages for show(7,2) and show(8,2)', function() {
       list.show(7, 2);
-      expect(pagination.find('a').size()).toEqual(7);
+      expect(pagination.find('a').length).toEqual(7);
       expect(pagination.find('a').get(0).innerHTML).toEqual("...");
       expect(pagination.find('a').get(1).innerHTML).toEqual("2");
       expect(pagination.find('a').get(2).innerHTML).toEqual("3");
@@ -51,7 +51,7 @@ describe('Pagination', function() {
 
     it('should show same pages for show(7,2) and show(8,2)', function() {
       list.show(8, 2);
-      expect(pagination.find('a').size()).toEqual(7);
+      expect(pagination.find('a').length).toEqual(7);
       expect(pagination.find('a').get(0).innerHTML).toEqual("...");
       expect(pagination.find('a').get(1).innerHTML).toEqual("2");
       expect(pagination.find('a').get(2).innerHTML).toEqual("3");
@@ -67,7 +67,7 @@ describe('Pagination', function() {
 
     it('should test show(14,2)', function() {
       list.show(14, 2);
-      expect(pagination.find('a').size()).toEqual(6);
+      expect(pagination.find('a').length).toEqual(6);
       expect(pagination.find('a').get(0).innerHTML).toEqual("...");
       expect(pagination.find('a').get(1).innerHTML).toEqual("5");
       expect(pagination.find('a').get(2).innerHTML).toEqual("6");
@@ -82,7 +82,7 @@ describe('Pagination', function() {
 
     it('should show last page with show(17,2)', function() {
       list.show(17, 2);
-      expect(pagination.find('a').size()).toEqual(4);
+      expect(pagination.find('a').length).toEqual(4);
       expect(pagination.find('a').get(0).innerHTML).toEqual("...");
       expect(pagination.find('a').get(1).innerHTML).toEqual("7");
       expect(pagination.find('a').get(2).innerHTML).toEqual("8");
@@ -128,7 +128,7 @@ describe('Pagination', function() {
     });
 
     it('should have default settings', function() {
-      expect(pagination.find('a').size()).toEqual(4);
+      expect(pagination.find('a').length).toEqual(4);
       expect(pagination.find('a').get(0).innerHTML).toEqual("1");
       expect(pagination.find('a').get(1).innerHTML).toEqual("2");
       expect(pagination.find('a').get(2).innerHTML).toEqual("...");
@@ -138,7 +138,7 @@ describe('Pagination', function() {
 
     it('should test show(7,2)', function() {
       list.show(7, 2);
-      expect(pagination.find('a').size()).toEqual(7);
+      expect(pagination.find('a').length).toEqual(7);
       expect(pagination.find('a').get(0).innerHTML).toEqual("1");
       expect(pagination.find('a').get(1).innerHTML).toEqual("...");
       expect(pagination.find('a').get(2).innerHTML).toEqual("3");
@@ -154,7 +154,7 @@ describe('Pagination', function() {
 
     it('should test show(14,2)', function() {
       list.show(14, 2);
-      expect(pagination.find('a').size()).toEqual(6);
+      expect(pagination.find('a').length).toEqual(6);
       expect(pagination.find('a').get(0).innerHTML).toEqual("1");
       expect(pagination.find('a').get(1).innerHTML).toEqual("...");
       expect(pagination.find('a').get(2).innerHTML).toEqual("6");
@@ -169,7 +169,7 @@ describe('Pagination', function() {
 
     it('should show last page with show(17,2)', function() {
       list.show(17, 2);
-      expect(pagination.find('a').size()).toEqual(4);
+      expect(pagination.find('a').length).toEqual(4);
       expect(pagination.find('a').get(0).innerHTML).toEqual("1");
       expect(pagination.find('a').get(1).innerHTML).toEqual("...");
       expect(pagination.find('a').get(2).innerHTML).toEqual("8");
@@ -210,7 +210,7 @@ describe('Pagination', function() {
     });
 
     it('should have default settings', function() {
-      expect(pagination.find('a').size()).toEqual(4);
+      expect(pagination.find('a').length).toEqual(4);
       expect(pagination.find('a').get(0).innerHTML).toEqual("1");
       expect(pagination.find('a').get(1).innerHTML).toEqual("2");
       expect(pagination.find('a').get(2).innerHTML).toEqual("...");
@@ -220,7 +220,7 @@ describe('Pagination', function() {
 
     it('should test show(7,2)', function() {
       list.show(7, 2);
-      expect(pagination.find('a').size()).toEqual(7);
+      expect(pagination.find('a').length).toEqual(7);
       expect(pagination.find('a').get(0).innerHTML).toEqual("1");
       expect(pagination.find('a').get(1).innerHTML).toEqual("2");
       expect(pagination.find('a').get(2).innerHTML).toEqual("3");
@@ -236,7 +236,7 @@ describe('Pagination', function() {
 
     it('should test show(12,2)', function() {
       list.show(12, 2);
-      expect(pagination.find('a').size()).toEqual(8);
+      expect(pagination.find('a').length).toEqual(8);
       expect(pagination.find('a').get(0).innerHTML).toEqual("1");
       expect(pagination.find('a').get(1).innerHTML).toEqual("2");
       expect(pagination.find('a').get(2).innerHTML).toEqual("...");
@@ -253,7 +253,7 @@ describe('Pagination', function() {
 
     it('should show last page with show(17,2)', function() {
       list.show(17, 2);
-      expect(pagination.find('a').size()).toEqual(5);
+      expect(pagination.find('a').length).toEqual(5);
       expect(pagination.find('a').get(0).innerHTML).toEqual("1");
       expect(pagination.find('a').get(1).innerHTML).toEqual("2");
       expect(pagination.find('a').get(2).innerHTML).toEqual("...");

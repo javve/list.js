@@ -78,17 +78,17 @@ describe('Item', function() {
 
   describe('Hide, show, visible', function() {
     it('should be hidden', function() {
-      expect($('#list li').size()).toEqual(1);
+      expect($('#list li').length).toEqual(1);
       item.hide();
       expect(item.visible()).toBe(false);
-      expect($('#list li').size()).toEqual(0);
+      expect($('#list li').length).toEqual(0);
     });
     it('should be visible', function() {
       item.hide();
-      expect($('#list li').size()).toEqual(0);
+      expect($('#list li').length).toEqual(0);
       item.show();
       expect(item.visible()).toBe(true);
-      expect($('#list li').size()).toEqual(1);
+      expect($('#list li').length).toEqual(1);
     });
   });
 
