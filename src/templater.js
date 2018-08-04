@@ -5,7 +5,15 @@ var Templater = function(list) {
   var init = function() {
     var itemSource;
 
-    if (list.item) {
+    if (typeof list.item === "function") {
+      createItem = function(values) {
+        var item = list.item(values);
+        return getItemSource(item);
+      }
+      return;
+    }
+
+    if (typeof list.item === "string") {
       if (list.item.indexOf("<") === -1) {
         itemSource = document.getElementById(list.item);
       } else {
@@ -17,15 +25,14 @@ var Templater = function(list) {
       itemSource = getFirstListItem();
     }
 
-    if (itemSource) {
-      itemSource = createCleanTemplateItem(itemSource, list.valueNames);
-    }
-
-    if (itemSource === undefined) {
+    if (!itemSource) {
       throw new Error(
         "The list needs to have at least one item on init otherwise you'll have to add a template."
       );
     }
+
+    itemSource = createCleanTemplateItem(itemSource, list.valueNames);
+
     createItem = function() {
       return itemSource.cloneNode(true);
     }

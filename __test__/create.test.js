@@ -56,6 +56,41 @@ describe('Create', function() {
     listEl.remove();
   });
 
+  describe('Without items and with template function', function() {
+    var listEl = $('<div id="list">\
+      <ul class="list"></ul>\
+    </div>');
+
+    $(document.body).append(listEl);
+
+    var list = new List('list', {
+      valueNames: ['name'],
+      item: function(values) {
+        return `<li data-template-fn-${values.name.toLowerCase()}><span class="name"></span></li>`;
+      }
+    }, [
+      { name: 'Jonny' }
+    ]);
+
+    it('should contain one item', function() {
+      expect(list.items.length).toEqual(1);
+      expect(listEl.find('li').size()).toEqual(1);
+    });
+
+    it('should contain two items', function() {
+      list.add({ name: 'Jonas' });
+      expect(list.items.length).toEqual(2);
+      expect(listEl.find('li').size()).toEqual(2);
+    });
+
+    it('should get values from items', function() {
+      list.add({ name: 'Egon' });
+      expect(listEl.find('li[data-template-fn-egon]').size()).toEqual(1);
+    });
+
+    listEl.remove();
+  });
+
   describe('Without items and with string template for table', function() {
     var listEl = $('<div id="list">\
       <table class="list"></table>\
