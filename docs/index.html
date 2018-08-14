@@ -5,7 +5,7 @@ title: Search, sort, filters, flexibility to tables, list and more!
 
 <div class="intro">
   <div class="intro-logo">
-    <img src="{{"/assets/images/graphics/listjs-logo.png" | relative_url }}" />
+    <img src="{{ "/assets/images/graphics/listjs-logo.png" | relative_url }}" />
   </div>
   <div class="intro-text">
     <h1>List.js <small>v{{site.data.pkg.version}}</small></h1>
@@ -25,7 +25,7 @@ title: Search, sort, filters, flexibility to tables, list and more!
   <h3>More examples</h3>
   <ul>
     {% for example in site.examples %}
-      <li><a href="{{example.url}}">{{example.name}}</a></li>
+      <li><a href="{{example.url | relative_url }}">{{example.name}}</a></li>
     {% endfor %}
   </ul>
 </div>
