@@ -94,11 +94,11 @@ describe('Pagination', function() {
     });
 
     it('should handle page = 0', function() {
-      expect(pagination.is(':visible')).toBe(true);
+      expect(list.listContainer.style.display).toBe('');
       list.show(0, 0);
-      expect(pagination.is(':visible')).toBe(false);
+      expect(list.listContainer.style.display).toBe('none');
       list.show(1, 1);
-      expect(pagination.is(':visible')).toBe(true);
+      expect(list.listContainer.style.display).toBe('block');
     });
   });
 
