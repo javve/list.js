@@ -42,6 +42,9 @@ npm install list.js
 - [Compressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.5.0/dist/list.min.js)
 - [Uncompressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.5.0/dist/list.js)
 
+### Questions / How to?
+https://stackoverflow.com/questions/tagged/list.js
+
 ### Demo / Examples
 - [Existing list](http://listjs.com/examples/existing-list)
 - [Existing list + add](http://listjs.com/examples/existing-list-add)
