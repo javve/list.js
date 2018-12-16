@@ -25,19 +25,47 @@
   "dependencies": {
     "string-natural-compare": "^2.0.2"
   },
+  "peerDependencies": {
+    "webpack": "^4.20.2"
+  },
   "devDependencies": {
-    "jest": "^23.3",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@webpack-contrib/eslint-config-webpack": "^3.0.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-loader": "^7.1.5",
+    "eslint": "^5.6.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "husky": "^1.1.1",
+    "jest": "^23.6",
     "jquery": "^3.3.1",
-    "jshint": "^2.9.4",
-    "jshint-loader": "^0.8.4",
-    "webpack": "^3.12.0"
+    "lint-staged": "^7.3.0",
+    "prettier": "^1.14.3",
+    "uglifyjs-webpack-plugin": "^2.0.1",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
   },
   "main": "src/index",
   "engines": {
     "node": ">= 0.10.21"
   },
+  "browserslist": "> 0.25%, not dead",
+  "pre-commit": "lint-staged",
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
   "scripts": {
-    "test": "jest"
+    "bundle": "webpack -p --config webpack.config.js",
+    "test": "jest",
+    "lint": "eslint --fix src",
+    "precommit": "lint-staged",
+    "prepush": "npm test",
+    "postmerge": "npm install && npm prune",
+    "postrewrite": "npm install && npm prune"
   },
   "npmName": "list.js",
   "npmFileMap": [
