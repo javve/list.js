@@ -78,5 +78,5 @@ npm install list.js
 
 ## License (MIT)
 
-Copyright (c) 2012-2017 Jonny Strömberg <[jonny.stromberg@gmail.com](mailto:jonny.stromberg@gmail.com)>
+Copyright (c) 2011-2018 Jonny Strömberg <[jonny.stromberg@gmail.com](mailto:jonny.stromberg@gmail.com)>
 [http://javve.com](http://javve.com)
