@@ -7,6 +7,7 @@ Really simple and easy to use!
 [![npm version](https://badge.fury.io/js/list.js.svg)](https://badge.fury.io/js/list.js)
 [![CircleCI](https://circleci.com/gh/javve/list.js/tree/master.svg?style=shield)](https://circleci.com/gh/javve/list.js/tree/master)
 [![codecov](https://codecov.io/gh/javve/list.js/branch/master/graph/badge.svg)](https://codecov.io/gh/javve/list.js)
+[![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/list.js/badge?style=rounded)](https://www.jsdelivr.com/package/npm/list.js)
 
 ### Core idea
 - Simple and invisible
@@ -81,5 +82,5 @@ https://stackoverflow.com/questions/tagged/list.js
 
 ## License (MIT)
 
-Copyright (c) 2012-2017 Jonny Strömberg <[jonny.stromberg@gmail.com](mailto:jonny.stromberg@gmail.com)>
+Copyright (c) 2011-2018 Jonny Strömberg <[jonny.stromberg@gmail.com](mailto:jonny.stromberg@gmail.com)>
 [http://javve.com](http://javve.com)
