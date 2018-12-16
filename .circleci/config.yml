@@ -17,4 +17,4 @@ jobs:
           command: npm test
       - run:
           name: code-coverage
-          command: '<(curl -s https://codecov.io/bash)'
+          command: 'bash <(curl -s https://codecov.io/bash)'
