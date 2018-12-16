@@ -18,6 +18,14 @@
 
 # Changelog
 
+### 1.5.1
+- **[Website]** Use https instead of http for listjs.com
+- **[Website]** Update Contribute guidelines [See commit →](https://github.com/javve/list.js/commit/6242496de2ac5c07903fb1590a5cb5129f0887a7)
+- **[Website]** Update Jekyll & jQuery versions to remove security warnings.
+- **[Misc]** Use one event listener per pagination and select page via data attributes
+  [See commit →](https://github.com/javve/list.js/commit/7610c59039f3b39f52175cd1a200e935664869e8)
+- **[Bugfix]** Don't break pagination if page=0
+  [See commit →](https://github.com/javve/list.js/commit/b3db0de731d436422e016b5e17f7ceab5941cd5d)
 ### 2017-01-29 v1.5.0
 - **[Feature]** Bundle fuzzySearch and pagination plugins into List.js  
   [See commit →](https://github.com/javve/list.js/commit/2f5322fd139ee6f30cef3bb5e15d382ff29f9489)
