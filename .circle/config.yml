@@ -1,0 +1,20 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:6.11
+steps:
+  - checkout
+  - restore_cache:
+      keys: v1-dependencies-{{ checksum "package.json" }}
+  - run: npm install
+  - save_cache:
+      paths:
+        - node_modules
+      key: v1-dependencies-{{ checksum "package.json" }}
+  - run:
+      name: test
+      command: npm test
+  - run:
+      name: code-coverage
+      command: '<(curl -s https://codecov.io/bash)'
