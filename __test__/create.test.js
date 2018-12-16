@@ -16,13 +16,13 @@ describe('Create', function() {
 
     it('should contain one item', function() {
       expect(list.items.length).toEqual(1);
-      expect(listEl.find('li').size()).toEqual(1);
+      expect(listEl.find('li').length).toEqual(1);
     });
 
     it('should contain two items', function() {
       list.add({ name: 'Jonas' });
       expect(list.items.length).toEqual(2);
-      expect(listEl.find('li').size()).toEqual(2);
+      expect(listEl.find('li').length).toEqual(2);
     });
 
     listEl.remove();
@@ -44,13 +44,13 @@ describe('Create', function() {
 
     it('should contain one item', function() {
       expect(list.items.length).toEqual(1);
-      expect(listEl.find('li').size()).toEqual(1);
+      expect(listEl.find('li').length).toEqual(1);
     });
 
     it('should contain two items', function() {
       list.add({ name: 'Jonas' });
       expect(list.items.length).toEqual(2);
-      expect(listEl.find('li').size()).toEqual(2);
+      expect(listEl.find('li').length).toEqual(2);
     });
 
     listEl.remove();
@@ -72,13 +72,13 @@ describe('Create', function() {
 
     it('should contain one item', function() {
       expect(list.items.length).toEqual(1);
-      expect(listEl.find('tr').size()).toEqual(1);
+      expect(listEl.find('tr').length).toEqual(1);
     });
 
     it('should contain two items', function() {
       list.add({ name: 'Jonas' });
       expect(list.items.length).toEqual(2);
-      expect(listEl.find('tr').size()).toEqual(2);
+      expect(listEl.find('tr').length).toEqual(2);
     });
 
     listEl.remove();
@@ -134,13 +134,13 @@ describe('Create', function() {
 
     it('should contain one item', function() {
       expect(list.items.length).toEqual(1);
-      expect(listEl.find('li').size()).toEqual(1);
+      expect(listEl.find('li').length).toEqual(1);
     });
 
     it('should contain two items', function() {
       list.add({ name: 'Jonas' });
       expect(list.items.length).toEqual(2);
-      expect(listEl.find('li').size()).toEqual(2);
+      expect(listEl.find('li').length).toEqual(2);
     });
 
     listEl.remove();
@@ -240,7 +240,7 @@ describe('Create', function() {
         valueNames: ['name'],
         indexAsync: true,
         parseComplete: function(list) {
-          expect(listEl.find('li').size()).toEqual(162);
+          expect(listEl.find('li').length).toEqual(162);
           listEl.remove();
           done();
         }

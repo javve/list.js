@@ -1,15 +1,16 @@
 const getByClass = require('../src/utils/get-by-class');
 
 describe('GetByClass', function() {
+  var el;
 
   beforeEach(function() {
-    this.el = document.createElement('div')
-    this.el.setAttribute('class', 'foo')
-    document.body.appendChild(this.el);
+    el = document.createElement('div')
+    el.setAttribute('class', 'foo')
+    document.body.appendChild(el);
   });
 
   afterEach(function() {
-    document.body.removeChild(this.el);
+    document.body.removeChild(el);
   });
 
   it('should use getElementsByClassName', function() {
