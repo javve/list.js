@@ -36,7 +36,7 @@ describe('Parse', function() {
       expect(list.items[0].values().born).toEqual("1986");
       expect(list.items[2].values().born).toEqual(1950);
       var el = $($('#parse-list').find('.list div')[2]);
-      expect(el.find('span').size()).toEqual(2);
+      expect(el.find('span').length).toEqual(2);
       expect(el.find('span.name').text()).toEqual('Sven');
       expect(el.find('span.born').text()).toEqual('1950');
     });
