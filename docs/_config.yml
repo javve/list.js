@@ -12,7 +12,7 @@ permalink: pretty
 markdown: kramdown
 livereload: true
 
-gems:
+plugins:
  - jekyll-coffeescript
  - jekyll-redirect-from
 
