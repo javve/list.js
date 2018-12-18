@@ -4,7 +4,7 @@
 - Keep original order? + know
 - Automatically add item in the right place if sort is active
 - How to handle arrays?
-- Implement debouncing in search?
+- [Implement debouncing in search?](https://github.com/javve/list.js/issues/621)
 - Better search https://github.com/javve/list.js/pull/312/files ?
 - Investigate sort button defaults:
   - https://github.com/javve/list.js/issues/316
@@ -15,7 +15,7 @@
 - Example with multiple lists
 - Multiple filter functionality
 - Activ search term, sort order, filter, etc
-- [Updated ] https://github.com/javve/list.js/issues/599
+- [Smarter pagination window](https://github.com/javve/list.js/issues/599)
 
 # Known bugs
 Pagination does not respect .show(i, page)
