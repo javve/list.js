@@ -1,31 +1,16 @@
-# TODO
-
-- Add tests for custom event handlers. 27e2d6fdeee7090eb1342a108013db898fc29b96
-- Regex in search https://github.com/javve/list.js/issues/371
-- Keep original order?
-- Automatically add item in the right place if sort is active
-- How to handle arrays?
-- Implement debouncing in search?
-- Better search https://github.com/javve/list.js/pull/312/files ?
-- Investigate sort button defaults:
-  - https://github.com/javve/list.js/issues/316
-  - https://github.com/javve/list.js/pull/301
-- Improve testability by decoupling things and make it possible to use require('') in tests
-- Add .remove() method to remove all listeners etc.
-- Example of more advanced filtering
-- Fix test suite
-- Example with multiple lists
-
 # Changelog
 
 ### 1.5.1
+- **[Misc]** Added WISHLIST.md for feature requests to allow cleanup of issue list.
+- **[Misc]** Update CircleCI from 1.0 to 2.0
 - **[Website]** Use https instead of http for listjs.com
 - **[Website]** Update Contribute guidelines [See commit →](https://github.com/javve/list.js/commit/6242496de2ac5c07903fb1590a5cb5129f0887a7)
 - **[Website]** Update Jekyll & jQuery versions to remove security warnings.
-- **[Misc]** Use one event listener per pagination and select page via data attributes
+- **[Bugfix]** Use one event listener per pagination and select page via data attributes
   [See commit →](https://github.com/javve/list.js/commit/7610c59039f3b39f52175cd1a200e935664869e8)
 - **[Bugfix]** Don't break pagination if page=0
   [See commit →](https://github.com/javve/list.js/commit/b3db0de731d436422e016b5e17f7ceab5941cd5d)
+  [See commit →](https://github.com/javve/list.js/commit/725bc188d7ba72c7d234bda1e09fc50b40661310)
 ### 2017-01-29 v1.5.0
 - **[Feature]** Bundle fuzzySearch and pagination plugins into List.js  
   [See commit →](https://github.com/javve/list.js/commit/2f5322fd139ee6f30cef3bb5e15d382ff29f9489)
