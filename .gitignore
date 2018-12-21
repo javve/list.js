@@ -4,3 +4,7 @@ docs/_site
 docs/.sass-cache
 docs/.jekyll-metadata
 coverage
+vcs.xml
+workspace.xml
+misc.xml
+modules.xml
