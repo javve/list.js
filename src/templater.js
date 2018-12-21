@@ -47,7 +47,7 @@ var Templater = function(list) {
       var tbody = document.createElement('tbody');
       tbody.innerHTML = item;
       return tbody.firstChild;
-    } else if (item.indexOf("<") !== -1) {
+    } else if (typeof item === 'string' && item.indexOf("<") !== -1) {
       var div = document.createElement('div');
       div.innerHTML = item;
       return div.firstChild;
