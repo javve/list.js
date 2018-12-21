@@ -34,7 +34,7 @@
   },
   "main": "src/index",
   "engines": {
-    "node": "^6.15"
+    "node": "6.9.4",
   },
   "scripts": {
     "test": "jest"
