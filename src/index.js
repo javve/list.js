@@ -138,6 +138,14 @@ module.exports = function(id, options, values) {
     return added;
   };
 
+  this.addElement = function(elm) {
+      var item = null;
+      notCreate = (self.items.length > self.page) ? true : false;
+      item = new Item(this.valueNames, elm, notCreate);
+      self.items.push(item);
+      self.update();
+  };
+
 	this.show = function(i, page) {
 		this.i = i;
 		this.page = page;
