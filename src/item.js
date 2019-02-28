@@ -21,6 +21,11 @@ module.exports = function(list) {
       }
     };
 
+    this.reload = function() {
+        var values = list.templater.get(item, initValues);
+        item.values(values);
+    };
+
     this.values = function(newValues, notCreate) {
       if (newValues !== undefined) {
         for(var name in newValues) {

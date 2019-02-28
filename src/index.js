@@ -102,6 +102,12 @@ module.exports = function(id, options, values) {
     self.parse(self.list);
   };
 
+  this.refresh = function() {
+    for (var i = 0; i < self.items.length; i++ ) {
+      self.items[i].reload();
+    }
+  };
+
   this.toJSON = function() {
     var json = [];
     for (var i = 0, il = self.items.length; i < il; i++) {
