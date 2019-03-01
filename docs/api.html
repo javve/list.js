@@ -39,6 +39,7 @@ redirect_from:
 <h4>Methods</h4>
 <ul class="api-index">
   <li><a href="#add">add</a></li>
+  <li><a href="#addItem">addItem</a></li>
   <li><a href="#clear">clear</a></li>
   <li><a href="#filter">filter</a></li>
   <li><a href="#fuzzysearch">fuzzySearch</a></li>
@@ -219,6 +220,10 @@ console.log('All ' + items.length + ' were added!');
 });</code></pre>
   </li>
   <li>
+    <p><strong><a name="addItem" class="achor" href="#add"></a>addItem(element)</strong><br>
+    Adds an item to the list based on the supplied DOM element.</p>
+  </li>
+  <li>
     <p><strong><a name="remove" class="achor" href="#remove"></a>remove(valueName, value)</strong><br>
     Removes items from the list where the value named <code>valueName</code> has value <code>value</code>.
     Returns the number of items that where removed.</p>
@@ -253,6 +258,7 @@ listObj.get("id", 2); // return { id: 2, name "Gustaf" }</code></pre>
     <a href="https://github.com/nwoltman/string-natural-compare">https://github.com/nwoltman/string-natural-compare</a>,
     if you want to use your own, <a href="https://github.com/javve/list.js/blob/master/src/sort.js">read the code</a> and
     <a href="https://github.com/javve/list.js/blob/master/test/test.sort.js">check out the tests</a>.</p>
+    <p>If called with no arguments, the previous sort will be re-applied.  This is useful if the list has been modified.</p>
 
 <pre><code class="javascript">listObj.sort('name', { order: "asc" }); // Sorts the list in abc-order based on names
 listObj.sort('name', { order: "desc" }); // Sorts the list in zxy-order based on names
@@ -265,6 +271,9 @@ listObj.sort('name', { alphabet: "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXx
 
 // Alphabet could also be on the actual listObj via
 listObj.alphabet = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzÅåÄäÖö";
+
+// Re-apply the last sort
+listObj.sort();
 </code></pre>
 
   </li>
@@ -336,9 +345,18 @@ listObj.show(4, 3); // Display item 4,5,6 </code></pre>
     if you want the paging to update.</p>
   </li>
   <li>
+    <p><strong><a name="refresh" class="achor" href="#refresh"></a>refresh()</strong><br>
+    Reload all existing rows from current HTML.  This is useful if the content
+    of rows has been modified and will enable <a href="#search">search</a> and <a
+    href="#sort">sort</a> to operate on the updated data.  Unlike <a
+    href="#reindex">reIndex</a>, rows will not be added or removed.  To add new HTML elements to a list, use <a href="#addItem">addItem</a>.
+    </p>
+  </li>
+  <li>
     <p><strong><a name="reindex" class="achor" href="#reindex"></a>reIndex()</strong><br>
     Re-index list from HTML. Good to use if the HTML has been changed by something
-    else than List.js.</p>
+    else than List.js.  Note that this will remove any removes that are not
+    currently visible due to pagination or filtering.</p>
   </li>
   <li>
     <p><strong><a name="fuzzySearch" class="achor" href="#fuzzySearch"></a>fuzzySearch()</strong><br>
