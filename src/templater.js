@@ -72,6 +72,9 @@ var Templater = function(list) {
       } else if (valueNames[i].attr && valueNames[i].name) {
         elm = list.utils.getByClass(item.elm, valueNames[i].name, true);
         values[valueNames[i].name] = elm ? list.utils.getAttribute(elm, valueNames[i].attr) : "";
+      } else if (valueNames[i].getter && valueNames[i].name) {
+        elm = list.utils.getByClass(item.elm, valueNames[i].name, true);
+        values[valueNames[i].name] = valueNames[i].getter(elm, i);
       } else {
         elm = list.utils.getByClass(item.elm, valueNames[i], true);
         values[valueNames[i]] = elm ? elm.innerHTML : "";
