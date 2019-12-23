@@ -48,6 +48,17 @@ describe('Search', function() {
       expect(imma.matching()).toBe(true);
       expect(hasse.matching()).toBe(true);
     });
+    it('should find all with utf-8 char ö when accentFolding', function() {
+      list.shouldAccentFold = true;
+      var result = list.search('o');
+      expect(result.length).toEqual(4); // 4!!
+      expect(jonny.matching()).toBe(true);
+      expect(martina.matching()).toBe(false);
+      expect(angelica.matching()).toBe(false);
+      expect(sebastian.matching()).toBe(true);
+      expect(imma.matching()).toBe(true);
+      expect(hasse.matching()).toBe(true);
+    });
     it('should not break with weird searches', function() {
       expect(function() {
         list.search(undefined);
@@ -175,4 +186,5 @@ describe('Search', function() {
   //     expect(result.length).toEqual(1);
   //   });
   // });
+  //
 });

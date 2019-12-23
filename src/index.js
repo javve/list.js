@@ -31,6 +31,7 @@ module.exports = function(id, options, values) {
       self.searchColumns  = undefined;
       self.handlers       = { 'updated': [] };
       self.valueNames     = [];
+      self.shouldAccentFold = false;
       self.utils          = {
         getByClass: getByClass,
         extend: extend,
