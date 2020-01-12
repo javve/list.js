@@ -1,6 +1,6 @@
 /**
  * A cross-browser implementation of getElementsByClass.
- * Heavily based on Dustin Diaz's function: http://dustindiaz.com/getelementsbyclass.
+ * Heavily based on Dustin Diaz's function: https://dustindiaz.com/getelementsbyclass.
  *
  * Find all elements with class `className` inside `container`.
  * Use `single = true` to increase performance in older browsers

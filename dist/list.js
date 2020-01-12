@@ -1,4 +1,4 @@
-/*! List.js v1.5.0 (http://listjs.com) by Jonny Strömberg (http://javve.com) */
+/*! List.js v1.5.0 (https://listjs.com) by Jonny Strömberg (https://javve.com) */
 var List =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -354,7 +354,7 @@ module.exports = function(list) {
 
 /**
  * A cross-browser implementation of getElementsByClass.
- * Heavily based on Dustin Diaz's function: http://dustindiaz.com/getelementsbyclass.
+ * Heavily based on Dustin Diaz's function: https://dustindiaz.com/getelementsbyclass.
  *
  * Find all elements with class `className` inside `container`.
  * Use `single = true` to increase performance in older browsers
@@ -1481,7 +1481,7 @@ module.exports = function(list) {
 
 /**
  * A cross-browser implementation of getAttribute.
- * Source found here: http://stackoverflow.com/a/3755343/361337 written by Vivin Paliath
+ * Source found here: https://stackoverflow.com/a/3755343/361337 written by Vivin Paliath
  *
  * Return the value for `attr` at `element`.
  *

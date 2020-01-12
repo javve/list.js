@@ -1,6 +1,6 @@
 /**
  * A cross-browser implementation of getAttribute.
- * Source found here: http://stackoverflow.com/a/3755343/361337 written by Vivin Paliath
+ * Source found here: https://stackoverflow.com/a/3755343/361337 written by Vivin Paliath
  *
  * Return the value for `attr` at `element`.
  *

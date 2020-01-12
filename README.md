@@ -19,11 +19,11 @@ Really simple and easy to use!
 
 ### Features
 - Works both lists, tables and almost anything else. E.g. `<div>`,`<ul>`,`<table>`, etc.
-- Search [Read more ›](http://listjs.com/docs/list-api#search)
-- Sort [Read more ›](http://listjs.com/docs/list-api#sort)
-- Filter [Read more ›](http://listjs.com/docs/list-api#filter)
-- Simple templating system that adds possibility to add, edit, remove items [Read more ›](http://listjs.com/docs/list-api#add)
-- Plugins [Read more ›](http://listjs.com/docs/plugins)
+- Search [Read more ›](https://listjs.com/docs/list-api#search)
+- Sort [Read more ›](https://listjs.com/docs/list-api#sort)
+- Filter [Read more ›](https://listjs.com/docs/list-api#filter)
+- Simple templating system that adds possibility to add, edit, remove items [Read more ›](https://listjs.com/docs/list-api#add)
+- Plugins [Read more ›](https://listjs.com/docs/plugins)
 - Support for Chrome, Safari, Firefox, IE6+
 
 ### Download / Install
@@ -47,40 +47,40 @@ npm install list.js
 https://stackoverflow.com/questions/tagged/list.js
 
 ### Demo / Examples
-- [Existing list](http://listjs.com/examples/existing-list)
-- [Existing list + add](http://listjs.com/examples/existing-list-add)
-- [New list](http://listjs.com/examples/new-list)
-- [Add, get, remove](http://listjs.com/examples/add-get-remove)
-- [Fuzzy search](http://listjs.com/examples/fuzzy-search)
-- [Pagination](http://listjs.com/examples/pagination)
-- [Search in specific column](http://codepen.io/javve/pen/GpZpow)
-- [Filter in range](http://codepen.io/javve/pen/wKGKWL)
-- [Show message filter/search results in 0 items](http://codepen.io/javve/pen/VvavzG)
-- [Only show list after search/filter](http://codepen.io/javve/pen/YyqyRg)
+- [Existing list](https://listjs.com/examples/existing-list)
+- [Existing list + add](https://listjs.com/examples/existing-list-add)
+- [New list](https://listjs.com/examples/new-list)
+- [Add, get, remove](https://listjs.com/examples/add-get-remove)
+- [Fuzzy search](https://listjs.com/examples/fuzzy-search)
+- [Pagination](https://listjs.com/examples/pagination)
+- [Search in specific column](https://codepen.io/javve/pen/GpZpow)
+- [Filter in range](https://codepen.io/javve/pen/wKGKWL)
+- [Show message filter/search results in 0 items](https://codepen.io/javve/pen/VvavzG)
+- [Only show list after search/filter](https://codepen.io/javve/pen/YyqyRg)
 
 ## Documentation
-- [Getting started](http://listjs.com/docs)
-- [Options](http://listjs.com/docs/options)
-- [List API](http://listjs.com/docs/list-api)
-- [Item API](http://listjs.com/docs/item-api)
-- [Changelog](http://listjs.com/overview/changelog)
+- [Getting started](https://listjs.com/docs)
+- [Options](https://listjs.com/docs/options)
+- [List API](https://listjs.com/docs/list-api)
+- [Item API](https://listjs.com/docs/item-api)
+- [Changelog](https://listjs.com/overview/changelog)
 
 ### Plugins
-- [Introduction](http://listjs.com/docs/plugins)
-- [Pagination](http://listjs.com/docs/plugins/pagination)
-- [Fuzzy search](http://listjs.com/docs/plugins/fuzzysearch)
-- [Build your own](http://listjs.com/docs/plugins/build)
+- [Introduction](https://listjs.com/docs/plugins)
+- [Pagination](https://listjs.com/docs/plugins/pagination)
+- [Fuzzy search](https://listjs.com/docs/plugins/fuzzysearch)
+- [Build your own](https://listjs.com/docs/plugins/build)
 
 ### Thanks to [all lovely contributors](https://github.com/javve/list.js/graphs/contributors)! Want to join them?
-- Read more at [listjs.com/overview/contribute](http://listjs.com/overview/contribute)
+- Read more at [listjs.com/overview/contribute](https://listjs.com/overview/contribute)
 
 ### Creator
-|               | Jonny Strömberg [@javve](http://twitter.com/javve)            |
+|               | Jonny Strömberg [@javve](https://twitter.com/javve)            |
 | ------------- | ------------- |
-| ![Image of Jonny](http://1.gravatar.com/avatar/9f8130715cb4c452f1294eafa1b36290?size=80) | I hope you like the lib. I’ve put a lot of hours into it! Feel free to follow me on [Twitter](http://twitter.com/javve) for news and [donate a coffee](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M7ZGHV75VSD2E) for good karma ;)  
+| ![Image of Jonny](https://1.gravatar.com/avatar/9f8130715cb4c452f1294eafa1b36290?size=80) | I hope you like the lib. I’ve put a lot of hours into it! Feel free to follow me on [Twitter](https://twitter.com/javve) for news and [donate a coffee](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M7ZGHV75VSD2E) for good karma ;)  
 
 
 ## License (MIT)
 
 Copyright (c) 2011-2018 Jonny Strömberg <[jonny.stromberg@gmail.com](mailto:jonny.stromberg@gmail.com)>
-[http://javve.com](http://javve.com)
+[https://javve.com](https://javve.com)

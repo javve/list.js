@@ -57,13 +57,13 @@ describe('Parse', function() {
       $('body').append($('<div id="parse-list">\
         <div class="list">\
           <div data-id="1">\
-            <a href="http://lol.com" class="link name">Jonny</a>\
+            <a href="https://example.com" class="link name">Jonny</a>\
             <span class="born timestamp" data-timestamp="54321">1986</span>\
             <img class="image" src="usage/boba.jpeg">\
             <input class="foo" value="Bar">\
           </div>\
           <div data-id="2">\
-            <a href="http://lol.com" class="link name">Jocke</a>\
+            <a href="https://example.com" class="link name">Jocke</a>\
             <span class="born timestamp" data-timestamp="12345">1985</span>\
             <img class="image" src="usage/leia.jpeg">\
             <input class="foo child" value="Car">\

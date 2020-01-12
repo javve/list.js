@@ -1,7 +1,7 @@
 /** vim: et:ts=4:sw=4:sts=4
  * @license RequireJS 2.1.17 Copyright (c) 2010-2015, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
- * see: http://github.com/jrburke/requirejs for details
+ * see: https://github.com/jrburke/requirejs for details
  */
 //Not using strict: uneven strict support in browsers, #392, and causes
 //problems with requirejs.exec()/transpiler plugins that may not be strict.
@@ -163,7 +163,7 @@ var requirejs, require, define;
      * @returns {Error}
      */
     function makeError(id, msg, err, requireModules) {
-        var e = new Error(msg + '\nhttp://requirejs.org/docs/errors.html#' + id);
+        var e = new Error(msg + '\nhttps://requirejs.org/docs/errors.html#' + id);
         e.requireType = id;
         e.requireModules = requireModules;
         if (err) {
@@ -1810,7 +1810,7 @@ var requirejs, require, define;
         head = s.head = document.getElementsByTagName('head')[0];
         //If BASE tag is in play, using appendChild is a problem for IE6.
         //When that browser dies, this can be removed. Details in this jQuery bug:
-        //http://dev.jquery.com/ticket/2709
+        //https://dev.jquery.com/ticket/2709
         baseElement = document.getElementsByTagName('base')[0];
         if (baseElement) {
             head = s.head = baseElement.parentNode;
@@ -1829,7 +1829,7 @@ var requirejs, require, define;
      */
     req.createNode = function (config, moduleName, url) {
         var node = config.xhtml ?
-                document.createElementNS('http://www.w3.org/1999/xhtml', 'html:script') :
+                document.createElementNS('https://www.w3.org/1999/xhtml', 'html:script') :
                 document.createElement('script');
         node.type = config.scriptType || 'text/javascript';
         node.charset = 'utf-8';
