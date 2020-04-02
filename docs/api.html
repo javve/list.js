@@ -272,7 +272,7 @@ listObj.alphabet = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzÅåÄäÖ
 
   </li>
   <li>
-    <p><strong><a name="search" class="achor" href="#search"></a>search(searchString, columns)</strong><br>
+    <p><strong><a name="search" class="achor" href="#search"></a>search(searchString, columns, searchFunction)</strong><br>
       Searches the list</p>
 
 <pre><code class="javascript">itemsInList = [
@@ -285,7 +285,20 @@ listObj.search('Jonny'); // Only item with name Jonny is shown (also returns thi
 
 listObj.search(); // Show all items in list
 
-listObj.search('Jonny', ['name']); // Only search in the 'name' column</code></pre>
+listObj.search('Jonny', ['name']); // Only search in the 'name' column
+
+listObj.search('Jonny', searchFunction); // Custom search for Jonny
+
+listObj.search('Jonny', ['name'], searchFunction); // Custom search in the 'name' column</code></pre>
+<p>The optional <code>searchFunction</code> should be of the form:</p>
+
+<pre><code class="javascript">function searchFunction(searchString, columns) {
+  for (var k = 0, kl = listObj.items.length; k &lt; kl; k++) {
+     listObj.items[k].found = false;
+     // Insert your custom search logic here, set found = true
+
+  }
+};</code></pre>
 
   </li>
   <li>
