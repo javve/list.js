@@ -276,23 +276,32 @@ listObj.alphabet = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzÅåÄäÖ
       Searches the list</p>
 
 <pre><code class="javascript">itemsInList = [
-{ id: 1, name: "Jonny" }
-, { id: 2, name "Gustaf" }
-, { id: 3, name "Jonas" }
+{ id: 1, name: "Jonny Stromberg", born: 1986 }
+, { id: 2, name "Jonas Arnklint", born: 1985 }
+, { id: 3, name "Martina Elm", born: 1986 }
+, { id: 4, name "Gustaf Lindqvist", born: 1983 }
+, { id: 5, name "Jonny Strandberg", born: 1990 }
 ];
 
-listObj.search('Jonny'); // Only item with name Jonny is shown (also returns this item)
+listObj.search('Jonny'); // Only items with name Jonny are shown (also returns these items)
 
 listObj.search(); // Show all items in list
 
-listObj.search('Jonny', ['name']); // Only search in the 'name' column
+listObj.search('Jonny', ['name']); // Only search in the 'name' column</code></pre>
 
-listObj.search('Jonny', searchFunction); // Custom search for Jonny
+<p>Space-separated words match in any order using logical AND. Surround a phrase in quotes for exact matches:</p>
 
-listObj.search('Jonny', ['name'], searchFunction); // Custom search in the 'name' column</code></pre>
-<p>The optional <code>searchFunction</code> should be of the form:</p>
+<pre><code class="javascript">listObj.search('Jon 198'); // Items that match Jon AND 198
 
-<pre><code class="javascript">function searchFunction(searchString, columns) {
+listObj.search('"Jonny S" 1990'); // Items that match "Jonny S" AND 1990</code></pre>
+
+<p>Optionally your own search function can be used:</p>
+
+<pre><code class="javascript">listObj.search('Jonny', searchFunction); // Custom search for Jonny
+
+listObj.search('Jonny', ['name'], searchFunction); // Custom search in the 'name' column
+
+function searchFunction(searchString, columns) {
   for (var k = 0, kl = listObj.items.length; k &lt; kl; k++) {
      listObj.items[k].found = false;
      // Insert your custom search logic here, set found = true
