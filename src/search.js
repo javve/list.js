@@ -112,13 +112,13 @@ module.exports = function(list) {
   list.handlers.searchStart = list.handlers.searchStart || [];
   list.handlers.searchComplete = list.handlers.searchComplete || [];
 
-  list.utils.events.bind(list.utils.getByClass(list.listContainer, list.searchClass), 'keyup', function(e) {
+  list.utils.events.bind(list.utils.getByClass(list.listContainer, list.searchClass), 'keyup', list.utils.events.debounce(function(e) {
     var target = e.target || e.srcElement, // IE have srcElement
       alreadyCleared = (target.value === "" && !list.searched);
     if (!alreadyCleared) { // If oninput already have resetted the list, do nothing
       searchMethod(target.value);
     }
-  });
+  }, 750));
 
   // Used to detect click on HTML5 clear button
   list.utils.events.bind(list.utils.getByClass(list.listContainer, list.searchClass), 'input', function(e) {
