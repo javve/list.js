@@ -20,6 +20,7 @@ redirect_from:
   <li><a href="#page">page</a></li>
   <li><a href="#pagination">pagination</a></li>
   <li><a href="#searchClass">searchClass</a></li>
+  <li><a href="#searchColumns">searchColumns</a></li>
   <li><a href="#sortClass">sortClass</a></li>
   <li><a href="#valueNames">valueNames</a></li>
 </ul>
@@ -44,7 +45,7 @@ redirect_from:
   <li><a href="#fuzzysearch">fuzzySearch</a></li>
   <li><a href="#get">get</a></li>
   <li><a href="#on">on</a></li>
-  <li><a href="#reindex">reindex</a></li>
+  <li><a href="#reindex">reIndex</a></li>
   <li><a href="#remove">remove</a></li>
   <li><a href="#search">search</a></li>
   <li><a href="#size">size</a></li>
@@ -134,7 +135,7 @@ Defines how many items that should be visible at the same time. This affects
 performance.</p></li>
 <li><p><strong><a name="i" href="#i" class="anchor"></a>i</strong>  <em class="docs-parameter-description">Int, default: 1</em><br>
 Which item should be shown as the first one.</p></li>
-<li><p><strong><a name="pagination" href="#pagination" class="anchor"></a>pagination</strong>  <em class="docs-parameter-description">Boolean, default: false</em><br>
+<li><p><strong><a name="pagination" href="#pagination" class="anchor"></a>pagination</strong>  <em class="docs-parameter-description">Boolean, default: undefined</em><br>
 Read more <a href="{{ "/docs/pagination" | relative_url }}">here</a>.</p></li>
 </ul>
 </li>
@@ -347,7 +348,7 @@ listObj.show(4, 3); // Display item 4,5,6 </code></pre>
     Read more <a href="{{ "/docs/fuzzysearch" | relative_url }}">here</a></p>
   </li>
   <li>
-    <p><strong><aname="on" class="achor" href="#on"></a>on(event, callback)</strong><br>
+    <p><strong><a name="on" class="achor" href="#on"></a>on(event, callback)</strong><br>
     Execute <code>callback</code> when list have been updated (triggered by <code>update()</code>, which is used by a lot of methods). Use <code>updated</code> as the event.</p>
     <h4>Avaliable events</h4>
     <ul>
