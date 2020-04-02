@@ -36,3 +36,30 @@ exports.unbind = function(el, type, fn, capture){
     el[i][unbind](prefix + type, fn, capture || false);
   }
 };
+
+/**
+ * Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered. The function will be called after it stops being called for
+ * `wait` milliseconds. If `immediate` is true, trigger the function on the
+ * leading edge, instead of the trailing.
+ *
+ * @param {Function} fn
+ * @param {Integer} wait
+ * @param {Boolean} immediate
+ * @api public
+ */
+
+exports.debounce = function(fn, wait, immediate){
+  var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) fn.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) fn.apply(context, args);
+	};  
+};
