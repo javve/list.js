@@ -59,7 +59,7 @@ module.exports = function(list, options) {
   events.bind(getByClass(list.listContainer, options.searchClass), 'keyup', list.utils.events.debounce(function(e) {
     var target = e.target || e.srcElement; // IE have srcElement
     list.search(target.value, fuzzySearch.search);
-  }, 750));
+  }, list.searchDelay));
 
   return function(str, columns) {
     list.search(str, columns, fuzzySearch.search);

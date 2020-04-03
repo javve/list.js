@@ -118,7 +118,7 @@ module.exports = function(list) {
     if (!alreadyCleared) { // If oninput already have resetted the list, do nothing
       searchMethod(target.value);
     }
-  }, 750));
+  }, list.searchDelay));
 
   // Used to detect click on HTML5 clear button
   list.utils.events.bind(list.utils.getByClass(list.listContainer, list.searchClass), 'input', function(e) {

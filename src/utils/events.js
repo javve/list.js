@@ -51,7 +51,7 @@ exports.unbind = function(el, type, fn, capture){
 
 exports.debounce = function(fn, wait, immediate){
   var timeout;
-	return function() {
+  return wait ? function() {
 		var context = this, args = arguments;
 		var later = function() {
 			timeout = null;
@@ -61,5 +61,5 @@ exports.debounce = function(fn, wait, immediate){
 		clearTimeout(timeout);
 		timeout = setTimeout(later, wait);
 		if (callNow) fn.apply(context, args);
-	};  
+	} : fn;  
 };
