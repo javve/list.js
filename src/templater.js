@@ -131,12 +131,25 @@ var Templater = function(list) {
     if (item.elm !== undefined) {
       return false;
     }
-    if (itemSource === undefined) {
-      throw new Error("The list needs to have at least one item on init otherwise you'll have to add a template.");
+    
+    if(typeof list.itemRenderFunction !== 'undefined'){
+      
+      var newItem = templater.getItemSource(list.itemRenderFunction(item.values(), item));
+      if (newItem) {
+        newItem = templater.clearSourceItem(newItem, list.valueNames);
+      }
+      
+    } else {
+      
+      if (itemSource === undefined) {
+        throw new Error("The list needs to have at least one item on init otherwise you'll have to add a template.");
+      }
+      /* If item source does not exists, use the first item in list as
+      source for new items */
+      
+      var newItem = itemSource.cloneNode(true);
     }
-    /* If item source does not exists, use the first item in list as
-    source for new items */
-    var newItem = itemSource.cloneNode(true);
+    
     newItem.removeAttribute('id');
     item.elm = newItem;
     templater.set(item, item.values());
