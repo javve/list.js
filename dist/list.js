@@ -1,4 +1,3 @@
-/*! List.js v1.5.0 (https://listjs.com) by Jonny Strömberg (https://javve.com) */
 var List;List =
 /******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
