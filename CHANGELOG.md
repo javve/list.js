@@ -1,5 +1,7 @@
 # Changelog
 
+- [Bugfix] #667 Fix `getAttribute` fallback method
+
 ### 2.0.0 - 2020-11-21 - Winter cleanup 🧹
 
 - **[Breaking]** Drop support for IE6-8
