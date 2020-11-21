@@ -3,6 +3,8 @@
 - **[Feature]** #634 Add item template function
 - **[Feature]** #591 Support adding custom pagination item
 - **[Bugfix]** #667 Fix `getAttribute` fallback method
+- **[Bugfix]** #636 Aviod strange ie11 bug
+- **[Misc]** #637 Reuse iteration indices
 
 ### 2.0.0 - 2020-11-21 - Winter cleanup 🧹
 
