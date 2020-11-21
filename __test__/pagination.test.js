@@ -253,7 +253,6 @@ describe('Pagination', function () {
       expect($(pagination.find('li').get(4)).hasClass('active')).toEqual(true)
       expect($(pagination.find('li').get(5)).hasClass('active')).toEqual(false)
     })
-
     it('should show last page with show(17,2)', function () {
       list.show(17, 2)
       expect(pagination.find('a').length).toEqual(5)
@@ -267,5 +266,106 @@ describe('Pagination', function () {
       expect($(pagination.find('li').get(3)).hasClass('active')).toEqual(false)
       expect($(pagination.find('li').get(4)).hasClass('active')).toEqual(true)
     })
-  })
-})
+  });
+
+  describe('Custom settings, pagination: { item: "<button><span class=page></span></button>" }', function() {
+    var list,
+      itemHTML,
+      pagination;
+
+    beforeAll(function() {
+      itemHTML = fixturePagination.list(['name'])
+      list = new List('list-pagination', {
+        valueNames: ['name'],
+        item: itemHTML,
+        page: 2,
+          pagination: {
+              item: "<button><span class=page></span></button>",
+          },
+      }, fixturePagination.all);
+
+      pagination = $('.pagination');
+    });
+
+    afterAll(function() {
+      fixturePagination.removeList();
+    });
+
+    it('should have default settings', function() {
+      expect(pagination.find('span').length).toEqual(4);
+      expect(pagination.find('span').get(0).innerHTML).toEqual("1");
+      expect(pagination.find('span').get(1).innerHTML).toEqual("2");
+      expect(pagination.find('span').get(2).innerHTML).toEqual("3");
+      expect(pagination.find('span').get(3).innerHTML).toEqual("...");
+      expect(pagination.find('span').get(4)).toEqual(undefined);
+    });
+
+    it('should show same pages for show(7,2) and show(8,2)', function() {
+      list.show(7, 2);
+      expect(pagination.find('span').length).toEqual(7);
+      expect(pagination.find('span').get(0).innerHTML).toEqual("...");
+      expect(pagination.find('span').get(1).innerHTML).toEqual("2");
+      expect(pagination.find('span').get(2).innerHTML).toEqual("3");
+      expect(pagination.find('span').get(3).innerHTML).toEqual("4");
+      expect(pagination.find('span').get(4).innerHTML).toEqual("5");
+      expect(pagination.find('span').get(5).innerHTML).toEqual("6");
+      expect(pagination.find('span').get(6).innerHTML).toEqual("...");
+      expect(pagination.find('span').get(7)).toEqual(undefined);
+      expect($(pagination.find('button').get(2)).hasClass('active')).toEqual(false);
+      expect($(pagination.find('button').get(3)).hasClass('active')).toEqual(true);
+      expect($(pagination.find('button').get(4)).hasClass('active')).toEqual(false);
+    });
+
+    it('should show same pages for show(7,2) and show(8,2)', function() {
+      list.show(8, 2);
+      expect(pagination.find('span').length).toEqual(7);
+      expect(pagination.find('span').get(0).innerHTML).toEqual("...");
+      expect(pagination.find('span').get(1).innerHTML).toEqual("2");
+      expect(pagination.find('span').get(2).innerHTML).toEqual("3");
+      expect(pagination.find('span').get(3).innerHTML).toEqual("4");
+      expect(pagination.find('span').get(4).innerHTML).toEqual("5");
+      expect(pagination.find('span').get(5).innerHTML).toEqual("6");
+      expect(pagination.find('span').get(6).innerHTML).toEqual("...");
+      expect(pagination.find('span').get(7)).toEqual(undefined);
+      expect($(pagination.find('button').get(2)).hasClass('active')).toEqual(false);
+      expect($(pagination.find('button').get(3)).hasClass('active')).toEqual(true);
+      expect($(pagination.find('button').get(4)).hasClass('active')).toEqual(false);
+    });
+
+    it('should test show(14,2)', function() {
+      list.show(14, 2);
+      expect(pagination.find('span').length).toEqual(6);
+      expect(pagination.find('span').get(0).innerHTML).toEqual("...");
+      expect(pagination.find('span').get(1).innerHTML).toEqual("5");
+      expect(pagination.find('span').get(2).innerHTML).toEqual("6");
+      expect(pagination.find('span').get(3).innerHTML).toEqual("7");
+      expect(pagination.find('span').get(4).innerHTML).toEqual("8");
+      expect(pagination.find('span').get(5).innerHTML).toEqual("9");
+      expect(pagination.find('span').get(6)).toEqual(undefined);
+      expect($(pagination.find('button').get(2)).hasClass('active')).toEqual(false);
+      expect($(pagination.find('button').get(3)).hasClass('active')).toEqual(true);
+      expect($(pagination.find('button').get(4)).hasClass('active')).toEqual(false);
+    });
+
+    it('should show last page with show(17,2)', function() {
+      list.show(17, 2);
+      expect(pagination.find('span').length).toEqual(4);
+      expect(pagination.find('span').get(0).innerHTML).toEqual("...");
+      expect(pagination.find('span').get(1).innerHTML).toEqual("7");
+      expect(pagination.find('span').get(2).innerHTML).toEqual("8");
+      expect(pagination.find('span').get(3).innerHTML).toEqual("9");
+      expect(pagination.find('span').get(4)).toEqual(undefined);
+      expect($(pagination.find('button').get(1)).hasClass('active')).toEqual(false);
+      expect($(pagination.find('button').get(2)).hasClass('active')).toEqual(false);
+      expect($(pagination.find('button').get(3)).hasClass('active')).toEqual(true);
+    });
+
+    it('should handle page = 0', function() {
+      expect(list.listContainer.style.display).toBe('');
+      list.show(0, 0);
+      expect(list.listContainer.style.display).toBe('none');
+      list.show(1, 1);
+      expect(list.listContainer.style.display).toBe('block');
+    });
+  });
+});
