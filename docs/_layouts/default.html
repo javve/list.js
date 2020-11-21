@@ -14,22 +14,26 @@
     <meta name="author" content="Jonny Strömberg">
     <meta name="google-site-verification" content="CxtqsFWhMxG32DK5A7Hbtg1ficvqhu9sybSeDP25JpI" />
 
-    <link rel="shortcut icon" href="/assets/images/graphics/favicon.ico">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//platform.twitter.com">
+    <link rel="dns-prefetch" href="//www.facebook.com">
+    <link rel="shortcut icon" href="{{ "/assets/images/graphics/favicon.ico" | relative_url }}">
+    <link rel="stylesheet" href="{{ "/assets/css/style.css" | relative_url }}">
 
     <!-- Open graph -->
     <meta property="og:title" content="{{ site.title }}" />
     <meta property="og:description" content="{{ site.description }}" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="http://listjs.com{{ page.url }}" />
-    <meta property="og:image" content="http://listjs.com/assets/images/graphics/listjs-logo.png" />
+    <meta property="og:url" content="{{ page.url | relative_url }}" />
+    <meta property="og:image" content="{{ "/assets/images/graphics/listjs-logo.png" | relative_url }}" />
 
     <!-- Twitter card -->
     <meta property="twitter:card" content="summary" />
     <meta property="twitter:title" content="{{ site.title }}" />
     <meta property="twitter:site" content="@javve" />
     <meta property="twitter:description" content="{{ site.description }}" />
-    <meta property="twitter:image:src" content="http://listjs.com/assets/images/graphics/listjs-logo.png" />
+    <meta property="twitter:image:src" content="{{ "/assets/images/graphics/listjs-logo.png" | relative_url }}" />
 
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,200,300,600,700' rel='stylesheet' type='text/css'>
     <script type="text/javascript">
@@ -45,10 +49,7 @@
       })();
 
     </script>
-
-    {% if jekyll.environment != 'production' %}
-    <script src="http://localhost:35729/livereload.js"></script>
-    {% endif %}
+    <script async src="https://hosted.okayanalytics.com/tracker.js?tid=OA-OVYXYEWW"></script>
 </head>
 
 <body>
@@ -84,8 +85,8 @@
 
   {% include carbon.html %}
 
-  <script src="/assets/javascripts/list.min.js"></script>
-  <script src="/assets/javascripts/main.js"></script>
+  <script src="{{ "/assets/javascripts/list.min.js" | relative_url }}"></script>
+  <script src="{{"/assets/javascripts/main.js" | relative_url }}"></script>
   <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
   <div id="fb-root"></div>
   <script>(function(d, s, id) {

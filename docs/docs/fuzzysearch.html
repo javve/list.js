@@ -77,10 +77,10 @@ var options = {
 var listObj = new List('list-id', options);
 
 // Search manually
-listObj.fuzzySearch.search('my search');
+listObj.fuzzySearch('my search');
 
 // Search manually on specific columns
-listObj.fuzzySearch.search('my search', [ 'name' ]);
+listObj.fuzzySearch('my search', [ 'name' ]);
 
 &lt;/script>
 </code></pre>
