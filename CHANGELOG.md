@@ -1,6 +1,7 @@
 # Changelog
 
-- [Bugfix] #667 Fix `getAttribute` fallback method
+- **[Feature]** #634 Add item template function
+- **[Bugfix]** #667 Fix `getAttribute` fallback method
 
 ### 2.0.0 - 2020-11-21 - Winter cleanup 🧹
 
