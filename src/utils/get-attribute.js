@@ -15,9 +15,9 @@ module.exports = function (el, attr) {
     var attrs = el.attributes
     var length = attrs.length
     for (var i = 0; i < length; i++) {
-      if (attr[i] !== undefined) {
-        if (attr[i].nodeName === attr) {
-          result = attr[i].nodeValue
+      if (attrs[i] !== undefined) {
+        if (attrs[i].nodeName === attr) {
+          result = attrs[i].nodeValue
         }
       }
     }
