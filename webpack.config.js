@@ -30,20 +30,7 @@ module.exports = {
   devServer: {
     inline: true,
   },
-  plugins: [
-    new webpack.BannerPlugin({
-      banner:
-        'List.js v' +
-        PACKAGE.version +
-        ' (' +
-        PACKAGE.homepage +
-        ') by ' +
-        PACKAGE.author.name +
-        ' (' +
-        PACKAGE.author.url +
-        ')',
-    }),
-  ],
+  plugins: [],
   optimization: {
     minimize: true,
     minimizer: [
