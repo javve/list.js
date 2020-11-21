@@ -1,154 +1,161 @@
 const $ = require('jquery'),
-  List = require('../src/index');
+  List = require('../src/index')
 
-describe('Create', function() {
-
-  describe('With HTML items', function() {
-    var listEl = $('<div id="list">\
+describe('Create', function () {
+  describe('With HTML items', function () {
+    var listEl = $(
+      '<div id="list">\
       <ul class="list">\
         <li><span class="name">Jonny</span></li>\
       </ul>\
-    </div>');
+    </div>'
+    )
 
-    $(document.body).append(listEl);
+    $(document.body).append(listEl)
 
-    var list = new List('list', { valueNames: ['name'] });
+    var list = new List('list', { valueNames: ['name'] })
 
-    it('should contain one item', function() {
-      expect(list.items.length).toEqual(1);
-      expect(listEl.find('li').length).toEqual(1);
-    });
+    it('should contain one item', function () {
+      expect(list.items.length).toEqual(1)
+      expect(listEl.find('li').length).toEqual(1)
+    })
 
-    it('should contain two items', function() {
-      list.add({ name: 'Jonas' });
-      expect(list.items.length).toEqual(2);
-      expect(listEl.find('li').length).toEqual(2);
-    });
+    it('should contain two items', function () {
+      list.add({ name: 'Jonas' })
+      expect(list.items.length).toEqual(2)
+      expect(listEl.find('li').length).toEqual(2)
+    })
 
-    listEl.remove();
-  });
+    listEl.remove()
+  })
 
-  describe('Without items and with string template', function() {
+  describe('Without items and with string template', function () {
     var listEl = $('<div id="list">\
       <ul class="list"></ul>\
-    </div>');
+    </div>')
 
-    $(document.body).append(listEl);
+    $(document.body).append(listEl)
 
-    var list = new List('list', {
-      valueNames: ['name'],
-      item: '<li><span class="name"></span></li>'
-    }, [
-      { name: 'Jonny' }
-    ]);
+    var list = new List(
+      'list',
+      {
+        valueNames: ['name'],
+        item: '<li><span class="name"></span></li>',
+      },
+      [{ name: 'Jonny' }]
+    )
 
-    it('should contain one item', function() {
-      expect(list.items.length).toEqual(1);
-      expect(listEl.find('li').length).toEqual(1);
-    });
+    it('should contain one item', function () {
+      expect(list.items.length).toEqual(1)
+      expect(listEl.find('li').length).toEqual(1)
+    })
 
-    it('should contain two items', function() {
-      list.add({ name: 'Jonas' });
-      expect(list.items.length).toEqual(2);
-      expect(listEl.find('li').length).toEqual(2);
-    });
+    it('should contain two items', function () {
+      list.add({ name: 'Jonas' })
+      expect(list.items.length).toEqual(2)
+      expect(listEl.find('li').length).toEqual(2)
+    })
 
-    listEl.remove();
-  });
+    listEl.remove()
+  })
 
-  describe('Without items and with string template for table', function() {
+  describe('Without items and with string template for table', function () {
     var listEl = $('<div id="list">\
       <table class="list"></table>\
-    </div>');
+    </div>')
 
-    $(document.body).append(listEl);
+    $(document.body).append(listEl)
 
-    var list = new List('list', {
-      valueNames: ['name'],
-      item: '<tr><span class="name"></span></tr>'
-    }, [
-      { name: 'Jonny' }
-    ]);
+    var list = new List(
+      'list',
+      {
+        valueNames: ['name'],
+        item: '<tr><span class="name"></span></tr>',
+      },
+      [{ name: 'Jonny' }]
+    )
 
-    it('should contain one item', function() {
-      expect(list.items.length).toEqual(1);
-      expect(listEl.find('tr').length).toEqual(1);
-    });
+    it('should contain one item', function () {
+      expect(list.items.length).toEqual(1)
+      expect(listEl.find('tr').length).toEqual(1)
+    })
 
-    it('should contain two items', function() {
-      list.add({ name: 'Jonas' });
-      expect(list.items.length).toEqual(2);
-      expect(listEl.find('tr').length).toEqual(2);
-    });
+    it('should contain two items', function () {
+      list.add({ name: 'Jonas' })
+      expect(list.items.length).toEqual(2)
+      expect(listEl.find('tr').length).toEqual(2)
+    })
 
-    listEl.remove();
-  });
+    listEl.remove()
+  })
 
-  describe('without items and or template', function() {
-
-    it('should not throw error on init', function() {
+  describe('without items and or template', function () {
+    it('should not throw error on init', function () {
       var listEl = $('<div id="list">\
         <ul class="list"></ul>\
-      </div>');
-      $(document.body).append(listEl);
+      </div>')
+      $(document.body).append(listEl)
 
       var list = new List('list', {
-        valueNames: ['name']
-      });
+        valueNames: ['name'],
+      })
 
-      listEl.remove();
-    });
+      listEl.remove()
+    })
 
-    it('should throw error when created items', function() {
+    it('should throw error when created items', function () {
       var listEl = $('<div id="list">\
         <ul class="list"></ul>\
-      </div>');
-      $(document.body).append(listEl);
+      </div>')
+      $(document.body).append(listEl)
 
       var list = new List('list', {
-        valueNames: ['name']
-      });
-      expect(function() {
-        list.add({ name: 'Jonas' });
-      }).toThrow();
-      listEl.remove();
-    });
-  });
+        valueNames: ['name'],
+      })
+      expect(function () {
+        list.add({ name: 'Jonas' })
+      }).toThrow()
+      listEl.remove()
+    })
+  })
 
-  describe('Without items and with HTML template', function() {
+  describe('Without items and with HTML template', function () {
     var listEl = $('<div id="list">\
       <ul class="list"></ul>\
-    </div>');
+    </div>')
 
-    var templateEl = $('<li id="template-item"><span class="name"></span></li>');
+    var templateEl = $('<li id="template-item"><span class="name"></span></li>')
 
-    $(document.body).append(listEl);
-    $(document.body).append(templateEl);
+    $(document.body).append(listEl)
+    $(document.body).append(templateEl)
 
-    var list = new List('list', {
-      valueNames: ['name'],
-      item: 'template-item'
-    }, [
-      { name: 'Jonny' }
-    ]);
+    var list = new List(
+      'list',
+      {
+        valueNames: ['name'],
+        item: 'template-item',
+      },
+      [{ name: 'Jonny' }]
+    )
 
-    it('should contain one item', function() {
-      expect(list.items.length).toEqual(1);
-      expect(listEl.find('li').length).toEqual(1);
-    });
+    it('should contain one item', function () {
+      expect(list.items.length).toEqual(1)
+      expect(listEl.find('li').length).toEqual(1)
+    })
 
-    it('should contain two items', function() {
-      list.add({ name: 'Jonas' });
-      expect(list.items.length).toEqual(2);
-      expect(listEl.find('li').length).toEqual(2);
-    });
+    it('should contain two items', function () {
+      list.add({ name: 'Jonas' })
+      expect(list.items.length).toEqual(2)
+      expect(listEl.find('li').length).toEqual(2)
+    })
 
-    listEl.remove();
-    templateEl.remove();
-  });
+    listEl.remove()
+    templateEl.remove()
+  })
 
-  describe('Asyn index with existing list', function() {
-    var listEl = $('<div id="list">\
+  describe('Asyn index with existing list', function () {
+    var listEl = $(
+      '<div id="list">\
       <ul class="list">\
         <li><span class="name">Jonny</span></li><li><span class="name">Sven</span></li>\
         <li><span class="name">Anna</span></li><li><span class="name">Lisa</span></li>\
@@ -232,20 +239,20 @@ describe('Create', function() {
         <li><span class="name">Imma</span></li><li><span class="name">Hasse</span></li>\
         <li><span class="name">Robert</span></li><li><span class="name">Mona</span></li>\
       </ul>\
-    </div>');
+    </div>'
+    )
 
-    it('should contain one item', function(done) {
-      $(document.body).append(listEl);
+    it('should contain one item', function (done) {
+      $(document.body).append(listEl)
       var list = new List('list', {
         valueNames: ['name'],
         indexAsync: true,
-        parseComplete: function(list) {
-          expect(listEl.find('li').length).toEqual(162);
-          listEl.remove();
-          done();
-        }
-      });
-    });
-  });
-
-});
+        parseComplete: function (list) {
+          expect(listEl.find('li').length).toEqual(162)
+          listEl.remove()
+          done()
+        },
+      })
+    })
+  })
+})

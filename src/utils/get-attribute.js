@@ -9,18 +9,18 @@
  * @api public
  */
 
-module.exports = function(el, attr) {
-  var result = (el.getAttribute && el.getAttribute(attr)) || null;
-  if( !result ) {
-    var attrs = el.attributes;
-    var length = attrs.length;
-    for(var i = 0; i < length; i++) {
+module.exports = function (el, attr) {
+  var result = (el.getAttribute && el.getAttribute(attr)) || null
+  if (!result) {
+    var attrs = el.attributes
+    var length = attrs.length
+    for (var i = 0; i < length; i++) {
       if (attr[i] !== undefined) {
-        if(attr[i].nodeName === attr) {
-          result = attr[i].nodeValue;
+        if (attr[i].nodeName === attr) {
+          result = attr[i].nodeValue
         }
       }
     }
   }
-  return result;
-};
+  return result
+}
