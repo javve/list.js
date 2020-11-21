@@ -13,10 +13,10 @@ var bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
  * @api public
  */
 
-exports.bind = function (el, type, fn, capture) {
-  el = toArray(el)
-  for (var i = 0; i < el.length; i++) {
-    el[i][bind](prefix + type, fn, capture || false)
+exports.bind = function(el, type, fn, capture){
+  el = toArray(el);
+  for ( var i = 0, il = el.length; i < il; i++ ) {
+    el[i][bind](prefix + type, fn, capture || false);
   }
 }
 
@@ -30,9 +30,9 @@ exports.bind = function (el, type, fn, capture) {
  * @api public
  */
 
-exports.unbind = function (el, type, fn, capture) {
-  el = toArray(el)
-  for (var i = 0; i < el.length; i++) {
-    el[i][unbind](prefix + type, fn, capture || false)
+exports.unbind = function(el, type, fn, capture){
+  el = toArray(el);
+  for ( var i = 0, il = el.length; i < il; i++ ) {
+    el[i][unbind](prefix + type, fn, capture || false);
   }
 }
