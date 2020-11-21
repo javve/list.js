@@ -1,6 +1,6 @@
 {
   "name": "list.js",
-  "version": "2.0.0",
+  "version": "1.5.1",
   "description": "The perfect library for lists. Supports search, sort, filters and flexibility. Built to be invisible and work on existing HTML",
   "keywords": [
     "list",
@@ -44,8 +44,8 @@
     "build": "npx webpack",
     "watch": "npx webpack --watch",
     "watch-test": "npx jest --watch",
-    "preversion": "npm test && npm run build && cp package.json docs/_data/pkg.json && cp dist/list.min.js docs/assets/javascripts/list.min.js && cp dist/list.min.js.map docs/assets/javascripts/list.min.js.map && git add dist && git add docs/assets/javascripts",
-    "postversion": "git push --follow-tags origin master"
+    "preversion": "npm test && npm run build && cp dist/list.min.js docs/assets/javascripts/list.min.js && cp dist/list.min.js.map docs/assets/javascripts/list.min.js.map && git add dist && git add docs/assets/javascripts",
+    "postversion": "git push --follow-tags origin master && cp package.json docs/_data/pkg.json && git add docs/_data/pkg.json && git commit -m \"pkg.json update\""
   },
   "npmName": "list.js",
   "npmFileMap": [
