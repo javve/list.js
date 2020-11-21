@@ -1,34 +1,49 @@
-const webpack = require('webpack'),
-      PACKAGE = require('./package.json');
+const webpack = require('webpack')
+const PACKAGE = require('./package.json')
+const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
   entry: {
     list: './src/index.js',
-    "list.min": './src/index.js'
+    'list.min': './src/index.js',
   },
   output: {
     path: __dirname + '/dist',
-    filename: "[name].js",
-    library: 'List'
+    filename: '[name].js',
+    library: 'List',
   },
-  module: {
-    rules: [{
-      enforce: 'pre',
-      test: /\.js$/,
-      exclude: /(node_modules|src\/utils\/extend\.js)/,
-      loader: "jshint-loader"
-    }]
-  },
+  devtool: false,
+  module: {},
   devServer: {
-    inline: true
+    inline: true,
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      include: /\.min\.js$/,
-      minimize: true
-    }),
     new webpack.BannerPlugin({
-      banner: 'List.js v' + PACKAGE.version + ' (' + PACKAGE.homepage + ') by ' + PACKAGE.author.name + ' (' + PACKAGE.author.url + ')'
-    })
-  ]
-};
+      banner:
+        'List.js v' +
+        PACKAGE.version +
+        ' (' +
+        PACKAGE.homepage +
+        ') by ' +
+        PACKAGE.author.name +
+        ' (' +
+        PACKAGE.author.url +
+        ')',
+    }),
+  ],
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        include: /\.min\.js$/,
+        extractComments: false,
+        terserOptions: {
+          format: {
+            comments: /^! List.js v.*/,
+          },
+          mangle: true,
+        },
+      }),
+    ],
+  },
+}
