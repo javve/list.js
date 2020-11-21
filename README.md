@@ -77,14 +77,7 @@ https://stackoverflow.com/questions/tagged/list.js
 - [Options](http://listjs.com/docs/options)
 - [List API](http://listjs.com/docs/list-api)
 - [Item API](http://listjs.com/docs/item-api)
-- [Changelog](http://listjs.com/overview/changelog)
-
-### Plugins
-
-- [Introduction](http://listjs.com/docs/plugins)
-- [Pagination](http://listjs.com/docs/plugins/pagination)
-- [Fuzzy search](http://listjs.com/docs/plugins/fuzzysearch)
-- [Build your own](http://listjs.com/docs/plugins/build)
+- [Changelog](https://github.com/javve/list.js/blob/master/CHANGELOG.md)
 
 ### Thanks to [all lovely contributors](https://github.com/javve/list.js/graphs/contributors)! Want to join them?
 
