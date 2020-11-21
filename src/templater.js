@@ -75,6 +75,7 @@ var Templater = function (list) {
   }
 
   var getItemSource = function (itemHTML) {
+    if (typeof itemHTML !== 'string') return undefined
     if (/<tr[\s>]/g.exec(itemHTML)) {
       var tbody = document.createElement('tbody')
       tbody.innerHTML = itemHTML

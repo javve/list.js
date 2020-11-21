@@ -85,7 +85,7 @@ module.exports = function (list) {
   return function (options) {
     var pagingList = new List(list.listContainer.id, {
       listClass: options.paginationClass || 'pagination',
-      item: "<li><a class='page' href='#'></a></li>",
+      item: options.item || "<li><a class='page' href='#'></a></li>",
       valueNames: ['page', 'dotted'],
       searchClass: 'pagination-search-that-is-not-supposed-to-exist',
       sortClass: 'pagination-sort-that-is-not-supposed-to-exist',

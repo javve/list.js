@@ -29,6 +29,28 @@ describe('Create', function () {
     listEl.remove()
   })
 
+  describe('With and element instead of id', function () {
+    var listEl = $(
+      '<div id="list">\
+      <ul class="list">\
+        <li><span class="name">Jonny</span></li>\
+      </ul>\
+    </div>'
+    )
+
+    $(document.body).append(listEl)
+    var el = document.getElementById('list')
+
+    var list = new List(el, { valueNames: ['name'] })
+
+    it('should contain one item', function () {
+      expect(list.items.length).toEqual(1)
+      expect(listEl.find('li').length).toEqual(1)
+    })
+
+    listEl.remove()
+  })
+
   describe('Without items and with string template', function () {
     var listEl = $('<div id="list">\
       <ul class="list"></ul>\
