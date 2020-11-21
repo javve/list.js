@@ -43,7 +43,9 @@
     "test": "npx jest",
     "build": "npx webpack",
     "watch": "npx webpack --watch",
-    "watch-test": "npx jest --watch"
+    "watch-test": "npx jest --watch",
+    "preversion": "npm test && npm run build && cp package.json docs/_data/pkg.json && cp dist/list.min.js docs/assets/javascripts/list.min.js && cp dist/list.min.js.map docs/assets/javascripts/list.min.js.map && git add dist && git add docs/assets/javascripts",
+    "postversion": "git push --follow-tags origin master"
   },
   "npmName": "list.js",
   "npmFileMap": [
