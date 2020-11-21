@@ -65,7 +65,7 @@ module.exports = function (id, options, values) {
     },
     handlers: function () {
       for (var handler in self.handlers) {
-        if (self[handler]) {
+        if (self[handler] && self.handlers.hasOwnProperty(handler)) {
           self.on(handler, self[handler])
         }
       }
