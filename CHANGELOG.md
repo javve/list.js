@@ -1,9 +1,12 @@
 # Changelog
 
+### 2.1.0 - 2020-11-21
+
 - **[Feature]** #634 Add item template function
 - **[Feature]** #591 Support adding custom pagination item
 - **[Bugfix]** #667 Fix `getAttribute` fallback method
 - **[Bugfix]** #636 Aviod strange ie11 bug
+- **[Bugfix]** #570 Don't empty original value array when adding items async
 - **[Misc]** #637 Reuse iteration indices
 
 ### 2.0.0 - 2020-11-21 - Winter cleanup 🧹
