@@ -11,6 +11,8 @@
 - **[Misc]** Prettier on everything
 - **[Misc]** Make release script simpler
 - **[Misc]** Rename History.md to CHANGELOG.md
+- **[Misc]** Use `babal-loader` with `@babel/preset-env` for supporting IE9-11
+- **[Misc]** Add source-maps to `/dist`
 
 ### 1.5.1
 
