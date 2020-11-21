@@ -14,9 +14,9 @@
   "author": {
     "name": "Jonny Strömberg",
     "email": "jonny.stromberg@gmail.com>",
-    "url": "http://javve.com"
+    "url": "https://javve.com"
   },
-  "homepage": "http://listjs.com",
+  "homepage": "https://listjs.com",
   "repository": "git://github.com/javve/list.js.git",
   "license": "MIT",
   "bugs": {
@@ -51,7 +51,10 @@
   "jest": {
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
-    "collectCoverageFrom": ["src/*.js", "src/utils/*.js"],
+    "collectCoverageFrom": [
+      "src/*.js",
+      "src/utils/*.js"
+    ],
     "testURL": "http://localhost/"
   }
 }
