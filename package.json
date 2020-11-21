@@ -13,7 +13,7 @@
   ],
   "author": {
     "name": "Jonny Strömberg",
-    "email": "jonny.stromberg@gmail.com>",
+    "email": "jonny.stromberg@gmail.com",
     "url": "https://javve.com"
   },
   "homepage": "https://listjs.com",
@@ -40,7 +40,10 @@
     "node": "^14.15.1"
   },
   "scripts": {
-    "test": "jest"
+    "test": "npx jest",
+    "build": "npx webpack",
+    "watch": "npx webpack --watch",
+    "watch-test": "npx jest --watch"
   },
   "npmName": "list.js",
   "npmFileMap": [
