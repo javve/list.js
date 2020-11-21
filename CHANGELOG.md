@@ -10,6 +10,7 @@
 - **[Misc]** Update Node for dev from 6.15 to 14.15.1
 - **[Misc]** Prettier on everything
 - **[Misc]** Make release script simpler
+- **[Misc]** Rename History.md to CHANGELOG.md
 
 ### 1.5.1
 
