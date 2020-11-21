@@ -1,29 +1,28 @@
-module.exports = function(list) {
-
+module.exports = function (list) {
   // Add handlers
-  list.handlers.filterStart = list.handlers.filterStart || [];
-  list.handlers.filterComplete = list.handlers.filterComplete || [];
+  list.handlers.filterStart = list.handlers.filterStart || []
+  list.handlers.filterComplete = list.handlers.filterComplete || []
 
-  return function(filterFunction) {
-    list.trigger('filterStart');
-    list.i = 1; // Reset paging
-    list.reset.filter();
+  return function (filterFunction) {
+    list.trigger('filterStart')
+    list.i = 1 // Reset paging
+    list.reset.filter()
     if (filterFunction === undefined) {
-      list.filtered = false;
+      list.filtered = false
     } else {
-      list.filtered = true;
-      var is = list.items;
+      list.filtered = true
+      var is = list.items
       for (var i = 0, il = is.length; i < il; i++) {
-        var item = is[i];
+        var item = is[i]
         if (filterFunction(item)) {
-          item.filtered = true;
+          item.filtered = true
         } else {
-          item.filtered = false;
+          item.filtered = false
         }
       }
     }
-    list.update();
-    list.trigger('filterComplete');
-    return list.visibleItems;
-  };
-};
+    list.update()
+    list.trigger('filterComplete')
+    return list.visibleItems
+  }
+}

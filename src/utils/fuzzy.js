@@ -1,15 +1,15 @@
-module.exports = function(text, pattern, options) {
-    // Aproximately where in the text is the pattern expected to be found?
-    var Match_Location = options.location || 0;
+module.exports = function (text, pattern, options) {
+  // Aproximately where in the text is the pattern expected to be found?
+  var Match_Location = options.location || 0
 
-    //Determines how close the match must be to the fuzzy location (specified above). An exact letter match which is 'distance' characters away from the fuzzy location would score as a complete mismatch. A distance of '0' requires the match be at the exact location specified, a threshold of '1000' would require a perfect match to be within 800 characters of the fuzzy location to be found using a 0.8 threshold.
-    var Match_Distance = options.distance || 100;
+  //Determines how close the match must be to the fuzzy location (specified above). An exact letter match which is 'distance' characters away from the fuzzy location would score as a complete mismatch. A distance of '0' requires the match be at the exact location specified, a threshold of '1000' would require a perfect match to be within 800 characters of the fuzzy location to be found using a 0.8 threshold.
+  var Match_Distance = options.distance || 100
 
-    // At what point does the match algorithm give up. A threshold of '0.0' requires a perfect match (of both letters and location), a threshold of '1.0' would match anything.
-    var Match_Threshold = options.threshold || 0.4;
+  // At what point does the match algorithm give up. A threshold of '0.0' requires a perfect match (of both letters and location), a threshold of '1.0' would match anything.
+  var Match_Threshold = options.threshold || 0.4
 
-    if (pattern === text) return true; // Exact match
-    if (pattern.length > 32) return false; // This algorithm cannot be used
+  if (pattern === text) return true // Exact match
+  if (pattern.length > 32) return false // This algorithm cannot be used
 
     // Set starting location at beginning text and initialise the alphabet.
     var loc = Match_Location,
@@ -25,35 +25,33 @@ module.exports = function(text, pattern, options) {
             for (i = 0, il = pattern.length; i < il; i++) {
                 q[pattern.charAt(i)] |= 1 << (il - i - 1);
             }
+      return q
+    })()
 
-            return q;
-        }());
+  // Compute and return the score for a match with e errors and x location.
+  // Accesses loc and pattern through being a closure.
 
-    // Compute and return the score for a match with e errors and x location.
-    // Accesses loc and pattern through being a closure.
+  function match_bitapScore_(e, x) {
+    var accuracy = e / pattern.length,
+      proximity = Math.abs(loc - x)
 
-    function match_bitapScore_(e, x) {
-        var accuracy = e / pattern.length,
-            proximity = Math.abs(loc - x);
-
-        if (!Match_Distance) {
-            // Dodge divide by zero error.
-            return proximity ? 1.0 : accuracy;
-        }
-        return accuracy + (proximity / Match_Distance);
+    if (!Match_Distance) {
+      // Dodge divide by zero error.
+      return proximity ? 1.0 : accuracy
     }
+    return accuracy + proximity / Match_Distance
+  }
 
-    var score_threshold = Match_Threshold, // Highest score beyond which we give up.
-        best_loc = text.indexOf(pattern, loc); // Is there a nearby exact match? (speedup)
+  var score_threshold = Match_Threshold, // Highest score beyond which we give up.
+    best_loc = text.indexOf(pattern, loc) // Is there a nearby exact match? (speedup)
+
+  if (best_loc != -1) {
+    score_threshold = Math.min(match_bitapScore_(0, best_loc), score_threshold)
+    // What about in the other direction? (speedup)
+    best_loc = text.lastIndexOf(pattern, loc + pattern.length)
 
     if (best_loc != -1) {
-        score_threshold = Math.min(match_bitapScore_(0, best_loc), score_threshold);
-        // What about in the other direction? (speedup)
-        best_loc = text.lastIndexOf(pattern, loc + pattern.length);
-
-        if (best_loc != -1) {
-            score_threshold = Math.min(match_bitapScore_(0, best_loc), score_threshold);
-        }
+      score_threshold = Math.min(match_bitapScore_(0, best_loc), score_threshold)
     }
 
     // Initialise the bit arrays.
@@ -116,9 +114,16 @@ module.exports = function(text, pattern, options) {
         // No hope for a (better) match at greater error levels.
         if (match_bitapScore_(d + 1, loc) > score_threshold) {
             break;
-        }
-        last_rd = rd;
-    }
 
-    return (best_loc < 0) ? false : true;
-};
+        }
+      }
+    }
+    // No hope for a (better) match at greater error levels.
+    if (match_bitapScore_(d + 1, loc) > score_threshold) {
+      break
+    }
+    last_rd = rd
+  }
+
+  return best_loc < 0 ? false : true
+}

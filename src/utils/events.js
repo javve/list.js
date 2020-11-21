@@ -1,7 +1,7 @@
 var bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
-    unbind = window.removeEventListener ? 'removeEventListener' : 'detachEvent',
-    prefix = bind !== 'addEventListener' ? 'on' : '',
-    toArray = require('./to-array');
+  unbind = window.removeEventListener ? 'removeEventListener' : 'detachEvent',
+  prefix = bind !== 'addEventListener' ? 'on' : '',
+  toArray = require('./to-array')
 
 /**
  * Bind `el` event `type` to `fn`.
@@ -18,7 +18,7 @@ exports.bind = function(el, type, fn, capture){
   for ( var i = 0, il = el.length; i < il; i++ ) {
     el[i][bind](prefix + type, fn, capture || false);
   }
-};
+}
 
 /**
  * Unbind `el` event `type`'s callback `fn`.
@@ -35,4 +35,4 @@ exports.unbind = function(el, type, fn, capture){
   for ( var i = 0, il = el.length; i < il; i++ ) {
     el[i][unbind](prefix + type, fn, capture || false);
   }
-};
+}
