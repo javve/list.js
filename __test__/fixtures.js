@@ -1,61 +1,58 @@
 const $ = require('jquery'),
-  List = require('../src/index');
+  List = require('../src/index')
 
 var fixture = {
-  list: function(valueNames, items) {
+  list: function (valueNames, items) {
     var listHtml = $('<div id="list"><ul class="list"></ul></div>'),
-      item = "";
+      item = ''
 
-    item = "<li>";
+    item = '<li>'
     for (var i = 0; i < valueNames.length; i++) {
-      item += '<span class="'+valueNames[i]+'"</span>';
+      item += '<span class="' + valueNames[i] + '"</span>'
     }
-    item += "</li>";
+    item += '</li>'
 
-    $(document.body).append(listHtml);
+    $(document.body).append(listHtml)
 
-    items = items || [];
+    items = items || []
 
-    return new List('list', {
-      valueNames: valueNames,
-      item: item
-    }, items);
+    return new List(
+      'list',
+      {
+        valueNames: valueNames,
+        item: item,
+      },
+      items
+    )
   },
-  removeList: function() {
-    $('#list').remove();
+  removeList: function () {
+    $('#list').remove()
   },
   jonny: {
-    name: "Jonny Strömberg",
-    born: '1986'
+    name: 'Jonny Strömberg',
+    born: '1986',
   },
   martina: {
-    name: "Martina Elm",
-    born: '1986'
+    name: 'Martina Elm',
+    born: '1986',
   },
   angelica: {
-    name: "Angelica Abraham",
-    born: '1986'
+    name: 'Angelica Abraham',
+    born: '1986',
   },
   sebastian: {
-    name: "Sebastian Höglund",
-    born: '1989'
+    name: 'Sebastian Höglund',
+    born: '1989',
   },
   imma: {
-    name: "Imma Grafström",
-    born: '1953'
+    name: 'Imma Grafström',
+    born: '1953',
   },
   hasse: {
-    name: "Hasse Strömberg",
-    born: '1955'
-  }
-};
-fixture.all = [
-  fixture.jonny,
-  fixture.martina,
-  fixture.angelica,
-  fixture.sebastian,
-  fixture.imma,
-  fixture.hasse
-];
+    name: 'Hasse Strömberg',
+    born: '1955',
+  },
+}
+fixture.all = [fixture.jonny, fixture.martina, fixture.angelica, fixture.sebastian, fixture.imma, fixture.hasse]
 
-module.exports = fixture;
+module.exports = fixture
