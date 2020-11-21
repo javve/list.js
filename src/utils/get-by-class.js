@@ -12,52 +12,52 @@
  * @api public
  */
 
-var getElementsByClassName = function(container, className, single) {
+var getElementsByClassName = function (container, className, single) {
   if (single) {
-    return container.getElementsByClassName(className)[0];
+    return container.getElementsByClassName(className)[0]
   } else {
-    return container.getElementsByClassName(className);
+    return container.getElementsByClassName(className)
   }
-};
+}
 
-var querySelector = function(container, className, single) {
-  className = '.' + className;
+var querySelector = function (container, className, single) {
+  className = '.' + className
   if (single) {
-    return container.querySelector(className);
+    return container.querySelector(className)
   } else {
-    return container.querySelectorAll(className);
+    return container.querySelectorAll(className)
   }
-};
+}
 
-var polyfill = function(container, className, single) {
+var polyfill = function (container, className, single) {
   var classElements = [],
-    tag = '*';
+    tag = '*'
 
-  var els = container.getElementsByTagName(tag);
-  var elsLen = els.length;
-  var pattern = new RegExp("(^|\\s)"+className+"(\\s|$)");
+  var els = container.getElementsByTagName(tag)
+  var elsLen = els.length
+  var pattern = new RegExp('(^|\\s)' + className + '(\\s|$)')
   for (var i = 0, j = 0; i < elsLen; i++) {
-    if ( pattern.test(els[i].className) ) {
+    if (pattern.test(els[i].className)) {
       if (single) {
-        return els[i];
+        return els[i]
       } else {
-        classElements[j] = els[i];
-        j++;
+        classElements[j] = els[i]
+        j++
       }
     }
   }
-  return classElements;
-};
+  return classElements
+}
 
-module.exports = (function() {
-  return function(container, className, single, options) {
-    options = options || {};
+module.exports = (function () {
+  return function (container, className, single, options) {
+    options = options || {}
     if ((options.test && options.getElementsByClassName) || (!options.test && document.getElementsByClassName)) {
-      return getElementsByClassName(container, className, single);
+      return getElementsByClassName(container, className, single)
     } else if ((options.test && options.querySelector) || (!options.test && document.querySelector)) {
-      return querySelector(container, className, single);
+      return querySelector(container, className, single)
     } else {
-      return polyfill(container, className, single);
+      return polyfill(container, className, single)
     }
-  };
-})();
+  }
+})()

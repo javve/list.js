@@ -36,7 +36,7 @@ var Templater = function(list) {
     createItem = function() {
       return itemSource.cloneNode(true);
     }
-  };
+  }
 
   var createCleanTemplateItem = function(templateNode, valueNames) {
     var el = templateNode.cloneNode(true);
@@ -57,12 +57,12 @@ var Templater = function(list) {
       } else {
         elm = list.utils.getByClass(el, valueName, true);
         if (elm) {
-          elm.innerHTML = "";
+          elm.innerHTML = ''
         }
       }
     }
-    return el;
-  };
+    return el
+  }
 
   var getFirstListItem = function() {
     var nodes = list.list.childNodes;
@@ -153,22 +153,22 @@ var Templater = function(list) {
         values[valueName] = elm ? elm.innerHTML : "";
       }
     }
-    return values;
-  };
+    return values
+  }
 
   this.set = function(item, values) {
     if (!templater.create(item)) {
-      for(var v in values) {
+      for (var v in values) {
         if (values.hasOwnProperty(v)) {
           setValue(item, v, values[v]);
         }
       }
     }
-  };
+  }
 
-  this.create = function(item) {
+  this.create = function (item) {
     if (item.elm !== undefined) {
-      return false;
+      return false
     }
     item.elm = createItem(item.values());
     templater.set(item, item.values());
@@ -176,31 +176,30 @@ var Templater = function(list) {
   };
   this.remove = function(item) {
     if (item.elm.parentNode === list.list) {
-      list.list.removeChild(item.elm);
+      list.list.removeChild(item.elm)
     }
-  };
-  this.show = function(item) {
-    templater.create(item);
-    list.list.appendChild(item.elm);
-  };
-  this.hide = function(item) {
+  }
+  this.show = function (item) {
+    templater.create(item)
+    list.list.appendChild(item.elm)
+  }
+  this.hide = function (item) {
     if (item.elm !== undefined && item.elm.parentNode === list.list) {
-      list.list.removeChild(item.elm);
+      list.list.removeChild(item.elm)
     }
-  };
-  this.clear = function() {
+  }
+  this.clear = function () {
     /* .innerHTML = ''; fucks up IE */
     if (list.list.hasChildNodes()) {
-      while (list.list.childNodes.length >= 1)
-      {
-        list.list.removeChild(list.list.firstChild);
+      while (list.list.childNodes.length >= 1) {
+        list.list.removeChild(list.list.firstChild)
       }
     }
-  };
+  }
 
-  init();
-};
+  init()
+}
 
-module.exports = function(list) {
-  return new Templater(list);
-};
+module.exports = function (list) {
+  return new Templater(list)
+}
