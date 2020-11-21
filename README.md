@@ -26,7 +26,6 @@ Really simple and easy to use!
 - Sort [Read more ›](http://listjs.com/docs/list-api#sort)
 - Filter [Read more ›](http://listjs.com/docs/list-api#filter)
 - Simple templating system that adds possibility to add, edit, remove items [Read more ›](http://listjs.com/docs/list-api#add)
-- Plugins [Read more ›](http://listjs.com/docs/plugins)
 - Support for Chrome, Safari, Firefox, IE9+
 
 ### Download / Install
@@ -46,13 +45,13 @@ bower install list.js
 ##### Via CDNJS
 
 ```html
-<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/2.0.0/list.min.js"></script>
 ```
 
 ##### Via Direct Download
 
-- [Compressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.5.0/dist/list.min.js)
-- [Uncompressed list.js](https://raw.githubusercontent.com/javve/list.js/v1.5.0/dist/list.js)
+- [Compressed list.js](https://raw.githubusercontent.com/javve/list.js/v2.0.0/dist/list.min.js)
+- [Uncompressed list.js](https://raw.githubusercontent.com/javve/list.js/v2.0.0/dist/list.js)
 
 ### Questions / How to?
 
@@ -91,5 +90,5 @@ https://stackoverflow.com/questions/tagged/list.js
 
 ## License (MIT)
 
-Copyright (c) 2011-2018 Jonny Strömberg <[jonny.stromberg@gmail.com](mailto:jonny.stromberg@gmail.com)>
-[http://javve.com](http://javve.com)
+Copyright (c) 2011-2020 Jonny Strömberg <[jonny.stromberg@gmail.com](mailto:jonny.stromberg@gmail.com)>
+[javve.com](https://javve.com)
