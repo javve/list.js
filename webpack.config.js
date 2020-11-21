@@ -12,8 +12,21 @@ module.exports = {
     filename: '[name].js',
     library: 'List',
   },
-  devtool: false,
-  module: {},
+  devtool: 'cheap-module-source-map',
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+          },
+        },
+      },
+    ],
+  },
   devServer: {
     inline: true,
   },
