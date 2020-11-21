@@ -1,7 +1,7 @@
 {
   "name": "list.js",
   "main": "dist/list.js",
-  "homepage": "http://listjs.com",
+  "homepage": "https://listjs.com",
   "authors": [
     "Jonny Strömberg <jonny.stromberg@gmail.com>"
   ],
@@ -19,9 +19,7 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
-    "components",
-    "test",
-    "tests"
+    "__test__",
+    "docs"
   ]
 }
