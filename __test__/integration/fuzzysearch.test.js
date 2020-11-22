@@ -1,6 +1,6 @@
 const $ = require('jquery'),
   fixtureFuzzysearch = require('./fixtures-fuzzysearch'),
-  List = require('../src/index')
+  List = require('../../src/index')
 
 function fireKeyup(el) {
   if (document.createEvent) {

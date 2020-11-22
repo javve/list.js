@@ -1,4 +1,4 @@
-const getByClass = require('../src/utils/get-by-class')
+const getByClass = require('../../src/utils/get-by-class')
 
 describe('GetByClass', function () {
   var el

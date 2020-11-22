@@ -1,5 +1,5 @@
 const $ = require('jquery'),
-  List = require('../src/index')
+  List = require('../../src/index')
 
 var fixture = {
   list: function (valueNames, items) {

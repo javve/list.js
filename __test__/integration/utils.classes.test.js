@@ -1,4 +1,4 @@
-const classes = require('../src/utils/classes')
+const classes = require('../../src/utils/classes')
 
 describe('Classes', function () {
   var el
