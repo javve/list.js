@@ -80,7 +80,7 @@ and I'm very sorry that it has taken so long. I promise I'll do better in the fu
 
 Anyways, this release introduces a bunch of bug fixes and improvements, but most
 importantly: List.js now has support for data attributes PLUS all other attributes.
-[See an example]() and [read the docs](http://www.listjs.com/docs#example-6).
+[See an example]() and [read the docs](https://www.listjs.com/docs#example-6).
 
 Another noteworthy update is that I've left Component and moved back all utils
 to the core lib. Instead I'm using Browserify as module handler.
@@ -99,7 +99,7 @@ I hope you'll like this update!
   [See commit →](https://github.com/javve/list.js/commit/618565b203b61c34b868a9cb86eea899e75ea4b6)
 - **[Breaking]** Rename list.helpers to list.utils
   [See commit →](https://github.com/javve/list.js/commit/58695c93849b78787d9cf78cbf9be20b01cdcc8a)
-- **[Feature]** Add support for data attributes and custom attributes ex. links and images. [See docs](http://listjs.com/).
+- **[Feature]** Add support for data attributes and custom attributes ex. links and images. [See docs](https://listjs.com/).
   [See commit →](https://github.com/javve/list.js/commit/a8e083dc0f642e90b7a3f3cc11b12f9bb353d3a0)
 - **[Feature]** Add toJSON method.
   [See commit →](https://github.com/javve/list.js/commit/570fd10e65fcf2e0d3d959ca42137625d9fd3b7c)
@@ -157,7 +157,7 @@ I hope you'll like this update!
 - **[Feature]** Add support for Component.js, Bower, RequireJS and CommonJS
 - **[Feature]** Make it possible to remove event handlers by `.off('event', handler)`
 - **[Improvement]** Many new tests
-- **[Improvement]** Paging plugin default classes and structure now correspons to <a href="http://twitter.github.com/bootstrap/components.html#pagination">Twitter Bootstraps pagination</a>.
+- **[Improvement]** Paging plugin default classes and structure now correspons to <a href="https://twitter.github.com/bootstrap/components.html#pagination">Twitter Bootstraps pagination</a>.
 - **[Improvement]** Make sorting case-insensitive (thanks @thomasklemm)
 - **[Improvement]** Add item.\_values for direct access to a items values. Simplifies debugging. Note: Always use item.values() when interacting with the values.
 - **[Bugfix]** `.add(items, callbak)` with `callback` set does no longer add an extra item.
