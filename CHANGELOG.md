@@ -1,5 +1,11 @@
 # Changelog
 
+### 2.2.0
+
+- **[Feature]** #682 Multiple word search
+- **[Feature]** #683 Debounced keyup handler in search
+- **[Website]** #684 Add more documentation for automagical search and sort elements
+
 ### 2.1.0 - 2020-11-21
 
 - **[Feature]** #634 Add item template function
@@ -12,8 +18,6 @@
 ### 2.0.0 - 2020-11-21 - Winter cleanup 🧹
 
 - **[Breaking]** Drop support for IE6-8
-- **[Website]** Update Jekyll to remove security warnings
-- **[Website]** Fix all examples (sorry that they we're broken)
 - **[Misc]** Update dev dependencies to latest version: Webpack 3.12.0 -> 5.6.0, jest 23.3 -> 26.6.3, jquery 3.3.1 -> 3.5.1, Removed: jshint jshint-loader
 - **[Misc]** Replace uglify-js with terser
 - **[Misc]** Update Node for dev from 6.15 to 14.15.1
@@ -22,14 +26,12 @@
 - **[Misc]** Rename History.md to CHANGELOG.md
 - **[Misc]** Use `babal-loader` with `@babel/preset-env` for supporting IE9-11
 - **[Misc]** Add source-maps to `/dist`
-
-### 1.5.1
-
 - **[Misc]** Added WISHLIST.md for feature requests to allow cleanup of issue list.
 - **[Misc]** Update CircleCI from 1.0 to 2.0
+- **[Website]** Update Jekyll to remove security warnings
+- **[Website]** Fix all examples (sorry that they we're broken)
 - **[Website]** Use https instead of http for listjs.com
 - **[Website]** Update Contribute guidelines [See commit →](https://github.com/javve/list.js/commit/6242496de2ac5c07903fb1590a5cb5129f0887a7)
-- **[Website]** Update Jekyll & jQuery versions to remove security warnings.
 - **[Bugfix]** Use one event listener per pagination and select page via data attributes
   [See commit →](https://github.com/javve/list.js/commit/7610c59039f3b39f52175cd1a200e935664869e8)
 - **[Bugfix]** Don't break pagination if page=0
