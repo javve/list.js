@@ -27,7 +27,11 @@ module.exports = function (list) {
           item._values[name] = newValues[name]
         }
         if (notCreate !== true) {
-          list.templater.set(item, item.values())
+          if (item.elm) {
+            list.templater.set(item.elm, item.values())
+          } else {
+            list.templater.create(item.values())
+          }
         }
       } else {
         return item._values
@@ -35,11 +39,14 @@ module.exports = function (list) {
     }
 
     this.show = function () {
-      list.templater.show(item)
+      if (!item.elm) {
+        item.elm = list.templater.create(item.values())
+      }
+      list.templater.show(item.elm)
     }
 
     this.hide = function () {
-      list.templater.hide(item)
+      list.templater.remove(item.elm)
     }
 
     this.matching = function () {

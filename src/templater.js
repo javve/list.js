@@ -1,4 +1,6 @@
-var Templater = function (list) {
+var getByClass = require('./utils/get-by-class')
+
+module.exports = function (list) {
   var createItem,
     templater = this
 
@@ -6,7 +8,7 @@ var Templater = function (list) {
     var itemSource
 
     if (typeof list.item === 'function') {
-      createItem = function (values) {
+      templater.createItem = function (values) {
         var item = list.item(values)
         return getItemSource(item)
       }
@@ -31,7 +33,7 @@ var Templater = function (list) {
 
     itemSource = createCleanTemplateItem(itemSource, list.valueNames)
 
-    createItem = function () {
+    templater.createItem = function () {
       return itemSource.cloneNode(true)
     }
   }
@@ -48,12 +50,12 @@ var Templater = function (list) {
           el.setAttribute('data-' + valueName.data[j], '')
         }
       } else if (valueName.attr && valueName.name) {
-        elm = list.utils.getByClass(el, valueName.name, true)
+        elm = getByClass(el, valueName.name, true)
         if (elm) {
           elm.setAttribute(valueName.attr, '')
         }
       } else {
-        elm = list.utils.getByClass(el, valueName, true)
+        elm = getByClass(el, valueName, true)
         if (elm) {
           elm.innerHTML = ''
         }
@@ -106,19 +108,19 @@ var Templater = function (list) {
     }
   }
 
-  var setValue = function (item, name, value) {
+  var setValue = function (el, name, value) {
     var elm = undefined,
       valueName = getValueName(name)
     if (!valueName) return
     if (valueName.data) {
-      item.elm.setAttribute('data-' + valueName.data, value)
+      el.setAttribute('data-' + valueName.data, value)
     } else if (valueName.attr && valueName.name) {
-      elm = list.utils.getByClass(item.elm, valueName.name, true)
+      elm = getByClass(el, valueName.name, true)
       if (elm) {
         elm.setAttribute(valueName.attr, value)
       }
     } else {
-      elm = list.utils.getByClass(item.elm, valueName, true)
+      elm = getByClass(el, valueName, true)
       if (elm) {
         elm.innerHTML = value
       }
@@ -136,47 +138,36 @@ var Templater = function (list) {
           values[valueName.data[j]] = list.utils.getAttribute(item.elm, 'data-' + valueName.data[j])
         }
       } else if (valueName.attr && valueName.name) {
-        elm = list.utils.getByClass(item.elm, valueName.name, true)
+        elm = getByClass(item.elm, valueName.name, true)
         values[valueName.name] = elm ? list.utils.getAttribute(elm, valueName.attr) : ''
       } else {
-        elm = list.utils.getByClass(item.elm, valueName, true)
+        elm = getByClass(item.elm, valueName, true)
         values[valueName] = elm ? elm.innerHTML : ''
       }
     }
     return values
   }
 
-  this.set = function (item, values) {
-    if (!templater.create(item)) {
-      for (var v in values) {
-        if (values.hasOwnProperty(v)) {
-          setValue(item, v, values[v])
-        }
+  this.set = function (el, values) {
+    for (var v in values) {
+      if (values.hasOwnProperty(v)) {
+        setValue(el, v, values[v])
       }
     }
   }
 
-  this.create = function (item) {
-    if (item.elm !== undefined) {
-      return false
-    }
-    item.elm = createItem(item.values())
-    templater.set(item, item.values())
-    return true
+  this.create = function (values) {
+    var elm = templater.createItem(values)
+    templater.set(elm, values)
+    return elm
   }
-  this.remove = function (item) {
-    if (item.elm.parentNode === list.list) {
-      list.list.removeChild(item.elm)
+  this.remove = function (el) {
+    if (el !== undefined && el.parentNode === list.list) {
+      list.list.removeChild(el)
     }
   }
-  this.show = function (item) {
-    templater.create(item)
-    list.list.appendChild(item.elm)
-  }
-  this.hide = function (item) {
-    if (item.elm !== undefined && item.elm.parentNode === list.list) {
-      list.list.removeChild(item.elm)
-    }
+  this.show = function (el) {
+    list.list.appendChild(el)
   }
   this.clear = function () {
     /* .innerHTML = ''; fucks up IE */
@@ -188,8 +179,5 @@ var Templater = function (list) {
   }
 
   init()
-}
-
-module.exports = function (list) {
-  return new Templater(list)
+  return templater
 }

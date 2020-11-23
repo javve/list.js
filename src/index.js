@@ -153,7 +153,7 @@ module.exports = function (id, options, values) {
     var found = 0
     for (var i = 0, il = self.items.length; i < il; i++) {
       if (self.items[i].values()[valueName] == value) {
-        self.templater.remove(self.items[i], options)
+        self.templater.remove(self.items[i].elm)
         self.items.splice(i, 1)
         il--
         i--
