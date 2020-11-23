@@ -1,174 +1,195 @@
-var Templater = function(list) {
-  var itemSource,
-    templater = this;
+var Templater = function (list) {
+  var createItem,
+    templater = this
 
-  var init = function() {
-    itemSource = templater.getItemSource(list.item);
-    if (itemSource) {
-      itemSource = templater.clearSourceItem(itemSource, list.valueNames);
+  var init = function () {
+    var itemSource
+
+    if (typeof list.item === 'function') {
+      createItem = function (values) {
+        var item = list.item(values)
+        return getItemSource(item)
+      }
+      return
     }
-  };
 
-  this.clearSourceItem = function(el, valueNames) {
-    for(var i = 0, il = valueNames.length; i < il; i++) {
-      var elm;
-      if (valueNames[i].data) {
-        for (var j = 0, jl = valueNames[i].data.length; j < jl; j++) {
-          el.setAttribute('data-'+valueNames[i].data[j], '');
-        }
-      } else if (valueNames[i].attr && valueNames[i].name) {
-        elm = list.utils.getByClass(el, valueNames[i].name, true);
-        if (elm) {
-          elm.setAttribute(valueNames[i].attr, "");
-        }
+    if (typeof list.item === 'string') {
+      if (list.item.indexOf('<') === -1) {
+        itemSource = document.getElementById(list.item)
       } else {
-        elm = list.utils.getByClass(el, valueNames[i], true);
-        if (elm) {
-          elm.innerHTML = "";
-        }
+        itemSource = getItemSource(list.item)
       }
-      elm = undefined;
-    }
-    return el;
-  };
-
-  this.getItemSource = function(item) {
-    if (item === undefined) {
-      var nodes = list.list.childNodes,
-        items = [];
-
-      for (var i = 0, il = nodes.length; i < il; i++) {
-        // Only textnodes have a data attribute
-        if (nodes[i].data === undefined) {
-          return nodes[i].cloneNode(true);
-        }
-      }
-    } else if (/<tr[\s>]/g.exec(item)) {
-      var tbody = document.createElement('tbody');
-      tbody.innerHTML = item;
-      return tbody.firstChild;
-    } else if (item.indexOf("<") !== -1) {
-      var div = document.createElement('div');
-      div.innerHTML = item;
-      return div.firstChild;
     } else {
-      var source = document.getElementById(list.item);
-      if (source) {
-        return source;
-      }
+      /* If item source does not exists, use the first item in list as
+      source for new items */
+      itemSource = getFirstListItem()
     }
-    return undefined;
-  };
 
-  this.get = function(item, valueNames) {
-    templater.create(item);
-    var values = {};
-    for(var i = 0, il = valueNames.length; i < il; i++) {
-      var elm;
-      if (valueNames[i].data) {
-        for (var j = 0, jl = valueNames[i].data.length; j < jl; j++) {
-          values[valueNames[i].data[j]] = list.utils.getAttribute(item.elm, 'data-'+valueNames[i].data[j]);
-        }
-      } else if (valueNames[i].attr && valueNames[i].name) {
-        elm = list.utils.getByClass(item.elm, valueNames[i].name, true);
-        values[valueNames[i].name] = elm ? list.utils.getAttribute(elm, valueNames[i].attr) : "";
-      } else {
-        elm = list.utils.getByClass(item.elm, valueNames[i], true);
-        values[valueNames[i]] = elm ? elm.innerHTML : "";
-      }
-      elm = undefined;
+    if (!itemSource) {
+      throw new Error("The list needs to have at least one item on init otherwise you'll have to add a template.")
     }
-    return values;
-  };
 
-  this.set = function(item, values) {
-    var getValueName = function(name) {
-      for (var i = 0, il = list.valueNames.length; i < il; i++) {
-        if (list.valueNames[i].data) {
-          var data = list.valueNames[i].data;
-          for (var j = 0, jl = data.length; j < jl; j++) {
-            if (data[j] === name) {
-              return { data: name };
-            }
-          }
-        } else if (list.valueNames[i].attr && list.valueNames[i].name && list.valueNames[i].name == name) {
-          return list.valueNames[i];
-        } else if (list.valueNames[i] === name) {
-          return name;
-        }
-      }
-    };
-    var setValue = function(name, value) {
-      var elm;
-      var valueName = getValueName(name);
-      if (!valueName)
-        return;
+    itemSource = createCleanTemplateItem(itemSource, list.valueNames)
+
+    createItem = function () {
+      return itemSource.cloneNode(true)
+    }
+  }
+
+  var createCleanTemplateItem = function (templateNode, valueNames) {
+    var el = templateNode.cloneNode(true)
+    el.removeAttribute('id')
+
+    for (var i = 0, il = valueNames.length; i < il; i++) {
+      var elm = undefined,
+        valueName = valueNames[i]
       if (valueName.data) {
-        item.elm.setAttribute('data-'+valueName.data, value);
+        for (var j = 0, jl = valueName.data.length; j < jl; j++) {
+          el.setAttribute('data-' + valueName.data[j], '')
+        }
       } else if (valueName.attr && valueName.name) {
-        elm = list.utils.getByClass(item.elm, valueName.name, true);
+        elm = list.utils.getByClass(el, valueName.name, true)
         if (elm) {
-          elm.setAttribute(valueName.attr, value);
+          elm.setAttribute(valueName.attr, '')
         }
       } else {
-        elm = list.utils.getByClass(item.elm, valueName, true);
+        elm = list.utils.getByClass(el, valueName, true)
         if (elm) {
-          elm.innerHTML = value;
-        }
-      }
-      elm = undefined;
-    };
-    if (!templater.create(item)) {
-      for(var v in values) {
-        if (values.hasOwnProperty(v)) {
-          setValue(v, values[v]);
+          elm.innerHTML = ''
         }
       }
     }
-  };
+    return el
+  }
 
-  this.create = function(item) {
+  var getFirstListItem = function () {
+    var nodes = list.list.childNodes
+
+    for (var i = 0, il = nodes.length; i < il; i++) {
+      // Only textnodes have a data attribute
+      if (nodes[i].data === undefined) {
+        return nodes[i].cloneNode(true)
+      }
+    }
+    return undefined
+  }
+
+  var getItemSource = function (itemHTML) {
+    if (typeof itemHTML !== 'string') return undefined
+    if (/<tr[\s>]/g.exec(itemHTML)) {
+      var tbody = document.createElement('tbody')
+      tbody.innerHTML = itemHTML
+      return tbody.firstElementChild
+    } else if (itemHTML.indexOf('<') !== -1) {
+      var div = document.createElement('div')
+      div.innerHTML = itemHTML
+      return div.firstElementChild
+    }
+    return undefined
+  }
+
+  var getValueName = function (name) {
+    for (var i = 0, il = list.valueNames.length; i < il; i++) {
+      var valueName = list.valueNames[i]
+      if (valueName.data) {
+        var data = valueName.data
+        for (var j = 0, jl = data.length; j < jl; j++) {
+          if (data[j] === name) {
+            return { data: name }
+          }
+        }
+      } else if (valueName.attr && valueName.name && valueName.name == name) {
+        return valueName
+      } else if (valueName === name) {
+        return name
+      }
+    }
+  }
+
+  var setValue = function (item, name, value) {
+    var elm = undefined,
+      valueName = getValueName(name)
+    if (!valueName) return
+    if (valueName.data) {
+      item.elm.setAttribute('data-' + valueName.data, value)
+    } else if (valueName.attr && valueName.name) {
+      elm = list.utils.getByClass(item.elm, valueName.name, true)
+      if (elm) {
+        elm.setAttribute(valueName.attr, value)
+      }
+    } else {
+      elm = list.utils.getByClass(item.elm, valueName, true)
+      if (elm) {
+        elm.innerHTML = value
+      }
+    }
+  }
+
+  this.get = function (item, valueNames) {
+    templater.create(item)
+    var values = {}
+    for (var i = 0, il = valueNames.length; i < il; i++) {
+      var elm = undefined,
+        valueName = valueNames[i]
+      if (valueName.data) {
+        for (var j = 0, jl = valueName.data.length; j < jl; j++) {
+          values[valueName.data[j]] = list.utils.getAttribute(item.elm, 'data-' + valueName.data[j])
+        }
+      } else if (valueName.attr && valueName.name) {
+        elm = list.utils.getByClass(item.elm, valueName.name, true)
+        values[valueName.name] = elm ? list.utils.getAttribute(elm, valueName.attr) : ''
+      } else {
+        elm = list.utils.getByClass(item.elm, valueName, true)
+        values[valueName] = elm ? elm.innerHTML : ''
+      }
+    }
+    return values
+  }
+
+  this.set = function (item, values) {
+    if (!templater.create(item)) {
+      for (var v in values) {
+        if (values.hasOwnProperty(v)) {
+          setValue(item, v, values[v])
+        }
+      }
+    }
+  }
+
+  this.create = function (item) {
     if (item.elm !== undefined) {
-      return false;
+      return false
     }
-    if (itemSource === undefined) {
-      throw new Error("The list needs to have at least one item on init otherwise you'll have to add a template.");
-    }
-    /* If item source does not exists, use the first item in list as
-    source for new items */
-    var newItem = itemSource.cloneNode(true);
-    newItem.removeAttribute('id');
-    item.elm = newItem;
-    templater.set(item, item.values());
-    return true;
-  };
-  this.remove = function(item) {
+    item.elm = createItem(item.values())
+    templater.set(item, item.values())
+    return true
+  }
+  this.remove = function (item) {
     if (item.elm.parentNode === list.list) {
-      list.list.removeChild(item.elm);
+      list.list.removeChild(item.elm)
     }
-  };
-  this.show = function(item) {
-    templater.create(item);
-    list.list.appendChild(item.elm);
-  };
-  this.hide = function(item) {
+  }
+  this.show = function (item) {
+    templater.create(item)
+    list.list.appendChild(item.elm)
+  }
+  this.hide = function (item) {
     if (item.elm !== undefined && item.elm.parentNode === list.list) {
-      list.list.removeChild(item.elm);
+      list.list.removeChild(item.elm)
     }
-  };
-  this.clear = function() {
+  }
+  this.clear = function () {
     /* .innerHTML = ''; fucks up IE */
     if (list.list.hasChildNodes()) {
-      while (list.list.childNodes.length >= 1)
-      {
-        list.list.removeChild(list.list.firstChild);
+      while (list.list.childNodes.length >= 1) {
+        list.list.removeChild(list.list.firstChild)
       }
     }
-  };
+  }
 
-  init();
-};
+  init()
+}
 
-module.exports = function(list) {
-  return new Templater(list);
-};
+module.exports = function (list) {
+  return new Templater(list)
+}

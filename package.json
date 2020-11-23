@@ -1,6 +1,6 @@
 {
   "name": "list.js",
-  "version": "1.5.0",
+  "version": "2.0.0",
   "description": "The perfect library for lists. Supports search, sort, filters and flexibility. Built to be invisible and work on existing HTML",
   "keywords": [
     "list",
@@ -13,10 +13,10 @@
   ],
   "author": {
     "name": "Jonny Strömberg",
-    "email": "jonny.stromberg@gmail.com>",
-    "url": "http://javve.com"
+    "email": "jonny.stromberg@gmail.com",
+    "url": "https://javve.com"
   },
-  "homepage": "http://listjs.com",
+  "homepage": "https://listjs.com",
   "repository": "git://github.com/javve/list.js.git",
   "license": "MIT",
   "bugs": {
@@ -26,32 +26,44 @@
     "string-natural-compare": "^2.0.2"
   },
   "devDependencies": {
-    "jest": "^23.3",
-    "jquery": "^3.3.1",
-    "jshint": "^2.9.4",
-    "jshint-loader": "^0.8.4",
-    "webpack": "^3.12.0"
+    "@babel/core": "^7.12.7",
+    "@babel/preset-env": "^7.12.7",
+    "babel-loader": "^8.2.1",
+    "jest": "^26.6.3",
+    "jquery": "^3.5.1",
+    "prettier": "^2.2.0",
+    "webpack": "^5.6.0",
+    "webpack-cli": "^4.2.0"
   },
   "main": "src/index",
   "engines": {
-    "node": "^6.15"
+    "node": "^14.15.1"
   },
   "scripts": {
-    "test": "jest"
+    "test": "npx jest",
+    "build": "npx webpack",
+    "watch": "npx webpack --watch",
+    "watch-test": "npx jest --watch",
+    "preversion": "npm test && npm run build && cp dist/list.min.js docs/assets/javascripts/list.min.js && cp dist/list.min.js.map docs/assets/javascripts/list.min.js.map && git add dist && git add docs/assets/javascripts",
+    "postversion": "git push --follow-tags origin master && cp package.json docs/_data/pkg.json && git add docs/_data/pkg.json && git commit -m \"pkg.json update\""
   },
   "npmName": "list.js",
   "npmFileMap": [
     {
       "basePath": "/dist/",
       "files": [
-        "*.js"
+        "*.js",
+        "*.js.map"
       ]
     }
   ],
   "jest": {
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
-    "collectCoverageFrom": ["src/*.js", "src/utils/*.js"],
+    "collectCoverageFrom": [
+      "src/*.js",
+      "src/utils/*.js"
+    ],
     "testURL": "http://localhost/"
   }
 }

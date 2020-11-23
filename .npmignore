@@ -1,1 +1,10 @@
-docs/
+docs
+__test__
+.circleci
+WISHLIST.md
+webpack.config.js
+Release.md
+prettier.config.js
+.prettierignore
+.codecov.yml
+.browserslistrc
