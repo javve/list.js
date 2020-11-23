@@ -109,7 +109,7 @@ describe('Search', function() {
   });
 
 
-  describe('Specfic columns', function() {
+  describe('Specific columns', function() {
     it('should find match in column', function() {
       var result = list.search('jonny', [ 'name' ]);
       expect(result.length).toEqual(1);
@@ -128,11 +128,11 @@ describe('Search', function() {
       var result = list.search('jonny', [ 'born' ]);
       expect(result.length).toEqual(0);
     });
-    it('should work with columns that does not exist', function() {
+    it('should work with columns that do not exist', function() {
       var result = list.search('jonny', [ 'pet' ]);
       expect(result.length).toEqual(0);
     });
-    it('should remove columnm option', function() {
+    it('should remove column option', function() {
       var result = list.search('jonny', [ 'born' ]);
       expect(result.length).toEqual(0);
       result = list.search('jonny');
@@ -157,6 +157,48 @@ describe('Search', function() {
       expect(result.length).toEqual(4);
     });
   });
+
+  describe('Multiple word search', function() {
+    it('should find jonny, hasse', function() {
+      var result = list.search('berg str');
+      expect(result.length).toEqual(2);
+      expect(jonny.matching()).toBe(true);
+      expect(martina.matching()).toBe(false);
+      expect(angelica.matching()).toBe(false);
+      expect(sebastian.matching()).toBe(false);
+      expect(imma.matching()).toBe(false);
+      expect(hasse.matching()).toBe(true);
+    });
+    it('should find martina, angelica, sebastian, hasse', function() {
+      var result = list.search('a e');
+      expect(result.length).toEqual(4);
+      expect(jonny.matching()).toBe(false);
+      expect(martina.matching()).toBe(true);
+      expect(angelica.matching()).toBe(true);
+      expect(sebastian.matching()).toBe(true);
+      expect(imma.matching()).toBe(false);
+      expect(hasse.matching()).toBe(true);
+    });
+    it('stripping whitespace should find martina', function() {
+      var result = list.search('martina  elm ');
+      expect(result.length).toEqual(1);
+      expect(result[0]).toEqual(martina);
+    });
+  });
+
+  describe('Quoted phrase searches', function() {
+    it('should find martina', function() {
+      var result = list.search('"a e"');
+      expect(result.length).toEqual(1);
+      expect(result[0]).toEqual(martina);
+    });
+    it('quoted phrase and multiple words should find jonny', function() {
+      var result = list.search('" str" 1986');
+      expect(result.length).toEqual(1);
+      expect(result[0]).toEqual(jonny);
+    });
+  });
+
   //
   // describe('Special characters', function() {
   //   it('should escape and handle special characters', function() {

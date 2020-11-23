@@ -29,6 +29,7 @@ module.exports = function(id, options, values) {
       self.searched       = false;
       self.filtered       = false;
       self.searchColumns  = undefined;
+      self.searchDelay    = 0;
       self.handlers       = { 'updated': [] };
       self.valueNames     = [];
       self.utils          = {

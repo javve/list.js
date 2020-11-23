@@ -45,28 +45,40 @@ module.exports = function(list) {
   };
   var search = {
     list: function() {
+      // Extract quoted phrases "word1 word2" from original searchString
+      // searchString is converted to lowercase by List.js
+      var words = [], phrase, ss = searchString;
+      while ((phrase = ss.match(/"([^"]+)"/)) !== null) {
+        words.push(phrase[1]);
+        ss = ss.substring(0,phrase.index) + ss.substring(phrase.index+phrase[0].length);
+      };
+      // Get remaining space-separated words (if any)
+      ss = ss.trim();
+      if (ss.length) words = words.concat(ss.split(/\s+/));
       for (var k = 0, kl = list.items.length; k < kl; k++) {
-        search.item(list.items[k]);
-      }
-    },
-    item: function(item) {
-      item.found = false;
-      for (var j = 0, jl = columns.length; j < jl; j++) {
-        if (search.values(item.values(), columns[j])) {
-          item.found = true;
-          return;
+        var item = list.items[k];
+        item.found = false;
+        if (!words.length) continue;
+        for (var i = 0, il = words.length; i < il; i++) {
+          var word_found = false;
+          for (var j = 0, jl = columns.length; j < jl; j++) {
+            var values = item.values(), column = columns[j];
+            if (values.hasOwnProperty(column) && values[column] !== undefined && values[column] !== null) {
+              var text = (typeof values[column] !== 'string') ? values[column].toString() : values[column];
+              if (text.toLowerCase().indexOf(words[i]) !== -1) {
+                // word found, so no need to check it against any other columns
+                word_found = true;
+                break;
+              }
+            }
+          }
+          // this word not found? no need to check any other words, the item cannot match
+          if (!word_found) break;
         }
+        item.found = word_found;
       }
     },
-    values: function(values, column) {
-      if (values.hasOwnProperty(column)) {
-        text = list.utils.toString(values[column]).toLowerCase();
-        if ((searchString !== "") && (text.search(searchString) > -1)) {
-          return true;
-        }
-      }
-      return false;
-    },
+    // Removed search.item() and search.values()
     reset: function() {
       list.reset.search();
       list.searched = false;
@@ -100,13 +112,13 @@ module.exports = function(list) {
   list.handlers.searchStart = list.handlers.searchStart || [];
   list.handlers.searchComplete = list.handlers.searchComplete || [];
 
-  list.utils.events.bind(list.utils.getByClass(list.listContainer, list.searchClass), 'keyup', function(e) {
+  list.utils.events.bind(list.utils.getByClass(list.listContainer, list.searchClass), 'keyup', list.utils.events.debounce(function(e) {
     var target = e.target || e.srcElement, // IE have srcElement
       alreadyCleared = (target.value === "" && !list.searched);
     if (!alreadyCleared) { // If oninput already have resetted the list, do nothing
       searchMethod(target.value);
     }
-  });
+  }, list.searchDelay));
 
   // Used to detect click on HTML5 clear button
   list.utils.events.bind(list.utils.getByClass(list.listContainer, list.searchClass), 'input', function(e) {
