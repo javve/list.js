@@ -141,11 +141,11 @@ module.exports = function (list, options) {
       return false;
     }
   };
-  events.bind(getByClass(list.listContainer, options.searchClass), 'keyup', function (e) {
+  events.bind(getByClass(list.listContainer, options.searchClass), 'keyup', list.utils.events.debounce(function (e) {
     var target = e.target || e.srcElement; // IE have srcElement
 
     list.search(target.value, fuzzySearch.search);
-  });
+  }, list.searchDelay));
   return function (str, columns) {
     list.search(str, columns, fuzzySearch.search);
   };
@@ -192,6 +192,7 @@ module.exports = function (id, options, values) {
       self.searched = false;
       self.filtered = false;
       self.searchColumns = undefined;
+      self.searchDelay = 0;
       self.handlers = {
         updated: []
       };
@@ -756,31 +757,52 @@ module.exports = function (_list) {
   };
   var search = {
     list: function list() {
+      // Extract quoted phrases "word1 word2" from original searchString
+      // searchString is converted to lowercase by List.js
+      var words = [],
+          phrase,
+          ss = searchString;
+
+      while ((phrase = ss.match(/"([^"]+)"/)) !== null) {
+        words.push(phrase[1]);
+        ss = ss.substring(0, phrase.index) + ss.substring(phrase.index + phrase[0].length);
+      } // Get remaining space-separated words (if any)
+
+
+      ss = ss.trim();
+      if (ss.length) words = words.concat(ss.split(/\s+/));
+
       for (var k = 0, kl = _list.items.length; k < kl; k++) {
-        search.item(_list.items[k]);
-      }
-    },
-    item: function item(_item) {
-      _item.found = false;
+        var item = _list.items[k];
+        item.found = false;
+        if (!words.length) continue;
 
-      for (var j = 0, jl = columns.length; j < jl; j++) {
-        if (search.values(_item.values(), columns[j])) {
-          _item.found = true;
-          return;
+        for (var i = 0, il = words.length; i < il; i++) {
+          var word_found = false;
+
+          for (var j = 0, jl = columns.length; j < jl; j++) {
+            var values = item.values(),
+                column = columns[j];
+
+            if (values.hasOwnProperty(column) && values[column] !== undefined && values[column] !== null) {
+              var text = typeof values[column] !== 'string' ? values[column].toString() : values[column];
+
+              if (text.toLowerCase().indexOf(words[i]) !== -1) {
+                // word found, so no need to check it against any other columns
+                word_found = true;
+                break;
+              }
+            }
+          } // this word not found? no need to check any other words, the item cannot match
+
+
+          if (!word_found) break;
         }
+
+        item.found = word_found;
       }
     },
-    values: function values(_values, column) {
-      if (_values.hasOwnProperty(column)) {
-        text = _list.utils.toString(_values[column]).toLowerCase();
-
-        if (searchString !== '' && text.search(searchString) > -1) {
-          return true;
-        }
-      }
-
-      return false;
-    },
+    // Removed search.item() and search.values()
     reset: function reset() {
       _list.reset.search();
 
@@ -819,7 +841,7 @@ module.exports = function (_list) {
   _list.handlers.searchStart = _list.handlers.searchStart || [];
   _list.handlers.searchComplete = _list.handlers.searchComplete || [];
 
-  _list.utils.events.bind(_list.utils.getByClass(_list.listContainer, _list.searchClass), 'keyup', function (e) {
+  _list.utils.events.bind(_list.utils.getByClass(_list.listContainer, _list.searchClass), 'keyup', _list.utils.events.debounce(function (e) {
     var target = e.target || e.srcElement,
         // IE have srcElement
     alreadyCleared = target.value === '' && !_list.searched;
@@ -828,7 +850,7 @@ module.exports = function (_list) {
       // If oninput already have resetted the list, do nothing
       searchMethod(target.value);
     }
-  }); // Used to detect click on HTML5 clear button
+  }, _list.searchDelay)); // Used to detect click on HTML5 clear button
 
 
   _list.utils.events.bind(_list.utils.getByClass(_list.listContainer, _list.searchClass), 'input', function (e) {
@@ -1372,6 +1394,7 @@ ClassList.prototype.has = ClassList.prototype.contains = function (name) {
   \*****************************/
 /*! default exports */
 /*! export bind [provided] [no usage info] [missing usage info prevents renaming] */
+/*! export debounce [provided] [no usage info] [missing usage info prevents renaming] */
 /*! export unbind [provided] [no usage info] [missing usage info prevents renaming] */
 /*! other exports [not provided] [no usage info] */
 /*! runtime requirements: __webpack_exports__, __webpack_require__ */
@@ -1416,6 +1439,36 @@ exports.unbind = function (el, type, fn, capture) {
   for (var i = 0, il = el.length; i < il; i++) {
     el[i][unbind](prefix + type, fn, capture || false);
   }
+};
+/**
+ * Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered. The function will be called after it stops being called for
+ * `wait` milliseconds. If `immediate` is true, trigger the function on the
+ * leading edge, instead of the trailing.
+ *
+ * @param {Function} fn
+ * @param {Integer} wait
+ * @param {Boolean} immediate
+ * @api public
+ */
+
+
+exports.debounce = function (fn, wait, immediate) {
+  var timeout;
+  return wait ? function () {
+    var context = this,
+        args = arguments;
+
+    var later = function later() {
+      timeout = null;
+      if (!immediate) fn.apply(context, args);
+    };
+
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) fn.apply(context, args);
+  } : fn;
 };
 
 /***/ }),
