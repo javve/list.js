@@ -161,5 +161,36 @@ describe('Templater', () => {
       )
     })
   })
-  describe('get', () => {})
+  describe('get', () => {
+    it('should get all values from element', () => {
+      const itemEl = $(
+        '<div data-id="1">' +
+          '<a href="http://lol.com" class="link name">Jonny</a>' +
+          '<span class="born timestamp" data-timestamp="54321">1986</span>' +
+          '<img class="image" src="usage/boba.jpeg">' +
+          '<input class="foo" value="Bar">' +
+          '</div>'
+      )[0]
+      const valueNames = [
+        'name',
+        'born',
+        { data: ['id'] },
+        { attr: 'src', name: 'image' },
+        { attr: 'href', name: 'link' },
+        { attr: 'value', name: 'foo' },
+        { attr: 'data-timestamp', name: 'timestamp' },
+      ]
+      const templater = Templater({ item: '<div></div>', valueNames })
+      const values = templater.get(itemEl)
+      expect(values).toEqual({
+        name: 'Jonny',
+        born: '1986',
+        id: '1',
+        image: 'usage/boba.jpeg',
+        link: 'http://lol.com',
+        foo: 'Bar',
+        timestamp: '54321',
+      })
+    })
+  })
 })

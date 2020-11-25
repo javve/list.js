@@ -16,7 +16,7 @@ module.exports = function (list) {
         }
       } else {
         item.elm = element
-        var values = list.templater.get(item, initValues)
+        var values = list.templater.get(item.elm)
         item.values(values)
       }
     }

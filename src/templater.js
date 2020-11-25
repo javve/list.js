@@ -1,4 +1,5 @@
 var getByClass = require('./utils/get-by-class')
+var getAttribute = require('./utils/get-attribute')
 
 module.exports = function (list) {
   var createItem,
@@ -127,21 +128,20 @@ module.exports = function (list) {
     }
   }
 
-  this.get = function (item, valueNames) {
-    templater.create(item)
+  this.get = function (el) {
+    var valueNames = list.valueNames
     var values = {}
     for (var i = 0, il = valueNames.length; i < il; i++) {
-      var elm = undefined,
-        valueName = valueNames[i]
+      var valueName = valueNames[i]
       if (valueName.data) {
         for (var j = 0, jl = valueName.data.length; j < jl; j++) {
-          values[valueName.data[j]] = list.utils.getAttribute(item.elm, 'data-' + valueName.data[j])
+          values[valueName.data[j]] = getAttribute(el, 'data-' + valueName.data[j])
         }
       } else if (valueName.attr && valueName.name) {
-        elm = getByClass(item.elm, valueName.name, true)
-        values[valueName.name] = elm ? list.utils.getAttribute(elm, valueName.attr) : ''
+        var elm = getByClass(el, valueName.name, true)
+        values[valueName.name] = elm ? getAttribute(elm, valueName.attr) : ''
       } else {
-        elm = getByClass(item.elm, valueName, true)
+        var elm = getByClass(el, valueName, true)
         values[valueName] = elm ? elm.innerHTML : ''
       }
     }
