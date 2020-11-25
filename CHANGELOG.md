@@ -1,6 +1,6 @@
 # Changelog
 
-### 2.2.0
+### 2.3.0 - 2020-11-25
 
 - **[Feature]** #682 Multiple word search
 - **[Feature]** #683 Debounced keyup handler in search
