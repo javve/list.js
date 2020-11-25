@@ -20,6 +20,8 @@ redirect_from:
   <li><a href="#page">page</a></li>
   <li><a href="#pagination">pagination</a></li>
   <li><a href="#searchClass">searchClass</a></li>
+  <li><a href="#searchColumns">searchColumns</a></li>
+  <li><a href="#searchDelay">searchDelay</a></li>
   <li><a href="#sortClass">sortClass</a></li>
   <li><a href="#valueNames">valueNames</a></li>
 </ul>
@@ -44,7 +46,7 @@ redirect_from:
   <li><a href="#fuzzysearch">fuzzySearch</a></li>
   <li><a href="#get">get</a></li>
   <li><a href="#on">on</a></li>
-  <li><a href="#reindex">reindex</a></li>
+  <li><a href="#reindex">reIndex</a></li>
   <li><a href="#remove">remove</a></li>
   <li><a href="#search">search</a></li>
   <li><a href="#size">size</a></li>
@@ -62,11 +64,11 @@ redirect_from:
 
 <ul>
 <li>
-    <strong><a name="id" href="#id" class="anchor"></a>id</strong> or <strong><a name="element" href="#element" class="anchor"></a>element</strong> <em class="docs-parameter-description">*required</em>
+    <strong><a name="id" href="#id" class="anchor"></a>id</strong> or <strong><a name="element" href="#element" class="anchor"></a>element</strong> <em class="docs-parameter-description">*required</em><br>
     Id the element in which the list area should be initialized. OR the actual element itself.
 </li>
 <li>
-<p><strong><a name="options" href="#options" class="anchor"></a>options</strong>
+<p><strong><a name="options" href="#options" class="anchor"></a>options</strong> <em class="docs-parameter-description">Object, default: undefined</em><br>
 Some of the option parameters are required at some times</p>
 
 <ul>
@@ -127,6 +129,10 @@ var options = {
 What is the class of the list-container?</p></li>
 <li><p><strong><a name="searchClass" href="#searchClass" class="anchor"></a>searchClass</strong> <em class="docs-parameter-description">String, default: "search"</em><br>
 What is the class of the search field?</p></li>
+<li><p><strong><a name="searchColumns" href="#searchColumns" class="anchor"></a>searchColumns</strong> <em class="docs-parameter-description">Array of strings, default: undefined</em><br>
+Restrict searching to just these column names? Default is to search all columns.</p></li>
+<li><p><strong><a name="searchDelay" href="#searchDelay" class="anchor"></a>searchDelay</strong> <em class="docs-parameter-description">Int default: 0</em><br>
+Delay in milliseconds after last keypress in search field before search starts. 250&rarr;750 is good for very large lists.</p></li>
 <li><p><strong><a name="sortClass" href="#sortClass" class="anchor"></a>sortClass</strong> <em class="docs-parameter-description">String, default: "sort"</em><br>
 What is the class of the sort buttons?</p></li>
 <li><p><strong><a name="indexAsync" href="#indexAsync" class="anchor"></a>indexAsync</strong> <em class="docs-parameter-description">Boolean, default: false</em><br>
@@ -138,11 +144,11 @@ Defines how many items that should be visible at the same time. This affects
 performance.</p></li>
 <li><p><strong><a name="i" href="#i" class="anchor"></a>i</strong>  <em class="docs-parameter-description">Int, default: 1</em><br>
 Which item should be shown as the first one.</p></li>
-<li><p><strong><a name="pagination" href="#pagination" class="anchor"></a>pagination</strong>  <em class="docs-parameter-description">Boolean, default: false</em><br>
+<li><p><strong><a name="pagination" href="#pagination" class="anchor"></a>pagination</strong>  <em class="docs-parameter-description">Boolean, default: undefined</em><br>
 Read more <a href="{{ "/docs/pagination" | relative_url }}">here</a>.</p></li>
 </ul>
 </li>
-<li><p><strong><a name="values" href="#values" class="anchor"></a>values</strong> <em class="docs-parameter-description">Array of objects) (*optional</em>
+<li><p><strong><a name="values" href="#values" class="anchor"></a>values</strong> <em class="docs-parameter-description">Array of objects, default: undefined</em><br>
 Values to add to the list on initialization.</p></li>
 </ul>
 
@@ -275,20 +281,42 @@ listObj.alphabet = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzÅåÄäÖ
 
   </li>
   <li>
-    <p><strong><a name="search" class="achor" href="#search"></a>search(searchString, columns)</strong><br>
+    <p><strong><a name="search" class="achor" href="#search"></a>search(searchString, columns, searchFunction)</strong><br>
       Searches the list</p>
 
 <pre><code class="javascript">itemsInList = [
-{ id: 1, name: "Jonny" }
-, { id: 2, name "Gustaf" }
-, { id: 3, name "Jonas" }
+{ id: 1, name: "Jonny Stromberg", born: 1986 }
+, { id: 2, name "Jonas Arnklint", born: 1985 }
+, { id: 3, name "Martina Elm", born: 1986 }
+, { id: 4, name "Gustaf Lindqvist", born: 1983 }
+, { id: 5, name "Jonny Strandberg", born: 1990 }
 ];
 
-listObj.search('Jonny'); // Only item with name Jonny is shown (also returns this item)
+listObj.search('Jonny'); // Only items with name Jonny are shown (also returns these items)
 
 listObj.search(); // Show all items in list
 
 listObj.search('Jonny', ['name']); // Only search in the 'name' column</code></pre>
+
+<p>Space-separated words match in any order using logical AND. Surround a phrase in quotes for exact matches:</p>
+
+<pre><code class="javascript">listObj.search('Jon 198'); // Items that match Jon AND 198
+
+listObj.search('"Jonny S" 1990'); // Items that match "Jonny S" AND 1990</code></pre>
+
+<p>Optionally your own search function can be used:</p>
+
+<pre><code class="javascript">listObj.search('Jonny', searchFunction); // Custom search for Jonny
+
+listObj.search('Jonny', ['name'], searchFunction); // Custom search in the 'name' column
+
+function searchFunction(searchString, columns) {
+  for (var k = 0, kl = listObj.items.length; k &lt; kl; k++) {
+     listObj.items[k].found = false;
+     // Insert your custom search logic here, set found = true
+
+  }
+};</code></pre>
 
   </li>
   <li>
@@ -351,7 +379,7 @@ listObj.show(4, 3); // Display item 4,5,6 </code></pre>
     Read more <a href="{{ "/docs/fuzzysearch" | relative_url }}">here</a></p>
   </li>
   <li>
-    <p><strong><aname="on" class="achor" href="#on"></a>on(event, callback)</strong><br>
+    <p><strong><a name="on" class="achor" href="#on"></a>on(event, callback)</strong><br>
     Execute <code>callback</code> when list have been updated (triggered by <code>update()</code>, which is used by a lot of methods). Use <code>updated</code> as the event.</p>
     <h4>Avaliable events</h4>
     <ul>

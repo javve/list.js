@@ -1,5 +1,11 @@
 # Changelog
 
+### 2.2.0
+
+- **[Feature]** #682 Multiple word search
+- **[Feature]** #683 Debounced keyup handler in search
+- **[Website]** #684 Add more documentation for automagical search and sort elements
+
 ### 2.1.0 - 2020-11-21
 
 - **[Feature]** #634 Add item template function
@@ -12,8 +18,6 @@
 ### 2.0.0 - 2020-11-21 - Winter cleanup 🧹
 
 - **[Breaking]** Drop support for IE6-8
-- **[Website]** Update Jekyll to remove security warnings
-- **[Website]** Fix all examples (sorry that they we're broken)
 - **[Misc]** Update dev dependencies to latest version: Webpack 3.12.0 -> 5.6.0, jest 23.3 -> 26.6.3, jquery 3.3.1 -> 3.5.1, Removed: jshint jshint-loader
 - **[Misc]** Replace uglify-js with terser
 - **[Misc]** Update Node for dev from 6.15 to 14.15.1
@@ -22,14 +26,12 @@
 - **[Misc]** Rename History.md to CHANGELOG.md
 - **[Misc]** Use `babal-loader` with `@babel/preset-env` for supporting IE9-11
 - **[Misc]** Add source-maps to `/dist`
-
-### 1.5.1
-
 - **[Misc]** Added WISHLIST.md for feature requests to allow cleanup of issue list.
 - **[Misc]** Update CircleCI from 1.0 to 2.0
+- **[Website]** Update Jekyll to remove security warnings
+- **[Website]** Fix all examples (sorry that they we're broken)
 - **[Website]** Use https instead of http for listjs.com
 - **[Website]** Update Contribute guidelines [See commit →](https://github.com/javve/list.js/commit/6242496de2ac5c07903fb1590a5cb5129f0887a7)
-- **[Website]** Update Jekyll & jQuery versions to remove security warnings.
 - **[Bugfix]** Use one event listener per pagination and select page via data attributes
   [See commit →](https://github.com/javve/list.js/commit/7610c59039f3b39f52175cd1a200e935664869e8)
 - **[Bugfix]** Don't break pagination if page=0
@@ -80,7 +82,7 @@ and I'm very sorry that it has taken so long. I promise I'll do better in the fu
 
 Anyways, this release introduces a bunch of bug fixes and improvements, but most
 importantly: List.js now has support for data attributes PLUS all other attributes.
-[See an example]() and [read the docs](http://www.listjs.com/docs#example-6).
+[See an example]() and [read the docs](https://www.listjs.com/docs#example-6).
 
 Another noteworthy update is that I've left Component and moved back all utils
 to the core lib. Instead I'm using Browserify as module handler.
@@ -99,7 +101,7 @@ I hope you'll like this update!
   [See commit →](https://github.com/javve/list.js/commit/618565b203b61c34b868a9cb86eea899e75ea4b6)
 - **[Breaking]** Rename list.helpers to list.utils
   [See commit →](https://github.com/javve/list.js/commit/58695c93849b78787d9cf78cbf9be20b01cdcc8a)
-- **[Feature]** Add support for data attributes and custom attributes ex. links and images. [See docs](http://listjs.com/).
+- **[Feature]** Add support for data attributes and custom attributes ex. links and images. [See docs](https://listjs.com/).
   [See commit →](https://github.com/javve/list.js/commit/a8e083dc0f642e90b7a3f3cc11b12f9bb353d3a0)
 - **[Feature]** Add toJSON method.
   [See commit →](https://github.com/javve/list.js/commit/570fd10e65fcf2e0d3d959ca42137625d9fd3b7c)
@@ -157,7 +159,7 @@ I hope you'll like this update!
 - **[Feature]** Add support for Component.js, Bower, RequireJS and CommonJS
 - **[Feature]** Make it possible to remove event handlers by `.off('event', handler)`
 - **[Improvement]** Many new tests
-- **[Improvement]** Paging plugin default classes and structure now correspons to <a href="http://twitter.github.com/bootstrap/components.html#pagination">Twitter Bootstraps pagination</a>.
+- **[Improvement]** Paging plugin default classes and structure now correspons to <a href="https://twitter.github.com/bootstrap/components.html#pagination">Twitter Bootstraps pagination</a>.
 - **[Improvement]** Make sorting case-insensitive (thanks @thomasklemm)
 - **[Improvement]** Add item.\_values for direct access to a items values. Simplifies debugging. Note: Always use item.values() when interacting with the values.
 - **[Bugfix]** `.add(items, callbak)` with `callback` set does no longer add an extra item.
