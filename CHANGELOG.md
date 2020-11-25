@@ -4,6 +4,7 @@
 
 - **[Feature]** #682 Multiple word search
 - **[Feature]** #683 Debounced keyup handler in search
+- **[Improvement]** #679 Faster search
 - **[Website]** #684 Add more documentation for automagical search and sort elements
 
 ### 2.1.0 - 2020-11-21
