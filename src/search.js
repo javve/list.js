@@ -57,11 +57,11 @@ module.exports = function (list) {
         var item = list.items[k]
         item.found = false
         if (!words.length) continue
+        var values = item.values()
         for (var i = 0, il = words.length; i < il; i++) {
           var word_found = false
           for (var j = 0, jl = columns.length; j < jl; j++) {
-            var values = item.values(),
-              column = columns[j]
+            var column = columns[j]
             if (values.hasOwnProperty(column) && values[column] !== undefined && values[column] !== null) {
               var text = typeof values[column] !== 'string' ? values[column].toString() : values[column]
               if (text.toLowerCase().indexOf(words[i]) !== -1) {
