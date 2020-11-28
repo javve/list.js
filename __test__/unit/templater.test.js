@@ -1,20 +1,20 @@
 const $ = require('jquery')
-const Templater = require('../../src/templater')
+const templater = require('../../src/templater')
 
 describe('Templater', () => {
-  describe('init', () => {
-    it('should init with item string of a div', () => {
+  describe('getTemplate function', () => {
+    it('should get from string with div', () => {
       const item = `<div><span class="name">Foo</span></div>`
       const valueNames = ['name']
-      const templater = Templater({ item, valueNames })
-      const itemEl = templater.createItem()
+      const template = templater.getTemplate({ template: item, valueNames })
+      const itemEl = template()
       expect(itemEl.outerHTML).toEqual('<div><span class="name"></span></div>')
     })
     it('should init with item string of a tr', () => {
       const item = `<tr><td class="name">Foo</td></tr>`
       const valueNames = ['name']
-      const templater = Templater({ item, valueNames })
-      const itemEl = templater.createItem()
+      const template = templater.getTemplate({ template: item, valueNames })
+      const itemEl = template()
       expect(itemEl.outerHTML).toEqual('<tr><td class="name"></td></tr>')
     })
     it('should init with item function', () => {
@@ -22,8 +22,8 @@ describe('Templater', () => {
         return `<div><span class="name"></span></div>`
       }
       const valueNames = ['name']
-      const templater = Templater({ item, valueNames })
-      const itemEl = templater.createItem()
+      const template = templater.getTemplate({ template: item, valueNames })
+      const itemEl = template()
       expect(itemEl.outerHTML).toEqual('<div><span class="name"></span></div>')
     })
     it('should init without item', () => {
@@ -34,8 +34,8 @@ describe('Templater', () => {
     `)
       $(document.body).append(listEl)
       const valueNames = ['name']
-      const templater = Templater({ valueNames, list: document.querySelector('.list') })
-      const itemEl = templater.createItem()
+      const template = templater.getTemplate({ parentEl: document.querySelector('.list'), valueNames })
+      const itemEl = template()
       expect(itemEl.outerHTML).toEqual('<li><span class="name"></span></li>')
     })
   })
@@ -58,16 +58,20 @@ describe('Templater', () => {
         { attr: 'value', name: 'foo' },
         { attr: 'data-timestamp', name: 'timestamp' },
       ]
-      const templater = Templater({ item, valueNames })
-      const itemEl = templater.create({
-        name: 'Sven',
-        born: 1950,
-        id: 4,
-        image: 'usage/rey.jpeg',
-        link: 'localhost',
-        timestamp: '1337',
-        foo: 'hej',
-      })
+      const template = templater.getTemplate({ template: item, valueNames })
+      const itemEl = templater.create(
+        {
+          name: 'Sven',
+          born: 1950,
+          id: 4,
+          image: 'usage/rey.jpeg',
+          link: 'localhost',
+          timestamp: '1337',
+          foo: 'hej',
+        },
+        valueNames,
+        template
+      )
       expect(itemEl.outerHTML).toEqual(
         '<div data-id="4">' +
           '<a href="localhost" class="link name">Sven</a>' +
@@ -88,9 +92,8 @@ describe('Templater', () => {
       document.body.appendChild(listEl)
       const item = listEl.querySelector('div')
       const valueNames = ['name']
-      const templater = Templater({ list: listEl, valueNames })
       expect(listEl.querySelector('div')).not.toEqual(null)
-      templater.remove(item)
+      templater.remove(item, listEl)
       expect(listEl.querySelector('div')).toEqual(null)
     })
   })
@@ -99,10 +102,8 @@ describe('Templater', () => {
       const listEl = $(`<div class="list"></div>`)[0]
       document.body.appendChild(listEl)
       const item = $('<div><span class="name">Foo</span></div>')[0]
-      const valueNames = ['name']
-      const templater = Templater({ list: listEl, valueNames, item: '<div></div>' })
       expect(listEl.querySelector('div')).toEqual(null)
-      templater.show(item)
+      templater.show(item, listEl)
       expect(listEl.querySelector('div')).not.toEqual(null)
     })
   })
@@ -115,10 +116,8 @@ describe('Templater', () => {
         </div>
       `)[0]
       document.body.appendChild(listEl)
-      const valueNames = ['name']
-      const templater = Templater({ list: listEl, valueNames })
       expect(listEl.querySelectorAll('div').length).toEqual(2)
-      templater.clear()
+      templater.clear(listEl)
       expect(listEl.querySelectorAll('div').length).toEqual(0)
     })
   })
@@ -141,16 +140,19 @@ describe('Templater', () => {
         { attr: 'value', name: 'foo' },
         { attr: 'data-timestamp', name: 'timestamp' },
       ]
-      const templater = Templater({ item: '<div></div>', valueNames })
-      templater.set(itemEl, {
-        name: 'Sven',
-        born: 1950,
-        id: 4,
-        image: 'usage/rey.jpeg',
-        link: 'localhost',
-        timestamp: '1337',
-        foo: 'hej',
-      })
+      templater.set(
+        itemEl,
+        {
+          name: 'Sven',
+          born: 1950,
+          id: 4,
+          image: 'usage/rey.jpeg',
+          link: 'localhost',
+          timestamp: '1337',
+          foo: 'hej',
+        },
+        valueNames
+      )
       expect(itemEl.outerHTML).toEqual(
         '<div data-id="4">' +
           '<a href="localhost" class="link name">Sven</a>' +
@@ -180,8 +182,7 @@ describe('Templater', () => {
         { attr: 'value', name: 'foo' },
         { attr: 'data-timestamp', name: 'timestamp' },
       ]
-      const templater = Templater({ item: '<div></div>', valueNames })
-      const values = templater.get(itemEl)
+      const values = templater.get(itemEl, valueNames)
       expect(values).toEqual({
         name: 'Jonny',
         born: '1986',

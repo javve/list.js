@@ -16,8 +16,7 @@ module.exports = function (list) {
         }
       } else {
         item.elm = element
-        var values = list.templater.get(item.elm)
-        item.values(values)
+        item.values(initValues)
       }
     }
 
@@ -26,12 +25,8 @@ module.exports = function (list) {
         for (var name in newValues) {
           item._values[name] = newValues[name]
         }
-        if (notCreate !== true) {
-          if (item.elm) {
-            list.templater.set(item.elm, item.values())
-          } else {
-            list.templater.create(item.values())
-          }
+        if (item.elm) {
+          list.templater.set(item.elm, item.values(), list.valueNames)
         }
       } else {
         return item._values
@@ -40,13 +35,13 @@ module.exports = function (list) {
 
     this.show = function () {
       if (!item.elm) {
-        item.elm = list.templater.create(item.values())
+        item.elm = list.templater.create(item.values(), list.valueNames, list.template)
       }
-      list.templater.show(item.elm)
+      list.templater.show(item.elm, list.list)
     }
 
     this.hide = function () {
-      list.templater.remove(item.elm)
+      list.templater.remove(item.elm, list.list)
     }
 
     this.matching = function () {

@@ -52,7 +52,12 @@ module.exports = function (id, options, values) {
       self.list = getByClass(self.listContainer, self.listClass, true)
 
       self.parse = require('./parse')(self)
-      self.templater = require('./templater')(self)
+      self.templater = require('./templater')
+      self.template = self.templater.getTemplate({
+        parentEl: self.list,
+        valueNames: self.valueNames,
+        template: self.item,
+      })
       self.search = require('./search')(self)
       self.filter = require('./filter')(self)
       self.sort = require('./sort')(self)
@@ -129,9 +134,7 @@ module.exports = function (id, options, values) {
       values = [values]
     }
     for (var i = 0, il = values.length; i < il; i++) {
-      var item = null
-      notCreate = self.items.length > self.page ? true : false
-      item = new Item(values[i], undefined, notCreate)
+      var item = new Item(values[i], undefined, notCreate)
       self.items.push(item)
       added.push(item)
     }
@@ -154,7 +157,7 @@ module.exports = function (id, options, values) {
     var found = 0
     for (var i = 0, il = self.items.length; i < il; i++) {
       if (self.items[i].values()[valueName] == value) {
-        self.templater.remove(self.items[i].elm)
+        self.templater.remove(self.items[i].elm, self.list)
         self.items.splice(i, 1)
         il--
         i--
@@ -190,7 +193,7 @@ module.exports = function (id, options, values) {
    * Removes all items from the list
    */
   this.clear = function () {
-    self.templater.clear()
+    self.templater.clear(self.list)
     self.items = []
     return self
   }
@@ -242,7 +245,7 @@ module.exports = function (id, options, values) {
 
     self.visibleItems = []
     self.matchingItems = []
-    self.templater.clear()
+    self.templater.clear(self.list)
     for (var i = 0; i < il; i++) {
       if (is[i].matching() && self.matchingItems.length + 1 >= self.i && self.visibleItems.length < self.page) {
         is[i].show()

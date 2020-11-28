@@ -15,7 +15,8 @@ module.exports = function (list) {
 
   var parse = function (itemElements, valueNames) {
     for (var i = 0, il = itemElements.length; i < il; i++) {
-      list.items.push(new Item(valueNames, itemElements[i]))
+      var values = list.templater.get(itemElements[i], list.valueNames)
+      list.items.push(new Item(values, itemElements[i]))
     }
   }
   var parseAsync = function (itemElements, valueNames) {
