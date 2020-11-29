@@ -7,12 +7,12 @@ var naturalSort = require('string-natural-compare'),
   classes = require('./utils/classes'),
   getAttribute = require('./utils/get-attribute'),
   toArray = require('./utils/to-array'),
-  templater = require('./templater')
+  templater = require('./templater'),
+  Item = require('./item')
 
 module.exports = function (id, options, values) {
   var self = this,
     init,
-    Item = require('./item')(self),
     addAsync = require('./add-async')(self),
     initPagination = require('./pagination')(self)
 
@@ -134,7 +134,7 @@ module.exports = function (id, options, values) {
       values = [values]
     }
     for (var i = 0, il = values.length; i < il; i++) {
-      var item = new Item(values[i])
+      var item = new Item(values[i], { template: self.template })
       self.items.push(item)
       added.push(item)
     }

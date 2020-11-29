@@ -1,49 +1,41 @@
 const templater = require('./templater')
 
-module.exports = function (list) {
-  return function (initValues, element, notCreate) {
-    var item = this
+module.exports = function (initValues, { element, template } = {}) {
+  var item = this
 
-    this._values = {}
+  this._values = {}
 
-    this.found = false
-    this.filtered = false
+  this.found = false
+  this.filtered = false
 
-    var init = function (initValues, element, notCreate) {
-      if (element === undefined) {
-        if (notCreate) {
-          item.values(initValues, notCreate)
-        } else {
-          item.values(initValues)
-        }
-      } else {
-        item.elm = element
-        item.values(initValues)
-      }
-    }
-
-    this.values = function (newValues, notCreate) {
-      if (newValues !== undefined) {
-        for (var name in newValues) {
-          item._values[name] = newValues[name]
-        }
-        if (item.elm) {
-          templater.set(item.elm, item.values(), list.valueNames)
-        }
-      } else {
-        return item._values
-      }
-    }
-
-    this.matching = function ({ searched, filtered }) {
-      return (
-        (filtered && searched && item.found && item.filtered) ||
-        (filtered && !searched && item.filtered) ||
-        (!filtered && searched && item.found) ||
-        (!filtered && !searched)
-      )
-    }
-
-    init(initValues, element, notCreate)
+  var init = function (values, { element, template } = {}) {
+    if (element) item.elm = element
+    if (!template) throw new Error('no tempalte!')
+    item.template = template
+    item.values(values)
   }
+
+  this.values = function (newValues) {
+    if (newValues !== undefined) {
+      for (var name in newValues) {
+        item._values[name] = newValues[name]
+      }
+      if (item.elm) {
+        templater.set(item.elm, item.values(), item.template.valueNames)
+      }
+    } else {
+      return item._values
+    }
+  }
+
+  this.matching = function ({ searched, filtered }) {
+    return (
+      (filtered && searched && item.found && item.filtered) ||
+      (filtered && !searched && item.filtered) ||
+      (!filtered && searched && item.found) ||
+      (!filtered && !searched)
+    )
+  }
+
+  init(initValues, { element, template })
 }
