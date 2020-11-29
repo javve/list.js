@@ -45,9 +45,13 @@ var templater = {}
 
 templater.getTemplate = function ({ valueNames, parentEl, template }) {
   if (typeof template === 'function') {
-    return function (values) {
-      var item = template(values)
-      return stringToDOMElement(item)
+    return {
+      valueNames,
+      type: 'dynamic',
+      render: function (values) {
+        var item = template(values)
+        return stringToDOMElement(item)
+      },
     }
   }
 
@@ -73,8 +77,13 @@ templater.getTemplate = function ({ valueNames, parentEl, template }) {
 
   itemSource = createCleanTemplateItem(itemSource, valueNames)
 
-  return function () {
-    return itemSource.cloneNode(true)
+  return {
+    valueNames,
+    render: function (values) {
+      var el = itemSource.cloneNode(true)
+      templater.set(el, values, valueNames)
+      return el
+    },
   }
 }
 
@@ -105,10 +114,8 @@ templater.set = function (el, values, valueNames) {
   }
 }
 
-templater.create = function (values, valueNames, template) {
-  var elm = template(values)
-  templater.set(elm, values, valueNames)
-  return elm
+templater.create = function (values, template) {
+  return template.render(values)
 }
 templater.remove = function (el, parentEl) {
   if (el !== undefined && el.parentNode === parentEl) {

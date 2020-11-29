@@ -1,5 +1,6 @@
 const $ = require('jquery'),
-  fixture = require('./fixtures')
+  fixture = require('./fixtures'),
+  isVisible = require('../utils/is-visible')
 
 describe('Item', function () {
   var list, item
@@ -39,11 +40,8 @@ describe('Item', function () {
     })
 
     it('should have all default methods', function () {
-      expect(item.hide).toBeInstanceOf(Function)
-      expect(item.show).toBeInstanceOf(Function)
       expect(item.values).toBeInstanceOf(Function)
       expect(item.matching).toBeInstanceOf(Function)
-      expect(item.visible).toBeInstanceOf(Function)
     })
   })
 
@@ -79,44 +77,28 @@ describe('Item', function () {
     })
   })
 
-  describe('Hide, show, visible', function () {
-    it('should be hidden', function () {
-      expect($('#list li').length).toEqual(1)
-      item.hide()
-      expect(item.visible()).toBe(false)
-      expect($('#list li').length).toEqual(0)
-    })
-    it('should be visible', function () {
-      item.hide()
-      expect($('#list li').length).toEqual(0)
-      item.show()
-      expect(item.visible()).toBe(true)
-      expect($('#list li').length).toEqual(1)
-    })
-  })
-
   describe('Matching, found, filtered', function () {
     describe('Searching', function () {
       it('should not be visible, match, found or filtered', function () {
         list.search('Fredrik')
-        expect(item.matching()).toBe(false)
+        expect(item.matching(list)).toBe(false)
         expect(item.found).toBe(false)
         expect(item.filtered).toBe(false)
-        expect(item.visible()).toBe(false)
+        expect(isVisible(item.elm, list.list)).toBe(false)
       })
       it('should be visble, match and found but not filterd', function () {
         var result = list.search('Sven')
-        expect(item.matching()).toBe(true)
+        expect(item.matching(list)).toBe(true)
         expect(item.found).toBe(true)
         expect(item.filtered).toBe(false)
-        expect(item.visible()).toBe(true)
+        expect(isVisible(item.elm, list.list)).toBe(true)
       })
       it('reset: should be visible and matching but not found or filtered', function () {
         list.search()
-        expect(item.matching()).toBe(true)
+        expect(item.matching(list)).toBe(true)
         expect(item.found).toBe(false)
         expect(item.filtered).toBe(false)
-        expect(item.visible()).toBe(true)
+        expect(isVisible(item.elm, list.list)).toBe(true)
       })
     })
     describe('Filtering', function () {
@@ -124,26 +106,26 @@ describe('Item', function () {
         list.filter(function (item) {
           return item.values().name == 'Fredrik'
         })
-        expect(item.matching()).toBe(false)
+        expect(item.matching(list)).toBe(false)
         expect(item.found).toBe(false)
         expect(item.filtered).toBe(false)
-        expect(item.visible()).toBe(false)
+        expect(isVisible(item.elm, list.list)).toBe(false)
       })
       it('should be visble, match and filtered but not found', function () {
         list.filter(function (item) {
           return item.values().name == 'Sven'
         })
-        expect(item.matching()).toBe(true)
+        expect(item.matching(list)).toBe(true)
         expect(item.found).toBe(false)
         expect(item.filtered).toBe(true)
-        expect(item.visible()).toBe(true)
+        expect(isVisible(item.elm, list.list)).toBe(true)
       })
       it('reset: should be visble and match but not filtered or found', function () {
         list.filter()
-        expect(item.matching()).toBe(true)
+        expect(item.matching(list)).toBe(true)
         expect(item.found).toBe(false)
         expect(item.filtered).toBe(false)
-        expect(item.visible()).toBe(true)
+        expect(isVisible(item.elm, list.list)).toBe(true)
       })
     })
   })

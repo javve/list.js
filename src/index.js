@@ -6,7 +6,8 @@ var naturalSort = require('string-natural-compare'),
   toString = require('./utils/to-string'),
   classes = require('./utils/classes'),
   getAttribute = require('./utils/get-attribute'),
-  toArray = require('./utils/to-array')
+  toArray = require('./utils/to-array'),
+  templater = require('./templater')
 
 module.exports = function (id, options, values) {
   var self = this,
@@ -52,7 +53,7 @@ module.exports = function (id, options, values) {
       self.list = getByClass(self.listContainer, self.listClass, true)
 
       self.parse = require('./parse')(self)
-      self.templater = require('./templater')
+      self.templater = templater
       self.template = self.templater.getTemplate({
         parentEl: self.list,
         valueNames: self.valueNames,
@@ -128,13 +129,12 @@ module.exports = function (id, options, values) {
       addAsync(values.slice(0), callback)
       return
     }
-    var added = [],
-      notCreate = false
+    var added = []
     if (values[0] === undefined) {
       values = [values]
     }
     for (var i = 0, il = values.length; i < il; i++) {
-      var item = new Item(values[i], undefined, notCreate)
+      var item = new Item(values[i])
       self.items.push(item)
       added.push(item)
     }
@@ -247,15 +247,18 @@ module.exports = function (id, options, values) {
     self.matchingItems = []
     self.templater.clear(self.list)
     for (var i = 0; i < il; i++) {
-      if (is[i].matching() && self.matchingItems.length + 1 >= self.i && self.visibleItems.length < self.page) {
-        is[i].show()
+      if (is[i].matching(self) && self.matchingItems.length + 1 >= self.i && self.visibleItems.length < self.page) {
+        if (!is[i].elm) {
+          is[i].elm = templater.create(is[i].values(), self.template)
+        }
+        templater.show(is[i].elm, self.list)
         self.visibleItems.push(is[i])
         self.matchingItems.push(is[i])
-      } else if (is[i].matching()) {
+      } else if (is[i].matching(self)) {
         self.matchingItems.push(is[i])
-        is[i].hide()
+        templater.remove(is[i].elm, self.list)
       } else {
-        is[i].hide()
+        templater.remove(is[i].elm, self.list)
       }
     }
     self.trigger('updated')

@@ -1,11 +1,13 @@
+const templater = require('./templater')
+
 module.exports = function (list) {
   return function (initValues, element, notCreate) {
     var item = this
 
     this._values = {}
 
-    this.found = false // Show if list.searched == true and this.found == true
-    this.filtered = false // Show if list.filtered == true and this.filtered == true
+    this.found = false
+    this.filtered = false
 
     var init = function (initValues, element, notCreate) {
       if (element === undefined) {
@@ -26,35 +28,20 @@ module.exports = function (list) {
           item._values[name] = newValues[name]
         }
         if (item.elm) {
-          list.templater.set(item.elm, item.values(), list.valueNames)
+          templater.set(item.elm, item.values(), list.valueNames)
         }
       } else {
         return item._values
       }
     }
 
-    this.show = function () {
-      if (!item.elm) {
-        item.elm = list.templater.create(item.values(), list.valueNames, list.template)
-      }
-      list.templater.show(item.elm, list.list)
-    }
-
-    this.hide = function () {
-      list.templater.remove(item.elm, list.list)
-    }
-
-    this.matching = function () {
+    this.matching = function ({ searched, filtered }) {
       return (
-        (list.filtered && list.searched && item.found && item.filtered) ||
-        (list.filtered && !list.searched && item.filtered) ||
-        (!list.filtered && list.searched && item.found) ||
-        (!list.filtered && !list.searched)
+        (filtered && searched && item.found && item.filtered) ||
+        (filtered && !searched && item.filtered) ||
+        (!filtered && searched && item.found) ||
+        (!filtered && !searched)
       )
-    }
-
-    this.visible = function () {
-      return item.elm && item.elm.parentNode == list.list ? true : false
     }
 
     init(initValues, element, notCreate)

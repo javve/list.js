@@ -7,14 +7,14 @@ describe('Templater', () => {
       const item = `<div><span class="name">Foo</span></div>`
       const valueNames = ['name']
       const template = templater.getTemplate({ template: item, valueNames })
-      const itemEl = template()
+      const itemEl = template.render()
       expect(itemEl.outerHTML).toEqual('<div><span class="name"></span></div>')
     })
     it('should init with item string of a tr', () => {
       const item = `<tr><td class="name">Foo</td></tr>`
       const valueNames = ['name']
       const template = templater.getTemplate({ template: item, valueNames })
-      const itemEl = template()
+      const itemEl = template.render()
       expect(itemEl.outerHTML).toEqual('<tr><td class="name"></td></tr>')
     })
     it('should init with item function', () => {
@@ -23,7 +23,7 @@ describe('Templater', () => {
       }
       const valueNames = ['name']
       const template = templater.getTemplate({ template: item, valueNames })
-      const itemEl = template()
+      const itemEl = template.render()
       expect(itemEl.outerHTML).toEqual('<div><span class="name"></span></div>')
     })
     it('should init without item', () => {
@@ -35,7 +35,7 @@ describe('Templater', () => {
       $(document.body).append(listEl)
       const valueNames = ['name']
       const template = templater.getTemplate({ parentEl: document.querySelector('.list'), valueNames })
-      const itemEl = template()
+      const itemEl = template.render()
       expect(itemEl.outerHTML).toEqual('<li><span class="name"></span></li>')
     })
   })
@@ -69,7 +69,6 @@ describe('Templater', () => {
           timestamp: '1337',
           foo: 'hej',
         },
-        valueNames,
         template
       )
       expect(itemEl.outerHTML).toEqual(
