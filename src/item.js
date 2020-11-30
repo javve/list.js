@@ -10,7 +10,7 @@ module.exports = function (initValues, { element, template } = {}) {
 
   var init = function (values, { element, template } = {}) {
     if (element) item.elm = element
-    if (!template) throw new Error('no tempalte!')
+    if (!template) throw new Error('missing_item_template')
     item.template = template
     item.values(values)
   }
