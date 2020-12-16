@@ -77,12 +77,18 @@ module.exports = function (list) {
       }
     } else {
       sortFunction = function (itemA, itemB) {
-        var sort = list.utils.naturalSort
-        sort.alphabet = list.alphabet || options.alphabet || undefined
-        if (!sort.alphabet && options.insensitive) {
-          sort = list.utils.naturalSort.caseInsensitive
+        var naturalSortOptions = {}
+        naturalSortOptions.alphabet = list.alphabet || options.alphabet || undefined
+        if (!naturalSortOptions.alphabet && options.insensitive) {
+          naturalSortOptions.caseInsensitive = true
         }
-        return sort(itemA.values()[options.valueName], itemB.values()[options.valueName]) * multi
+        return (
+          list.utils.naturalSort(
+            '' + itemA.values()[options.valueName],
+            '' + itemB.values()[options.valueName],
+            naturalSortOptions
+          ) * multi
+        )
       }
     }
 
