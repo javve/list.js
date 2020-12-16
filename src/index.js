@@ -8,7 +8,9 @@ var naturalSort = require('string-natural-compare'),
   getAttribute = require('./utils/get-attribute'),
   toArray = require('./utils/to-array'),
   templater = require('./templater'),
-  Item = require('./item')
+  Item = require('./item'),
+  sort = require('./sort'),
+  { addSortListeners, clearSortOrder, setSortOrder } = require('./sort-buttons')
 
 module.exports = function (id, options, values) {
   var self = this,
@@ -61,12 +63,12 @@ module.exports = function (id, options, values) {
       })
       self.search = require('./search')(self)
       self.filter = require('./filter')(self)
-      self.sort = require('./sort')(self)
       self.fuzzySearch = require('./fuzzy-search')(self, options.fuzzySearch)
 
       this.handlers()
       this.items()
       this.pagination()
+      this.sort()
 
       self.update()
     },
@@ -94,6 +96,43 @@ module.exports = function (id, options, values) {
         for (var i = 0, il = options.pagination.length; i < il; i++) {
           initPagination(options.pagination[i])
         }
+      }
+    },
+    sort: function () {
+      const sortButtons = self.utils.getByClass(self.listContainer, self.sortClass)
+      const { items, sortFunction, alphabet } = self
+      const before = function () {
+        self.trigger('sortStart')
+      }
+      const after = function () {
+        self.update()
+        self.trigger('sortComplete')
+      }
+      addSortListeners(sortButtons, {
+        items,
+        sortFunction,
+        alphabet,
+        before,
+        after,
+      })
+
+      self.handlers.sortStart = self.handlers.sortStart || []
+      self.handlers.sortComplete = self.handlers.sortComplete || []
+      self.on('searchStart', function () {
+        clearSortOrder(sortButtons)
+      })
+      self.on('filterStart', function () {
+        clearSortOrder(sortButtons)
+      })
+      self.sort = function (valueName, options = {}) {
+        before()
+        setSortOrder(sortButtons, valueName, options.order)
+        options.alphabet = options.alphabet || self.alphabet
+        options.sortFunction = options.sortFunction || self.sortFunction
+        options.valueName = valueName
+        sort(items, valueName, options)
+        after()
+        return items
       }
     },
   }
