@@ -1,0 +1,14 @@
+{
+  "root": true,
+  "extends": [
+    "@webpack-contrib/eslint-config-webpack",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "prettier/prettier": "error",
+    "func-names": "off"
+  },
+  "env": {
+    "browser": true
+  }
+}
