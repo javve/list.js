@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle: ["error", { "allow": ["_values"] }] */
 module.exports = function (list) {
   return function (initValues, element, notCreate) {
     var item = this

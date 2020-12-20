@@ -156,7 +156,7 @@ ClassList.prototype.array = function () {
  * @return {ClassList}
  * @api public
  */
-
+/* eslint no-multi-assign: off */
 ClassList.prototype.has = ClassList.prototype.contains = function (name) {
   return this.list ? this.list.contains(name) : !!~index(this.array(), name)
 }

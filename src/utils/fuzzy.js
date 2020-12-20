@@ -1,3 +1,4 @@
+/* eslint camelcase: off */
 module.exports = function (text, pattern, options) {
   // Aproximately where in the text is the pattern expected to be found?
   var Match_Location = options.location || 0
