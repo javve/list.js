@@ -10,12 +10,11 @@ const toArray = require('./utils/to-array')
 
 module.exports = function (id, options, values) {
   const self = this
-  let init
   const Item = require('./item')(self)
   const addAsync = require('./add-async')(self)
   const initPagination = require('./pagination')(self)
 
-  init = {
+  const init = {
     start() {
       self.listClass = 'list'
       self.searchClass = 'search'
@@ -124,14 +123,12 @@ module.exports = function (id, options, values) {
       return
     }
     const added = []
-    let notCreate = false
     if (values[0] === undefined) {
       values = [values]
     }
     for (let i = 0, il = values.length; i < il; i++) {
-      let item = null
-      notCreate = self.items.length > self.page
-      item = new Item(values[i], undefined, notCreate)
+      const notCreate = self.items.length > self.page
+      const item = new Item(values[i], undefined, notCreate)
       self.items.push(item)
       added.push(item)
     }
@@ -153,7 +150,7 @@ module.exports = function (id, options, values) {
   this.remove = function (valueName, value, options) {
     let found = 0
     for (let i = 0, il = self.items.length; i < il; i++) {
-      if (self.items[i].values()[valueName] == value) {
+      if (self.items[i].values()[valueName] === value) {
         self.templater.remove(self.items[i], options)
         self.items.splice(i, 1)
         il--
@@ -172,7 +169,7 @@ module.exports = function (id, options, values) {
     const matchedItems = []
     for (let i = 0, il = self.items.length; i < il; i++) {
       const item = self.items[i]
-      if (item.values()[valueName] == value) {
+      if (item.values()[valueName] === value) {
         matchedItems.push(item)
       }
     }

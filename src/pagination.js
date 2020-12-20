@@ -3,6 +3,36 @@ const events = require('./utils/events')
 
 const List = require('./index')
 
+const is = {
+  number(i, left, right, currentPage, innerWindow) {
+    return this.left(i, left) || this.right(i, right) || this.innerWindow(i, currentPage, innerWindow)
+  },
+  left(i, left) {
+    return i <= left
+  },
+  right(i, right) {
+    return i > right
+  },
+  innerWindow(i, currentPage, innerWindow) {
+    return i >= currentPage - innerWindow && i <= currentPage + innerWindow
+  },
+  dotted(pagingList, i, left, right, currentPage, innerWindow, currentPageItem) {
+    return (
+      this.dottedLeft(pagingList, i, left, right, currentPage, innerWindow) ||
+      this.dottedRight(pagingList, i, left, right, currentPage, innerWindow, currentPageItem)
+    )
+  },
+  dottedLeft(pagingList, i, left, right, currentPage, innerWindow) {
+    return i === left + 1 && !this.innerWindow(i, currentPage, innerWindow) && !this.right(i, right)
+  },
+  dottedRight(pagingList, i, left, right, currentPage, innerWindow, currentPageItem) {
+    if (pagingList.items[currentPageItem - 1].values().dotted) {
+      return false
+    }
+    return i === right && !this.innerWindow(i, currentPage, innerWindow) && !this.right(i, right)
+  },
+}
+
 module.exports = function (list) {
   let isHidden = false
 
@@ -50,36 +80,6 @@ module.exports = function (list) {
         classes(item.elm).add('disabled')
       }
     }
-  }
-
-  var is = {
-    number(i, left, right, currentPage, innerWindow) {
-      return this.left(i, left) || this.right(i, right) || this.innerWindow(i, currentPage, innerWindow)
-    },
-    left(i, left) {
-      return i <= left
-    },
-    right(i, right) {
-      return i > right
-    },
-    innerWindow(i, currentPage, innerWindow) {
-      return i >= currentPage - innerWindow && i <= currentPage + innerWindow
-    },
-    dotted(pagingList, i, left, right, currentPage, innerWindow, currentPageItem) {
-      return (
-        this.dottedLeft(pagingList, i, left, right, currentPage, innerWindow) ||
-        this.dottedRight(pagingList, i, left, right, currentPage, innerWindow, currentPageItem)
-      )
-    },
-    dottedLeft(pagingList, i, left, right, currentPage, innerWindow) {
-      return i == left + 1 && !this.innerWindow(i, currentPage, innerWindow) && !this.right(i, right)
-    },
-    dottedRight(pagingList, i, left, right, currentPage, innerWindow, currentPageItem) {
-      if (pagingList.items[currentPageItem - 1].values().dotted) {
-        return false
-      }
-      return i == right && !this.innerWindow(i, currentPage, innerWindow) && !this.right(i, right)
-    },
   }
 
   return function (options) {

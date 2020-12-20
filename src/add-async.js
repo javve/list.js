@@ -1,15 +1,14 @@
 module.exports = function (list) {
-  var addAsync = function (values, callback, items) {
+  const addAsync = function (values, callback, items) {
     const valuesToAdd = values.splice(0, 50)
-    items = items || []
-    items = items.concat(list.add(valuesToAdd))
+    const completedBatch = (items || []).concat(list.add(valuesToAdd))
     if (values.length > 0) {
       setTimeout(function () {
-        addAsync(values, callback, items)
+        addAsync(values, callback, completedBatch)
       }, 1)
     } else {
       list.update()
-      callback(items)
+      callback(completedBatch)
     }
   }
   return addAsync

@@ -1,5 +1,5 @@
 module.exports = function (list) {
-  var buttons = {
+  const buttons = {
     els: undefined,
     clear() {
       for (let i = 0, il = buttons.els.length; i < il; i++) {
@@ -9,7 +9,7 @@ module.exports = function (list) {
     },
     getOrder(btn) {
       const predefinedOrder = list.utils.getAttribute(btn, 'data-order')
-      if (predefinedOrder == 'asc' || predefinedOrder == 'desc') {
+      if (predefinedOrder === 'asc' || predefinedOrder === 'desc') {
         return predefinedOrder
       } else if (list.utils.classes(btn).has('desc')) {
         return 'asc'
@@ -33,8 +33,8 @@ module.exports = function (list) {
           continue
         }
         const predefinedOrder = list.utils.getAttribute(btn, 'data-order')
-        if (predefinedOrder == 'asc' || predefinedOrder == 'desc') {
-          if (predefinedOrder == options.order) {
+        if (predefinedOrder === 'asc' || predefinedOrder === 'desc') {
+          if (predefinedOrder === options.order) {
             list.utils.classes(btn).add(options.order)
           }
         } else {

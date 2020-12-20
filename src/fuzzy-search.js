@@ -1,4 +1,3 @@
-const classes = require('./utils/classes')
 const events = require('./utils/events')
 const extend = require('./utils/extend')
 const toString = require('./utils/to-string')
@@ -6,8 +5,6 @@ const getByClass = require('./utils/get-by-class')
 const fuzzy = require('./utils/fuzzy')
 
 module.exports = function (list, options) {
-  options = options || {}
-
   options = extend(
     {
       location: 0,
@@ -16,10 +13,10 @@ module.exports = function (list, options) {
       multiSearch: true,
       searchClass: 'fuzzy-search',
     },
-    options
+    options || {}
   )
 
-  var fuzzySearch = {
+  const fuzzySearch = {
     search(searchString, columns) {
       // Substract arguments from the searchString or put searchString as only argument
       const searchArguments = options.multiSearch ? searchString.replace(/ +$/, '').split(/ +/) : [searchString]
@@ -30,11 +27,13 @@ module.exports = function (list, options) {
     },
     item(item, columns, searchArguments) {
       let found = true
-      for (let i = 0; i < searchArguments.length; i++) {
+      const values = item.values()
+      for (let i = 0, il = searchArguments.length; i < il; i++) {
         let foundArgument = false
         for (let j = 0, jl = columns.length; j < jl; j++) {
-          if (fuzzySearch.values(item.values(), columns[j], searchArguments[i])) {
+          if (fuzzySearch.values(values, columns[j], searchArguments[i])) {
             foundArgument = true
+            break
           }
         }
         if (!foundArgument) {

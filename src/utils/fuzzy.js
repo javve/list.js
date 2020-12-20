@@ -46,12 +46,12 @@ module.exports = function (text, pattern, options) {
   let score_threshold = Match_Threshold // Highest score beyond which we give up.
   let best_loc = text.indexOf(pattern, loc) // Is there a nearby exact match? (speedup)
 
-  if (best_loc != -1) {
+  if (best_loc !== -1) {
     score_threshold = Math.min(match_bitapScore_(0, best_loc), score_threshold)
     // What about in the other direction? (speedup)
     best_loc = text.lastIndexOf(pattern, loc + pattern.length)
 
-    if (best_loc != -1) {
+    if (best_loc !== -1) {
       score_threshold = Math.min(match_bitapScore_(0, best_loc), score_threshold)
     }
   }

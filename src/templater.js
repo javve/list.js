@@ -2,6 +2,58 @@ const Templater = function (list) {
   let createItem
   const templater = this
 
+  const createCleanTemplateItem = function (templateNode, valueNames) {
+    const el = templateNode.cloneNode(true)
+    el.removeAttribute('id')
+
+    for (let i = 0, il = valueNames.length; i < il; i++) {
+      let elm
+      const valueName = valueNames[i]
+      if (valueName.data) {
+        for (let j = 0, jl = valueName.data.length; j < jl; j++) {
+          el.setAttribute(`data-${valueName.data[j]}`, '')
+        }
+      } else if (valueName.attr && valueName.name) {
+        elm = list.utils.getByClass(el, valueName.name, true)
+        if (elm) {
+          elm.setAttribute(valueName.attr, '')
+        }
+      } else {
+        elm = list.utils.getByClass(el, valueName, true)
+        if (elm) {
+          elm.innerHTML = ''
+        }
+      }
+    }
+    return el
+  }
+
+  const getFirstListItem = function () {
+    const nodes = list.list.childNodes
+
+    for (let i = 0, il = nodes.length; i < il; i++) {
+      // Only textnodes have a data attribute
+      if (nodes[i].data === undefined) {
+        return nodes[i].cloneNode(true)
+      }
+    }
+    return undefined
+  }
+
+  const getItemSource = function (itemHTML) {
+    if (typeof itemHTML !== 'string') return undefined
+    if (/<tr[\s>]/g.exec(itemHTML)) {
+      const tbody = document.createElement('tbody')
+      tbody.innerHTML = itemHTML
+      return tbody.firstElementChild
+    } else if (itemHTML.indexOf('<') !== -1) {
+      const div = document.createElement('div')
+      div.innerHTML = itemHTML
+      return div.firstElementChild
+    }
+    return undefined
+  }
+
   const init = function () {
     let itemSource
 
@@ -36,58 +88,6 @@ const Templater = function (list) {
     }
   }
 
-  var createCleanTemplateItem = function (templateNode, valueNames) {
-    const el = templateNode.cloneNode(true)
-    el.removeAttribute('id')
-
-    for (let i = 0, il = valueNames.length; i < il; i++) {
-      let elm
-      const valueName = valueNames[i]
-      if (valueName.data) {
-        for (let j = 0, jl = valueName.data.length; j < jl; j++) {
-          el.setAttribute(`data-${valueName.data[j]}`, '')
-        }
-      } else if (valueName.attr && valueName.name) {
-        elm = list.utils.getByClass(el, valueName.name, true)
-        if (elm) {
-          elm.setAttribute(valueName.attr, '')
-        }
-      } else {
-        elm = list.utils.getByClass(el, valueName, true)
-        if (elm) {
-          elm.innerHTML = ''
-        }
-      }
-    }
-    return el
-  }
-
-  var getFirstListItem = function () {
-    const nodes = list.list.childNodes
-
-    for (let i = 0, il = nodes.length; i < il; i++) {
-      // Only textnodes have a data attribute
-      if (nodes[i].data === undefined) {
-        return nodes[i].cloneNode(true)
-      }
-    }
-    return undefined
-  }
-
-  var getItemSource = function (itemHTML) {
-    if (typeof itemHTML !== 'string') return undefined
-    if (/<tr[\s>]/g.exec(itemHTML)) {
-      const tbody = document.createElement('tbody')
-      tbody.innerHTML = itemHTML
-      return tbody.firstElementChild
-    } else if (itemHTML.indexOf('<') !== -1) {
-      const div = document.createElement('div')
-      div.innerHTML = itemHTML
-      return div.firstElementChild
-    }
-    return undefined
-  }
-
   const getValueName = function (name) {
     for (let i = 0, il = list.valueNames.length; i < il; i++) {
       const valueName = list.valueNames[i]
@@ -98,7 +98,7 @@ const Templater = function (list) {
             return { data: name }
           }
         }
-      } else if (valueName.attr && valueName.name && valueName.name == name) {
+      } else if (valueName.attr && valueName.name && valueName.name === name) {
         return valueName
       } else if (valueName === name) {
         return name

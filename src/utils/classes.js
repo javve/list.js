@@ -11,12 +11,6 @@ const index = require('./index-of')
 const re = /\s+/
 
 /**
- * toString reference.
- */
-
-const { toString } = Object.prototype
-
-/**
  * Wrap `el` in a `ClassList`.
  *
  * @param {Element} el

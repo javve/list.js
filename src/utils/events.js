@@ -14,9 +14,9 @@ const toArray = require('./to-array')
  */
 
 exports.bind = function (el, type, fn, capture) {
-  el = toArray(el)
-  for (let i = 0, il = el.length; i < il; i++) {
-    el[i][bind](prefix + type, fn, capture || false)
+  const elements = toArray(el)
+  for (let i = 0, il = elements.length; i < il; i++) {
+    elements[i][bind](prefix + type, fn, capture || false)
   }
 }
 
@@ -31,9 +31,9 @@ exports.bind = function (el, type, fn, capture) {
  */
 
 exports.unbind = function (el, type, fn, capture) {
-  el = toArray(el)
-  for (let i = 0, il = el.length; i < il; i++) {
-    el[i][unbind](prefix + type, fn, capture || false)
+  const elements = toArray(el)
+  for (let i = 0, il = elements.length; i < il; i++) {
+    elements[i][unbind](prefix + type, fn, capture || false)
   }
 }
 

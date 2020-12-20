@@ -18,7 +18,7 @@ module.exports = function (list) {
       list.items.push(new Item(valueNames, itemElements[i]))
     }
   }
-  var parseAsync = function (itemElements, valueNames) {
+  const parseAsync = function (itemElements, valueNames) {
     const itemsToIndex = itemElements.splice(0, 50) // TODO: If < 100 items, what happens in IE etc?
     parse(itemsToIndex, valueNames)
     if (itemElements.length > 0) {

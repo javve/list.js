@@ -1,23 +1,21 @@
 module.exports = function (list) {
-  let item
-  let text
   let columns
   let searchString
   let customSearch
 
-  var prepare = {
+  const prepare = {
     resetList() {
       list.i = 1
       list.templater.clear()
       customSearch = undefined
     },
     setOptions(args) {
-      if (args.length == 2 && args[1] instanceof Array) {
+      if (args.length === 2 && args[1] instanceof Array) {
         columns = args[1]
-      } else if (args.length == 2 && typeof args[1] === 'function') {
+      } else if (args.length === 2 && typeof args[1] === 'function') {
         columns = undefined
         customSearch = args[1]
-      } else if (args.length == 3) {
+      } else if (args.length === 3) {
         columns = args[1]
         customSearch = args[2]
       } else {

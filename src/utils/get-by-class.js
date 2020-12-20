@@ -20,11 +20,11 @@ const getElementsByClassName = function (container, className, single) {
 }
 
 const querySelector = function (container, className, single) {
-  className = `.${className}`
+  const selector = `.${className}`
   if (single) {
-    return container.querySelector(className)
+    return container.querySelector(selector)
   }
-  return container.querySelectorAll(className)
+  return container.querySelectorAll(selector)
 }
 
 const polyfill = function (container, className, single) {
