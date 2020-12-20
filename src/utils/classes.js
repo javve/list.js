@@ -2,19 +2,19 @@
  * Module dependencies.
  */
 
-var index = require('./index-of')
+const index = require('./index-of')
 
 /**
  * Whitespace regexp.
  */
 
-var re = /\s+/
+const re = /\s+/
 
 /**
  * toString reference.
  */
 
-var toString = Object.prototype.toString
+const { toString } = Object.prototype
 
 /**
  * Wrap `el` in a `ClassList`.
@@ -59,8 +59,8 @@ ClassList.prototype.add = function (name) {
   }
 
   // fallback
-  var arr = this.array()
-  var i = index(arr, name)
+  const arr = this.array()
+  const i = index(arr, name)
   if (!~i) arr.push(name)
   this.el.className = arr.join(' ')
   return this
@@ -84,8 +84,8 @@ ClassList.prototype.remove = function (name) {
   }
 
   // fallback
-  var arr = this.array()
-  var i = index(arr, name)
+  const arr = this.array()
+  const i = index(arr, name)
   if (~i) arr.splice(i, 1)
   this.el.className = arr.join(' ')
   return this
@@ -106,7 +106,7 @@ ClassList.prototype.remove = function (name) {
 ClassList.prototype.toggle = function (name, force) {
   // classList
   if (this.list) {
-    if ('undefined' !== typeof force) {
+    if (typeof force !== 'undefined') {
       if (force !== this.list.toggle(name, force)) {
         this.list.toggle(name) // toggle again to correct
       }
@@ -117,18 +117,16 @@ ClassList.prototype.toggle = function (name, force) {
   }
 
   // fallback
-  if ('undefined' !== typeof force) {
+  if (typeof force !== 'undefined') {
     if (!force) {
       this.remove(name)
     } else {
       this.add(name)
     }
+  } else if (this.has(name)) {
+    this.remove(name)
   } else {
-    if (this.has(name)) {
-      this.remove(name)
-    } else {
-      this.add(name)
-    }
+    this.add(name)
   }
 
   return this
@@ -142,10 +140,10 @@ ClassList.prototype.toggle = function (name, force) {
  */
 
 ClassList.prototype.array = function () {
-  var className = this.el.getAttribute('class') || ''
-  var str = className.replace(/^\s+|\s+$/g, '')
-  var arr = str.split(re)
-  if ('' === arr[0]) arr.shift()
+  const className = this.el.getAttribute('class') || ''
+  const str = className.replace(/^\s+|\s+$/g, '')
+  const arr = str.split(re)
+  if (arr[0] === '') arr.shift()
   return arr
 }
 

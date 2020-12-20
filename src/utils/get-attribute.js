@@ -10,11 +10,11 @@
  */
 
 module.exports = function (el, attr) {
-  var result = (el.getAttribute && el.getAttribute(attr)) || null
+  let result = (el.getAttribute && el.getAttribute(attr)) || null
   if (!result) {
-    var attrs = el.attributes
-    var length = attrs.length
-    for (var i = 0; i < length; i++) {
+    const attrs = el.attributes
+    const { length } = attrs
+    for (let i = 0; i < length; i++) {
       if (attrs[i] !== undefined) {
         if (attrs[i].nodeName === attr) {
           result = attrs[i].nodeValue

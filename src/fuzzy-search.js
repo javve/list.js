@@ -1,9 +1,9 @@
-var classes = require('./utils/classes'),
-  events = require('./utils/events'),
-  extend = require('./utils/extend'),
-  toString = require('./utils/to-string'),
-  getByClass = require('./utils/get-by-class'),
-  fuzzy = require('./utils/fuzzy')
+const classes = require('./utils/classes')
+const events = require('./utils/events')
+const extend = require('./utils/extend')
+const toString = require('./utils/to-string')
+const getByClass = require('./utils/get-by-class')
+const fuzzy = require('./utils/fuzzy')
 
 module.exports = function (list, options) {
   options = options || {}
@@ -20,19 +20,19 @@ module.exports = function (list, options) {
   )
 
   var fuzzySearch = {
-    search: function (searchString, columns) {
+    search(searchString, columns) {
       // Substract arguments from the searchString or put searchString as only argument
-      var searchArguments = options.multiSearch ? searchString.replace(/ +$/, '').split(/ +/) : [searchString]
+      const searchArguments = options.multiSearch ? searchString.replace(/ +$/, '').split(/ +/) : [searchString]
 
-      for (var k = 0, kl = list.items.length; k < kl; k++) {
+      for (let k = 0, kl = list.items.length; k < kl; k++) {
         fuzzySearch.item(list.items[k], columns, searchArguments)
       }
     },
-    item: function (item, columns, searchArguments) {
-      var found = true
-      for (var i = 0; i < searchArguments.length; i++) {
-        var foundArgument = false
-        for (var j = 0, jl = columns.length; j < jl; j++) {
+    item(item, columns, searchArguments) {
+      let found = true
+      for (let i = 0; i < searchArguments.length; i++) {
+        let foundArgument = false
+        for (let j = 0, jl = columns.length; j < jl; j++) {
           if (fuzzySearch.values(item.values(), columns[j], searchArguments[i])) {
             foundArgument = true
           }
@@ -43,9 +43,9 @@ module.exports = function (list, options) {
       }
       item.found = found
     },
-    values: function (values, value, searchArgument) {
+    values(values, value, searchArgument) {
       if (values.hasOwnProperty(value)) {
-        var text = toString(values[value]).toLowerCase()
+        const text = toString(values[value]).toLowerCase()
 
         if (fuzzy(text, searchArgument, options)) {
           return true
@@ -59,7 +59,7 @@ module.exports = function (list, options) {
     getByClass(list.listContainer, options.searchClass),
     'keyup',
     list.utils.events.debounce(function (e) {
-      var target = e.target || e.srcElement // IE have srcElement
+      const target = e.target || e.srcElement // IE have srcElement
       list.search(target.value, fuzzySearch.search)
     }, list.searchDelay)
   )

@@ -11,9 +11,9 @@ module.exports = function (list) {
       list.filtered = false
     } else {
       list.filtered = true
-      var is = list.items
-      for (var i = 0, il = is.length; i < il; i++) {
-        var item = is[i]
+      const is = list.items
+      for (let i = 0, il = is.length; i < il; i++) {
+        const item = is[i]
         if (filterFunction(item)) {
           item.filtered = true
         } else {

@@ -1,14 +1,14 @@
 /* eslint no-underscore-dangle: ["error", { "allow": ["_values"] }] */
 module.exports = function (list) {
   return function (initValues, element, notCreate) {
-    var item = this
+    const item = this
 
     this._values = {}
 
     this.found = false // Show if list.searched == true and this.found == true
     this.filtered = false // Show if list.filtered == true and this.filtered == true
 
-    var init = function (initValues, element, notCreate) {
+    const init = function (initValues, element, notCreate) {
       if (element === undefined) {
         if (notCreate) {
           item.values(initValues, notCreate)
@@ -17,14 +17,14 @@ module.exports = function (list) {
         }
       } else {
         item.elm = element
-        var values = list.templater.get(item, initValues)
+        const values = list.templater.get(item, initValues)
         item.values(values)
       }
     }
 
     this.values = function (newValues, notCreate) {
       if (newValues !== undefined) {
-        for (var name in newValues) {
+        for (const name in newValues) {
           item._values[name] = newValues[name]
         }
         if (notCreate !== true) {
@@ -53,7 +53,7 @@ module.exports = function (list) {
     }
 
     this.visible = function () {
-      return item.elm && item.elm.parentNode == list.list ? true : false
+      return !!(item.elm && item.elm.parentNode == list.list)
     }
 
     init(initValues, element, notCreate)

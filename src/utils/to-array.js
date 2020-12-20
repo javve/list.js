@@ -15,11 +15,11 @@ module.exports = function toArray(collection) {
   if (collection === window) return [window]
   if (typeof collection === 'string') return [collection]
   if (isArray(collection)) return collection
-  if (typeof collection.length != 'number') return [collection]
+  if (typeof collection.length !== 'number') return [collection]
   if (typeof collection === 'function' && collection instanceof Function) return [collection]
 
-  var arr = [];
-  for (var i = 0, il = collection.length; i < il; i++) {
+  const arr = []
+  for (let i = 0, il = collection.length; i < il; i++) {
     if (Object.prototype.hasOwnProperty.call(collection, i) || i in collection) {
       arr.push(collection[i])
     }

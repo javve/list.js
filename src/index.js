@@ -1,22 +1,22 @@
-var naturalSort = require('string-natural-compare'),
-  getByClass = require('./utils/get-by-class'),
-  extend = require('./utils/extend'),
-  indexOf = require('./utils/index-of'),
-  events = require('./utils/events'),
-  toString = require('./utils/to-string'),
-  classes = require('./utils/classes'),
-  getAttribute = require('./utils/get-attribute'),
-  toArray = require('./utils/to-array')
+const naturalSort = require('string-natural-compare')
+const getByClass = require('./utils/get-by-class')
+const extend = require('./utils/extend')
+const indexOf = require('./utils/index-of')
+const events = require('./utils/events')
+const toString = require('./utils/to-string')
+const classes = require('./utils/classes')
+const getAttribute = require('./utils/get-attribute')
+const toArray = require('./utils/to-array')
 
 module.exports = function (id, options, values) {
-  var self = this,
-    init,
-    Item = require('./item')(self),
-    addAsync = require('./add-async')(self),
-    initPagination = require('./pagination')(self)
+  const self = this
+  let init
+  const Item = require('./item')(self)
+  const addAsync = require('./add-async')(self)
+  const initPagination = require('./pagination')(self)
 
   init = {
-    start: function () {
+    start() {
       self.listClass = 'list'
       self.searchClass = 'search'
       self.sortClass = 'sort'
@@ -32,15 +32,15 @@ module.exports = function (id, options, values) {
       self.handlers = { updated: [] }
       self.valueNames = []
       self.utils = {
-        getByClass: getByClass,
-        extend: extend,
-        indexOf: indexOf,
-        events: events,
-        toString: toString,
-        naturalSort: naturalSort,
-        classes: classes,
-        getAttribute: getAttribute,
-        toArray: toArray,
+        getByClass,
+        extend,
+        indexOf,
+        events,
+        toString,
+        naturalSort,
+        classes,
+        getAttribute,
+        toArray,
       }
 
       self.utils.extend(self, options)
@@ -64,20 +64,20 @@ module.exports = function (id, options, values) {
 
       self.update()
     },
-    handlers: function () {
-      for (var handler in self.handlers) {
+    handlers() {
+      for (const handler in self.handlers) {
         if (self[handler] && self.handlers.hasOwnProperty(handler)) {
           self.on(handler, self[handler])
         }
       }
     },
-    items: function () {
+    items() {
       self.parse(self.list)
       if (values !== undefined) {
         self.add(values)
       }
     },
-    pagination: function () {
+    pagination() {
       if (options.pagination !== undefined) {
         if (options.pagination === true) {
           options.pagination = [{}]
@@ -85,7 +85,7 @@ module.exports = function (id, options, values) {
         if (options.pagination[0] === undefined) {
           options.pagination = [options.pagination]
         }
-        for (var i = 0, il = options.pagination.length; i < il; i++) {
+        for (let i = 0, il = options.pagination.length; i < il; i++) {
           initPagination(options.pagination[i])
         }
       }
@@ -105,8 +105,8 @@ module.exports = function (id, options, values) {
   }
 
   this.toJSON = function () {
-    var json = []
-    for (var i = 0, il = self.items.length; i < il; i++) {
+    const json = []
+    for (let i = 0, il = self.items.length; i < il; i++) {
       json.push(self.items[i].values())
     }
     return json
@@ -123,14 +123,14 @@ module.exports = function (id, options, values) {
       addAsync(values.slice(0), callback)
       return
     }
-    var added = [],
-      notCreate = false
+    const added = []
+    let notCreate = false
     if (values[0] === undefined) {
       values = [values]
     }
-    for (var i = 0, il = values.length; i < il; i++) {
-      var item = null
-      notCreate = self.items.length > self.page ? true : false
+    for (let i = 0, il = values.length; i < il; i++) {
+      let item = null
+      notCreate = self.items.length > self.page
       item = new Item(values[i], undefined, notCreate)
       self.items.push(item)
       added.push(item)
@@ -151,8 +151,8 @@ module.exports = function (id, options, values) {
    * property "valuename" === value
    */
   this.remove = function (valueName, value, options) {
-    var found = 0
-    for (var i = 0, il = self.items.length; i < il; i++) {
+    let found = 0
+    for (let i = 0, il = self.items.length; i < il; i++) {
       if (self.items[i].values()[valueName] == value) {
         self.templater.remove(self.items[i], options)
         self.items.splice(i, 1)
@@ -169,9 +169,9 @@ module.exports = function (id, options, values) {
    * property "valueName" === value
    */
   this.get = function (valueName, value) {
-    var matchedItems = []
-    for (var i = 0, il = self.items.length; i < il; i++) {
-      var item = self.items[i]
+    const matchedItems = []
+    for (let i = 0, il = self.items.length; i < il; i++) {
+      const item = self.items[i]
       if (item.values()[valueName] == value) {
         matchedItems.push(item)
       }
@@ -201,8 +201,8 @@ module.exports = function (id, options, values) {
   }
 
   this.off = function (event, callback) {
-    var e = self.handlers[event]
-    var index = indexOf(e, callback)
+    const e = self.handlers[event]
+    const index = indexOf(e, callback)
     if (index > -1) {
       e.splice(index, 1)
     }
@@ -210,7 +210,7 @@ module.exports = function (id, options, values) {
   }
 
   this.trigger = function (event) {
-    var i = self.handlers[event].length
+    let i = self.handlers[event].length
     while (i--) {
       self.handlers[event][i](self)
     }
@@ -218,17 +218,17 @@ module.exports = function (id, options, values) {
   }
 
   this.reset = {
-    filter: function () {
-      var is = self.items,
-        il = is.length
+    filter() {
+      const is = self.items
+      let il = is.length
       while (il--) {
         is[il].filtered = false
       }
       return self
     },
-    search: function () {
-      var is = self.items,
-        il = is.length
+    search() {
+      const is = self.items
+      let il = is.length
       while (il--) {
         is[il].found = false
       }
@@ -237,13 +237,13 @@ module.exports = function (id, options, values) {
   }
 
   this.update = function () {
-    var is = self.items,
-      il = is.length
+    const is = self.items
+    const il = is.length
 
     self.visibleItems = []
     self.matchingItems = []
     self.templater.clear()
-    for (var i = 0; i < il; i++) {
+    for (let i = 0; i < il; i++) {
       if (is[i].matching() && self.matchingItems.length + 1 >= self.i && self.visibleItems.length < self.page) {
         is[i].show()
         self.visibleItems.push(is[i])

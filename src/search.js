@@ -1,16 +1,20 @@
 module.exports = function (list) {
-  var item, text, columns, searchString, customSearch
+  let item
+  let text
+  let columns
+  let searchString
+  let customSearch
 
   var prepare = {
-    resetList: function () {
+    resetList() {
       list.i = 1
       list.templater.clear()
       customSearch = undefined
     },
-    setOptions: function (args) {
+    setOptions(args) {
       if (args.length == 2 && args[1] instanceof Array) {
         columns = args[1]
-      } else if (args.length == 2 && typeof args[1] == 'function') {
+      } else if (args.length == 2 && typeof args[1] === 'function') {
         columns = undefined
         customSearch = args[1]
       } else if (args.length == 3) {
@@ -20,32 +24,32 @@ module.exports = function (list) {
         columns = undefined
       }
     },
-    setColumns: function () {
+    setColumns() {
       if (list.items.length === 0) return
       if (columns === undefined) {
         columns = list.searchColumns === undefined ? prepare.toArray(list.items[0].values()) : list.searchColumns
       }
     },
-    setSearchString: function (s) {
+    setSearchString(s) {
       s = list.utils.toString(s).toLowerCase()
       s = s.replace(/[-[\]{}()*+?.,\\^$|#]/g, '\\$&') // Escape regular expression characters
       searchString = s
     },
-    toArray: function (values) {
-      var tmpColumn = []
-      for (var name in values) {
+    toArray(values) {
+      const tmpColumn = []
+      for (const name in values) {
         tmpColumn.push(name)
       }
       return tmpColumn
     },
   }
-  var search = {
-    list: function () {
+  const search = {
+    list() {
       // Extract quoted phrases "word1 word2" from original searchString
       // searchString is converted to lowercase by List.js
-      var words = [],
-        phrase,
-        ss = searchString
+      let words = []
+      let phrase
+      let ss = searchString
       while ((phrase = ss.match(/"([^"]+)"/)) !== null) {
         words.push(phrase[1])
         ss = ss.substring(0, phrase.index) + ss.substring(phrase.index + phrase[0].length)
@@ -53,17 +57,17 @@ module.exports = function (list) {
       // Get remaining space-separated words (if any)
       ss = ss.trim()
       if (ss.length) words = words.concat(ss.split(/\s+/))
-      for (var k = 0, kl = list.items.length; k < kl; k++) {
-        var item = list.items[k]
+      for (let k = 0, kl = list.items.length; k < kl; k++) {
+        const item = list.items[k]
         item.found = false
         if (!words.length) continue
-        for (var i = 0, il = words.length; i < il; i++) {
+        for (let i = 0, il = words.length; i < il; i++) {
           var word_found = false
-          for (var j = 0, jl = columns.length; j < jl; j++) {
-            var values = item.values(),
-              column = columns[j]
+          for (let j = 0, jl = columns.length; j < jl; j++) {
+            const column = columns[j]
+            const values = item.values()
             if (values.hasOwnProperty(column) && values[column] !== undefined && values[column] !== null) {
-              var text = typeof values[column] !== 'string' ? values[column].toString() : values[column]
+              const text = typeof values[column] !== 'string' ? values[column].toString() : values[column]
               if (text.toLowerCase().indexOf(words[i]) !== -1) {
                 // word found, so no need to check it against any other columns
                 word_found = true
@@ -78,13 +82,13 @@ module.exports = function (list) {
       }
     },
     // Removed search.item() and search.values()
-    reset: function () {
+    reset() {
       list.reset.search()
       list.searched = false
     },
   }
 
-  var searchMethod = function (str) {
+  const searchMethod = function (str) {
     list.trigger('searchStart')
 
     prepare.resetList()
@@ -115,8 +119,8 @@ module.exports = function (list) {
     list.utils.getByClass(list.listContainer, list.searchClass),
     'keyup',
     list.utils.events.debounce(function (e) {
-      var target = e.target || e.srcElement, // IE have srcElement
-        alreadyCleared = target.value === '' && !list.searched
+      const target = e.target || e.srcElement // IE have srcElement
+      const alreadyCleared = target.value === '' && !list.searched
       if (!alreadyCleared) {
         // If oninput already have resetted the list, do nothing
         searchMethod(target.value)
@@ -126,7 +130,7 @@ module.exports = function (list) {
 
   // Used to detect click on HTML5 clear button
   list.utils.events.bind(list.utils.getByClass(list.listContainer, list.searchClass), 'input', function (e) {
-    var target = e.target || e.srcElement
+    const target = e.target || e.srcElement
     if (target.value === '') {
       searchMethod('')
     }
