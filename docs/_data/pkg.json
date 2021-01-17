@@ -1,6 +1,6 @@
 {
   "name": "list.js",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "The perfect library for lists. Supports search, sort, filters and flexibility. Built to be invisible and work on existing HTML",
   "keywords": [
     "list",
@@ -37,7 +37,7 @@
   },
   "main": "src/index",
   "engines": {
-    "node": "^14.15.1"
+    "node": "^6.0 || ^8.0 || ^10.0 || ^12.0 || >=14"
   },
   "scripts": {
     "test": "npx jest",
