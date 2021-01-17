@@ -1,5 +1,9 @@
 # Changelog
 
+### 2.3.1 - 2021-01-17
+
+- - **[Improvement]** #708 Support restored for Node 6, 8, 10 and 12.
+
 ### 2.3.0 - 2020-11-25
 
 - **[Feature]** #682 Multiple word search
