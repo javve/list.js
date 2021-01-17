@@ -1,20 +1,34 @@
 version: 2.1
+orbs:
+  node: circleci/node@4.1.0
 jobs:
-  build:
-    docker:
-      - image: circleci/node:14.15.1
+  test:
+    executor:
+      name: node/default
+    parameters:
+      os:
+        type: string
+      node-version:
+        type: string
     steps:
       - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run: npm install
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - node_modules
-      - run:
-          name: test
-          command: npm test
+      - node/install-packages
+      - run: npm test
       - run:
           name: code-coverage
           command: 'bash <(curl -s https://codecov.io/bash)'
+
+workflows:
+  build:
+    jobs:
+      - test:
+          matrix:
+            parameters:
+              os:
+                - docker
+              node-version:
+                - '6.17.1'
+                - '8.17.0'
+                - '10.23.1'
+                - '12.20.1'
+                - '14.15.4'
