@@ -209,10 +209,10 @@ module.exports = function (id, options, values) {
     return self
   }
 
-  this.trigger = function (event) {
+  this.trigger = function (event, params) {
     var i = self.handlers[event].length
     while (i--) {
-      self.handlers[event][i](self)
+      self.handlers[event][i](self, params)
     }
     return self
   }
