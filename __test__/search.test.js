@@ -196,22 +196,24 @@ describe('Search', function () {
     })
   })
 
-  //
-  // describe('Special characters', function() {
-  //   it('should escape and handle special characters', function() {
-  //     list.add([
-  //       { name: 'Jonny&Jabba' },
-  //       { name: '<Leia' },
-  //       { name: '>Luke' },
-  //       { name: '"Chewie"' },
-  //       { name: "'Ewok'" }
-  //     ]);
-  //     var result = list.search('Leia');
-  //     console.log(result);
-  //     expect(result.length).toEqual(1);
-  //     var result = list.search('<');
-  //     console.log(result);
-  //     expect(result.length).toEqual(1);
-  //   });
-  // });
+  describe('Special characters', function() {
+    it('should escape and handle special characters', function() {
+      list.add([
+        { name: 'Jonny Jr.' },
+        { name: 'Jonny&Jabba' },
+        { name: '<Leia' },
+        { name: '>Luke' },
+        { name: '"Chewie"' },
+        { name: "'Ewok'" }
+      ]);
+      var result = list.search('Leia');
+      expect(result.length).toEqual(1);
+
+      var result = list.search('<');
+      expect(result.length).toEqual(1);
+
+      var result = list.search('Jr.');
+      expect(result.length).toEqual(1);
+    });
+  });
 })
