@@ -29,7 +29,7 @@ module.exports = function (id, options, values) {
       self.filtered = false
       self.searchColumns = undefined
       self.searchDelay = 0
-      self.handlers = { updated: [] }
+      self.handlers = { updated: [], paginationChange: [] }
       self.valueNames = []
       self.utils = {
         getByClass: getByClass,
