@@ -131,6 +131,15 @@ module.exports = function (id, options, values) {
     for (var i = 0, il = values.length; i < il; i++) {
       var item = null
       notCreate = self.items.length > self.page ? true : false
+      if (typeof values[i] === 'object') {
+        for (const [key, value] of Object.entries(values[i])) {
+          if (typeof value === 'string') {
+            values[i][key] = values[i][key].replace(/[^\w. ]/gi, function (c) {
+              return '&#' + c.charCodeAt(0) + ';';
+            });
+          }
+        }
+      }
       item = new Item(values[i], undefined, notCreate)
       self.items.push(item)
       added.push(item)
