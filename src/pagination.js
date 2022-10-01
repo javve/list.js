@@ -83,7 +83,7 @@ module.exports = function (list) {
   }
 
   return function (options) {
-    var pagingList = new List(list.listContainer.id, {
+    var pagingList = new List(list.listContainer, {
       listClass: options.paginationClass || 'pagination',
       item: options.item || "<li><a class='page' href='#'></a></li>",
       valueNames: ['page', 'dotted'],
