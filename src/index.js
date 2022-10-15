@@ -115,7 +115,7 @@ module.exports = function (id, options, values) {
   /*
    * Add object to list
    */
-  this.add = function (values, callback) {
+  this.add = function (values, prepend=false, callback) {
     if (values.length === 0) {
       return
     }
@@ -132,8 +132,14 @@ module.exports = function (id, options, values) {
       var item = null
       notCreate = self.items.length > self.page ? true : false
       item = new Item(values[i], undefined, notCreate)
-      self.items.push(item)
-      added.push(item)
+      if (prepend == true) {
+        self.items.unshift(item)
+        added.unshift(item)
+      } else {
+        self.items.push(item)
+        added.push(item)
+      }
+
     }
     self.update()
     return added

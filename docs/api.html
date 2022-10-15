@@ -211,7 +211,7 @@ Values to add to the list on initialization.</p></li>
 
 <ul>
   <li>
-    <p><strong><a name="add" class="achor" href="#add"></a>add(values, callback)</strong><br>
+    <p><strong><a name="add" class="achor" href="#add"></a>add(values, prepend=false, callback)</strong><br>
     Adds one or more items to the list.</p>
 
 <pre><code class="javascript">listObj.add({ name: "Jonny", city: "Stockholm" });
@@ -224,7 +224,8 @@ listObj.add([
     <p>If <code>callback</code> is set then items are added to the list in a asynchronous way, and the
     callback is called when all items are added. This is especially useful
     when adding very many items (200+ or something), or if you just like the
-    asynchronous coding style.</p>
+    asynchronous coding style. The <code>prepend</code> option can be used to
+    prepend items (default is append).</p>
 
 <pre><code class="javascript">listObj.add(arrayWithManyManyItems, function(items) {
 console.log('All ' + items.length + ' were added!');
