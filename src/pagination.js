@@ -49,6 +49,7 @@ module.exports = function (list) {
         classes(item.elm).add('disabled')
       }
     }
+    list.trigger('paginationChange')
   }
 
   var is = {
