@@ -45,11 +45,30 @@ module.exports = function (list) {
     },
   }
 
+  function isFloatString(value) {
+    if (value === undefined || value === null || !value || typeof value !== 'string' || value.split(".").length !== 2) {
+      return false
+    }
+
+    return !Number.isInteger(parseFloat(value))
+  }
+
+  function getFloatingPointLength(value) {
+    return value.split(".")[1].length
+  }
+
+  function getMaxFloatingPointLengthFromItems(itemA, itemB) {
+    const itemAFloatingNumberLength = getFloatingPointLength(itemA)
+    const itemBFloatingNumberLength = getFloatingPointLength(itemB)
+
+    return Math.max(itemAFloatingNumberLength, itemBFloatingNumberLength)
+  }
+
   var sort = function () {
     list.trigger('sortStart')
     var options = {}
 
-    var target = arguments[0].currentTarget || arguments[0].srcElement || undefined
+    var target = arguments[0].currentTarget || arguments[0].srcElement || undefined // arg[0] : val, arg[1] : { order: 'asc' }
 
     if (target) {
       options.valueName = list.utils.getAttribute(target, 'data-sort')
@@ -68,8 +87,8 @@ module.exports = function (list) {
     // caseInsensitive
     // alphabet
     var customSortFunction = options.sortFunction || list.sortFunction || null,
-      multi = options.order === 'desc' ? -1 : 1,
-      sortFunction
+        multi = options.order === 'desc' ? -1 : 1,
+        sortFunction
 
     if (customSortFunction) {
       sortFunction = function (itemA, itemB) {
@@ -82,7 +101,19 @@ module.exports = function (list) {
         if (!sort.alphabet && options.insensitive) {
           sort = list.utils.naturalSort.caseInsensitive
         }
-        return sort(itemA.values()[options.valueName], itemB.values()[options.valueName]) * multi
+
+        const itemAValue = itemA.values()[options.valueName]
+        const itemBValue = itemB.values()[options.valueName]
+        if (isFloatString(itemAValue) && isFloatString(itemBValue)) {
+          const multiplier = 10 ** getMaxFloatingPointLengthFromItems(itemAValue, itemBValue) // multiply by max length for making float to integer
+
+          const valueA = (parseInt(parseFloat(itemAValue) * multiplier)).toString()
+          const valueB = (parseInt(parseFloat(itemBValue) * multiplier)).toString()
+
+          return sort(valueA, valueB) * multi
+        }
+
+        return sort(itemAValue, itemBValue) * multi
       }
     }
 
