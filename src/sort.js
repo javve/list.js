@@ -79,11 +79,13 @@ module.exports = function (list) {
       sortFunction = function (itemA, itemB) {
         var valueA = itemA.values()[options.valueName]
         var valueB = itemB.values()[options.valueName]
-        // Detect if the values are pure numbers and sort accordingly if they are
-        var numA = Number(valueA)
-        var numB = Number(valueB)
-        if (valueA == numA && valueB == numB) {
-          return (numA - numB) * multi
+        if (valueA !== '' && valueB !== '') {
+          // Detect if the values are pure numbers and sort accordingly if they are
+          var numA = Number(valueA)
+          var numB = Number(valueB)
+          if (Number.isFinite(a) && Number.isFinite(b) && valueA == numA && valueB == numB) {
+            return (numA - numB) * multi
+          }
         }
         // Sort as strings
         var sort = list.utils.naturalSort
