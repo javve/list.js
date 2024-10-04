@@ -77,12 +77,21 @@ module.exports = function (list) {
       }
     } else {
       sortFunction = function (itemA, itemB) {
+        var valueA = itemA.values()[options.valueName]
+        var valueB = itemB.values()[options.valueName]
+        // Detect if the values are pure numbers and sort accordingly if they are
+        var numA = Number(valueA)
+        var numB = Number(valueB)
+        if (valueA == numA && valueB == numB) {
+          return (numA - numB) * multi
+        }
+        // Sort as strings
         var sort = list.utils.naturalSort
         sort.alphabet = list.alphabet || options.alphabet || undefined
         if (!sort.alphabet && options.insensitive) {
           sort = list.utils.naturalSort.caseInsensitive
         }
-        return sort(itemA.values()[options.valueName], itemB.values()[options.valueName]) * multi
+        return sort(valueA, valueB) * multi
       }
     }
 
