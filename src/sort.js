@@ -83,7 +83,7 @@ module.exports = function (list) {
           // Detect if the values are pure numbers and sort accordingly if they are
           var numA = Number(valueA)
           var numB = Number(valueB)
-          if (Number.isFinite(a) && Number.isFinite(b) && valueA == numA && valueB == numB) {
+          if (Number.isFinite(numA) && Number.isFinite(numB) && valueA == numA && valueB == numB) {
             return (numA - numB) * multi
           }
         }
