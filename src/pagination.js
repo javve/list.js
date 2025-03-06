@@ -93,11 +93,12 @@ module.exports = function (list) {
 
     events.bind(pagingList.listContainer, 'click', function (e) {
       var target = e.target || e.srcElement,
-        page = list.utils.getAttribute(target, 'data-page'),
-        i = list.utils.getAttribute(target, 'data-i')
-      if (i) {
-        list.show((i - 1) * page + 1, page)
+        page = parseInt(list.utils.getAttribute(target, 'data-page'), 10),
+        i = parseInt(list.utils.getAttribute(target, 'data-i'), 10)
+      if (isNaN(i) || isNaN(page)) {
+	return
       }
+      list.show((i - 1) * page + 1, page)
     })
 
     list.on('updated', function () {
