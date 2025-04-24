@@ -1,5 +1,6 @@
-const $ = require('jquery'),
-  fixture = require('./fixtures')
+import { describe, it, expect } from 'vitest'
+import $ from 'jquery'
+import fixture from './fixtures'
 
 describe('Defaults', function () {
   var list

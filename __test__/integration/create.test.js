@@ -1,5 +1,6 @@
-const $ = require('jquery')
-const List = require('../../src/index')
+import { describe, it, expect } from 'vitest'
+import $ from 'jquery'
+import List from '../../src/index'
 
 describe('Create', () => {
   describe('With HTML items', () => {
@@ -58,9 +59,11 @@ describe('Create', () => {
   describe('Without items and with string template', () => {
     var listEl, list
     beforeEach(() => {
-      listEl = $('<div id="list">\
+      listEl = $(
+        '<div id="list">\
         <ul class="list"></ul>\
-      </div>')
+      </div>',
+      )
       $(document.body).append(listEl)
       list = new List(
         'list',
@@ -68,7 +71,7 @@ describe('Create', () => {
           valueNames: ['name'],
           item: '<li><span class="name"></span></li>',
         },
-        [{ name: 'Jonny' }]
+        [{ name: 'Jonny' }],
       )
     })
     afterEach(() => {
@@ -103,7 +106,7 @@ describe('Create', () => {
           valueNames: ['name'],
           item: '<tr><span class="name"></span></tr>',
         },
-        [{ name: 'Jonny' }]
+        [{ name: 'Jonny' }],
       )
     })
 
@@ -136,7 +139,7 @@ describe('Create', () => {
             return `<li data-template-fn-${values.name.toLowerCase()}><span class="name"></span></li>`
           },
         },
-        [{ name: 'Jonny' }]
+        [{ name: 'Jonny' }],
       )
     })
     afterEach(() => {
@@ -191,7 +194,7 @@ describe('Create', () => {
           valueNames: ['name'],
           item: 'template-item',
         },
-        [{ name: 'Jonny' }]
+        [{ name: 'Jonny' }],
       )
     })
     afterEach(() => {
@@ -212,8 +215,9 @@ describe('Create', () => {
   })
 
   describe('Asyn index with existing list', () => {
-    it('should contain 162 items', (done) => {
-      var listEl = $(`
+    it('should contain 162 items', () => {
+      return new Promise(async (resolve) => {
+        var listEl = $(`
         <div id="list">
           <ul class="list">
             <li><span class="name">Jonny</span></li><li><span class="name">Sven</span></li>
@@ -300,15 +304,16 @@ describe('Create', () => {
           </ul>
         </div>
       `)
-      $(document.body).append(listEl)
-      var list = new List('list', {
-        valueNames: ['name'],
-        indexAsync: true,
-        parseComplete: function (list) {
-          expect(listEl.find('li').length).toEqual(162)
-          listEl.remove()
-          done()
-        },
+        $(document.body).append(listEl)
+        var list = new List('list', {
+          valueNames: ['name'],
+          indexAsync: true,
+          parseComplete: function (list) {
+            expect(listEl.find('li').length).toEqual(162)
+            listEl.remove()
+            resolve()
+          },
+        })
       })
     })
   })

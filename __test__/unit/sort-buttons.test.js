@@ -1,17 +1,18 @@
-const naturalSort = require('string-natural-compare')
-const $ = require('jquery')
+import $ from 'jquery'
+import naturalSort from 'string-natural-compare'
 
-const Item = require('../../src/item')
-const templater = require('../../src/templater')
-const {
+import Item from '../../src/item'
+import templater from '../../src/templater'
+
+import {
   addSortListeners,
   getInSensitive,
   getNextSortOrder,
   setSortOrder,
   clearSortOrder,
-} = require('../../src/sort-buttons')
+} from '../../src/sort-buttons'
 
-describe('sort listeners', function () {
+describe('sort listeners', () => {
   describe('getInSensitive', () => {
     it('should be false if data-insensitive is false', () => {
       const button = $(`<button data-insensitive="false">`)[0]
@@ -104,7 +105,7 @@ describe('sort listeners', function () {
       expect(buttonAge.classList.contains('desc')).toEqual(false)
     })
   })
-  describe('addSortListeners', function () {
+  describe('addSortListeners', () => {
     beforeEach(() => {
       const template = templater.getTemplate({
         template: '<div><span class="name"></span><span class="age"></span></div>',
@@ -126,7 +127,7 @@ describe('sort listeners', function () {
       const elements = [buttonName, buttonAge]
       addSortListeners(elements, { items: this.items })
 
-      $(buttonAge).click()
+      buttonAge.click()
       expect(buttonName.classList.contains('asc')).toEqual(false)
       expect(buttonName.classList.contains('desc')).toEqual(false)
       expect(buttonAge.classList.contains('asc')).toEqual(true)
@@ -138,7 +139,7 @@ describe('sort listeners', function () {
         '34',
       ])
 
-      $(buttonAge).click()
+      buttonAge.click()
       expect(buttonName.classList.contains('asc')).toEqual(false)
       expect(buttonName.classList.contains('desc')).toEqual(false)
       expect(buttonAge.classList.contains('asc')).toEqual(false)
@@ -150,7 +151,7 @@ describe('sort listeners', function () {
         '15',
       ])
 
-      $(buttonName).click()
+      buttonName.click()
       expect(buttonName.classList.contains('asc')).toEqual(true)
       expect(buttonName.classList.contains('desc')).toEqual(false)
       expect(buttonAge.classList.contains('asc')).toEqual(false)
@@ -169,19 +170,21 @@ describe('sort listeners', function () {
       const before = () => {
         beforeHasRun = true
       }
-      const after = () => {
-        expect(beforeHasRun).toEqual(true)
-        done()
-      }
-      addSortListeners(elements, { items: this.items, before, after })
-      $(buttonAge).click()
+      return new Promise(async (resolve) => {
+        const after = () => {
+          expect(beforeHasRun).toEqual(true)
+          resolve()
+        }
+        addSortListeners(elements, { items: this.items, before, after })
+        buttonAge.click()
+      })
     })
     it('should use custom alphabeth', () => {
       const buttonName = $(`<button data-sort="name">`)[0]
       const elements = [buttonName]
       const alphabet = 'UMJona'
       addSortListeners(elements, { items: this.items, alphabet })
-      $(buttonName).click()
+      buttonName.click()
       expect(this.getValues('name')).toEqual([
         'Unn', //
         'Martina',
@@ -198,7 +201,7 @@ describe('sort listeners', function () {
         return naturalSort(reversNameA, reversNameB)
       }
       addSortListeners(elements, { items: this.items, sortFunction })
-      $(buttonName).click()
+      buttonName.click()
       expect(this.getValues('name')).toEqual([
         'Martina', //
         'Unn',

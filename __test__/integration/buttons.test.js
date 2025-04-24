@@ -1,51 +1,25 @@
-const $ = require('jquery'),
-  List = require('../../src/index')
+import { describe, it, expect } from 'vitest'
+import { screen } from '@testing-library/dom'
+import userEvent from '@testing-library/user-event'
 
-function fireKeyup(el) {
-  if (document.createEvent) {
-    var evObj
-    if (window.KeyEvent) {
-      evObj = document.createEvent('KeyEvents')
-      evObj.initKeyEvent('keyup', true, true, window, false, false, false, false, 13, 0)
-    } else {
-      evObj = document.createEvent('UIEvents')
-      evObj.initUIEvent('keyup', true, true, window, 1)
-    }
-    el.dispatchEvent(evObj)
-  } else if (document.createEventObject) {
-    el.fireEvent('onkeyup')
-  } else {
-    // IE 5.0, seriously? :)
-  }
-}
-
-// http://stackoverflow.com/questions/5658849/whats-the-equivalent-of-jquerys-trigger-method-without-jquery
-function fireClick(el) {
-  var evt
-  if (document.createEvent) {
-    evt = document.createEvent('MouseEvents')
-    evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
-  }
-  evt ? el.dispatchEvent(evt) : el.click && el.click()
-}
+import $ from 'jquery'
+import List from '../../src/index'
 
 describe('Button', function () {
   var list
 
   beforeEach(function () {
     $('body').append(
-      $(
-        '<div id="parse-list">\
-      <input class="search" />\
-      <span class="sort" id="sort-name" data-sort="name">Sort name</span>\
-      <span class="sort" id="sort-name-asc" data-sort="name" data-order="asc">Sort name asc</span>\
-      <span class="sort" id="sort-name-desc" data-sort="name" data-order="desc">Sort name desc</span>\
-      <div class="list">\
-        <div><span class="name">Jonny</span><span class="born">1986</span></div>\
-        <div><span class="name">Jocke</span><span class="born">1985</span></div>\
-      </div>\
-    </div>'
-      )
+      $(`<div id="parse-list">
+        <input class="search" />
+        <span class="sort" id="sort-name" data-sort="name">Sort name</span>
+        <span class="sort" id="sort-name-asc" data-sort="name" data-order="asc">Sort name asc</span>
+        <span class="sort" id="sort-name-desc" data-sort="name" data-order="desc">Sort name desc</span>
+        <div class="list">
+          <div><span class="name">Jonny</span><span class="born">1986</span></div>
+          <div><span class="name">Jocke</span><span class="born">1985</span></div>
+        </div>
+      </div>`),
     )
 
     list = new List('parse-list', {
@@ -57,138 +31,162 @@ describe('Button', function () {
     $('#parse-list').remove()
   })
 
-  describe('Sort', function () {
-    it('should trigger sortStart', function (done) {
-      list.on('sortComplete', function () {
-        done()
+  describe('Sort', () => {
+    it('should trigger sortStart', async () => {
+      return new Promise(async (resolve) => {
+        list.on('sortStart', () => {
+          resolve()
+        })
+        const sortBtn = document.querySelector('#sort-name')
+        await userEvent.click(sortBtn)
       })
-      fireClick($('#sort-name')[0])
     })
-    it('should trigger sortComplete', function (done) {
-      list.on('sortComplete', function () {
-        done()
+    it('should trigger sortComplete', async () => {
+      return new Promise(async (resolve) => {
+        list.on('sortComplete', () => {
+          resolve()
+        })
+        const sortBtn = document.querySelector('#sort-name')
+        await userEvent.click(sortBtn)
       })
-      fireClick($('#sort-name')[0])
-    })
-
-    it('should switch sorting order when clicking multiple times', function (done) {
-      var sortRun = 0
-      list.on('sortComplete', function () {
-        sortRun++
-        if (sortRun == 1) {
-          expect($('#sort-name').hasClass('asc')).toBe(true)
-          expect($('#sort-name').hasClass('desc')).toBe(false)
-          setTimeout(function () {
-            fireClick($('#sort-name')[0])
-          }, 50)
-        } else if (sortRun == 2) {
-          expect($('#sort-name').hasClass('asc')).toBe(false)
-          expect($('#sort-name').hasClass('desc')).toBe(true)
-          setTimeout(function () {
-            fireClick($('#sort-name')[0])
-          }, 50)
-        } else if (sortRun == 3) {
-          expect($('#sort-name').hasClass('asc')).toBe(true)
-          expect($('#sort-name').hasClass('desc')).toBe(false)
-          done()
-        }
-      })
-      expect($('#sort-name').hasClass('asc')).toBe(false)
-      expect($('#sort-name').hasClass('desc')).toBe(false)
-      fireClick($('#sort-name')[0])
     })
 
-    it('should sort with predefined order', function (done) {
-      var sortRun = 0
-      list.on('sortComplete', function () {
-        sortRun++
-        if (sortRun == 1) {
-          expect($('#sort-name').hasClass('asc')).toBe(true)
-          expect($('#sort-name').hasClass('desc')).toBe(false)
-          expect($('#sort-name-asc').hasClass('asc')).toBe(true)
-          expect($('#sort-name-asc').hasClass('desc')).toBe(false)
-          expect($('#sort-name-desc').hasClass('asc')).toBe(false)
-          expect($('#sort-name-desc').hasClass('desc')).toBe(false)
-          setTimeout(function () {
-            fireClick($('#sort-name-asc')[0])
-          }, 50)
-        } else if (sortRun == 2) {
-          expect($('#sort-name').hasClass('asc')).toBe(true)
-          expect($('#sort-name').hasClass('desc')).toBe(false)
-          expect($('#sort-name-asc').hasClass('asc')).toBe(true)
-          expect($('#sort-name-asc').hasClass('desc')).toBe(false)
-          expect($('#sort-name-desc').hasClass('asc')).toBe(false)
-          expect($('#sort-name-desc').hasClass('desc')).toBe(false)
-          setTimeout(function () {
-            fireClick($('#sort-name-asc')[0])
-          }, 50)
-        } else if (sortRun == 3) {
-          expect($('#sort-name').hasClass('asc')).toBe(true)
-          expect($('#sort-name').hasClass('desc')).toBe(false)
-          expect($('#sort-name-asc').hasClass('asc')).toBe(true)
-          expect($('#sort-name-asc').hasClass('desc')).toBe(false)
-          expect($('#sort-name-desc').hasClass('asc')).toBe(false)
-          expect($('#sort-name-desc').hasClass('desc')).toBe(false)
-          setTimeout(function () {
-            fireClick($('#sort-name-desc')[0])
-          }, 50)
-        } else if (sortRun == 4) {
-          expect($('#sort-name').hasClass('asc')).toBe(false)
-          expect($('#sort-name').hasClass('desc')).toBe(true)
-          expect($('#sort-name-asc').hasClass('asc')).toBe(false)
-          expect($('#sort-name-asc').hasClass('desc')).toBe(false)
-          expect($('#sort-name-desc').hasClass('asc')).toBe(false)
-          expect($('#sort-name-desc').hasClass('desc')).toBe(true)
-          setTimeout(function () {
-            fireClick($('#sort-name-desc')[0])
-          }, 50)
-        } else if (sortRun == 5) {
-          expect($('#sort-name').hasClass('asc')).toBe(false)
-          expect($('#sort-name').hasClass('desc')).toBe(true)
-          expect($('#sort-name-asc').hasClass('asc')).toBe(false)
-          expect($('#sort-name-asc').hasClass('desc')).toBe(false)
-          expect($('#sort-name-desc').hasClass('asc')).toBe(false)
-          expect($('#sort-name-desc').hasClass('desc')).toBe(true)
-          done()
-        }
+    it('should switch sorting order when clicking multiple times', () => {
+      return new Promise(async (resolve) => {
+        const sortBtn = document.querySelector('#sort-name')
+        var sortRun = 0
+        list.on('sortComplete', () => {
+          sortRun++
+          if (sortRun == 1) {
+            expect(sortBtn.classList.contains('asc')).toBe(true)
+            expect(sortBtn.classList.contains('desc')).toBe(false)
+            setTimeout(function () {
+              sortBtn.click()
+            }, 50)
+          } else if (sortRun == 2) {
+            expect(sortBtn.classList.contains('asc')).toBe(false)
+            expect(sortBtn.classList.contains('desc')).toBe(true)
+            setTimeout(function () {
+              sortBtn.click()
+            }, 50)
+          } else if (sortRun == 3) {
+            expect(sortBtn.classList.contains('asc')).toBe(true)
+            expect(sortBtn.classList.contains('desc')).toBe(false)
+            resolve()
+          }
+        })
+        expect(sortBtn.classList.contains('asc')).toBe(false)
+        expect(sortBtn.classList.contains('desc')).toBe(false)
+        sortBtn.click()
       })
-      expect($('#sort-name').hasClass('asc')).toBe(false)
-      expect($('#sort-name').hasClass('desc')).toBe(false)
-      expect($('#sort-name-asc').hasClass('asc')).toBe(false)
-      expect($('#sort-name-asc').hasClass('desc')).toBe(false)
-      expect($('#sort-name-desc').hasClass('asc')).toBe(false)
-      expect($('#sort-name-desc').hasClass('desc')).toBe(false)
-      fireClick($('#sort-name-asc')[0])
     })
 
-    it('buttons should change class when sorting programmatically', function (done) {
-      list.on('sortComplete', function () {
-        expect($('#sort-name').hasClass('asc')).toBe(true)
-        expect($('#sort-name').hasClass('desc')).toBe(false)
-        expect($('#sort-name-asc').hasClass('asc')).toBe(true)
-        expect($('#sort-name-asc').hasClass('desc')).toBe(false)
-        expect($('#sort-name-desc').hasClass('asc')).toBe(false)
-        expect($('#sort-name-desc').hasClass('desc')).toBe(false)
-        done()
+    it('should sort with predefined order', () => {
+      return new Promise(async (resolve) => {
+        const sortBtn = document.querySelector('#sort-name')
+        const sortBtnAsc = document.querySelector('#sort-name-asc')
+        const sortBtnDesc = document.querySelector('#sort-name-desc')
+        var sortRun = 0
+        list.on('sortComplete', function () {
+          sortRun++
+          if (sortRun == 1) {
+            expect(sortBtn.classList.contains('asc')).toBe(true)
+            expect(sortBtn.classList.contains('desc')).toBe(false)
+            expect(sortBtnAsc.classList.contains('asc')).toBe(true)
+            expect(sortBtnAsc.classList.contains('desc')).toBe(false)
+            expect(sortBtnDesc.classList.contains('asc')).toBe(false)
+            expect(sortBtnDesc.classList.contains('desc')).toBe(false)
+            setTimeout(function () {
+              sortBtnAsc.click()
+            }, 50)
+          } else if (sortRun == 2) {
+            expect(sortBtn.classList.contains('asc')).toBe(true)
+            expect(sortBtn.classList.contains('desc')).toBe(false)
+            expect(sortBtnAsc.classList.contains('asc')).toBe(true)
+            expect(sortBtnAsc.classList.contains('desc')).toBe(false)
+            expect(sortBtnDesc.classList.contains('asc')).toBe(false)
+            expect(sortBtnDesc.classList.contains('desc')).toBe(false)
+            setTimeout(function () {
+              sortBtnAsc.click()
+            }, 50)
+          } else if (sortRun == 3) {
+            expect(sortBtn.classList.contains('asc')).toBe(true)
+            expect(sortBtn.classList.contains('desc')).toBe(false)
+            expect(sortBtnAsc.classList.contains('asc')).toBe(true)
+            expect(sortBtnAsc.classList.contains('desc')).toBe(false)
+            expect(sortBtnDesc.classList.contains('asc')).toBe(false)
+            expect(sortBtnDesc.classList.contains('desc')).toBe(false)
+            setTimeout(function () {
+              sortBtnDesc.click()
+            }, 50)
+          } else if (sortRun == 4) {
+            expect(sortBtn.classList.contains('asc')).toBe(false)
+            expect(sortBtn.classList.contains('desc')).toBe(true)
+            expect(sortBtnAsc.classList.contains('asc')).toBe(false)
+            expect(sortBtnAsc.classList.contains('desc')).toBe(false)
+            expect(sortBtnDesc.classList.contains('asc')).toBe(false)
+            expect(sortBtnDesc.classList.contains('desc')).toBe(true)
+            setTimeout(function () {
+              sortBtnDesc.click()
+            }, 50)
+          } else if (sortRun == 5) {
+            expect(sortBtn.classList.contains('asc')).toBe(false)
+            expect(sortBtn.classList.contains('desc')).toBe(true)
+            expect(sortBtnAsc.classList.contains('asc')).toBe(false)
+            expect(sortBtnAsc.classList.contains('desc')).toBe(false)
+            expect(sortBtnDesc.classList.contains('asc')).toBe(false)
+            expect(sortBtnDesc.classList.contains('desc')).toBe(true)
+            resolve()
+          }
+        })
+        expect(sortBtn.classList.contains('asc')).toBe(false)
+        expect(sortBtn.classList.contains('desc')).toBe(false)
+        expect(sortBtnAsc.classList.contains('asc')).toBe(false)
+        expect(sortBtnAsc.classList.contains('desc')).toBe(false)
+        expect(sortBtnDesc.classList.contains('asc')).toBe(false)
+        expect(sortBtnDesc.classList.contains('desc')).toBe(false)
+        sortBtnAsc.click()
       })
-      list.sort('name', { order: 'asc' })
+    })
+
+    it('buttons should change class when sorting programmatically', () => {
+      return new Promise(async (resolve) => {
+        const sortBtn = document.querySelector('#sort-name')
+        const sortBtnAsc = document.querySelector('#sort-name-asc')
+        const sortBtnDesc = document.querySelector('#sort-name-desc')
+        list.on('sortComplete', () => {
+          expect(sortBtn.classList.contains('asc')).toBe(true)
+          expect(sortBtn.classList.contains('desc')).toBe(false)
+          expect(sortBtnAsc.classList.contains('asc')).toBe(true)
+          expect(sortBtnAsc.classList.contains('desc')).toBe(false)
+          expect(sortBtnDesc.classList.contains('asc')).toBe(false)
+          expect(sortBtnDesc.classList.contains('desc')).toBe(false)
+          resolve()
+        })
+        list.sort('name', { order: 'asc' })
+      })
     })
   })
 
-  describe('Search', function () {
-    it('should trigger searchStart', function (done) {
-      list.on('searchStart', function () {
-        done()
+  describe('Search', () => {
+    it('should trigger searchStart', async () => {
+      return new Promise(async (resolve) => {
+        list.on('searchStart', () => {
+          resolve()
+        })
+
+        const input = screen.getByRole('textbox')
+        await userEvent.type(input, 'jon')
       })
-      $('#parse-list .search').val('jon')
-      fireKeyup($('#parse-list .search')[0])
     })
-    it('should trigger searchComplete', function (done) {
-      list.on('searchComplete', function () {
-        done()
+    it('should trigger searchComplete', async () => {
+      return new Promise(async (resolve) => {
+        list.on('searchComplete', () => {
+          resolve()
+        })
+        const input = screen.getByRole('textbox')
+        await userEvent.type(input, 'jon')
       })
-      $('#parse-list .search').val('jon')
-      fireKeyup($('#parse-list .search')[0])
     })
   })
 })

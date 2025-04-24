@@ -1,5 +1,5 @@
-const $ = require('jquery')
-const valueNamesUtils = require('../../src/utils/value-names')
+import $ from 'jquery'
+import valueNamesUtils from '../../src/utils/value-names'
 
 describe('Utils / Value Names', () => {
   let valueNames, itemEl
@@ -20,7 +20,7 @@ describe('Utils / Value Names', () => {
         '<span class="born timestamp" data-timestamp="54321">1986</span>' +
         '<img class="image" src="usage/boba.jpeg">' +
         '<input class="foo" value="Bar">' +
-        '</div>'
+        '</div>',
     )[0]
   })
   describe('getDefinitionFromName', () => {

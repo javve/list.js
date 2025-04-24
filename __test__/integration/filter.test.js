@@ -1,5 +1,6 @@
-const fixture = require('./fixtures')
-const isVisible = require('../utils/is-visible')
+import { describe, it, expect, beforeAll, afterAll, afterEach, beforeEach } from 'vitest'
+import fixture from './fixtures'
+import isVisible from '../utils/is-visible'
 
 describe('Filter', function () {
   var list, jonny, martina, angelica, sebastian, imma, hasse

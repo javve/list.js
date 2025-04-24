@@ -1,5 +1,5 @@
-const $ = require('jquery')
-const templater = require('../../src/templater')
+import $ from 'jquery'
+import templater from '../../src/templater'
 
 describe('Templater', () => {
   describe('getTemplate function', () => {
@@ -69,7 +69,7 @@ describe('Templater', () => {
           timestamp: '1337',
           foo: 'hej',
         },
-        template
+        template,
       )
       expect(itemEl.outerHTML).toEqual(
         '<div data-id="4">' +
@@ -77,7 +77,7 @@ describe('Templater', () => {
           '<span class="born timestamp" data-timestamp="1337">1950</span>' +
           '<img class="image" src="usage/rey.jpeg">' +
           '<input class="foo" value="hej">' +
-          '</div>'
+          '</div>',
       )
     })
   })
@@ -128,7 +128,7 @@ describe('Templater', () => {
           '<span class="born timestamp" data-timestamp="54321">1986</span>' +
           '<img class="image" src="usage/boba.jpeg">' +
           '<input class="foo" value="Bar">' +
-          '</div>'
+          '</div>',
       )[0]
       const valueNames = [
         'name',
@@ -150,7 +150,7 @@ describe('Templater', () => {
           timestamp: '1337',
           foo: 'hej',
         },
-        valueNames
+        valueNames,
       )
       expect(itemEl.outerHTML).toEqual(
         '<div data-id="4">' +
@@ -158,7 +158,7 @@ describe('Templater', () => {
           '<span class="born timestamp" data-timestamp="1337">1950</span>' +
           '<img class="image" src="usage/rey.jpeg">' +
           '<input class="foo" value="hej">' +
-          '</div>'
+          '</div>',
       )
     })
   })
@@ -170,7 +170,7 @@ describe('Templater', () => {
           '<span class="born timestamp" data-timestamp="54321">1986</span>' +
           '<img class="image" src="usage/boba.jpeg">' +
           '<input class="foo" value="Bar">' +
-          '</div>'
+          '</div>',
       )[0]
       const valueNames = [
         'name',

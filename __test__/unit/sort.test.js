@@ -6,14 +6,16 @@ sort(items, column, options = {
   sortFunction: undefined
 })
 */
-const naturalSort = require('string-natural-compare')
-const $ = require('jquery')
 
-const Item = require('../../src/item')
-const sort = require('../../src/sort')
-const templater = require('../../src/templater')
+import { describe, it, expect, beforeEach } from 'vitest'
+import $ from 'jquery'
+import naturalSort from 'string-natural-compare'
 
-describe('sort', function () {
+import Item from '../../src/item'
+import sort from '../../src/sort'
+import templater from '../../src/templater'
+
+describe('sort', () => {
   beforeEach(() => {
     const template = templater.getTemplate({
       template: '<div><span class="v"></span></div>',

@@ -1,6 +1,6 @@
-const classes = require('../../src/utils/classes')
+import classes from '../../src/utils/classes'
 
-describe('Classes', function () {
+describe('Classes', () => {
   var el
 
   beforeEach(function () {
