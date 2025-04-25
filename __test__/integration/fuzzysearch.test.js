@@ -1,24 +1,8 @@
-const $ = require('jquery'),
-  fixtureFuzzysearch = require('./fixtures-fuzzysearch'),
-  List = require('../../src/index')
+import { screen } from '@testing-library/dom'
+import userEvent from '@testing-library/user-event'
 
-function fireKeyup(el) {
-  if (document.createEvent) {
-    var evObj
-    if (window.KeyEvent) {
-      evObj = document.createEvent('KeyEvents')
-      evObj.initKeyEvent('keyup', true, true, window, false, false, false, false, 13, 0)
-    } else {
-      evObj = document.createEvent('UIEvents')
-      evObj.initUIEvent('keyup', true, true, window, 1)
-    }
-    el.dispatchEvent(evObj)
-  } else if (document.createEventObject) {
-    el.fireEvent('onkeyup')
-  } else {
-    // IE 5.0, seriously? :)
-  }
-}
+import fixtureFuzzysearch from './fixtures-fuzzysearch'
+import List from '../../src/index'
 
 describe('Fuzzy Search', function () {
   var list, itemHTML
@@ -31,7 +15,7 @@ describe('Fuzzy Search', function () {
         valueNames: ['name', 'born'],
         item: itemHTML,
       },
-      fixtureFuzzysearch.all
+      fixtureFuzzysearch.all,
     )
   })
 
@@ -59,20 +43,24 @@ describe('Fuzzy Search', function () {
   })
 
   describe('Search field', function () {
-    it('should trigger searchStart', function (done) {
-      list.on('searchStart', function () {
-        done()
+    it('should trigger searchStart', () => {
+      return new Promise((resolve) => {
+        list.on('searchStart', function () {
+          resolve()
+        })
+        const input = screen.getByRole('textbox')
+        userEvent.type(input, 'angelica')
       })
-      $('#list-fuzzy-search .fuzzy-search').val('angelica')
-      fireKeyup($('#list-fuzzy-search .fuzzy-search')[0])
     })
 
-    it('should trigger searchComplete', function (done) {
-      list.on('searchComplete', function () {
-        done()
+    it('should trigger searchComplete', () => {
+      return new Promise((resolve) => {
+        list.on('searchComplete', function () {
+          resolve()
+        })
+        const input = screen.getByRole('textbox')
+        userEvent.type(input, 'angelica')
       })
-      $('#list-fuzzy-search .fuzzy-search').val('angelica')
-      fireKeyup($('#list-fuzzy-search .fuzzy-search')[0])
     })
   })
 })

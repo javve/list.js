@@ -12,11 +12,13 @@ describe('Trigger', function () {
   })
 
   describe('General', function () {
-    it('should be triggered by searchComplete', function (done) {
-      list.on('searchComplete', function () {
-        done()
+    it('should be triggered by searchComplete', () => {
+      return new Promise((resolve) => {
+        list.on('searchComplete', function () {
+          resolve()
+        })
+        list.trigger('searchComplete')
       })
-      list.trigger('searchComplete')
     })
   })
 })
