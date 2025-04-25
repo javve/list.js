@@ -9,11 +9,6 @@ coverage:
         target: 80%
         threshold: 1%
 
-ignore:
-  - '**/*.test.*'
-  - '**/node_modules/**'
-  - '**/dist/**'
-
 comment:
   layout: 'reach, diff, flags, files'
   behavior: default
