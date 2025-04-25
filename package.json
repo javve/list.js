@@ -38,19 +38,25 @@
     "vite": "^6.3.2",
     "vitest": "^3.1.2"
   },
-  "main": "src/index",
+  "main": "dist/list.cjs.js",
+  "module": "dist/list.js",
+  "unpkg": "dist/list.umd.js",
+  "exports": {
+    "import": "./dist/list.js",
+    "require": "./dist/list.cjs.js"
+  },
   "engines": {
     "node": "^22.14.0"
   },
   "scripts": {
-    "build": "npx webpack",
-    "watch": "npx webpack --watch",
     "test": "npm run lint && npm run test:unit",
     "test:unit": "vitest",
     "test:unit:watch": "vitest --watch",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix",
+    "build": "vite build",
+    "watch": "vite build --watch",
     "preversion": "npm test && npm run build && cp dist/list.min.js docs/assets/javascripts/list.min.js && cp dist/list.min.js.map docs/assets/javascripts/list.min.js.map && git add dist && git add docs/assets/javascripts",
     "postversion": "git push --follow-tags origin master && cp package.json docs/_data/pkg.json && git add docs/_data/pkg.json && git commit -m \"pkg.json update\""
   },
@@ -63,14 +69,5 @@
         "*.js.map"
       ]
     }
-  ],
-  "jest": {
-    "coverageDirectory": "./coverage/",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "src/*.js",
-      "src/utils/*.js"
-    ],
-    "testURL": "http://localhost/"
-  }
+  ]
 }
