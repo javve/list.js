@@ -5,8 +5,8 @@ module.exports = function (items, column, options) {
   var sortFunction = options.sortFunction || undefined
   var order = options.order || 'asc'
   var alphabet = options.alphabet || undefined
-  var insensitive = options.insensitive || false
-  var caseSensitive = insensitive !== false
+  var insensitive = options.insensitive !== undefined ? options.insensitive : true
+  var caseSensitive = insensitive === false
   var multi = order === 'desc' ? -1 : 1
 
   if (sortFunction) {
@@ -20,14 +20,22 @@ module.exports = function (items, column, options) {
       )
     })
   } else {
-    return items.sort(function (itemA, itemB) {
-      var options = { alphabet: alphabet }
+    naturalSort.alphabet = alphabet
+    items.sort(function (itemA, itemB) {
+      var sortFunction = naturalSort.caseInsensitive
       if (!alphabet) {
-        if (caseSensitive) {
-          options.caseInsensitive = true
+        if (caseSensitive !== false) {
+          sortFunction = naturalSort
         }
+        return sortFunction('' + itemA.values()[column], '' + itemB.values()[column]) * multi
+      } else {
+        return sortFunction('' + itemA.values()[column], '' + itemB.values()[column])
       }
-      return naturalSort('' + itemA.values()[column], '' + itemB.values()[column], options) * multi
     })
+    if (alphabet && order === 'desc') {
+      items.reverse()
+    }
+    naturalSort.alphabet = ''
+    return items
   }
 }

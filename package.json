@@ -23,7 +23,7 @@
     "url": "https://github.com/javve/list.js/issues"
   },
   "dependencies": {
-    "string-natural-compare": "^3.0.1"
+    "string-natural-compare": "^2.0.3"
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.4",

@@ -14,7 +14,7 @@ describe('Sort', function () {
         { id: '4', val: '' },
         { id: '5', val: '' },
         { id: '6', val: '' },
-      ]
+      ],
     )
     i1 = list.get('id', '1')[0]
     i2 = list.get('id', '2')[0]
@@ -240,7 +240,7 @@ describe('Sort', function () {
       expect(list.items[5].values().val).toBe('z')
     })
 
-    xit('should show how random values are sorted', function () {
+    it.skip('should show how random values are sorted', function () {
       list.add({ id: '7', val: '' })
       list.add({ id: '8', val: '' })
       list.add({ id: '9', val: '' })
@@ -315,7 +315,7 @@ describe('Sort', function () {
         sortFunction: function (itemA, itemB, options) {
           return list.utils.naturalSort(
             $(itemA.values()[options.valueName]).val(),
-            $(itemB.values()[options.valueName]).val()
+            $(itemB.values()[options.valueName]).val(),
           )
         },
       })
@@ -330,7 +330,7 @@ describe('Sort', function () {
       list.sortFunction = function (itemA, itemB, options) {
         return list.utils.naturalSort(
           $(itemA.values()[options.valueName]).val(),
-          $(itemB.values()[options.valueName]).val()
+          $(itemB.values()[options.valueName]).val(),
         )
       }
       i1.values({ val: "<input value='b' />" })
@@ -351,7 +351,7 @@ describe('Sort', function () {
       list.sortFunction = function (itemA, itemB, options) {
         return list.utils.naturalSort(
           $(itemA.values()[options.valueName]).val(),
-          $(itemB.values()[options.valueName]).val()
+          $(itemB.values()[options.valueName]).val(),
         )
       }
       i1.values({ val: "<input value='b' />" })

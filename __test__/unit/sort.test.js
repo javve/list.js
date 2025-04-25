@@ -32,7 +32,7 @@ describe('sort', () => {
     }
   })
   describe('options', () => {
-    it('should sort asc by default', () => {
+    it('should sort asc and case insensitive by default', () => {
       this.setValues('Babc')
       sort(this.items, 'v')
       expect(this.getValues().join('')).toEqual('aBbc')
@@ -52,17 +52,26 @@ describe('sort', () => {
       sort(this.items, 'v', { insensitive: false })
       expect(this.getValues().join('')).toEqual('Babc')
     })
-    it('should use custom alphabeth', () => {
+    it('should sort ÅÄÖ asc', () => {
       this.setValues('AaOoÅåÄäÖö')
       sort(this.items, 'v', { order: 'asc' })
       expect(this.getValues().join('')).toEqual('AaOoÄäÅåÖö') // Å & Ä is in wrong order
+    })
+    it('should sort ÅÄÖ desc', () => {
+      this.setValues('AaOoÅåÄäÖö')
       sort(this.items, 'v', { order: 'desc' })
       expect(this.getValues().join('')).toEqual('ÖöÅåÄäOoAa') // Å & Ä is in wrong order
+    })
+    it('should use custom alphabet and sort ÅÄÖ asc', () => {
+      this.setValues('AaOoÅåÄäÖö')
       sort(this.items, 'v', {
         order: 'asc',
         alphabet: 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzÅåÄäÖö',
       })
       expect(this.getValues().join('')).toEqual('AaOoÅåÄäÖö')
+    })
+    it('should use custom alphabet and sort ÅÄÖ desc', () => {
+      this.setValues('AaOoÅåÄäÖö')
       sort(this.items, 'v', {
         order: 'desc',
         alphabet: 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzÅåÄäÖö',
