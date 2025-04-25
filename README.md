@@ -36,16 +36,10 @@ Really simple and easy to use!
 npm install list.js
 ```
 
-##### Via Bower
-
-```
-bower install list.js
-```
-
 ##### Via CDNJS
 
 ```html
-<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/2.0.0/list.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/2.1.0/list.min.js"></script>
 ```
 
 ##### Via Direct Download
@@ -84,7 +78,7 @@ https://stackoverflow.com/questions/tagged/list.js
 
 ### Creator
 
-|                                                                                          | Jonny Strömberg [@javve](https://twitter.com/javve)                                                                                                                                                                                                           |
+|                                                                                          | Jonny Strömberg [@javve](https://twitter.com/javve)                                                                                                                                                                                                          |
 | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | ![Image of Jonny](http://1.gravatar.com/avatar/9f8130715cb4c452f1294eafa1b36290?size=80) | I hope you like the lib. I’ve put a lot of hours into it! Feel free to follow me on [Twitter](http://twitter.com/javve) for news and [donate a coffee](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M7ZGHV75VSD2E) for good karma ;) |
 
