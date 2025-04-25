@@ -7,7 +7,6 @@ sort(items, column, options = {
 })
 */
 
-import { describe, it, expect, beforeEach } from 'vitest'
 import $ from 'jquery'
 import naturalSort from 'string-natural-compare'
 
@@ -24,7 +23,7 @@ describe('sort', () => {
     this.items = []
     this.setValues = (values) => {
       if (!Array.isArray(values)) values = values.split('')
-      values.forEach((v, i) => {
+      values.forEach((v) => {
         this.items.push(new Item({ v }, { template }))
       })
     }

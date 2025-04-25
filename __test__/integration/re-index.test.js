@@ -2,7 +2,7 @@ const $ = require('jquery'),
   fixture = require('./fixtures')
 
 describe('ReIndex', function () {
-  var list, jonny, martina, angelica, sebastian, imma, hasse
+  var list
 
   beforeAll(function () {
     list = fixture.list(['name', 'born'], fixture.all)

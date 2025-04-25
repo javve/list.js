@@ -53,7 +53,13 @@ var setSortOrder = function (els, valueName, order) {
   }
 }
 
-var addSortListeners = function (elements, { items, sortFunction, alphabet, before, after } = {}) {
+var addSortListeners = function (elements, options) {
+  options = options || {}
+  var items = options.items
+  var sortFunction = options.sortFunction
+  var alphabet = options.alphabet
+  var before = options.before
+  var after = options.after
   events.bind(elements, 'click', function () {
     if (before) before()
     var target = arguments[0].currentTarget || arguments[0].srcElement || undefined
@@ -61,10 +67,10 @@ var addSortListeners = function (elements, { items, sortFunction, alphabet, befo
     var order = getNextSortOrder(target)
     var insensitive = getInSensitive(target)
     var options = {
-      sortFunction,
-      insensitive,
-      alphabet,
-      order,
+      sortFunction: sortFunction,
+      insensitive: insensitive,
+      alphabet: alphabet,
+      order: order,
     }
     setSortOrder(elements, valueName, order)
     sorter(items, valueName, options)
@@ -72,4 +78,10 @@ var addSortListeners = function (elements, { items, sortFunction, alphabet, befo
   })
 }
 
-module.exports = { addSortListeners, getInSensitive, getNextSortOrder, setSortOrder, clearSortOrder }
+module.exports = {
+  addSortListeners: addSortListeners,
+  getInSensitive: getInSensitive,
+  getNextSortOrder: getNextSortOrder,
+  setSortOrder: setSortOrder,
+  clearSortOrder: clearSortOrder,
+}

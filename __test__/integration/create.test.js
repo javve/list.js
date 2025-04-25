@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import $ from 'jquery'
 import List from '../../src/index'
 
@@ -62,7 +61,7 @@ describe('Create', () => {
       listEl = $(
         '<div id="list">\
         <ul class="list"></ul>\
-      </div>',
+      </div>'
       )
       $(document.body).append(listEl)
       list = new List(
@@ -71,7 +70,7 @@ describe('Create', () => {
           valueNames: ['name'],
           item: '<li><span class="name"></span></li>',
         },
-        [{ name: 'Jonny' }],
+        [{ name: 'Jonny' }]
       )
     })
     afterEach(() => {
@@ -106,7 +105,7 @@ describe('Create', () => {
           valueNames: ['name'],
           item: '<tr><span class="name"></span></tr>',
         },
-        [{ name: 'Jonny' }],
+        [{ name: 'Jonny' }]
       )
     })
 
@@ -139,7 +138,7 @@ describe('Create', () => {
             return `<li data-template-fn-${values.name.toLowerCase()}><span class="name"></span></li>`
           },
         },
-        [{ name: 'Jonny' }],
+        [{ name: 'Jonny' }]
       )
     })
     afterEach(() => {
@@ -169,7 +168,7 @@ describe('Create', () => {
       $(document.body).append(listEl)
 
       expect(() => {
-        var list = new List('list', {
+        new List('list', {
           valueNames: ['name'],
         })
       }).toThrow()
@@ -194,7 +193,7 @@ describe('Create', () => {
           valueNames: ['name'],
           item: 'template-item',
         },
-        [{ name: 'Jonny' }],
+        [{ name: 'Jonny' }]
       )
     })
     afterEach(() => {
@@ -216,7 +215,7 @@ describe('Create', () => {
 
   describe('Asyn index with existing list', () => {
     it('should contain 162 items', () => {
-      return new Promise(async (resolve) => {
+      return new Promise((resolve) => {
         var listEl = $(`
         <div id="list">
           <ul class="list">
@@ -305,10 +304,10 @@ describe('Create', () => {
         </div>
       `)
         $(document.body).append(listEl)
-        var list = new List('list', {
+        new List('list', {
           valueNames: ['name'],
           indexAsync: true,
-          parseComplete: function (list) {
+          parseComplete: function () {
             expect(listEl.find('li').length).toEqual(162)
             listEl.remove()
             resolve()

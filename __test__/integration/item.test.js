@@ -87,7 +87,6 @@ describe('Item', function () {
         expect(isVisible(item.elm, list.list)).toBe(false)
       })
       it('should be visble, match and found but not filterd', function () {
-        var result = list.search('Sven')
         expect(item.matching(list)).toBe(true)
         expect(item.found).toBe(true)
         expect(item.filtered).toBe(false)

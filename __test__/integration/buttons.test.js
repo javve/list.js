@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { screen } from '@testing-library/dom'
 import userEvent from '@testing-library/user-event'
 
@@ -19,7 +18,7 @@ describe('Button', function () {
           <div><span class="name">Jonny</span><span class="born">1986</span></div>
           <div><span class="name">Jocke</span><span class="born">1985</span></div>
         </div>
-      </div>`),
+      </div>`)
     )
 
     list = new List('parse-list', {
@@ -33,26 +32,26 @@ describe('Button', function () {
 
   describe('Sort', () => {
     it('should trigger sortStart', async () => {
-      return new Promise(async (resolve) => {
+      return new Promise((resolve) => {
         list.on('sortStart', () => {
           resolve()
         })
         const sortBtn = document.querySelector('#sort-name')
-        await userEvent.click(sortBtn)
+        userEvent.click(sortBtn)
       })
     })
     it('should trigger sortComplete', async () => {
-      return new Promise(async (resolve) => {
+      return new Promise((resolve) => {
         list.on('sortComplete', () => {
           resolve()
         })
         const sortBtn = document.querySelector('#sort-name')
-        await userEvent.click(sortBtn)
+        userEvent.click(sortBtn)
       })
     })
 
     it('should switch sorting order when clicking multiple times', () => {
-      return new Promise(async (resolve) => {
+      return new Promise((resolve) => {
         const sortBtn = document.querySelector('#sort-name')
         var sortRun = 0
         list.on('sortComplete', () => {
@@ -82,7 +81,7 @@ describe('Button', function () {
     })
 
     it('should sort with predefined order', () => {
-      return new Promise(async (resolve) => {
+      return new Promise((resolve) => {
         const sortBtn = document.querySelector('#sort-name')
         const sortBtnAsc = document.querySelector('#sort-name-asc')
         const sortBtnDesc = document.querySelector('#sort-name-desc')
@@ -150,7 +149,7 @@ describe('Button', function () {
     })
 
     it('buttons should change class when sorting programmatically', () => {
-      return new Promise(async (resolve) => {
+      return new Promise((resolve) => {
         const sortBtn = document.querySelector('#sort-name')
         const sortBtnAsc = document.querySelector('#sort-name-asc')
         const sortBtnDesc = document.querySelector('#sort-name-desc')
@@ -170,22 +169,22 @@ describe('Button', function () {
 
   describe('Search', () => {
     it('should trigger searchStart', async () => {
-      return new Promise(async (resolve) => {
+      return new Promise((resolve) => {
         list.on('searchStart', () => {
           resolve()
         })
 
         const input = screen.getByRole('textbox')
-        await userEvent.type(input, 'jon')
+        userEvent.type(input, 'jon')
       })
     })
     it('should trigger searchComplete', async () => {
-      return new Promise(async (resolve) => {
+      return new Promise((resolve) => {
         list.on('searchComplete', () => {
           resolve()
         })
         const input = screen.getByRole('textbox')
-        await userEvent.type(input, 'jon')
+        userEvent.type(input, 'jon')
       })
     })
   })

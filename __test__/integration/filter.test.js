@@ -65,7 +65,7 @@ describe('Filter', function () {
     describe('Specific items', function () {
       beforeEach(function () {
         list.show(1, 2)
-        var result = list.filter(function (item) {
+        list.filter(function (item) {
           return item.values().born > 1985
         })
       })

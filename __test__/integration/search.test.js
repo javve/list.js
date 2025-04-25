@@ -138,7 +138,7 @@ describe('Search', function () {
   })
 
   describe('Custom search function', function () {
-    var customSearchFunction = function (searchString, columns) {
+    var customSearchFunction = function () {
       for (var k = 0, kl = list.items.length; k < kl; k++) {
         if (list.items[k].values().born > 1985) {
           list.items[k].found = true

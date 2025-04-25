@@ -43,10 +43,15 @@ var stringToDOMElement = function (itemHTML) {
 
 var templater = {}
 
-templater.getTemplate = function ({ valueNames, parentEl, template }) {
+templater.getTemplate = function (options) {
+  options = options || {}
+  var valueNames = options.valueNames
+  var parentEl = options.parentEl
+  var template = options.template
+
   if (typeof template === 'function') {
     return {
-      valueNames,
+      valueNames: valueNames,
       type: 'dynamic',
       render: function (values) {
         var item = template(values)
@@ -78,7 +83,7 @@ templater.getTemplate = function ({ valueNames, parentEl, template }) {
   itemSource = createCleanTemplateItem(itemSource, valueNames)
 
   return {
-    valueNames,
+    valueNames: valueNames,
     render: function (values) {
       var el = itemSource.cloneNode(true)
       templater.set(el, values, valueNames)
@@ -89,6 +94,7 @@ templater.getTemplate = function ({ valueNames, parentEl, template }) {
 
 templater.get = function (el, valueNames) {
   var values = {}
+  var elm
   for (var i = 0, il = valueNames.length; i < il; i++) {
     var valueName = valueNames[i]
     if (valueName.data) {
@@ -96,10 +102,10 @@ templater.get = function (el, valueNames) {
         values[valueName.data[j]] = getAttribute(el, 'data-' + valueName.data[j])
       }
     } else if (valueName.attr && valueName.name) {
-      var elm = getByClass(el, valueName.name, true)
+      elm = getByClass(el, valueName.name, true)
       values[valueName.name] = elm ? getAttribute(elm, valueName.attr) : ''
     } else {
-      var elm = getByClass(el, valueName, true)
+      elm = getByClass(el, valueName, true)
       values[valueName] = elm ? elm.innerHTML : ''
     }
   }
@@ -108,7 +114,7 @@ templater.get = function (el, valueNames) {
 
 templater.set = function (el, values, valueNames) {
   for (var v in values) {
-    if (values.hasOwnProperty(v)) {
+    if (values[v]) {
       valueNamesUtils.set(el, v, values[v], valueNames)
     }
   }

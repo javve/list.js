@@ -10,7 +10,11 @@ var naturalSort = require('string-natural-compare'),
   templater = require('./templater'),
   Item = require('./item'),
   sort = require('./sort'),
-  { addSortListeners, clearSortOrder, setSortOrder } = require('./sort-buttons')
+  sortButtons = require('./sort-buttons')
+
+var addSortListeners = sortButtons.addSortListeners
+var clearSortOrder = sortButtons.clearSortOrder
+var setSortOrder = sortButtons.setSortOrder
 
 module.exports = function (id, options, values) {
   var self = this,
@@ -74,7 +78,7 @@ module.exports = function (id, options, values) {
     },
     handlers: function () {
       for (var handler in self.handlers) {
-        if (self[handler] && self.handlers.hasOwnProperty(handler)) {
+        if (self[handler] && self.handlers[handler]) {
           self.on(handler, self[handler])
         }
       }
@@ -99,21 +103,23 @@ module.exports = function (id, options, values) {
       }
     },
     sort: function () {
-      const sortButtons = self.utils.getByClass(self.listContainer, self.sortClass)
-      const { items, sortFunction, alphabet } = self
-      const before = function () {
+      var sortButtons = self.utils.getByClass(self.listContainer, self.sortClass)
+      var items = self.items
+      var sortFunction = self.sortFunction
+      var alphabet = self.alphabet
+      var before = function () {
         self.trigger('sortStart')
       }
-      const after = function () {
+      var after = function () {
         self.update()
         self.trigger('sortComplete')
       }
       addSortListeners(sortButtons, {
-        items,
-        sortFunction,
-        alphabet,
-        before,
-        after,
+        items: items,
+        sortFunction: sortFunction,
+        alphabet: alphabet,
+        before: before,
+        after: after,
       })
 
       self.handlers.sortStart = self.handlers.sortStart || []
@@ -124,7 +130,8 @@ module.exports = function (id, options, values) {
       self.on('filterStart', function () {
         clearSortOrder(sortButtons)
       })
-      self.sort = function (valueName, options = {}) {
+      self.sort = function (valueName, options) {
+        options = options || {}
         before()
         setSortOrder(sortButtons, valueName, options.order)
         options.alphabet = options.alphabet || self.alphabet
@@ -192,7 +199,7 @@ module.exports = function (id, options, values) {
    * Loops through the list and removes objects where
    * property "valuename" === value
    */
-  this.remove = function (valueName, value, options) {
+  this.remove = function (valueName, value) {
     var found = 0
     for (var i = 0, il = self.items.length; i < il; i++) {
       if (self.items[i].values()[valueName] == value) {

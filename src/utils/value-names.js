@@ -1,6 +1,6 @@
 var getByClass = require('./get-by-class')
 
-const getDefinitionFromName = (name, valueNames) => {
+var getDefinitionFromName = function (name, valueNames) {
   for (var i = 0, il = valueNames.length; i < il; i++) {
     var valueName = valueNames[i]
     if (valueName.data) {
@@ -17,7 +17,7 @@ const getDefinitionFromName = (name, valueNames) => {
     }
   }
 }
-const set = (el, name, value, valueNames) => {
+var set = function (el, name, value, valueNames) {
   var elm = undefined,
     valueName = getDefinitionFromName(name, valueNames)
   if (!valueName) return
@@ -36,4 +36,4 @@ const set = (el, name, value, valueNames) => {
   }
 }
 
-module.exports = { getDefinitionFromName, set }
+module.exports = { getDefinitionFromName: getDefinitionFromName, set: set }

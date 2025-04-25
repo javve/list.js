@@ -13,7 +13,7 @@ module.exports = function (list) {
     return items
   }
 
-  var parse = function (itemElements, valueNames) {
+  var parse = function (itemElements) {
     for (var i = 0, il = itemElements.length; i < il; i++) {
       var values = list.templater.get(itemElements[i], list.valueNames)
       list.items.push(new Item(values, { element: itemElements[i], template: list.template }))

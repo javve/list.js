@@ -1,6 +1,6 @@
-const templater = require('./templater')
+var templater = require('./templater')
 
-module.exports = function (initValues, { element, template } = {}) {
+module.exports = function (initValues, options) {
   var item = this
 
   this._values = {}
@@ -8,7 +8,10 @@ module.exports = function (initValues, { element, template } = {}) {
   this.found = false
   this.filtered = false
 
-  var init = function (values, { element, template } = {}) {
+  var init = function (values, options) {
+    options = options || {}
+    var element = options.element
+    var template = options.template
     if (element) item.elm = element
     if (!template) throw new Error('missing_item_template')
     item.template = template
@@ -28,7 +31,9 @@ module.exports = function (initValues, { element, template } = {}) {
     }
   }
 
-  this.matching = function ({ searched, filtered }) {
+  this.matching = function (options) {
+    var searched = options.searched
+    var filtered = options.filtered
     return (
       (filtered && searched && item.found && item.filtered) ||
       (filtered && !searched && item.filtered) ||
@@ -37,5 +42,5 @@ module.exports = function (initValues, { element, template } = {}) {
     )
   }
 
-  init(initValues, { element, template })
+  init(initValues, options)
 }

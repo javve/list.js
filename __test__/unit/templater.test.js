@@ -69,7 +69,7 @@ describe('Templater', () => {
           timestamp: '1337',
           foo: 'hej',
         },
-        template,
+        template
       )
       expect(itemEl.outerHTML).toEqual(
         '<div data-id="4">' +
@@ -77,7 +77,7 @@ describe('Templater', () => {
           '<span class="born timestamp" data-timestamp="1337">1950</span>' +
           '<img class="image" src="usage/rey.jpeg">' +
           '<input class="foo" value="hej">' +
-          '</div>',
+          '</div>'
       )
     })
   })
@@ -90,7 +90,6 @@ describe('Templater', () => {
       `)[0]
       document.body.appendChild(listEl)
       const item = listEl.querySelector('div')
-      const valueNames = ['name']
       expect(listEl.querySelector('div')).not.toEqual(null)
       templater.remove(item, listEl)
       expect(listEl.querySelector('div')).toEqual(null)
@@ -128,7 +127,7 @@ describe('Templater', () => {
           '<span class="born timestamp" data-timestamp="54321">1986</span>' +
           '<img class="image" src="usage/boba.jpeg">' +
           '<input class="foo" value="Bar">' +
-          '</div>',
+          '</div>'
       )[0]
       const valueNames = [
         'name',
@@ -150,7 +149,7 @@ describe('Templater', () => {
           timestamp: '1337',
           foo: 'hej',
         },
-        valueNames,
+        valueNames
       )
       expect(itemEl.outerHTML).toEqual(
         '<div data-id="4">' +
@@ -158,7 +157,7 @@ describe('Templater', () => {
           '<span class="born timestamp" data-timestamp="1337">1950</span>' +
           '<img class="image" src="usage/rey.jpeg">' +
           '<input class="foo" value="hej">' +
-          '</div>',
+          '</div>'
       )
     })
   })
@@ -170,7 +169,7 @@ describe('Templater', () => {
           '<span class="born timestamp" data-timestamp="54321">1986</span>' +
           '<img class="image" src="usage/boba.jpeg">' +
           '<input class="foo" value="Bar">' +
-          '</div>',
+          '</div>'
       )[0]
       const valueNames = [
         'name',

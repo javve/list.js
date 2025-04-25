@@ -163,14 +163,14 @@ describe('sort listeners', () => {
         'Unn',
       ])
     })
-    it('should run before and after callbacks', (done) => {
+    it('should run before and after callbacks', () => {
       const buttonAge = $(`<button data-sort="age">`)[0]
       const elements = [buttonAge]
       let beforeHasRun = false
       const before = () => {
         beforeHasRun = true
       }
-      return new Promise(async (resolve) => {
+      return new Promise((resolve) => {
         const after = () => {
           expect(beforeHasRun).toEqual(true)
           resolve()

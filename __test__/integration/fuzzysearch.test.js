@@ -21,7 +21,7 @@ function fireKeyup(el) {
 }
 
 describe('Fuzzy Search', function () {
-  var list, itemHTML, pagination
+  var list, itemHTML
 
   beforeEach(function () {
     itemHTML = fixtureFuzzysearch.list(['name', 'born'])

@@ -5,3 +5,4 @@ node_modules/
 .gitignore
 .eslintrc.js
 docs/
+__test__/usage

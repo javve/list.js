@@ -5,14 +5,20 @@ module.exports = {
     node: true,
   },
   parserOptions: {
-    ecmaVersion: 5,
+    ecmaVersion: 2022,
+    sourceType: 'module',
   },
   extends: ['eslint:recommended', 'prettier'],
-  plugins: [],
   overrides: [
     {
       files: ['__test__/**/*.test.js'],
-      // valfritt: kan lägga till globals om du använder t.ex. describe, it utan import
+      env: {
+        es6: true,
+      },
+      parserOptions: {
+        ecmaVersion: 2022,
+        sourceType: 'module',
+      },
       globals: {
         describe: 'readonly',
         it: 'readonly',
@@ -21,18 +27,19 @@ module.exports = {
         afterAll: 'readonly',
         afterEach: 'readonly',
         beforeEach: 'readonly',
-        vi: 'readonly', // om du använder Vitests `vi.fn()` osv
+        xit: 'readonly',
+        vi: 'readonly',
       },
     },
     {
       files: ['src/**/*.js'],
-      rules: {
-        'no-var': 'off',
-        'prefer-const': 'off',
+      parserOptions: {
+        ecmaVersion: 5,
+        sourceType: 'script',
       },
+      plugins: ['es'],
+      extends: ['plugin:es/restrict-to-es5'],
+      rules: {},
     },
   ],
-  rules: {
-    // Egna regler (lägg till/ändra här vid behov)
-  },
 }
