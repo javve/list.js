@@ -28,9 +28,8 @@ jobs:
         run: npm test -- --coverage
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage/coverage-final.json
-          name: codecov-umbrella
-          fail_ci_if_error: true
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: vitest-coverage
