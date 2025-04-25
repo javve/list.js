@@ -1,6 +1,6 @@
 const $ = require('jquery'),
   fixturePagination = require('./fixtures-pagination'),
-  List = require('../src/index')
+  List = require('../../src/index')
 
 describe('Pagination', function () {
   describe('Default settings, innerWindow: 2, outerWindow: 0, left: 0, right: 0', function () {

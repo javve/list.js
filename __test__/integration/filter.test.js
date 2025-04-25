@@ -1,4 +1,5 @@
 const fixture = require('./fixtures')
+const isVisible = require('../utils/is-visible')
 
 describe('Filter', function () {
   var list, jonny, martina, angelica, sebastian, imma, hasse
@@ -68,34 +69,34 @@ describe('Filter', function () {
         })
       })
       it('should match jonny', function () {
-        expect(jonny.matching()).toBe(true)
+        expect(jonny.matching(list)).toBe(true)
         expect(jonny.filtered).toBe(true)
-        expect(jonny.visible()).toBe(true)
+        expect(isVisible(jonny.elm, list.list)).toBe(true)
       })
       it('should match martina', function () {
-        expect(martina.matching()).toBe(true)
+        expect(martina.matching(list)).toBe(true)
         expect(martina.filtered).toBe(true)
-        expect(martina.visible()).toBe(true)
+        expect(isVisible(martina.elm, list.list)).toBe(true)
       })
       it('should match but not show angelica', function () {
-        expect(angelica.matching()).toBe(true)
+        expect(angelica.matching(list)).toBe(true)
         expect(angelica.filtered).toBe(true)
-        expect(angelica.visible()).toBe(false)
+        expect(isVisible(angelica.elm, list.list)).toBe(false)
       })
       it('should match but not show sebastian', function () {
-        expect(sebastian.matching()).toBe(true)
+        expect(sebastian.matching(list)).toBe(true)
         expect(sebastian.filtered).toBe(true)
-        expect(sebastian.visible()).toBe(false)
+        expect(isVisible(sebastian.elm, list.list)).toBe(false)
       })
       it('should not match imma', function () {
-        expect(imma.matching()).toBe(false)
+        expect(imma.matching(list)).toBe(false)
         expect(imma.filtered).toBe(false)
-        expect(imma.visible()).toBe(false)
+        expect(isVisible(imma.elm, list.list)).toBe(false)
       })
       it('should not match hasse', function () {
-        expect(hasse.matching()).toBe(false)
+        expect(hasse.matching(list)).toBe(false)
         expect(hasse.filtered).toBe(false)
-        expect(hasse.visible()).toBe(false)
+        expect(isVisible(hasse.elm, list.list)).toBe(false)
       })
     })
   })

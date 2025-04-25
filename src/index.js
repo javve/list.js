@@ -6,12 +6,15 @@ var naturalSort = require('string-natural-compare'),
   toString = require('./utils/to-string'),
   classes = require('./utils/classes'),
   getAttribute = require('./utils/get-attribute'),
-  toArray = require('./utils/to-array')
+  toArray = require('./utils/to-array'),
+  templater = require('./templater'),
+  Item = require('./item'),
+  sort = require('./sort'),
+  { addSortListeners, clearSortOrder, setSortOrder } = require('./sort-buttons')
 
 module.exports = function (id, options, values) {
   var self = this,
     init,
-    Item = require('./item')(self),
     addAsync = require('./add-async')(self),
     initPagination = require('./pagination')(self)
 
@@ -52,15 +55,20 @@ module.exports = function (id, options, values) {
       self.list = getByClass(self.listContainer, self.listClass, true)
 
       self.parse = require('./parse')(self)
-      self.templater = require('./templater')(self)
+      self.templater = templater
+      self.template = self.templater.getTemplate({
+        parentEl: self.list,
+        valueNames: self.valueNames,
+        template: self.item,
+      })
       self.search = require('./search')(self)
       self.filter = require('./filter')(self)
-      self.sort = require('./sort')(self)
       self.fuzzySearch = require('./fuzzy-search')(self, options.fuzzySearch)
 
       this.handlers()
       this.items()
       this.pagination()
+      this.sort()
 
       self.update()
     },
@@ -88,6 +96,43 @@ module.exports = function (id, options, values) {
         for (var i = 0, il = options.pagination.length; i < il; i++) {
           initPagination(options.pagination[i])
         }
+      }
+    },
+    sort: function () {
+      const sortButtons = self.utils.getByClass(self.listContainer, self.sortClass)
+      const { items, sortFunction, alphabet } = self
+      const before = function () {
+        self.trigger('sortStart')
+      }
+      const after = function () {
+        self.update()
+        self.trigger('sortComplete')
+      }
+      addSortListeners(sortButtons, {
+        items,
+        sortFunction,
+        alphabet,
+        before,
+        after,
+      })
+
+      self.handlers.sortStart = self.handlers.sortStart || []
+      self.handlers.sortComplete = self.handlers.sortComplete || []
+      self.on('searchStart', function () {
+        clearSortOrder(sortButtons)
+      })
+      self.on('filterStart', function () {
+        clearSortOrder(sortButtons)
+      })
+      self.sort = function (valueName, options = {}) {
+        before()
+        setSortOrder(sortButtons, valueName, options.order)
+        options.alphabet = options.alphabet || self.alphabet
+        options.sortFunction = options.sortFunction || self.sortFunction
+        options.valueName = valueName
+        sort(items, valueName, options)
+        after()
+        return items
       }
     },
   }
@@ -123,15 +168,12 @@ module.exports = function (id, options, values) {
       addAsync(values.slice(0), callback)
       return
     }
-    var added = [],
-      notCreate = false
+    var added = []
     if (values[0] === undefined) {
       values = [values]
     }
     for (var i = 0, il = values.length; i < il; i++) {
-      var item = null
-      notCreate = self.items.length > self.page ? true : false
-      item = new Item(values[i], undefined, notCreate)
+      var item = new Item(values[i], { template: self.template })
       self.items.push(item)
       added.push(item)
     }
@@ -154,7 +196,7 @@ module.exports = function (id, options, values) {
     var found = 0
     for (var i = 0, il = self.items.length; i < il; i++) {
       if (self.items[i].values()[valueName] == value) {
-        self.templater.remove(self.items[i], options)
+        self.templater.remove(self.items[i].elm, self.list)
         self.items.splice(i, 1)
         il--
         i--
@@ -190,7 +232,7 @@ module.exports = function (id, options, values) {
    * Removes all items from the list
    */
   this.clear = function () {
-    self.templater.clear()
+    self.templater.clear(self.list)
     self.items = []
     return self
   }
@@ -242,17 +284,20 @@ module.exports = function (id, options, values) {
 
     self.visibleItems = []
     self.matchingItems = []
-    self.templater.clear()
+    self.templater.clear(self.list)
     for (var i = 0; i < il; i++) {
-      if (is[i].matching() && self.matchingItems.length + 1 >= self.i && self.visibleItems.length < self.page) {
-        is[i].show()
+      if (is[i].matching(self) && self.matchingItems.length + 1 >= self.i && self.visibleItems.length < self.page) {
+        if (!is[i].elm) {
+          is[i].elm = templater.create(is[i].values(), self.template)
+        }
+        templater.show(is[i].elm, self.list)
         self.visibleItems.push(is[i])
         self.matchingItems.push(is[i])
-      } else if (is[i].matching()) {
+      } else if (is[i].matching(self)) {
         self.matchingItems.push(is[i])
-        is[i].hide()
+        templater.remove(is[i].elm, self.list)
       } else {
-        is[i].hide()
+        templater.remove(is[i].elm, self.list)
       }
     }
     self.trigger('updated')

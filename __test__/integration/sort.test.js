@@ -286,24 +286,20 @@ describe('Sort', function () {
       expect(list.items[11].values().val).toBe('z')
     })
 
-    it('should handle not longer (since 1.4.0) space and zero the same for desc and asc', function () {
+    it('should handle space and zero the same for desc and asc  (worked 1.4.0 - 2.3.0 then string-natural-compare was updated)', function () {
       list.clear()
       list.add({ val: '' })
       list.add({ val: '0' })
-      list.add({ val: 0 })
 
       list.sort('val', { order: 'asc' })
       expect(list.items[0].values().val).toBe('')
       expect(list.items[1].values().val).toBe('0')
-      expect(list.items[2].values().val).toBe(0)
       list.sort('val', { order: 'desc' })
-      expect(list.items[0].values().val).toBe('0')
-      expect(list.items[1].values().val).toBe(0)
-      expect(list.items[2].values().val).toBe('')
+      expect(list.items[0].values().val).toBe('')
+      expect(list.items[1].values().val).toBe('0')
       list.sort('val', { order: 'asc' })
       expect(list.items[0].values().val).toBe('')
       expect(list.items[1].values().val).toBe('0')
-      expect(list.items[2].values().val).toBe(0)
     })
   })
 

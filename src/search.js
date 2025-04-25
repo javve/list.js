@@ -4,7 +4,7 @@ module.exports = function (list) {
   var prepare = {
     resetList: function () {
       list.i = 1
-      list.templater.clear()
+      list.templater.clear(list.list)
       customSearch = undefined
     },
     setOptions: function (args) {
