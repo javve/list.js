@@ -1,9 +1,14 @@
 # Changelog
 
-### 2.2.0
+### 2.3.1 - 2021-01-17
+
+- - **[Improvement]** #708 Support restored for Node 6, 8, 10 and 12.
+
+### 2.3.0 - 2020-11-25
 
 - **[Feature]** #682 Multiple word search
 - **[Feature]** #683 Debounced keyup handler in search
+- **[Improvement]** #679 Faster search
 - **[Website]** #684 Add more documentation for automagical search and sort elements
 
 ### 2.1.0 - 2020-11-21
