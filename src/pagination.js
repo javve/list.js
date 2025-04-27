@@ -96,6 +96,7 @@ module.exports = function (list) {
         page = list.utils.getAttribute(target, 'data-page'),
         i = list.utils.getAttribute(target, 'data-i')
       if (i) {
+        e.preventDefault();
         list.show((i - 1) * page + 1, page)
       }
     })
