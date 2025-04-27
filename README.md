@@ -45,7 +45,7 @@ bower install list.js
 ##### Via CDNJS
 
 ```html
-<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
 ```
 
 ##### Via Direct Download
