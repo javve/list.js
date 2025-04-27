@@ -1,6 +1,6 @@
-const $ = require('jquery'),
-  fixturePagination = require('./fixtures-pagination'),
-  List = require('../../src/index')
+import $ from 'jquery'
+import fixturePagination from './fixtures-pagination'
+import List from '../../src/index'
 
 describe('Pagination', function () {
   describe('Default settings, innerWindow: 2, outerWindow: 0, left: 0, right: 0', function () {
@@ -16,7 +16,7 @@ describe('Pagination', function () {
           page: 2,
           pagination: true,
         },
-        fixturePagination.all
+        fixturePagination.all,
       )
 
       pagination = $('.pagination')
@@ -120,7 +120,7 @@ describe('Pagination', function () {
             outerWindow: 1,
           },
         },
-        fixturePagination.all
+        fixturePagination.all,
       )
 
       pagination = $('.pagination')
@@ -202,7 +202,7 @@ describe('Pagination', function () {
             right: 1,
           },
         },
-        fixturePagination.all
+        fixturePagination.all,
       )
 
       pagination = $('.pagination')
@@ -283,7 +283,7 @@ describe('Pagination', function () {
             item: '<button><span class=page></span></button>',
           },
         },
-        fixturePagination.all
+        fixturePagination.all,
       )
 
       pagination = $('.pagination')

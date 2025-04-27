@@ -1,5 +1,5 @@
-const fixture = require('./fixtures')
-const isVisible = require('../utils/is-visible')
+import fixture from './fixtures'
+import isVisible from '../utils/is-visible'
 
 describe('Show', function () {
   var list, a, b, c, d, e, f
@@ -14,7 +14,7 @@ describe('Show', function () {
         { id: '4', id2: 'b' },
         { id: '5', id2: 'bc' },
         { id: '6', id2: 'bc' },
-      ]
+      ],
     )
     a = list.get('id', '1')[0]
     b = list.get('id', '2')[0]

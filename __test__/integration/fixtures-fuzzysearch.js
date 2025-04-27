@@ -1,4 +1,4 @@
-const $ = require('jquery')
+import $ from 'jquery'
 
 var fixtureFuzzysearch = {
   list: function (valueNames) {

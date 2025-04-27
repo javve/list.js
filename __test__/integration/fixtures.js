@@ -1,5 +1,5 @@
-const $ = require('jquery'),
-  List = require('../../src/index')
+import $ from 'jquery'
+import List from '../../src/index'
 
 var fixture = {
   list: function (valueNames, items) {
@@ -22,7 +22,7 @@ var fixture = {
         valueNames: valueNames,
         item: item,
       },
-      items
+      items,
     )
   },
   removeList: function () {

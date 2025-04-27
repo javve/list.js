@@ -1,4 +1,4 @@
-const $ = require('jquery')
+import $ from 'jquery'
 
 var fixturePagination = {
   list: function (valueNames) {

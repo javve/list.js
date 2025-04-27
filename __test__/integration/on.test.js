@@ -1,4 +1,4 @@
-const fixture = require('./fixtures')
+import fixture from './fixtures'
 
 describe('On', function () {
   var list

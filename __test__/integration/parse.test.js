@@ -1,5 +1,5 @@
-const $ = require('jquery'),
-  List = require('../../src/index')
+import $ from 'jquery'
+import List from '../../src/index'
 
 describe('Parse', function () {
   describe('Parse class', function () {
@@ -12,8 +12,8 @@ describe('Parse', function () {
           <div><span class="name">Jonny</span><span class="born">1986</span></div>\
           <div><span class="name">Jocke</span><span class="born">1985</span></div>\
         </div>\
-      </div>'
-        )
+      </div>',
+        ),
       )
 
       list = new List('parse-list', {
@@ -73,8 +73,8 @@ describe('Parse', function () {
             <input class="foo child" value="Car">\
           </div>\
         </div>\
-      </div>'
-        )
+      </div>',
+        ),
       )
 
       list = new List('parse-list', {

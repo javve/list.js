@@ -1,5 +1,5 @@
-const $ = require('jquery'),
-  fixture = require('./fixtures')
+import $ from 'jquery'
+import fixture from './fixtures'
 
 describe('ReIndex', function () {
   var list

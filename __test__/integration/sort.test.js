@@ -1,5 +1,5 @@
-const $ = require('jquery'),
-  fixture = require('./fixtures')
+import $ from 'jquery'
+import fixture from './fixtures'
 
 describe('Sort', function () {
   var list, i1, i2, i3, i4, i5, i6

@@ -1,6 +1,6 @@
-const $ = require('jquery'),
-  fixture = require('./fixtures'),
-  isVisible = require('../utils/is-visible')
+import $ from 'jquery'
+import fixture from './fixtures'
+import isVisible from '../utils/is-visible'
 
 describe('Item', function () {
   var list, item

@@ -1,4 +1,4 @@
-const fixture = require('./fixtures')
+import fixture from './fixtures'
 
 describe('Search', function () {
   var list, jonny, martina, angelica, sebastian, imma, hasse
