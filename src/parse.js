@@ -1,6 +1,6 @@
-module.exports = function (list) {
-  var Item = require('./item')(list)
+var Item = require('./item')
 
+module.exports = function (list) {
   var getChildren = function (parent) {
     var nodes = parent.childNodes,
       items = []
@@ -13,9 +13,10 @@ module.exports = function (list) {
     return items
   }
 
-  var parse = function (itemElements, valueNames) {
+  var parse = function (itemElements) {
     for (var i = 0, il = itemElements.length; i < il; i++) {
-      list.items.push(new Item(valueNames, itemElements[i]))
+      var values = list.templater.get(itemElements[i], list.valueNames)
+      list.items.push(new Item(values, { element: itemElements[i], template: list.template }))
     }
   }
   var parseAsync = function (itemElements, valueNames) {

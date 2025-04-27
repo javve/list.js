@@ -36,12 +36,6 @@ Really simple and easy to use!
 npm install list.js
 ```
 
-##### Via Bower
-
-```
-bower install list.js
-```
-
 ##### Via CDNJS
 
 ```html
@@ -84,11 +78,11 @@ https://stackoverflow.com/questions/tagged/list.js
 
 ### Creator
 
-|                                                                                          | Jonny Strömberg [@javve](https://twitter.com/javve)                                                                                                                                                                                                          |
+|                                                                                          | Jonny Strömberg [@javve](https://x.com/javve)                                                                                                                                                                                                                |
 | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | ![Image of Jonny](http://1.gravatar.com/avatar/9f8130715cb4c452f1294eafa1b36290?size=80) | I hope you like the lib. I’ve put a lot of hours into it! Feel free to follow me on [Twitter](http://twitter.com/javve) for news and [donate a coffee](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M7ZGHV75VSD2E) for good karma ;) |
 
 ## License (MIT)
 
-Copyright (c) 2011-2020 Jonny Strömberg <[jonny.stromberg@gmail.com](mailto:jonny.stromberg@gmail.com)>
+Copyright (c) 2011-2025 Jonny Strömberg <[jonny.stromberg@gmail.com](mailto:jonny.stromberg@gmail.com)>
 [javve.com](https://javve.com)

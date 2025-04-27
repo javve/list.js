@@ -1,5 +1,4 @@
-var classes = require('./utils/classes'),
-  events = require('./utils/events'),
+var events = require('./utils/events'),
   extend = require('./utils/extend'),
   toString = require('./utils/to-string'),
   getByClass = require('./utils/get-by-class'),
@@ -44,7 +43,7 @@ module.exports = function (list, options) {
       item.found = found
     },
     values: function (values, value, searchArgument) {
-      if (values.hasOwnProperty(value)) {
+      if (values[value]) {
         var text = toString(values[value]).toLowerCase()
 
         if (fuzzy(text, searchArgument, options)) {

@@ -1,0 +1,8 @@
+dist/
+node_modules/
+.circleci/
+.vscode/
+.gitignore
+.eslintrc.js
+docs/
+__test__/usage

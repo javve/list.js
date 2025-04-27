@@ -23,29 +23,43 @@
     "url": "https://github.com/javve/list.js/issues"
   },
   "dependencies": {
-    "string-natural-compare": "^2.0.2"
+    "string-natural-compare": "^2.0.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.7",
-    "@babel/preset-env": "^7.12.7",
-    "babel-loader": "^8.2.1",
-    "jest": "^26.6.3",
-    "jquery": "^3.5.1",
-    "prettier": "^2.2.0",
-    "webpack": "^5.6.0",
-    "webpack-cli": "^4.2.0"
+    "@rollup/plugin-terser": "^0.4.4",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@vitest/coverage-v8": "^3.1.2",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-es": "^4.1.0",
+    "jsdom": "^26.1.0",
+    "prettier": "^3.5.3",
+    "vite": "^6.3.2",
+    "vitest": "^3.1.2"
   },
-  "main": "src/index",
+  "main": "dist/list.cjs.js",
+  "module": "dist/list.esm.js",
+  "unpkg": "dist/list.js",
+  "browser": "dist/list.js",
+  "exports": {
+    "import": "./dist/list.esm.js",
+    "require": "./dist/list.cjs.js"
+  },
   "engines": {
-    "node": "^6.0 || ^8.0 || ^10.0 || ^12.0 || >=14"
+    "node": ">=6.0.0"
   },
   "scripts": {
-    "test": "npx jest",
-    "build": "npx webpack",
-    "watch": "npx webpack --watch",
-    "watch-test": "npx jest --watch",
-    "preversion": "npm test && npm run build && cp dist/list.min.js docs/assets/javascripts/list.min.js && cp dist/list.min.js.map docs/assets/javascripts/list.min.js.map && git add dist && git add docs/assets/javascripts",
-    "postversion": "git push --follow-tags origin master && cp package.json docs/_data/pkg.json && git add docs/_data/pkg.json && git commit -m \"pkg.json update\""
+    "test": "npm run lint && npm run test:unit",
+    "test:unit": "vitest",
+    "test:unit:watch": "vitest --watch",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
+    "build": "vite build",
+    "watch": "vite build --watch",
+    "preversion": "npm test && npm run build",
+    "postversion": "git push --follow-tags origin master"
   },
   "npmName": "list.js",
   "npmFileMap": [
@@ -56,14 +70,5 @@
         "*.js.map"
       ]
     }
-  ],
-  "jest": {
-    "coverageDirectory": "./coverage/",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "src/*.js",
-      "src/utils/*.js"
-    ],
-    "testURL": "http://localhost/"
-  }
+  ]
 }

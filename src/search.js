@@ -1,10 +1,10 @@
 module.exports = function (list) {
-  var item, text, columns, searchString, customSearch
+  var columns, searchString, customSearch
 
   var prepare = {
     resetList: function () {
       list.i = 1
-      list.templater.clear()
+      list.templater.clear(list.list)
       customSearch = undefined
     },
     setOptions: function (args) {
@@ -62,7 +62,7 @@ module.exports = function (list) {
           for (var j = 0, jl = columns.length; j < jl; j++) {
             var values = item.values(),
               column = columns[j]
-            if (values.hasOwnProperty(column) && values[column] !== undefined && values[column] !== null) {
+            if (values[column] && values[column] !== undefined && values[column] !== null) {
               var text = typeof values[column] !== 'string' ? values[column].toString() : values[column]
               if (text.toLowerCase().indexOf(words[i]) !== -1) {
                 // word found, so no need to check it against any other columns

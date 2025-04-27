@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - master
+      - 'master'
   pull_request:
     branches:
       - '**'
@@ -18,11 +18,22 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '14.15.1'
+          node-version: 22
           cache: 'npm'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm test
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: vitest-coverage
