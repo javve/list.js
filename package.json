@@ -58,8 +58,8 @@
     "lint:fix": "eslint . --ext .js --fix",
     "build": "vite build",
     "watch": "vite build --watch",
-    "preversion": "npm test && npm run build && cp dist/list.min.js docs/assets/javascripts/list.min.js && cp dist/list.min.js.map docs/assets/javascripts/list.min.js.map && git add dist && git add docs/assets/javascripts",
-    "postversion": "git push --follow-tags origin master && cp package.json docs/_data/pkg.json && git add docs/_data/pkg.json && git commit -m \"pkg.json update\""
+    "preversion": "npm test && npm run build",
+    "postversion": "git push --follow-tags origin master"
   },
   "npmName": "list.js",
   "npmFileMap": [
