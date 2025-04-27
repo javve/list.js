@@ -886,7 +886,6 @@ module.exports = function (list) {
     },
     getOrder: function getOrder(btn) {
       var predefinedOrder = list.utils.getAttribute(btn, 'data-order');
-
       if (predefinedOrder == 'asc' || predefinedOrder == 'desc') {
         return predefinedOrder;
       } else if (list.utils.classes(btn).has('desc')) {
@@ -894,8 +893,13 @@ module.exports = function (list) {
       } else if (list.utils.classes(btn).has('asc')) {
         return 'desc';
       } else {
-        return 'asc';
-      }
+        var defaultOrder = list.utils.getAttribute(btn, 'data-default-order');
+        if (defaultOrder == "asc" || defaultOrder == "desc") {
+          return defaultOrder;
+        } else {
+          return "asc";
+        }
+      } 
     },
     getInSensitive: function getInSensitive(btn, options) {
       var insensitive = list.utils.getAttribute(btn, 'data-insensitive');

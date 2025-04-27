@@ -7,17 +7,22 @@ module.exports = function (list) {
         list.utils.classes(buttons.els[i]).remove('desc')
       }
     },
-    getOrder: function (btn) {
-      var predefinedOrder = list.utils.getAttribute(btn, 'data-order')
+    getOrder: function getOrder(btn) {
+      var predefinedOrder = list.utils.getAttribute(btn, 'data-order');
       if (predefinedOrder == 'asc' || predefinedOrder == 'desc') {
-        return predefinedOrder
+        return predefinedOrder;
       } else if (list.utils.classes(btn).has('desc')) {
-        return 'asc'
+        return 'asc';
       } else if (list.utils.classes(btn).has('asc')) {
-        return 'desc'
+        return 'desc';
       } else {
-        return 'asc'
-      }
+        var defaultOrder = list.utils.getAttribute(btn, 'data-default-order');
+        if (defaultOrder == "asc" || defaultOrder == "desc") {
+          return defaultOrder;
+        } else {
+          return "asc";
+        }
+      } 
     },
     getInSensitive: function (btn, options) {
       var insensitive = list.utils.getAttribute(btn, 'data-insensitive')
