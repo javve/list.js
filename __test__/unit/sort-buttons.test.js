@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import naturalSort from 'string-natural-compare'
 
 import Item from '../../src/item'
@@ -15,44 +14,52 @@ import {
 describe('sort listeners', () => {
   describe('getInSensitive', () => {
     it('should be false if data-insensitive is false', () => {
-      const button = $(`<button data-insensitive="false">`)[0]
+      const button = document.createElement('button')
+      button.dataset.insensitive = 'false'
       expect(getInSensitive(button)).toEqual(false)
     })
     it('should be true if data-insensitive is trye', () => {
-      const button = $(`<button data-insensitive="true">`)[0]
+      const button = document.createElement('button')
+      button.dataset.insensitive = 'true'
       expect(getInSensitive(button)).toEqual(true)
     })
     it('should be true by default', () => {
-      const button = $(`<button>`)[0]
+      const button = document.createElement('button')
       expect(getInSensitive(button)).toEqual(true)
     })
   })
   describe('getNextSortOrder', () => {
     it('should be asc by default', () => {
-      const button = $(`<button>`)[0]
+      const button = document.createElement('button')
       expect(getNextSortOrder(button)).toEqual('asc')
     })
     it('should return asc if desc was set before', () => {
-      const button = $(`<button class="desc">`)[0]
+      const button = document.createElement('button')
+      button.classList.add('desc')
       expect(getNextSortOrder(button)).toEqual('asc')
     })
     it('should return desc if asc was set before', () => {
-      const button = $(`<button class="asc">`)[0]
+      const button = document.createElement('button')
+      button.classList.add('asc')
       expect(getNextSortOrder(button)).toEqual('desc')
     })
     it('should use predefined asc order if set', () => {
-      const button = $(`<button data-order="asc">`)[0]
+      const button = document.createElement('button')
+      button.dataset.order = 'asc'
       expect(getNextSortOrder(button)).toEqual('asc')
     })
     it('should use predefined desc if set', () => {
-      const button = $(`<button data-order="desc">`)[0]
+      const button = document.createElement('button')
+      button.dataset.order = 'desc'
       expect(getNextSortOrder(button)).toEqual('desc')
     })
   })
   describe('setSortOrder', () => {
     it('should set toggle between orders', () => {
-      const buttonName = $(`<button data-sort="name">`)[0]
-      const buttonAge = $(`<button data-sort="age">`)[0]
+      const buttonName = document.createElement('button')
+      buttonName.dataset.sort = 'name'
+      const buttonAge = document.createElement('button')
+      buttonAge.dataset.sort = 'age'
       const buttons = [buttonName, buttonAge]
 
       setSortOrder(buttons, 'name', 'asc')
@@ -68,8 +75,11 @@ describe('sort listeners', () => {
       expect(buttonAge.classList.contains('desc')).toEqual(false)
     })
     it('should respect predefined order', () => {
-      const buttonName = $(`<button data-sort="name" data-order="asc">`)[0]
-      const buttonAge = $(`<button data-sort="age">`)[0]
+      const buttonName = document.createElement('button')
+      buttonName.dataset.sort = 'name'
+      buttonName.dataset.order = 'asc'
+      const buttonAge = document.createElement('button')
+      buttonAge.dataset.sort = 'age'
       const buttons = [buttonName, buttonAge]
 
       setSortOrder(buttons, 'name', 'asc')
@@ -88,8 +98,12 @@ describe('sort listeners', () => {
 
   describe('clearSortOrder', () => {
     it('should set toggle between orders', () => {
-      const buttonName = $(`<button data-sort="name" class="desc">`)[0]
-      const buttonAge = $(`<button data-sort="age" class="asc">`)[0]
+      const buttonName = document.createElement('button')
+      buttonName.dataset.sort = 'name'
+      buttonName.classList.add('desc')
+      const buttonAge = document.createElement('button')
+      buttonAge.dataset.sort = 'age'
+      buttonAge.classList.add('asc')
       const buttons = [buttonName, buttonAge]
 
       expect(buttonName.classList.contains('asc')).toEqual(false)
@@ -122,8 +136,10 @@ describe('sort listeners', () => {
       }
     })
     it('should sort and handle classes when clicking buttons', () => {
-      const buttonName = $(`<button data-sort="name">`)[0]
-      const buttonAge = $(`<button data-sort="age">`)[0]
+      const buttonName = document.createElement('button')
+      buttonName.dataset.sort = 'name'
+      const buttonAge = document.createElement('button')
+      buttonAge.dataset.sort = 'age'
       const elements = [buttonName, buttonAge]
       addSortListeners(elements, { items: this.items })
 
@@ -164,7 +180,8 @@ describe('sort listeners', () => {
       ])
     })
     it('should run before and after callbacks', () => {
-      const buttonAge = $(`<button data-sort="age">`)[0]
+      const buttonAge = document.createElement('button')
+      buttonAge.dataset.sort = 'age'
       const elements = [buttonAge]
       let beforeHasRun = false
       const before = () => {
@@ -180,7 +197,8 @@ describe('sort listeners', () => {
       })
     })
     it.skip('should use custom alphabeth', () => {
-      const buttonName = $(`<button data-sort="name">`)[0]
+      const buttonName = document.createElement('button')
+      buttonName.dataset.sort = 'name'
       const elements = [buttonName]
       const alphabet = 'UMJona'
       addSortListeners(elements, { items: this.items, alphabet })
@@ -194,7 +212,9 @@ describe('sort listeners', () => {
       ])
     })
     it('should use sort function', () => {
-      const buttonName = $(`<button data-sort="name" class="desc">`)[0]
+      const buttonName = document.createElement('button')
+      buttonName.dataset.sort = 'name'
+      buttonName.classList.add('desc')
       const elements = [buttonName]
       const sortFunction = function (itemA, itemB, options) {
         const reversNameA = itemA.values()[options.valueName].split('').reverse().join('')

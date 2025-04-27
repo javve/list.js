@@ -1,7 +1,5 @@
 import { describe, it, expect } from 'vitest'
 
-import $ from 'jquery'
-
 import Item from '../../src/item'
 import templater from '../../src/templater'
 
@@ -51,7 +49,8 @@ describe('item', function () {
     })
     it('should set values on item with element', () => {
       const template = templater.getTemplate(templateParams)
-      const element = $('<div><span class="name">Jonny</span></div>')[0]
+      const element = document.createElement('div')
+      element.innerHTML = '<span class="name">Jonny</span>'
       const item = new Item({ name: 'Jonny' }, { element, template })
       expect(item.elm.querySelector('span').innerHTML).toEqual('Jonny')
       item.values({ name: 'Anna' })

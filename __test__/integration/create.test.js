@@ -1,18 +1,17 @@
-import $ from 'jquery'
 import List from '../../src/index'
 
 describe('Create', () => {
   describe('With HTML items', () => {
     let list, listEl
     beforeEach(function () {
-      listEl = $(`
-        <div id="list">
-          <ul class="list">
-            <li><span class="name">Jonny</span></li>
-          </ul>
-        </div>
-      `)
-      $(document.body).append(listEl)
+      listEl = document.createElement('div')
+      listEl.id = 'list'
+      listEl.innerHTML = `
+        <ul class="list">
+          <li><span class="name">Jonny</span></li>
+        </ul>
+      `
+      document.body.appendChild(listEl)
       list = new List('list', { valueNames: ['name'] })
     })
     afterEach(() => {
@@ -21,27 +20,27 @@ describe('Create', () => {
 
     it('should contain one item', () => {
       expect(list.items.length).toEqual(1)
-      expect(listEl.find('li').length).toEqual(1)
+      expect(listEl.querySelectorAll('li').length).toEqual(1)
     })
 
     it('should contain two items', () => {
       list.add({ name: 'Jonas' })
       expect(list.items.length).toEqual(2)
-      expect(listEl.find('li').length).toEqual(2)
+      expect(listEl.querySelectorAll('li').length).toEqual(2)
     })
   })
 
   describe('With and element instead of id', () => {
     var listEl, list
     beforeEach(() => {
-      listEl = $(`
-        <div id="list">
-          <ul class="list">
-            <li><span class="name">Jonny</span></li>
-          </ul>
-        </div>
-      `)
-      $(document.body).append(listEl)
+      listEl = document.createElement('div')
+      listEl.id = 'list'
+      listEl.innerHTML = `
+        <ul class="list">
+          <li><span class="name">Jonny</span></li>
+        </ul>
+      `
+      document.body.appendChild(listEl)
       var el = document.getElementById('list')
       list = new List(el, { valueNames: ['name'] })
     })
@@ -51,19 +50,17 @@ describe('Create', () => {
 
     it('should contain one item', () => {
       expect(list.items.length).toEqual(1)
-      expect(listEl.find('li').length).toEqual(1)
+      expect(listEl.querySelectorAll('li').length).toEqual(1)
     })
   })
 
   describe('Without items and with string template', () => {
     var listEl, list
     beforeEach(() => {
-      listEl = $(
-        '<div id="list">\
-        <ul class="list"></ul>\
-      </div>'
-      )
-      $(document.body).append(listEl)
+      listEl = document.createElement('div')
+      listEl.id = 'list'
+      listEl.innerHTML = '<ul class="list"></ul>'
+      document.body.appendChild(listEl)
       list = new List(
         'list',
         {
@@ -79,13 +76,13 @@ describe('Create', () => {
 
     it('should contain one item', () => {
       expect(list.items.length).toEqual(1)
-      expect(listEl.find('li').length).toEqual(1)
+      expect(listEl.querySelectorAll('li').length).toEqual(1)
     })
 
     it('should contain two items', () => {
       list.add({ name: 'Jonas' })
       expect(list.items.length).toEqual(2)
-      expect(listEl.find('li').length).toEqual(2)
+      expect(listEl.querySelectorAll('li').length).toEqual(2)
     })
   })
 
@@ -93,12 +90,10 @@ describe('Create', () => {
     var listEl, list
 
     beforeEach(() => {
-      listEl = $(`
-        <div id="list">
-          <table class="list"></table>
-        </div>
-      `)
-      $(document.body).append(listEl)
+      listEl = document.createElement('div')
+      listEl.id = 'list'
+      listEl.innerHTML = '<table class="list"></table>'
+      document.body.appendChild(listEl)
       list = new List(
         'list',
         {
@@ -115,21 +110,23 @@ describe('Create', () => {
 
     it('should contain one item', () => {
       expect(list.items.length).toEqual(1)
-      expect(listEl.find('tr').length).toEqual(1)
+      expect(listEl.querySelectorAll('tr').length).toEqual(1)
     })
 
     it('should contain two items', () => {
       list.add({ name: 'Jonas' })
       expect(list.items.length).toEqual(2)
-      expect(listEl.find('tr').length).toEqual(2)
+      expect(listEl.querySelectorAll('tr').length).toEqual(2)
     })
   })
 
   describe('Without items and with template function', () => {
     var listEl, list
     beforeEach(() => {
-      listEl = $('<div id="list"><ul class="list"></ul></div>')
-      $(document.body).append(listEl)
+      listEl = document.createElement('div')
+      listEl.id = 'list'
+      listEl.innerHTML = '<ul class="list"></ul>'
+      document.body.appendChild(listEl)
       list = new List(
         'list',
         {
@@ -147,25 +144,27 @@ describe('Create', () => {
 
     it('should contain one item', () => {
       expect(list.items.length).toEqual(1)
-      expect(listEl.find('li').length).toEqual(1)
+      expect(listEl.querySelectorAll('li').length).toEqual(1)
     })
 
     it('should contain two items', () => {
       list.add({ name: 'Jonas' })
       expect(list.items.length).toEqual(2)
-      expect(listEl.find('li').length).toEqual(2)
+      expect(listEl.querySelectorAll('li').length).toEqual(2)
     })
 
     it('should get values from items', () => {
       list.add({ name: 'Egon' })
-      expect(listEl.find('li[data-template-fn-egon]').length).toEqual(1)
+      expect(listEl.querySelectorAll('li[data-template-fn-egon]').length).toEqual(1)
     })
   })
 
   describe('without items and or template', () => {
     it('should throw error on init', () => {
-      var listEl = $('<div id="list"><ul class="list"></ul></div>')
-      $(document.body).append(listEl)
+      var listEl = document.createElement('div')
+      listEl.id = 'list'
+      listEl.innerHTML = '<ul class="list"></ul>'
+      document.body.appendChild(listEl)
 
       expect(() => {
         new List('list', {
@@ -180,12 +179,16 @@ describe('Create', () => {
   describe('Without items and with HTML template', () => {
     var listEl, list, templateEl
     beforeEach(() => {
-      listEl = $('<div id="list"><ul class="list"></ul></div>')
+      listEl = document.createElement('div')
+      listEl.id = 'list'
+      listEl.innerHTML = '<ul class="list"></ul>'
 
-      templateEl = $('<li id="template-item"><span class="name"></span></li>')
+      templateEl = document.createElement('li')
+      templateEl.id = 'template-item'
+      templateEl.innerHTML = '<span class="name"></span>'
 
-      $(document.body).append(listEl)
-      $(document.body).append(templateEl)
+      document.body.appendChild(listEl)
+      document.body.appendChild(templateEl)
 
       list = new List(
         'list',
@@ -203,22 +206,23 @@ describe('Create', () => {
 
     it('should contain one item', () => {
       expect(list.items.length).toEqual(1)
-      expect(listEl.find('li').length).toEqual(1)
+      expect(listEl.querySelectorAll('li').length).toEqual(1)
     })
 
     it('should contain two items', () => {
       list.add({ name: 'Jonas' })
       expect(list.items.length).toEqual(2)
-      expect(listEl.find('li').length).toEqual(2)
+      expect(listEl.querySelectorAll('li').length).toEqual(2)
     })
   })
 
   describe('Asyn index with existing list', () => {
     it('should contain 162 items', () => {
       return new Promise((resolve) => {
-        var listEl = $(`
-        <div id="list">
-          <ul class="list">
+        var listEl = document.createElement('div')
+        listEl.id = 'list'
+        listEl.innerHTML = `
+         <ul class="list">
             <li><span class="name">Jonny</span></li><li><span class="name">Sven</span></li>
             <li><span class="name">Anna</span></li><li><span class="name">Lisa</span></li>
             <li><span class="name">Egon</span></li><li><span class="name">Frida</span></li>
@@ -301,14 +305,14 @@ describe('Create', () => {
             <li><span class="name">Imma</span></li><li><span class="name">Hasse</span></li>
             <li><span class="name">Robert</span></li><li><span class="name">Mona</span></li>
           </ul>
-        </div>
-      `)
-        $(document.body).append(listEl)
+        `
+        document.body.appendChild(listEl)
+
         new List('list', {
           valueNames: ['name'],
           indexAsync: true,
           parseComplete: function () {
-            expect(listEl.find('li').length).toEqual(162)
+            expect(listEl.querySelectorAll('li').length).toEqual(162)
             listEl.remove()
             resolve()
           },

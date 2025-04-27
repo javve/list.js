@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import valueNamesUtils from '../../src/utils/value-names'
 
 describe('Utils / Value Names', () => {
@@ -14,14 +13,15 @@ describe('Utils / Value Names', () => {
       { attr: 'value', name: 'foo' },
       { attr: 'data-timestamp', name: 'timestamp' },
     ]
-    itemEl = $(
+    const tempDiv = document.createElement('div')
+    tempDiv.innerHTML =
       '<div data-id="1">' +
-        '<a href="http://lol.com" class="link name">Jonny</a>' +
-        '<span class="born timestamp" data-timestamp="54321">1986</span>' +
-        '<img class="image" src="usage/boba.jpeg">' +
-        '<input class="foo" value="Bar">' +
-        '</div>',
-    )[0]
+      '<a href="http://lol.com" class="link name">Jonny</a>' +
+      '<span class="born timestamp" data-timestamp="54321">1986</span>' +
+      '<img class="image" src="usage/boba.jpeg">' +
+      '<input class="foo" value="Bar">' +
+      '</div>'
+    itemEl = tempDiv.firstElementChild
   })
   describe('getDefinitionFromName', () => {
     it('should get regular class name', () => {

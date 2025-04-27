@@ -7,7 +7,6 @@ sort(items, column, options = {
 })
 */
 
-import $ from 'jquery'
 import naturalSort from 'string-natural-compare'
 
 import Item from '../../src/item'
@@ -92,7 +91,11 @@ describe('sort', () => {
         sortFunction: function (itemA, itemB, options = {}) {
           const column = options.valueName
           expect(column).toEqual('v')
-          return naturalSort($(itemA.values()[column]).val(), $(itemB.values()[column]).val())
+          const tempA = document.createElement('div')
+          const tempB = document.createElement('div')
+          tempA.innerHTML = itemA.values()[column]
+          tempB.innerHTML = itemB.values()[column]
+          return naturalSort(tempA.querySelector('input').value, tempB.querySelector('input').value)
         },
       })
       expect(this.getValues()).toEqual([

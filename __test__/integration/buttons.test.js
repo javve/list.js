@@ -1,25 +1,24 @@
 import { screen } from '@testing-library/dom'
 import userEvent from '@testing-library/user-event'
-
-import $ from 'jquery'
 import List from '../../src/index'
 
 describe('Button', function () {
   var list
 
   beforeEach(function () {
-    $('body').append(
-      $(`<div id="parse-list">
-        <input class="search" />
-        <span class="sort" id="sort-name" data-sort="name">Sort name</span>
-        <span class="sort" id="sort-name-asc" data-sort="name" data-order="asc">Sort name asc</span>
-        <span class="sort" id="sort-name-desc" data-sort="name" data-order="desc">Sort name desc</span>
-        <div class="list">
-          <div><span class="name">Jonny</span><span class="born">1986</span></div>
-          <div><span class="name">Jocke</span><span class="born">1985</span></div>
-        </div>
-      </div>`)
-    )
+    const listContainer = document.createElement('div')
+    listContainer.id = 'parse-list'
+    listContainer.innerHTML = `
+      <input class="search" />
+      <span class="sort" id="sort-name" data-sort="name">Sort name</span>
+      <span class="sort" id="sort-name-asc" data-sort="name" data-order="asc">Sort name asc</span>
+      <span class="sort" id="sort-name-desc" data-sort="name" data-order="desc">Sort name desc</span>
+      <div class="list">
+        <div><span class="name">Jonny</span><span class="born">1986</span></div>
+        <div><span class="name">Jocke</span><span class="born">1985</span></div>
+      </div>
+    `
+    document.body.appendChild(listContainer)
 
     list = new List('parse-list', {
       valueNames: ['name', 'born'],
@@ -27,7 +26,10 @@ describe('Button', function () {
   })
 
   afterEach(function () {
-    $('#parse-list').remove()
+    const listElement = document.getElementById('parse-list')
+    if (listElement) {
+      listElement.remove()
+    }
   })
 
   describe('Sort', () => {

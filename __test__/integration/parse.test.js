@@ -1,20 +1,18 @@
-import $ from 'jquery'
 import List from '../../src/index'
 
 describe('Parse', function () {
   describe('Parse class', function () {
     var list
     beforeEach(function () {
-      $('body').append(
-        $(
-          '<div id="parse-list">\
-        <div class="list">\
-          <div><span class="name">Jonny</span><span class="born">1986</span></div>\
-          <div><span class="name">Jocke</span><span class="born">1985</span></div>\
-        </div>\
-      </div>',
-        ),
-      )
+      const div = document.createElement('div')
+      div.id = 'parse-list'
+      div.innerHTML = `
+        <div class="list">
+          <div><span class="name">Jonny</span><span class="born">1986</span></div>
+          <div><span class="name">Jocke</span><span class="born">1985</span></div>
+        </div>
+      `
+      document.body.appendChild(div)
 
       list = new List('parse-list', {
         valueNames: ['name', 'born'],
@@ -22,7 +20,10 @@ describe('Parse', function () {
     })
 
     afterEach(function () {
-      $('#parse-list').remove()
+      const element = document.getElementById('parse-list')
+      if (element) {
+        element.remove()
+      }
     })
 
     it('should have two items', function () {
@@ -38,10 +39,11 @@ describe('Parse', function () {
       expect(list.items[2].values().name).toEqual('Sven')
       expect(list.items[0].values().born).toEqual('1986')
       expect(list.items[2].values().born).toEqual(1950)
-      var el = $($('#parse-list').find('.list div')[2])
-      expect(el.find('span').length).toEqual(2)
-      expect(el.find('span.name').text()).toEqual('Sven')
-      expect(el.find('span.born').text()).toEqual('1950')
+      const listDiv = document.querySelector('#parse-list .list')
+      const el = listDiv.children[2]
+      expect(el.querySelectorAll('span').length).toEqual(2)
+      expect(el.querySelector('.name').textContent).toEqual('Sven')
+      expect(el.querySelector('.born').textContent).toEqual('1950')
     })
     it('should parsed value always be string while added could be number', function () {
       list.add({ name: 'Sven', born: 1950 })
@@ -56,26 +58,25 @@ describe('Parse', function () {
     var list
 
     beforeEach(function () {
-      $('body').append(
-        $(
-          '<div id="parse-list">\
-        <div class="list">\
-          <div data-id="1">\
-            <a href="http://lol.com" class="link name">Jonny</a>\
-            <span class="born timestamp" data-timestamp="54321">1986</span>\
-            <img class="image" src="usage/boba.jpeg">\
-            <input class="foo" value="Bar">\
-          </div>\
-          <div data-id="2">\
-            <a href="http://lol.com" class="link name">Jocke</a>\
-            <span class="born timestamp" data-timestamp="12345">1985</span>\
-            <img class="image" src="usage/leia.jpeg">\
-            <input class="foo child" value="Car">\
-          </div>\
-        </div>\
-      </div>',
-        ),
-      )
+      const div = document.createElement('div')
+      div.id = 'parse-list'
+      div.innerHTML = `
+        <div class="list">
+          <div data-id="1">
+            <a href="http://lol.com" class="link name">Jonny</a>
+            <span class="born timestamp" data-timestamp="54321">1986</span>
+            <img class="image" src="usage/boba.jpeg">
+            <input class="foo" value="Bar">
+          </div>
+          <div data-id="2">
+            <a href="http://lol.com" class="link name">Jocke</a>
+            <span class="born timestamp" data-timestamp="12345">1985</span>
+            <img class="image" src="usage/leia.jpeg">
+            <input class="foo child" value="Car">
+          </div>
+        </div>
+      `
+      document.body.appendChild(div)
 
       list = new List('parse-list', {
         valueNames: [
@@ -91,7 +92,10 @@ describe('Parse', function () {
     })
 
     afterEach(function () {
-      $('#parse-list').remove()
+      const element = document.getElementById('parse-list')
+      if (element) {
+        element.remove()
+      }
     })
 
     it('should get values from class, data, src, value and child els data-attribute', function () {
@@ -123,14 +127,15 @@ describe('Parse', function () {
       expect(sven.link).toEqual('localhost')
       expect(sven.timestamp).toEqual('1337')
       expect(sven.foo).toEqual('hej')
-      var el = $($('#parse-list').find('.list div')[2])
-      expect(el.data('id')).toEqual(4)
-      expect(el.find('.name').text()).toEqual('Sven')
-      expect(el.find('.born').text()).toEqual('1950')
-      expect(el.find('.image').attr('src')).toEqual('usage/rey.jpeg')
-      expect(el.find('.link').attr('href')).toEqual('localhost')
-      expect(el.find('.timestamp').data('timestamp')).toEqual(1337)
-      expect(el.find('.foo').val()).toEqual('hej')
+      const listDiv = document.querySelector('#parse-list .list')
+      const el = listDiv.children[2]
+      expect(el.dataset.id).toEqual('4')
+      expect(el.querySelector('.name').textContent).toEqual('Sven')
+      expect(el.querySelector('.born').textContent).toEqual('1950')
+      expect(el.querySelector('.image').getAttribute('src')).toEqual('usage/rey.jpeg')
+      expect(el.querySelector('.link').getAttribute('href')).toEqual('localhost')
+      expect(el.querySelector('.timestamp').dataset.timestamp).toEqual('1337')
+      expect(el.querySelector('.foo').value).toEqual('hej')
     })
   })
 })

@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import fixture from './fixtures'
 
 describe('Sort', function () {
@@ -14,7 +13,7 @@ describe('Sort', function () {
         { id: '4', val: '' },
         { id: '5', val: '' },
         { id: '6', val: '' },
-      ],
+      ]
     )
     i1 = list.get('id', '1')[0]
     i2 = list.get('id', '2')[0]
@@ -313,10 +312,11 @@ describe('Sort', function () {
       i6.values({ val: "<input value='y' />" })
       list.sort('val', {
         sortFunction: function (itemA, itemB, options) {
-          return list.utils.naturalSort(
-            $(itemA.values()[options.valueName]).val(),
-            $(itemB.values()[options.valueName]).val(),
-          )
+          const tempA = document.createElement('div')
+          const tempB = document.createElement('div')
+          tempA.innerHTML = itemA.values()[options.valueName]
+          tempB.innerHTML = itemB.values()[options.valueName]
+          return list.utils.naturalSort(tempA.querySelector('input').value, tempB.querySelector('input').value)
         },
       })
       expect(list.items[0].values().val).toBe("<input value='a' />")
@@ -328,10 +328,11 @@ describe('Sort', function () {
     })
     it('should use default custom sort function', function () {
       list.sortFunction = function (itemA, itemB, options) {
-        return list.utils.naturalSort(
-          $(itemA.values()[options.valueName]).val(),
-          $(itemB.values()[options.valueName]).val(),
-        )
+        const tempA = document.createElement('div')
+        const tempB = document.createElement('div')
+        tempA.innerHTML = itemA.values()[options.valueName]
+        tempB.innerHTML = itemB.values()[options.valueName]
+        return list.utils.naturalSort(tempA.querySelector('input').value, tempB.querySelector('input').value)
       }
       i1.values({ val: "<input value='b' />" })
       i2.values({ val: "<input value='a' />" })
@@ -349,10 +350,11 @@ describe('Sort', function () {
     })
     it('should use default custom sort function with order desc', function () {
       list.sortFunction = function (itemA, itemB, options) {
-        return list.utils.naturalSort(
-          $(itemA.values()[options.valueName]).val(),
-          $(itemB.values()[options.valueName]).val(),
-        )
+        const tempA = document.createElement('div')
+        const tempB = document.createElement('div')
+        tempA.innerHTML = itemA.values()[options.valueName]
+        tempB.innerHTML = itemB.values()[options.valueName]
+        return list.utils.naturalSort(tempA.querySelector('input').value, tempB.querySelector('input').value)
       }
       i1.values({ val: "<input value='b' />" })
       i2.values({ val: "<input value='a' />" })

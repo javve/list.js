@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest'
-import $ from 'jquery'
 import fixture from './fixtures'
 
 describe('Defaults', function () {
@@ -36,8 +35,8 @@ describe('Defaults', function () {
   })
 
   it('should have the right elements', function () {
-    expect(list.list).toEqual($('.list')[0])
-    expect(list.listContainer).toEqual($('#list')[0])
+    expect(list.list).toEqual(document.querySelector('.list'))
+    expect(list.listContainer).toEqual(document.getElementById('list'))
   })
 
   it('should have all default methods', function () {

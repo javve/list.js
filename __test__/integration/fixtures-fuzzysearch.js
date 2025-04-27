@@ -1,9 +1,9 @@
-import $ from 'jquery'
-
 var fixtureFuzzysearch = {
   list: function (valueNames) {
-    var listHtml = $('<div id="list-fuzzy-search"><input class="fuzzy-search" /><ul class="list"></ul></div>'),
-      item = ''
+    var listHtml = document.createElement('div')
+    listHtml.id = 'list-fuzzy-search'
+    listHtml.innerHTML = '<input class="fuzzy-search" /><ul class="list"></ul>'
+    var item = ''
 
     item = '<li>'
     for (var i = 0; i < valueNames.length; i++) {
@@ -11,12 +11,15 @@ var fixtureFuzzysearch = {
     }
     item += '</li>'
 
-    $(document.body).append(listHtml)
+    document.body.appendChild(listHtml)
 
     return item
   },
   removeList: function () {
-    $('#list-fuzzy-search').remove()
+    const listElement = document.getElementById('list-fuzzy-search')
+    if (listElement) {
+      listElement.remove()
+    }
   },
   i1: { name: 'Guybrush Threepwood' },
   i2: { name: 'Manny Calavera' },

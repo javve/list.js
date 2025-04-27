@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import templater from '../../src/templater'
 
 describe('Templater', () => {
@@ -27,12 +26,10 @@ describe('Templater', () => {
       expect(itemEl.outerHTML).toEqual('<div><span class="name"></span></div>')
     })
     it('should init without item', () => {
-      const listEl = $(`
-      <ul class="list">
-        <li><span class="name">Jonny</span></li>
-      </ul>
-    `)
-      $(document.body).append(listEl)
+      const listEl = document.createElement('ul')
+      listEl.className = 'list'
+      listEl.innerHTML = '<li><span class="name">Jonny</span></li>'
+      document.body.appendChild(listEl)
       const valueNames = ['name']
       const template = templater.getTemplate({ parentEl: document.querySelector('.list'), valueNames })
       const itemEl = template.render()
@@ -83,11 +80,9 @@ describe('Templater', () => {
   })
   describe('remove', () => {
     it('should remove element from list', () => {
-      const listEl = $(`
-        <div class="list">
-          <div><span class="name">Foo</span></div>
-        </div>
-      `)[0]
+      const listEl = document.createElement('div')
+      listEl.className = 'list'
+      listEl.innerHTML = '<div><span class="name">Foo</span></div>'
       document.body.appendChild(listEl)
       const item = listEl.querySelector('div')
       expect(listEl.querySelector('div')).not.toEqual(null)
@@ -97,9 +92,11 @@ describe('Templater', () => {
   })
   describe('show', () => {
     it('should add element to list', () => {
-      const listEl = $(`<div class="list"></div>`)[0]
+      const listEl = document.createElement('div')
+      listEl.className = 'list'
       document.body.appendChild(listEl)
-      const item = $('<div><span class="name">Foo</span></div>')[0]
+      const item = document.createElement('div')
+      item.innerHTML = '<span class="name">Foo</span>'
       expect(listEl.querySelector('div')).toEqual(null)
       templater.show(item, listEl)
       expect(listEl.querySelector('div')).not.toEqual(null)
@@ -107,12 +104,9 @@ describe('Templater', () => {
   })
   describe('clear', () => {
     it('should clear the entire list of children', () => {
-      const listEl = $(`
-        <div class="list">
-          <div><span class="name">Foo</span></div>
-          <div><span class="name">Foo</span></div>
-        </div>
-      `)[0]
+      const listEl = document.createElement('div')
+      listEl.className = 'list'
+      listEl.innerHTML = '<div><span class="name">Foo</span></div><div><span class="name">Foo</span></div>'
       document.body.appendChild(listEl)
       expect(listEl.querySelectorAll('div').length).toEqual(2)
       templater.clear(listEl)
@@ -121,14 +115,15 @@ describe('Templater', () => {
   })
   describe('set', () => {
     it('should set values to element', () => {
-      const itemEl = $(
+      let itemEl = document.createElement('div')
+      itemEl.innerHTML =
         '<div data-id="1">' +
-          '<a href="http://lol.com" class="link name">Jonny</a>' +
-          '<span class="born timestamp" data-timestamp="54321">1986</span>' +
-          '<img class="image" src="usage/boba.jpeg">' +
-          '<input class="foo" value="Bar">' +
-          '</div>'
-      )[0]
+        '<a href="http://lol.com" class="link name">Jonny</a>' +
+        '<span class="born timestamp" data-timestamp="54321">1986</span>' +
+        '<img class="image" src="usage/boba.jpeg">' +
+        '<input class="foo" value="Bar">' +
+        '</div>'
+      itemEl = itemEl.firstElementChild
       const valueNames = [
         'name',
         'born',
@@ -163,14 +158,15 @@ describe('Templater', () => {
   })
   describe('get', () => {
     it('should get all values from element', () => {
-      const itemEl = $(
+      let itemEl = document.createElement('div')
+      itemEl.innerHTML =
         '<div data-id="1">' +
-          '<a href="http://lol.com" class="link name">Jonny</a>' +
-          '<span class="born timestamp" data-timestamp="54321">1986</span>' +
-          '<img class="image" src="usage/boba.jpeg">' +
-          '<input class="foo" value="Bar">' +
-          '</div>'
-      )[0]
+        '<a href="http://lol.com" class="link name">Jonny</a>' +
+        '<span class="born timestamp" data-timestamp="54321">1986</span>' +
+        '<img class="image" src="usage/boba.jpeg">' +
+        '<input class="foo" value="Bar">' +
+        '</div>'
+      itemEl = itemEl.firstElementChild
       const valueNames = [
         'name',
         'born',

@@ -1,18 +1,20 @@
-import $ from 'jquery'
 import List from '../../src/index'
 
 var fixture = {
   list: function (valueNames, items) {
-    var listHtml = $('<div id="list"><ul class="list"></ul></div>'),
-      item = ''
+    var listHtml = document.createElement('div')
+    listHtml.id = 'list'
+    var ul = document.createElement('ul')
+    ul.className = 'list'
+    listHtml.appendChild(ul)
 
-    item = '<li>'
+    var item = '<li>'
     for (var i = 0; i < valueNames.length; i++) {
       item += '<span class="' + valueNames[i] + '"</span>'
     }
     item += '</li>'
 
-    $(document.body).append(listHtml)
+    document.body.appendChild(listHtml)
 
     items = items || []
 
@@ -22,11 +24,14 @@ var fixture = {
         valueNames: valueNames,
         item: item,
       },
-      items,
+      items
     )
   },
   removeList: function () {
-    $('#list').remove()
+    var list = document.getElementById('list')
+    if (list) {
+      list.remove()
+    }
   },
   jonny: {
     name: 'Jonny Strömberg',

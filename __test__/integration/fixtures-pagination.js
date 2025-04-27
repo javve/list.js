@@ -1,9 +1,9 @@
-import $ from 'jquery'
-
 var fixturePagination = {
   list: function (valueNames) {
-    var listHtml = $('<div id="list-pagination"><ul class="list"></ul><ul class="pagination"></ul></div>'),
-      item = ''
+    var listHtml = document.createElement('div')
+    listHtml.id = 'list-pagination'
+    listHtml.innerHTML = '<ul class="list"></ul><ul class="pagination"></ul>'
+    var item = ''
 
     item = '<li>'
     for (var i = 0; i < valueNames.length; i++) {
@@ -11,12 +11,15 @@ var fixturePagination = {
     }
     item += '</li>'
 
-    $(document.body).append(listHtml)
+    document.body.appendChild(listHtml)
 
     return item
   },
   removeList: function () {
-    $('#list-pagination').remove()
+    const listElement = document.getElementById('list-pagination')
+    if (listElement) {
+      listElement.remove()
+    }
   },
   jonny: {
     name: 'Jonny Strömberg',

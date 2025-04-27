@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import fixture from './fixtures'
 import isVisible from '../utils/is-visible'
 
@@ -14,7 +13,7 @@ describe('Item', function () {
           born: '1986',
           doin: 'Living the dream',
         },
-      ],
+      ]
     )
     item = list.get('name', 'Jonny')[0]
   })
@@ -36,7 +35,7 @@ describe('Item', function () {
     })
 
     it('should have the right elements', function () {
-      expect(item.elm).toEqual($('#list li')[0])
+      expect(item.elm).toEqual(document.querySelector('#list li'))
     })
 
     it('should have all default methods', function () {

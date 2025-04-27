@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import fixture from './fixtures'
 
 describe('ReIndex', function () {
@@ -24,9 +23,9 @@ describe('ReIndex', function () {
       { name: 'Imma Grafström', born: '1953' },
       { name: 'Hasse Strömberg', born: '1955' },
     ])
-    var newHtml = '<li><span class="name">Sven</span><span class="born">2013</span>'
+    let newHtml = '<li><span class="name">Sven</span><span class="born">2013</span>'
     newHtml = newHtml + '<li><span class="name">Anna</span><span class="born">3043</span>'
-    $(list.list).html(newHtml)
+    list.list.innerHTML = newHtml
     list.reIndex()
     expect(list.toJSON()).toEqual([
       { name: 'Sven', born: '2013' },
