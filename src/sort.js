@@ -88,7 +88,7 @@ module.exports = function (list) {
 
     list.items.sort(sortFunction)
     list.update()
-    list.trigger('sortComplete')
+    list.trigger('sortComplete', options)
   }
 
   // Add handlers
