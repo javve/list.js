@@ -1,13 +1,16 @@
-var fixturePagination = {
+const fixturePagination = {
   list: function (valueNames) {
-    var listHtml = document.createElement('div')
+    const listHtml = document.createElement('div')
     listHtml.id = 'list-pagination'
-    listHtml.innerHTML = '<ul class="list"></ul><ul class="pagination"></ul>'
-    var item = ''
+    listHtml.innerHTML = `
+      <ul class="list"></ul>
+      <ul class="pagination"></ul>
+    `
+    let item = ''
 
     item = '<li>'
-    for (var i = 0; i < valueNames.length; i++) {
-      item += '<span class="' + valueNames[i] + '"</span>'
+    for (let i = 0; i < valueNames.length; i++) {
+      item += `<span class="${valueNames[i]}"></span>`
     }
     item += '</li>'
 
@@ -115,4 +118,4 @@ fixturePagination.all = [
   fixturePagination.gun,
 ]
 
-module.exports = fixturePagination
+export default fixturePagination

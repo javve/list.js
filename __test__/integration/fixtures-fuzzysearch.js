@@ -1,13 +1,17 @@
-var fixtureFuzzysearch = {
+const fixtureFuzzysearch = {
   list: function (valueNames) {
-    var listHtml = document.createElement('div')
+    const listHtml = document.createElement('div')
     listHtml.id = 'list-fuzzy-search'
-    listHtml.innerHTML = '<input class="fuzzy-search" /><ul class="list"></ul>'
-    var item = ''
+    listHtml.innerHTML = `
+      <input class="fuzzy-search" />
+      <ul class="list">
+      </ul>
+    `
+    let item = ''
 
     item = '<li>'
-    for (var i = 0; i < valueNames.length; i++) {
-      item += '<span class="' + valueNames[i] + '"</span>'
+    for (let i = 0; i < valueNames.length; i++) {
+      item += `<span class="${valueNames[i]}"></span>`
     }
     item += '</li>'
 
@@ -45,4 +49,4 @@ fixtureFuzzysearch.all = [
   fixtureFuzzysearch.i10,
 ]
 
-module.exports = fixtureFuzzysearch
+export default fixtureFuzzysearch
