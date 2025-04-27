@@ -183,7 +183,7 @@ describe('Sort', function () {
       expect(list.items[4].values().val).toBe('car.mov')
       expect(list.items[5].values().val).toBe('my.string_41299.tif')
     })
-    it('should show order of sorted floates (a bit wrong)', function () {
+    it('should show order of sorted floates', function () {
       i1.values({ val: '10.0401' })
       i2.values({ val: '10.022' })
       i3.values({ val: '10.021999' })
@@ -193,9 +193,9 @@ describe('Sort', function () {
       list.sort('val', { order: 'asc' })
       expect(list.items[0].values().val).toBe('0003.123')
       expect(list.items[1].values().val).toBe('09.2123')
-      expect(list.items[2].values().val).toBe('10.022')
-      expect(list.items[3].values().val).toBe('10.0401')
-      expect(list.items[4].values().val).toBe('10.021999')
+      expect(list.items[2].values().val).toBe('10.021999')
+      expect(list.items[3].values().val).toBe('10.022')
+      expect(list.items[4].values().val).toBe('10.0401')
       expect(list.items[5].values().val).toBe('11.231')
     })
     it('should sort IP addresses', function () {
