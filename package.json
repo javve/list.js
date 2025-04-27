@@ -40,10 +40,11 @@
     "vitest": "^3.1.2"
   },
   "main": "dist/list.cjs.js",
-  "module": "dist/list.js",
-  "unpkg": "dist/list.umd.js",
+  "module": "dist/list.esm.js",
+  "unpkg": "dist/list.js",
+  "browser": "dist/list.js",
   "exports": {
-    "import": "./dist/list.js",
+    "import": "./dist/list.esm.js",
     "require": "./dist/list.cjs.js"
   },
   "engines": {
